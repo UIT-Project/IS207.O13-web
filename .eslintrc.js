@@ -13,9 +13,5 @@ module.exports = {
         files: ['**/*.html'], // Kiểm tra tất cả các tệp HTML
         extends: ['plugin:@html-eslint/recommended'], // Sử dụng các quy tắc kiểm tra cho HTML
       },
-      {
-        files: ['**/*.css'], // Kiểm tra tất cả các tệp CSS
-        extends: ['stylelint-config-standard'], // Sử dụng các quy tắc kiểm tra cho CSS
-      },
     ],
   };
