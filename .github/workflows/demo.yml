@@ -23,7 +23,7 @@ jobs:
       # Cài đặt thư viện
       - name: Install dependencies
         run: |
-          npm ci
+          npm install
       # Thực hiện test code 
       - name: Lint and Test
         run: |
