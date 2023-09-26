@@ -10,7 +10,7 @@
   <p align="center">
     TÊN SẢN PHẨM
     <br />
-    <a href="https://github.com/shenkedokato/Java"><strong>Khám phá »</strong></a>
+    <a href="https://github.com/IS207-O13-web/IS207.O13-web"><strong>Khám phá »</strong></a>
     <br />
     <br />
   </p>
@@ -40,16 +40,10 @@
   
 ## Directory structure
 ```
-----Java
+----WIS207-O13-web
     |---.github
     |   |---workflow
-    |---Đồ án
-    |   |---Library
-    |   |---Phân tích thiết kế
-    |   |---Script
-    |---Lab
-    |---Seminar
-    |---README
+
 
 ```
   

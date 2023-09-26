@@ -1,0 +1,31 @@
+name: CI
+on:
+  # Chạy khi có thay đổi push, pull_request trên nhánh develop
+  push:
+    branches:
+      - develop
+  pull_request:
+    branches: 
+      - develop
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # Kiểm tra mã code
+      - name: Checkout code
+        uses: actions/checkout@v2
+      # Cài đặt môi trường
+      - name: Setup Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: 14  
+      # Cài đặt thư viện
+      - name: Install dependencies
+        run: |
+          npm ci
+      # Thực hiện test code 
+      - name: Lint and Test
+        run: |
+          npm run lint
+          npm test
