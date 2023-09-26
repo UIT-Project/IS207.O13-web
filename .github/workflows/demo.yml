@@ -25,6 +25,7 @@ jobs:
         run: |
           npm install eslint --save-dev
           npm install @html-eslint/eslint-plugin@latest --save-dev
+          npm install stylelint-config-standard --save-dev
           npm install
       # Thực hiện test code 
       - name: Lint and Test
