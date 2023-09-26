@@ -4,7 +4,8 @@
     "description": "web application for IS207.013",
     "main": "index.js",
     "scripts": {
-      "start": "node index.js"
+      "start": "node index.js",
+      "lint": "eslint src"
     },
     "author": "Shenkedokato",
     "dependencies": {
