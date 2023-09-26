@@ -23,6 +23,7 @@ jobs:
       # Cài đặt thư viện
       - name: Install dependencies
         run: |
+          npm install eslint --save-dev
           npm install
       # Thực hiện test code 
       - name: Lint and Test
