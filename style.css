@@ -13,4 +13,5 @@ body {
     font-size: 20px;
     margin: 4px;
     cursor: pointer;
+    border-radius: 8px;
 }
