@@ -183,6 +183,15 @@
     font-size: 20px;
 }
 
+.list-product-item {
+    text-decoration: none;
+    color: black;
+}
+
+.list-product-item:hover {
+    text-decoration: underline;
+}
+
 .right-footer-list-icon {
     margin-top: 16px;
 }
