@@ -1,0 +1,199 @@
+.container-content {
+    padding-left: 80px;
+    padding-right: 80px;
+}
+
+.text-header-content {
+    text-align: center;
+}
+
+.table-header-row .header-column1 {
+    width: 400px;
+}
+
+.table-header-row .header-column2 {
+    width: 140px;
+    text-align: center;
+}
+
+.table-header-row .header-column3 {
+    width: 140px;
+    text-align: center;
+}
+
+.table-header-row .header-column4 {
+    width: 140px;
+    text-align: center;
+}
+
+.table-header-row .header-column5 {
+    width: 40px;
+    text-align: center;
+}
+
+.img-row1 {
+    height: 160px;
+    width: auto;
+}
+
+.img-row2 {
+    height: 160px;
+    width: auto;
+}
+
+.input-number {
+    width: 60px;
+}
+
+.box-row1-column1 {
+    display: flex;
+}
+
+.row1-column1-item {
+    margin-right: 20px;
+}
+
+.box-row1 {
+    
+    height: 100%;
+    text-align: center;
+}
+
+.row1 {
+    vertical-align: middle;
+}
+
+/* ---- */
+
+.box-row2-column1 {
+    display: flex;
+}
+
+.row2-column1-item {
+    margin-right: 20px;
+}
+
+.box-row2 {
+    
+    height: 100%;
+    text-align: center;
+}
+
+.row2 {
+    vertical-align: middle;
+}
+
+.content-bottom {
+    display: flex;
+    justify-content: space-between;
+    padding: 0;
+}
+
+.btn-delete {
+    background: none;
+}
+
+.btn-continue {
+    padding: 12px 20px;
+    border: 0;
+    font-weight: 700;
+    opacity: 0.5;
+    background-color: #D9D9D9;
+}
+
+.box-thanh-toan {
+    width: 520px;
+    height: 160px;
+    background-color: #D9D9D9;
+    padding: 20px;
+}
+
+.box-thanh-toan-discount {
+    display: flex;
+    justify-content: space-between;
+}
+
+.line-thanh-toan {
+    margin: 0;
+}
+
+.box-thanh-toan-tongtien {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.total {
+    color: red;
+    font-size: 22px;
+}
+
+.box-thanh-toan-button {
+    text-align: center;
+}
+
+.btn-thanh-toan {
+    width: 80%;
+    padding-top: 2px;
+    padding-bottom: 2px;
+    background-color: black;
+    color: white;
+}
+
+.row1-column1-item {
+    font-weight: 500;
+}
+
+.row2-column1-item {
+    font-weight: 500;
+}
+
+.btn-delete {
+    border: 0;
+    padding: 0;
+}
+/*---CSS for footer---*/
+.footer {
+    height: 184px;
+    background-color: #D9D9D9;
+    display: flex;
+    justify-content: space-around;
+    padding-top: 36px;
+    padding-bottom: 30px;
+    padding-right: 200px;
+    font-family: 'Roboto', sans-serif;
+}
+
+.right-footer-list-icon {
+    display: flex;
+    justify-content: space-around;
+}
+
+.main-footer-list {
+    list-style: none;
+    padding: 0;
+}
+
+.left-footer-logo {
+    font-size: 36px;
+    font-weight: 700;
+}
+.list-product {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.right-footer-list-icon {
+    margin-top: 16px;
+}
+
+.text-contact {
+    font-weight: 700;
+    font-size: 20px;
+}
+
+.right-footer-icon {
+    color: black;
+}
+/* End: CSS for footer */
+
