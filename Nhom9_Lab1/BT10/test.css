@@ -1,0 +1,28 @@
+.menu {
+    position: relative;
+    width: 50px; /* Độ rộng ban đầu của menu */
+    transition: width 0.3s;
+  }
+  
+  .menu-button {
+    cursor: pointer;
+  }
+  
+  .menu-items {
+    display: none;
+    list-style: none;
+    padding: 0;
+    position: absolute;
+    top: 0;
+    left: 100%; /* Hiển thị menu ở bên phải của nút */
+    transition: left 0.3s;
+  }
+  
+  .menu.active {
+    width: 200px; /* Độ rộng menu khi mở rộng */
+  }
+  
+  .menu.active .menu-items {
+    display: block;
+    left: 0;
+  }
