@@ -11,17 +11,16 @@ aside {
 
 }
 .menu li a{
-    display: block; /* Display menu items as blocks */
+    display: inline-block; /* Display menu items as blocks */
 }
 .menu li{
     display: block;
     color: rgb(74, 120, 156); /* Link text color */
-    text-align: center;
+    text-align: left;
     text-decoration: none;
+    padding-left: 25px;
 }
-li{
-    float: top; 
-}
+
 h1{
 
     margin: 0px;
@@ -107,4 +106,8 @@ h3{
     border-top:none ;
     background-color: #e7e7e7;
     padding-left: 42px;
+}
+.tk{
+    padding-left: 42px;
+    border-bottom: 2px solid #e7e7e7;
 }
