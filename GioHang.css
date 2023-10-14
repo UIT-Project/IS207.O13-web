@@ -407,3 +407,8 @@ a, button{
     text-decoration: underline;
     
 }
+
+.bottom_footer-text-link {
+    color: black;
+    text-decoration: none;
+}

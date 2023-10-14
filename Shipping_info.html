@@ -3,17 +3,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Giỏ Hàng</title>
-    <link rel="stylesheet" href="bootstrap5/css/bootstrap.css">
-    <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css">
-    <link rel="stylesheet" href="GioHang.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap&subset=vietnamese" rel="stylesheet">
+    <title>Thông tin vận chuyển</title>
+    <!-- <link rel="stylesheet" href="bootstrap5/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css"> -->
+    <link rel="stylesheet" href="Shipping_info.css">
+
+    <!-- 2 thẻ link và script nhúng vào để sử dụng bootstrap 5-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- link đến cdn fontawesome để sử dụng các icon trên web fontawesome.com -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <link rel="stylesheet" href="fontawesome/css/all.min.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inclusive+Sans:ital@0;1&family=Roboto:ital,wght@0,100;0,300;0,400;0,500;1,100;1,300&display=swap" rel="stylesheet">
+    <!-- link đến cdn normalize để chỉnh sửa lại các thuộc tính cơ bản của một trang html để dễ code hơn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css?_cacheOverride=1696731791293" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
 <body>
     <!-- header -->
@@ -66,108 +67,114 @@
            
         </div>
     </header>
+    
+    <div class="container_body container m-5" id="container_body">
+        <section>
+            <h2 class="text_header_body">THÔNG TIN VẬN CHUYỂN</h2>
+            <div class="container_body_content">
+                <div class="box_id_order">
+                    <div><img class="img_product" src="picture1.jpg" alt=""></div>
+                    <div class="box_text_id_order">
+                        <div>
+                            <span style="margin-bottom: 12px; display: block;">Mã đơn hàng: ABC01234</span> <br> 
+                            <span>Mã vận chuyển: DEF56789</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="container_shipping_info">
+                    <div class="container_shipping_info_item">
+                        <div class="shipping_info_item-line"></div>
+                        <div class="shipping_info_item_content">
+                            <div class="shipping_info_item_content-time">
+                                <span>17:00 09/09/2023</span>
+                            </div>
+                            <div>
+                                <img class="icon_shipping" src="https://cf.shopee.vn/file/delivered_parcel_active_3x" alt="">
+                            </div>
+                            <div class="box_text_info_shipping">
+                                <p class="p_text"><span class="success_text">Đơn hàng đã được giao thành công <br> Người nhận hàng: Trần Thị Mỹ Xoan</span></p>
 
+                            </div>
+                        </div>
+                    </div>
+                    <!-- --------- -->
 
-    <div class="container mt-3 container-content">
-        <h1 class="text-header-content">GIỎ HÀNG</h1>
-        <table class="table table-hover">
-            <thead class="table-header">
-                <tr class="table-header-row">
-                    <th class="header-column1">Sản phẩm</th>
-                    <th class="header-column2">Giá</th>
-                    <th class="header-column3">Số lượng</th>
-                    <th class="header-column4">Thành tiền</th>
-                    <th class="header-column5"></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr class="row1">
-                    <td>
-                        <div class="box-row1-column1">
-                            <div class="row1-column1-item"><img class="img-row1" src="picture1.jpg" alt=""></div>
-                            <div class="row1-column1-item"><p>
-                                Đầm cổ yếm xòe <br>
-                                Màu: Hồng <br>
-                                Size: M
-                            </p></div>
+                    <div class="container_shipping_info_item">
+                        <div class="shipping_info_item-line"></div>
+                        <div class="shipping_info_item_content">
+                            <div class="shipping_info_item_content-time">
+                                <span>17:00 09/09/2023</span>
+                            </div>
+                            <div>
+                                <img class="icon_shipping" src="https://cf.shopee.vn/file/domestic_transit_3x" alt="">
+                            </div>
+                            <div class="box_text_info_shipping">
+                                <p class="p_text"><span>Đơn hàng đang trên đường giao đến bạn</span></p>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        <div class="box-row1-column2 box-row1">
-                            <b class="row1-item">179.000đ</b>
+                    </div>
+                    <!-- ------- -->
+                    <div class="container_shipping_info_item">
+                        <div class="shipping_info_item-line"></div>
+                        <div class="shipping_info_item_content">
+                            <div class="shipping_info_item_content-time">
+                                <span>17:00 09/09/2023</span>
+                            </div>
+                            <div>
+                                <img class="icon_shipping" src="https://cf.shopee.vn/file/domestic_transit_3x" alt="">
+                            </div>
+                            <div class="box_text_info_shipping">
+                                <p class="p_text"><span>Đơn hàng đã được bàn giao cho đơn vị vận chuyển.</span></p>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        <div class="box-row1-column3 box-row1">
-                            <input class="input-number row1-item" type="number" name="" id="">
+                    </div>
+                    <!-- ----- -->
+                    <div class="container_shipping_info_item">
+                        <div class="shipping_info_item-line"></div>
+                        <div class="shipping_info_item_content">
+                            <div class="shipping_info_item_content-time">
+                                <span>17:00 09/09/2023</span>
+                            </div>
+                            <div>
+                                <img class="icon_shipping" src="https://cf.shopee.vn/file/domestic_transit_3x" alt="">
+                            </div>
+                            <div class="box_text_info_shipping">
+                                <p class="p_text"><span>Đơn hàng đã rời kho phân loại</span></p>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        <div class="box-row1-column4 box-row1">
-                            <b class="row1-item">179.000đ</b>
+                    </div>
+                    <!-- ------- -->
+                    <div class="container_shipping_info_item">
+                        <div class="shipping_info_item-line"></div>
+                        <div class="shipping_info_item_content">
+                            <div class="shipping_info_item_content-time">
+                                <span>17:00 09/09/2023</span>
+                            </div>
+                            <div>
+                                <img class="icon_shipping" src="https://cf.shopee.vn/file/preparing_to_ship_3x" alt="">
+                            </div>
+                            <div class="box_text_info_shipping">
+                                <p class="p_text"><span>Shop đang chuẩn bị</span></p>
+                            </div>
                         </div>
-                    </td>
-                    <td>
-                        <div class="box-row1-column5 box-row1">
-                            <button class="btn-delete"><i class="fa-solid fa-xmark"></i></button>
+                    </div>
+                    <!-- --------- -->
+                    <div class="container_shipping_info_item">
+                        <div class="shipping_info_item_content">
+                            <div class="shipping_info_item_content-time">
+                                <span>17:00 09/09/2023</span>
+                            </div>
+                            <div>
+                                <img class="icon_shipping" src="https://cf.shopee.vn/file/order_placed_3x" alt="">
+                            </div>
+                            <div class="box_text_info_shipping">
+                                <p class="p_text"><span>Đơn hàng đã được đặt</span></p>
+                            </div>
                         </div>
-                    </td>
-                </tr>
-
-                <tr class="row2">
-                    <td>
-                        <div class="box-row2-column1">
-                            <div class="row2-column1-item"><img class="img-row2" src="picture2.jpg" alt=""></div>
-                            <div class="row2-column1-item"><p>
-                                Đầm nhung dáng dài <br>
-                                Màu: Đen <br>
-                                Size: S
-                            </p></div>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="box-row2-column2 box-row2">
-                            <b class="">300.000đ</b>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="box-row2-column3 box-row2">
-                            <input class="input-number" type="number" name="" id="">
-                        </div>
-                    </td>
-                    <td>
-                        <div class="box-row2-column4 box-row2">
-                            <b>600.000đ</b>
-                        </div>
-                    </td>
-                    <td>
-                        <div class="box-row2-column5 box-row2">
-                            <button class="btn-delete"><i class="fa-solid fa-xmark"></i></button>
-                        </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-
-        <div class="container mt-5 content-bottom">
-            <div>
-                <button class="btn-continue">Tiếp tục mua sắm</button>
+                    </div>
+                </div>
             </div>
-            <div class="box-thanh-toan">
-                <div class="box-thanh-toan-discount">
-                    <p><b>Mã giảm giá</b></p>
-                    <p>Chọn hoặc nhập mã</p>
-                </div>
-                <hr class="line-thanh-toan">
-                <div class="box-thanh-toan-tongtien">
-                    <p><b>Tổng tiền</b></p>
-                    <p class="total"><b>779.000đ</b></p>
-                </div>
-                <div class="box-thanh-toan-button">
-                    <button class="btn-thanh-toan">THANH TOÁN</button>
-                </div>
-            </div>
-        </div>
+        </section>
     </div>
 
     <footer>
@@ -220,7 +227,7 @@
                 </div> 
             </div>
             <div class="bottom_footer">
-                <p>
+                <p class="bottom_footer-text">
                     Copyright © 2023
                     <a class="bottom_footer-text-link" href="">Web_Name</a> 
                     .
@@ -230,38 +237,20 @@
         </div>
     </footer>
 
-    <!-- HTML for footer -->
-    <!-- <div class="footer container-pluid mt-5">
-        <div class="left-footer">
-            <div class="left-footer-item left-footer-logo">LOGO + TÊN</div>
-            <div class="left-footer-item">
-                Địa chỉ: abcxyz... <br>
-                SĐT: 0901234567 <br>
-                Email: ptudw@gmail.com
-            </div>
-        </div>
-        <div class="main-footer">
-            <ul class="main-footer-list">
-                <h6 class="list-product">Danh mục sản phẩm</h6>
-                <li><a class="list-product-item" href="#">Thời trang nam</a></li>
-                <li><a class="list-product-item" href="#">Thời trang nữ</a></li>
-                <li><a class="list-product-item" href="#">Thời trang cho bé</a></li>
-            </ul>
-        </div>
-        <div class="right-footer">
-            <div class="right-footer-item">
-                <h5 class="text-contact">Liên hệ với chúng tôi</h5>
-            </div>
-            <div class="right-footer-item right-footer-list-icon">
-                <div><a href="#"><i class="fa-brands fa-facebook fa-2xl right-footer-icon"></i></a></div>
-                <div><a href="#"><i class="fa-brands fa-x-twitter fa-2xl right-footer-icon"></i></a></div>
-                <div><a href="#"><i class="fa-brands fa-linkedin fa-2xl right-footer-icon"></i></a></div> 
-            </div>
-        </div>
-    </div> -->
-    <!-- END: HTML for footer -->
 
     <!-- JS -->
     <script src="bootstrap5/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+
+
+
