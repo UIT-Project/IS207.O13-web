@@ -10,11 +10,59 @@
 
     </head>
     <body>
-        <div>
-           <div class="header">
-           
+        <!-- header -->
+    <header class="header_block">
+        <!-- class container là một class trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu" -->
+        <div class="container"> 
+            <!-- header_body chứa logo, search, sản phẩm yêu thích, trong giỏ hàng, đăng nhập, đăng xuất -->
+            <!-- row là một class  trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu"-->
+            <div class="header_body row">
+                <!-- col-sm-2 là một class trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu" -->
+                <div class="header_body__logo col-sm-2">
+                    <img src="https://dosi-in.com/images/assets/icons/logo.svg" alt="logo dosi-in">
+                </div>
+                <div class="header_body__search col-sm-7"> 
+                    <div class="header_body__search__div_css">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm" class="header_body__search__input">  
+                        <button class="header_body__search__button">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="header_body__option_and_info col-sm-3">
+                    <div class="header_body__option_and_info__div_css"> 
+                        <button class="header_body__option_and_info__button">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <button class="header_body__option_and_info__button">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                        <div class="header_body__option_and_info__user__div_css"> 
+                            <button class="header_body__option_and_info__button">
+                                <i class="fa-solid fa-user"></i>
+                            </button>
+                            <div class="header_body__option_and_info__user__text">   
+                                <span class="header_body__option_and_info__user__text_taikhoan">Tài khoản</span>
+                                <span class="header_body__option_and_info__user__text_xinchao">Xin chào!</span> 
+                            </div>  
+                            <i class="fa-solid fa-caret-down caret_down_css"></i>  
+                            <!--  -->
+                            <div class="header_body__option_and_info__user__select_login_or_logout">
+                                <span class="header_body__option_and_info__user__select_login_or_logout__in">Đăng nhập</span>
+                                <span class="header_body__option_and_info__user__select_login_or_logout__in">Đăng ký</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
             </div>
-           </div>
+            <!-- header_navigation điều hướng đến các danh mục: thời trang nam, nữ, trẻ em -->
+           
+        </div>
+    </header>
+
+
+
             <h1>Thời trang nam</h1>
             <div class="slider">
                 <div class="slider_imgs">
@@ -24,7 +72,7 @@
                     
                     <img src="banner-danh-muc_thoi-trang-nam---desktop_1660808362.png" alt="img1" class="imgsdiler1">
                     <img src="totoshop-814798.jpg" alt="img2" class="imgsdiler2">
-                    <img src="web-thoi-trang-nam.jpg" alt="img3" class="imgsdiler3">
+                    <img src="web-thoi-trang-nam_1.jpg" alt="img3" class="imgsdiler3">
                   
                 </div>
                 <div class="lableslider">
@@ -343,38 +391,67 @@
                     </div>
                     
             </div>
-            </div>
+
             
-    <!-- HTML for footer -->
-    <div class="footer container-pluid mt-5">
-        <div class="left-footer">
-            <div class="left-footer-item left-footer-logo">LOGO + TÊN</div>
-            <div class="left-footer-item">
-                Địa chỉ: abcxyz... <br>
-                SĐT: 0901234567 <br>
-                Email: ptudw@gmail.com
-            </div>
-        </div>
-        <div class="main-footer">
-            <ul class="main-footer-list">
-                <h6 class="list-product">Danh mục sản phẩm</h6>
-                <li><a class="list-product-item" href="#">Thời trang nam</a></li>
-                <li><a class="list-product-item" href="#">Thời trang nữ</a></li>
-                <li><a class="list-product-item" href="#">Thời trang cho bé</a></li>
-            </ul>
-        </div>
-        <div class="right-footer">
-            <div class="right-footer-item">
-                <h5 class="text-contact">Liên hệ với chúng tôi</h5>
-            </div>
-            <div class="right-footer-item right-footer-list-icon">
-                <div><a href="#"><i class="fa-brands fa-facebook fa-2xl right-footer-icon"></i></a></div>
-                <div><a href="#"><i class="fa-brands fa-x-twitter fa-2xl right-footer-icon"></i></a></div>
-                <div><a href="#"><i class="fa-brands fa-linkedin fa-2xl right-footer-icon"></i></a></div> 
-            </div>
-        </div>
-    </div>
-    <!-- END: HTML for footer -->
+            <footer>
+                <div class="container_footer">
+                    <div class="container container_footer_in">
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <h3>Giới thiệu</h3>
+                                <span>Đây là một trang web bán áo quần, phục vụ cho đồ án môn phát triển web của học sinh trường UIT</span>
+                            </div>
+                            <div class="col-sm-3">
+                                <h3>Thông tin liên hệ</h3>
+                                <ul class="footer__contact_info_ul">
+                                    <li class="foooter__contact_info_li">
+                                        <i class="fa-solid fa-location-dot"></i>
+                                        <span>25, Nguyễn Du, Khu Phố 6, phường Linh Trung, TP. Thủ Đức</span>
+                                    </li>
+                                    <li class="foooter__contact_info_li">
+                                        <i class="fa-solid fa-phone"></i>
+                                        <span>0867474444</span>
+                                    </li>
+                                    <li class="foooter__contact_info_li">
+                                        <i class="fa-solid fa-envelope"></i>
+                                        <span>email123@gmail.com</span>
+                                    </li>
+                                    <li class="foooter__contact_info_li">
+                                        <i class="fa-solid fa-calendar-days"></i>
+                                        <span>9h-18h từ thứ 2 đến chủ nhật</span>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-3">
+                                <h3>Nội dung chính sách</h3>
+                                <ul class="footer__policy_ul">
+                                    <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Những câu hỏi thường gặp</a></li>
+                                    <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách thành viên</a></li>
+                                    <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách thanh toán</a></li>
+                                    <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách vận chuyển</a></li>
+                                    <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách khiếu nại</a></li>
+                                    <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách đổi trả</a></li>
+                                    <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách bảo hành</a></li>
+                                </ul>
+                            </div>
+                            <div class="col-sm-3">
+                                <h3>Fanpage</h3>
+                                <a href="#"><i class="contact_info__icon fa-brands fa-facebook"></i></a>
+                                <a href="#"><i class="contact_info__icon fa-brands fa-square-instagram"></i></a>
+                                <a href="#"><i class="contact_info__icon fa-brands fa-linkedin"></i></a>                        
+                            </div>
+                        </div> 
+                    </div>
+                    <div class="bottom_footer">
+                        <p class="bottom_footer-text">
+                            Copyright © 2023
+                            <a class="bottom_footer-text-link" href="">Web_Name</a> 
+                            .
+                            <a class="bottom_footer-text-link" href="">Powered by Nhom_2</a>
+                        </p>
+                    </div>
+                </div>
+            </footer>
         
     </body>
 </html>
