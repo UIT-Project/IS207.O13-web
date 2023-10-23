@@ -17,7 +17,7 @@
     border: none;
     cursor: pointer;
     border-radius: calc(var(--value_radius__header_search) - 3px); 
-    background-color: orange;
+    background-color: #D9D9D9;
     padding: 8px;
 }
 .header_body__search__input{
@@ -100,7 +100,7 @@ a, button{
     font-weight: 550;
 }
 .header_navigation__text:hover{
-    color: orange;
+    color: #D9D9D9;
 }
 .header_navigation__ul{
     padding: 0px;
@@ -115,10 +115,10 @@ a, button{
 /* .crossbar{
     width: 100%;
     height: 15px;
-    background-color: orange;
+    background-color: #D9D9D9;
 } */
 .header_block{
-    border-top: 15px solid orange;
+    border-top: 15px solid #D9D9D9;
 }
 
 .header_body__option_and_info__user__div_css:hover .header_body__option_and_info__user__select_login_or_logout{
@@ -160,7 +160,7 @@ a, button{
 /* CSS for footer */
 
 .container_footer{
-    background-color: orange;
+    background-color: #D9D9D9;
     margin-top: 40px;
 }
 .footer__contact_info_ul{
@@ -180,7 +180,7 @@ a, button{
     margin: 0px;
 }
 .container_footer{
-    background-color: orange;
+    background-color: #D9D9D9;
 }
 .container_footer_in{
     padding: 40px 40px 30px;
@@ -195,7 +195,7 @@ a, button{
     display: flex;
     justify-content: center;
     padding: 20px 0px;
-    background-color: rgb(225, 225, 225);
+    background-color: white;
 } 
 
 .footer__policy_li_link:hover {

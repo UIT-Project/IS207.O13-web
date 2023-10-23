@@ -1,18 +1,485 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercise Button</title>
+    <title>Thông tin vận chuyển</title>
+    <!-- <link rel="stylesheet" href="bootstrap5/css/bootstrap.css">
+    <link rel="stylesheet" href="bootstrap5/css/bootstrap.min.css"> -->
     <link rel="stylesheet" href="style.css">
-    <link rel="stylesheet" href="button-primary.css">
+
+    <!-- 2 thẻ link và script nhúng vào để sử dụng bootstrap 5-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- link đến cdn fontawesome để sử dụng các icon trên web fontawesome.com -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- link đến cdn normalize để chỉnh sửa lại các thuộc tính cơ bản của một trang html để dễ code hơn -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css?_cacheOverride=1696731791293"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
 </head>
+
 <body>
-    <button class="btn btn-primary">Primary</button>
-    <button class="btn btn-secondary">Secondary</button>
-    <button class="btn btn-success">Success</button>
-    <button class="btn btn-danger">Danger</button>
-    <button class="btn btn-Warning">Warning</button>
-    <button class="btn btn-info">Info</button>
+    <!-- header -->
+    <header class="header_block">
+        <!-- class container là một class trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu" -->
+        <div class="container">
+            <!-- header_body chứa logo, search, sản phẩm yêu thích, trong giỏ hàng, đăng nhập, đăng xuất -->
+            <!-- row là một class  trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu"-->
+            <div class="header_body row">
+                <!-- col-sm-2 là một class trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu" -->
+                <div class="header_body__logo col-sm-2">
+                    <img src="https://dosi-in.com/images/assets/icons/logo.svg" alt="logo dosi-in">
+                </div>
+                <div class="header_body__search col-sm-7">
+                    <div class="header_body__search__div_css">
+                        <input type="text" placeholder="Tìm kiếm sản phẩm" class="header_body__search__input">
+                        <button class="header_body__search__button">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </button>
+                    </div>
+                </div>
+                <div class="header_body__option_and_info col-sm-3">
+                    <div class="header_body__option_and_info__div_css">
+                        <button class="header_body__option_and_info__button">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <button class="header_body__option_and_info__button">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                        <div class="header_body__option_and_info__user__div_css">
+                            <button class="header_body__option_and_info__button">
+                                <i class="fa-solid fa-user"></i>
+                            </button>
+                            <div class="header_body__option_and_info__user__text">
+                                <span class="header_body__option_and_info__user__text_taikhoan">Tài khoản</span>
+                                <span class="header_body__option_and_info__user__text_xinchao">Xin chào!</span>
+                            </div>
+                            <i class="fa-solid fa-caret-down caret_down_css"></i>
+                            <!--  -->
+                            <div class="header_body__option_and_info__user__select_login_or_logout">
+                                <span class="header_body__option_and_info__user__select_login_or_logout__in">Đăng
+                                    nhập</span>
+                                <span class="header_body__option_and_info__user__select_login_or_logout__in">Đăng
+                                    ký</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+            <!-- header_navigation điều hướng đến các danh mục: thời trang nam, nữ, trẻ em -->
+
+        </div>
+    </header>
+
+    <h1>Thời trang nam</h1>
+    <div class="slider">
+        <div class="slider_imgs">
+            <input type="radio" name="inputslider" id="img1">
+            <input type="radio" name="inputslider" id="img2">
+            <input type="radio" name="inputslider" id="img3">
+
+            <img src="banner-danh-muc_thoi-trang-nam---desktop_1660808362.png" alt="img1" class="imgsdiler1">
+            <img src="totoshop-814798.jpg" alt="img2" class="imgsdiler2">
+            <img src="web-thoi-trang-nam_1.jpg" alt="img3" class="imgsdiler3">
+
+        </div>
+        <div class="lableslider">
+            <label for="img1"></label>
+            <label for="img2"></label>
+            <label for="img3"></label>
+        </div>
+    </div>
+    <h2>Danh mục sản phẩm</h2>
+    <div class="home-product">
+        <!-- khung chứa danh mục sản phẩm -->
+        <!-- -- Grid -> row-> column  -->
+        <div class="grid__row">
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img" style="background-image: url(áo\ khoác.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo khoác</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">HOT</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img"
+                            style="background-image: url(10s23tss062-ao-thun_3__1_2.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo thun, quần short</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">HOT</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img" style="background-image: url(áo\ thun.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo thun nam cao cấp</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">HOT</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img"
+                            style="background-image: url(10s23tss062-ao-thun_3__1_2.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo thun, quần short</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">sale of</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img" style="background-image: url(áo\ khoác.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo khoác </a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">Yêu thích</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img" style="background-image: url(áo\ thun.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo thun nam cao cấp</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">HOT</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img" style="background-image: url(áo\ khoác.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo khoác </a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">Yêu thích</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img"
+                            style="background-image: url(10s23tss062-ao-thun_3__1_2.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo thun, quần short</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">HOT</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img" style="background-image: url(áo\ khoác.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo khoác</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">HOT</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+            <div class="grid__colum-2">
+                <!-- product item -->
+                <a href="#">
+                    <div class="home-product-item" href="#">
+                        <div class="home-product-item__img" style="background-image: url(áo\ thun.jpg);"></div>
+                        <a class="home-product-item__img__name">Áo thun nam cao cấp</a>
+                        <div class="home-product-item__price">
+                            <span class="home-product-item__img__price-old">1.200.000đ</span>
+                            <span class="home-product-item__img__price-curent">1.000.000đ</span>
+                        </div>
+                        <div class="home-product-item__action">
+                            <span class="home-product-item_like home-product-item_like--liked">
+                                <i class="home-product-item_like-empty fa-regular fa-heart"></i>
+                                <i class="home-product-item_like-fill fa-solid fa-heart"></i>
+                            </span>
+                            <div class="home-product-item__rating">
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="home-product-item__star--gold fa-regular fa-star"></i>
+                                <i class="fa-regular fa-star"></i>
+                            </div>
+                            <span class="home-product-item__sold">88 đã bán</span>
+                        </div>
+                        <div class="home-product-item__sale-of">
+                            <span class="span home-product-item__hot">HOT</span>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        <div class="container_footer">
+            <div class="container container_footer_in">
+                <div class="row">
+                    <div class="col-sm-3">
+                        <h3>Giới thiệu</h3>
+                        <span>Đây là một trang web bán áo quần, phục vụ cho đồ án môn phát triển web của học sinh trường
+                            UIT</span>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3>Thông tin liên hệ</h3>
+                        <ul class="footer__contact_info_ul">
+                            <li class="foooter__contact_info_li">
+                                <i class="fa-solid fa-location-dot"></i>
+                                <span>25, Nguyễn Du, Khu Phố 6, phường Linh Trung, TP. Thủ Đức</span>
+                            </li>
+                            <li class="foooter__contact_info_li">
+                                <i class="fa-solid fa-phone"></i>
+                                <span>0867474444</span>
+                            </li>
+                            <li class="foooter__contact_info_li">
+                                <i class="fa-solid fa-envelope"></i>
+                                <span>email123@gmail.com</span>
+                            </li>
+                            <li class="foooter__contact_info_li">
+                                <i class="fa-solid fa-calendar-days"></i>
+                                <span>9h-18h từ thứ 2 đến chủ nhật</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3>Nội dung chính sách</h3>
+                        <ul class="footer__policy_ul">
+                            <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Những câu hỏi
+                                    thường gặp</a></li>
+                            <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách thành
+                                    viên</a></li>
+                            <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách thanh
+                                    toán</a></li>
+                            <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách vận
+                                    chuyển</a></li>
+                            <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách khiếu
+                                    nại</a></li>
+                            <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách đổi
+                                    trả</a></li>
+                            <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách bảo
+                                    hành</a></li>
+                        </ul>
+                    </div>
+                    <div class="col-sm-3">
+                        <h3>Fanpage</h3>
+                        <a href="#"><i class="contact_info__icon fa-brands fa-facebook"></i></a>
+                        <a href="#"><i class="contact_info__icon fa-brands fa-square-instagram"></i></a>
+                        <a href="#"><i class="contact_info__icon fa-brands fa-linkedin"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom_footer">
+                <p class="bottom_footer-text">
+                    Copyright © 2023
+                    <a class="bottom_footer-text-link" href="">Web_Name</a>
+                    .
+                    <a class="bottom_footer-text-link" href="">Powered by Nhom_2</a>
+                </p>
+            </div>
+        </div>
+    </footer>
+
+
+    <!-- JS -->
+    <script src="bootstrap5/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

@@ -11,6 +11,10 @@
     width: 400px;
 }
 
+.table-header-row .header-column0 {
+    width: 10px;
+}
+
 .table-header-row .header-column2 {
     width: 140px;
     text-align: center;
