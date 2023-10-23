@@ -40,7 +40,7 @@
     width: auto;
 }
 
-.img-row2 {
+.img-rowtb {
     height: 160px;
     width: auto;
 }
@@ -69,21 +69,21 @@
 
 /* ---- */
 
-.box-row2-column1 {
+.box-rowtb-column1 {
     display: flex;
 }
 
-.row2-column1-item {
+.rowtb-column1-item {
     margin-right: 20px;
 }
 
-.box-row2 {
+.box-rowtb {
     
     height: 100%;
     text-align: center;
 }
 
-.row2 {
+.rowtb {
     vertical-align: middle;
 }
 
@@ -148,7 +148,7 @@
     font-weight: 500;
 }
 
-.row2-column1-item {
+.rowtb-column1-item {
     font-weight: 500;
 }
 
