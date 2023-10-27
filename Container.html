@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- thẻ meta charset hỗ trợ viết tiếng việt -->
+    <meta charset="UTF-8">
+    <!-- thẻ meta name="viewport" hỗ trợ làm web responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 2 thẻ link và script nhúng vào để sử dụng bootstrap 5-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- link đến cdn fontawesome để sử dụng các icon trên web fontawesome.com -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- link đến cdn normalize để chỉnh sửa lại các thuộc tính cơ bản của một trang html để dễ code hơn -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css?_cacheOverride=1696731791293"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- link css -->
+    <link rel="stylesheet" href="./DonHangDaTra.css">
+    <title>Order status</title>
+</head>
+
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="order_status_cover col-8">
+                <div class="row ">
+                    <img src="./img/dam-yem-nhum-co-xep-ly-tang-2-510x765 1.png" class="col-2 p-2 float-start" alt="">
+                    <div class="info1 col-5 p-2">
+                        <span>
+                            Đầm cổ yếm xòe <br>
+                            Màu: Hồng <br>
+                            Size: M
+                        </span>
+                    </div>
+                    <div class="info2 col-5 p-3 text-end d-flex align-items-end">
+                        <div class="col p-0">
+                            <span>
+                                x1 <br>
+                                <del>230.000đ</del> 179.000đ
+                            </span>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="sub_info_1 row p-2 text-sm-center">
+                    <a class="text-decoration-none bland" href="#">Xem thêm sản phẩm</a>
+                </div>
+                <div class="sub_info_2 row p-2 justify-content-between">
+                    <div class="col-auto text-start bland">
+                        <span>3 sản phẩm</span>
+                    </div>
+                    <div class="col-auto text-end">
+                        <span>Thành tiền: </span>
+                        <span class="color_red">749.000đ</span>
+                    </div>
+                </div>
+                
+                <div class="row p-2">
+                    <span class="bland col-auto">Sản phẩm bị lỗi</span>
+                    <div class="col">
+                        <button type="button" class="btn_black float-end">Mua lại</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
