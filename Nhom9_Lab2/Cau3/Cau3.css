@@ -1,0 +1,116 @@
+table, tr, td, th {
+    border: 1px solid black;
+}
+
+th {
+    text-align: center;
+}
+
+td {
+    padding: 10px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+.header_top {
+    display: flex;
+    justify-content: space-between;
+}
+
+.container_menu {
+    width: 800px;
+    border: 1px solid black;
+    padding-left: 0;
+    padding-right: 0;
+    padding-bottom: 10px;
+}
+
+#date-time {
+    border-bottom: 1px solid black;
+    border-right: 1px solid black;
+    flex: 5;
+}
+
+.employee {
+    flex: 3;
+    border-bottom: 1px solid black;
+}
+
+h3 {
+    text-align: center;
+    border-bottom: 1px solid black;
+    padding: 5px;
+}
+
+.content {
+    display: flex;
+    justify-content: center;
+    padding: 10px;
+}
+
+.container_bill {
+    margin-top: 20px;
+    display: flex;
+}
+
+.table1_header{
+    border-bottom: 1px solid black;
+}
+
+.container_table {
+    border: 1px solid black;
+    flex: 1;
+    text-align: center;
+    padding-bottom: 18px;
+}
+
+.container_bill table {
+    width: 400px;
+}
+
+.table1_header {
+    text-align: center;
+}
+
+.table1_content {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    margin-bottom: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.table2_header {
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.table2_content {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.table3_header {
+    text-align: center;
+    border-bottom: 1px solid black;
+}
+
+.table3_content {
+    flex-direction: column;
+    display: flex;
+    justify-content: center;
+    margin-bottom: 14px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+.container_menu {
+    height: 320px;
+}
