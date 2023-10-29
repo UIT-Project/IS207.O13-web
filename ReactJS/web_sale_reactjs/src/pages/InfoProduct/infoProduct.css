@@ -1,0 +1,112 @@
+.container_info_product{
+    display: flex;
+    /* padding: 16px; */
+}
+.product_image{
+    padding: 16px;
+    display: flex;
+}
+.product_image__main_image__img{
+    width: 100%;
+} 
+.product_image__list_mini_image__item__img{
+    height: 86px;
+    width: 3.75rem;
+    
+    margin: 0px 9px 10px 9px;
+} 
+.detail_info_product{
+    padding: 16px;
+    
+} 
+.detail_info_product__price__info_price{
+    padding-bottom: 12px;
+}
+.detail_info_product__price__css_chung{  
+    padding: 16px;
+    border-bottom: 1px solid rgb(219, 219, 219);
+}
+
+.check_color{ 
+    position: absolute;
+    opacity: 0; 
+    width: 100%;
+    height: 30px;
+}
+.color_icon{
+    height: 1.875rem;
+    width: 1.875rem;
+    border-radius: 1.5rem; 
+}
+.detail_info_product__color__choose{
+    margin-top: 8px;
+    display: flex;
+} 
+.detail_info_product__color__item{
+    margin-right: 8px;
+    position: relative;
+} 
+.detail_info_product__size__item{
+    margin-right: 8px;
+    /* phải dùng position: relative; thì .check_size dùng position: absolute; mới hoạt động đúng  */
+    position: relative;
+}
+.check_size{ 
+    position: absolute;
+    opacity: 0; 
+    height: 1.875rem;
+    /* lấy width theo thẻ label ở dưới*/
+    width: 100%;
+}
+.detail_info_product__size__choose{
+    display: flex;
+}
+.size_icon{ 
+    /* height: 1.875rem;
+    width: 2.3rem; */
+    border-radius: 1.5rem;
+    border: 1px solid rgb(194, 194, 194);
+    padding: 3px 12px;
+}
+.detail_info_product__size__item__text{ 
+    background-color: black; 
+    /* giúp hiển thị chữ trong label, resize kích thước trùng với với label */
+    -webkit-background-clip: text;
+    background-clip: text;
+}
+.detail_info_product__quantity__input_text{
+    width: 3.125rem;
+    border-radius: 5px;
+    border: none;
+    text-align: center;
+}
+.detail_info_product__quantity__adjust{
+    border-radius: 5px;
+    border: none;
+}
+.detail_info_product__thanhtoan{
+    display: flex;
+    justify-content: center;
+}
+.detail_info_product__thanhtoan__button{
+    border: 0px;
+    outline: none;
+    color: white;
+    background-color: #fb5533;
+    padding: 10px 15px;
+    border-radius: 2px;
+    font-size: 1.4rem;
+}
+.detail_info_product__price__info_price__sell{
+    color: #fb5533;
+    font-weight: 500;
+    margin-right: 7px;
+}
+.detail_info_product__price__info_price__origin{
+    font-weight: 500;
+    margin-right: 7px;
+}
+.detail_info_product__price__info_price__decrease_percent{
+    color: #fb5533; 
+    margin-right: 7px
+}
