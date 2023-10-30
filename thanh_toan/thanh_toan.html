@@ -63,7 +63,7 @@
 
     <!-- body -->
     <div class="col-auto"></div>
-    <div class="body_box container col-7">
+    <div class="body_box container col-lg-7">
         <div class="address_box">
             <div class="address_title row text-start">
                 <div>
@@ -85,6 +85,122 @@
             </div>
         </div>
         <div class="address_change collapse" id="address_change">
+            <div class="address_box_container">
+                <div class="address_box">
+                    <div class="address_info row justify-content-between">
+                        <div class="col-auto">
+                            <input type="radio" name="address_radio" data-bs-toggle="collapse" href="#address_change" checked>
+                        </div>
+                        <div class="col-auto fw-bold">
+                            <span>Nguyễn Văn A</span>
+                            <span>(+84)123456789</span>
+                        </div>
+                        <div class="col-auto">
+                            <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
+                        </div>
+                        <div class="col-auto">
+                            <a class="link-dark" data-bs-toggle="modal" href="#address_add">Thay đổi</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="address_box">
+                    <div class="address_info row justify-content-between">
+                        <div class="col-auto">
+                            <input type="radio" name="address_radio" data-bs-toggle="collapse" href="#address_change" checked>
+                        </div>
+                        <div class="col-auto fw-bold">
+                            <span>Nguyễn Văn A</span>
+                            <span>(+84)123456789</span>
+                        </div>
+                        <div class="col-auto">
+                            <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
+                        </div>
+                        <div class="col-auto">
+                            <a class="link-dark" data-bs-toggle="modal" href="#address_add">Thay đổi</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="address_box">
+                    <div class="address_info row justify-content-between">
+                        <div class="col-auto">
+                            <input type="radio" name="address_radio" data-bs-toggle="collapse" href="#address_change" checked>
+                        </div>
+                        <div class="col-auto fw-bold">
+                            <span>Nguyễn Văn A</span>
+                            <span>(+84)123456789</span>
+                        </div>
+                        <div class="col-auto">
+                            <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
+                        </div>
+                        <div class="col-auto">
+                            <a class="link-dark" data-bs-toggle="modal" href="#address_add">Thay đổi</a>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="address_add_button" data-bs-toggle="modal" data-bs-target="#address_add">+ Thêm địa chỉ mới</button>
+            </div>
+            <div class="modal fade" id="address_add" tabindex="-1" aria-hidden="true">
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5">Thông tin địa chỉ</h1>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                      <form>
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <label for="#" class="form-label">Tên người nhận</label>
+                                <input type="text" class="form-control" placeholder="Nguyễn văn A">
+                            </div>
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-12">
+                                <label for="#" class="form-label">Địa chỉ</label>
+                                <input type="text" class="form-control" placeholder="Số nhà, Tên đường">
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+                            <div class="col-4">
+                                <label for="#" class="form-label">Thành phố</label>
+                                <select class="form-select" required>
+                                <option value="">Tp.HCM</option>
+                                <option value="">Hà Nội</option>
+                                <option value="">Đà Nẵng</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label for="#" class="form-label">Quận</label>
+                                <select class="form-select" required>
+                                <option value="">Quận 1</option>
+                                <option value="">Quận 2</option>
+                                <option value="">Quận 3</option>
+                                <option value="">Quận 4</option>
+                                <option value="">Quận 5</option>
+                                </select>
+                            </div>
+                            <div class="col-4">
+                                <label for="#" class="form-label">Phường</label>
+                                <select class="form-select" required>
+                                <option value="">Phường A</option>
+                                <option value="">Phường B</option>
+                                <option value="">Phường C</option>
+                                <option value="">Phường D</option>
+                                <option value="">Phường E</option>
+                                </select>
+                            </div>
+                        </div>
+                      </form>
+                    </div>
+                    <div class="modal-footer">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Hủy</button>
+                      <button type="button" class="btn btn-success">Xác nhận</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+        </div>
+        <!-- <div class="address_update collapse" id="address_update">
             <div class="row mb-2">
                 <div class="col-12">
                     <label for="#" class="form-label">Địa chỉ</label>
@@ -124,15 +240,15 @@
             <div class="row">
                 <div class="col-9"></div>
                 <div class="col-3">
-                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#address_change">
+                    <button class="btn btn-outline-secondary" type="button" data-bs-toggle="collapse" data-bs-target="#address_update">
                         Hủy
                     </button>
-                    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#address_change">
+                    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#address_update">
                         Xác nhận
                     </button>
                 </div>
             </div>
-        </div>
+        </div> -->
         <div class="product_list">
             <table>
                 <tr>
