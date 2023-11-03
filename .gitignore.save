@@ -1,0 +1,12 @@
+# Bỏ qua tất cả các tệp log
+*.log
+
+# Bỏ qua thư mục được tạo ra bởi hệ thống
+.DS_Store
+
+# Bỏ qua tệp config chứa thông tin riêng tư
+config.ini
+
+# Bỏ qua thư mục node_modules (đối với dự án JavaScript)
+node_modules/
+
