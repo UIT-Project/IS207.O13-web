@@ -179,6 +179,44 @@ a, button{
 }
 
 /* body */
+.last-button{
+    margin-top: 40px;
+    margin-left: 1000px;
+    width: 150px;
+    background-color: orange;
+    color: #fff;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid orange; 
+}
+.image-button{
+    margin-top: 15px;
+    margin-left: 30px;
+    border-radius: 5px;
+    background-color: orange;
+    color: #fff;
+    border: 1px solid orange; 
+}
+.circular-image {
+    margin-top: 40px;
+    width: 150px; /* Định kích thước ảnh */
+    height: 150px;
+    border-radius: 50%; /* Đặt giá trị này thành 50% để tạo hình tròn */
+    overflow: hidden; /* Ẩn phần nằm ngoài phạm vi hình tròn */
+}
+
+.circular-image img {
+    width: 100%; /* Đảm bảo ảnh lấp đầy phần hình tròn */
+    height: 100%;
+}
+
+.form_container{
+    margin-top: 90px;
+    margin-bottom: 70px;
+}
+.name_row{
+    margin-top: 20px;
+}
 .order_info_body {
     font-size: larger;
 }
@@ -253,7 +291,7 @@ footer{
 }
 .container_footer{
     background-color: orange;
-
+    
 }
 .footer__contact_info_ul{
     text-decoration: none; 
