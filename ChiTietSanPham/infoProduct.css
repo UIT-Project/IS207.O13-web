@@ -144,6 +144,7 @@
     font-size: 14px;
     font-family: sans-serif;
 }
+
 /*******REVIEW*/
 #review {
     display: flex;
@@ -224,6 +225,7 @@
 }
 
 /*PRODUCT-RELATED*/
+
 .product-related {
     margin-bottom: 50px;
 }
