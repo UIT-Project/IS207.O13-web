@@ -1,0 +1,21 @@
+.container_header_content {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 24px;
+}
+
+.bottom_content {
+    margin-top: 12px;
+    text-align: right;
+    padding-right: 64px;
+}
+
+.total_revenue {
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.main_content {
+    max-height: 394px; /* Đặt chiều cao tối đa của bảng và thanh trượt dọc */
+    overflow-y: auto; /* Tạo thanh trượt dọc khi nội dung vượt quá chiều cao */
+  }
