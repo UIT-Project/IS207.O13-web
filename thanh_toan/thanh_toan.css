@@ -259,3 +259,8 @@ tr {
 .button_confirm:hover {
     background-color: rgba(0, 0, 0, 80%);
 }
+
+.button_confirm {
+    margin-bottom: 24px;
+    margin-top: 16px;
+}
