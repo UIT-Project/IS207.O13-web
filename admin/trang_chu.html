@@ -34,20 +34,74 @@
             <li class="sidebar_nav_item">
                 <a class="sidebar_nav_item_content" href="trang_chu.html">
                     <i class="fa-solid fa-house"></i>
+                    <span>Trang chủ</span>
                 </a>
             </li>
 
+            <!-- nav item: account -->
+            <li class="sidebar_nav_item accordion">
+                <a class="sidebar_nav_item_content" href="#">
+                    <i class="fa-solid fa-user"></i>
+                    <span>Tài khoản</span>
+                    <i class="fa fa-caret-down"></i>
+                </a>
+                
+            </li>
+            <div class="panel">
+                <ul class="sidebar_subnav">
+                    <li class="sidebar_nav_item">
+                        <a class="sidebar_nav_item_content medium_font" href="#">Quản lý khách hàng</a>
+                    </li>
+                    <li class="sidebar_nav_item">
+                        <a class="sidebar_nav_item_content medium_font" href="#">Quản lý nhân viên</a>
+                    </li>
+                </ul>
+            </div>
+
             <!-- nav item: product -->
-            <li class="sidebar_nav_item">
+            <li class="sidebar_nav_item accordion">
                 <a class="sidebar_nav_item_content" href="#">
                     <i class="fa-solid fa-shirt"></i>
+                    <span>Sản phẩm</span>
+                    <i class="fa fa-caret-down"></i>
                 </a>
+                
             </li>
+            <div class="panel">
+                <ul class="sidebar_subnav">
+                    <li class="sidebar_nav_item">
+                        <a class="sidebar_nav_item_content medium_font" href="#">Danh mục sản phẩm</a>
+                    </li>
+                    <li class="sidebar_nav_item">
+                        <a class="sidebar_nav_item_content medium_font" href="#">Danh sách sản phẩm</a>
+                    </li>
+                    <li class="sidebar_nav_item">
+                        <a class="sidebar_nav_item_content medium_font" href="#">Thêm sản phẩm</a>
+                    </li>
+                </ul>
+            </div>
+            <!-- <li class="sidebar_nav_item nav-item">
+                <a class="sidebar_nav_item_content" href="#">
+                    
+                </a>
+                <ul class="dropdown_content">
+                    <li>
+                        <a href="#">Danh mục sản phẩm</a>
+                    </li>
+                    <li>
+                        <a href="#">Danh sách sản phẩm</a>
+                    </li>
+                    <li>
+                        <a href="#">Thêm sản phẩm</a>
+                    </li>
+                </ul>
+            </li> -->
 
             <!-- nav item: report -->
             <li class="sidebar_nav_item">
                 <a class="sidebar_nav_item_content" href="#">
                     <i class="fa-solid fa-clipboard-list"></i>
+                    <span>Hóa đơn</span>
                 </a>
             </li>
 
@@ -55,6 +109,7 @@
             <li class="sidebar_nav_item">
                 <a class="sidebar_nav_item_content" href="#">
                     <i class="fa-solid fa-chart-line"></i>
+                    <span>Thống kê</span>
                 </a>
             </li>
         </ul>
@@ -119,9 +174,6 @@
                     <div class="content_report_card_info col-auto">
                         <span>Giày Ultra</span>
                     </div>
-                    <div class="content_report_card_icon col-auto">
-
-                    </div>
                 </div>
                 <div class="content_report_card_subinfo row">
                     <span>Sản phẩm bán chạy</span>
@@ -164,6 +216,7 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
         <!-- link js -->
+        <script src="accordion.js"></script>
         <script src="sale_chart.js"></script>
     </div>
     <!-- content: end -->

@@ -7,7 +7,7 @@ body {
 /* sidebar */
 .sidebar {
     height: 100%;
-    width: 70px;
+    width: 180px;
     position: fixed;
     top: 0;
     left: 0;
@@ -18,21 +18,25 @@ body {
 .sidebar_logo {
     margin-bottom: 50px;
     width: 100%;
+    align-items: center;
 }
 
-.sidebar_logo img {
-    width: 100%;
+.sidebar_logo>img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
 
 .sidebar_nav {
     list-style-type: none;
     padding: 0;
+    white-space: nowrap;
 }
 
 .sidebar_nav_item {
-    display: block;
-    text-align: center;
     padding: 10px;
+    padding-left: 15px;
     margin-bottom: 10px;
 }
 
@@ -42,13 +46,26 @@ body {
 
 .sidebar_nav_item_content {
     text-decoration: none;
-    font-size: xx-large;
+    font-size: large;
     color: #fff;
+}
+
+.sidebar_subnav {
+    padding-left: 10px;
+}
+
+.medium_font {
+    font-size: medium;
+}
+
+.panel {
+    display: none;
+    overflow: hidden;
 }
 
 /* content */
 .content {
-    margin-left: 70px;
+    margin-left: 180px;
 }
 
 .content_header {
@@ -64,7 +81,6 @@ body {
 
 .content_report_card {
     color: #fff;
-    font-size: 40px;
     padding: 25px 30px 30px;
     margin: 25px;
 }
@@ -86,15 +102,17 @@ body {
 }
 
 .content_report_card_info {
+    font-size: 35px;
     font-weight: 500;
 }
 
 .content_report_card_icon {
+    font-size: 40px;
     color: rgba(0, 0, 0, 0.3);
 }
 
 .content_report_card_subinfo {
-    font-size: 20px;
+    font-size: 15px;
     margin-top: 10px;
 }
 
