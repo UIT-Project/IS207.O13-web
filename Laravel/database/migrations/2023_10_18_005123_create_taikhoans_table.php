@@ -11,8 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('taikhoans');
-
+        // Schema::dropIfExists('taikhoans'); 
         Schema::create('taikhoans', function (Blueprint $table) {
             $table->increments('MATK');
             $table->string('TEN');

@@ -15,16 +15,14 @@ return new class extends Migration
 
         Schema::create('chitiet_donhangs', function (Blueprint $table) {
             $table->unsignedInteger('MADH');
-            $table->unsignedInteger('MASP');
-
-
+            $table->unsignedInteger('MAXDSP'); 
             $table->integer('TONGTIEN');
-            $table->string('MASIZE');
-            $table->string('MAUSAC');
             $table->integer('SOLUONG');
 
             $table->foreign('MADH')->references('MADH')->on('donhangs');
-            $table->foreign('MASP')->references('MASP')->on('sanphams');
+            $table->foreign('MAXDSP')->references('MAXDSP')->on('sanpham_mausac_sizes'); 
+ 
+            $table->primary(['MADH', 'MAXDSP']);
 
         });
     }

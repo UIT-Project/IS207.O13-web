@@ -11,19 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('chitiet_giohangs');
+        Schema::dropIfExists('sanpham_mausac_sizes');
 
-        Schema::create('chitiet_giohangs', function (Blueprint $table) {
-            $table->unsignedInteger('MATK');
+        Schema::create('sanpham_mausac_sizes', function (Blueprint $table) {
+            $table->increments('MAXDSP');
             $table->unsignedInteger('MASP');
             $table->unsignedInteger('MAMAU');
             $table->string('MASIZE', 3);
-            $table->primary(['MATK', 'MASP', 'MAMAU', 'MASIZE']);
-
             $table->integer('SOLUONG');
-            $table->integer('TONGGIA')->nullable();
+            // $table->primary(['MAXDSP']);
 
-            $table->foreign('MATK')->references('MATK')->on('taikhoans');
             $table->foreign('MASP')->references('MASP')->on('sanphams');
             $table->foreign('MAMAU')->references('MAMAU')->on('mausacs');
             $table->foreign('MASIZE')->references('MASIZE')->on('sizes');
@@ -35,6 +32,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('chitiet_giohangs');
+        Schema::dropIfExists('sanpham_mausac_sizes');
     }
 };

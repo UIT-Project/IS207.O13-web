@@ -15,8 +15,10 @@ return new class extends Migration
 
         Schema::create('hinhanhsanphams', function (Blueprint $table) {
 
-            $table->unsignedInteger('MAHINHANH'); 
-            $table->unsignedInteger('MASP');   
+            $table->string('MAHINHANH', 255); 
+            $table->unsignedInteger('MASP');
+            $table->string('imgURL'); 
+   
 
             $table->primary(['MAHINHANH', 'MASP']); 
             $table->foreign('MASP')->references('MASP')->on('sanphams'); 

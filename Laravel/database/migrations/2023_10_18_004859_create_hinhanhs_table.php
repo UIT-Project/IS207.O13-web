@@ -14,8 +14,7 @@ return new class extends Migration
         Schema::dropIfExists('hinhanhs');
 
         Schema::create('hinhanhs', function (Blueprint $table) {
-            $table->increments('MAHINHANH');
-            $table->string('image_url');
+            $table->string('MAHINHANH', 255)->primary(); 
         });
     }
 

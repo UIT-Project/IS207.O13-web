@@ -16,18 +16,21 @@ return new class extends Migration
         Schema::create('donhangs', function (Blueprint $table) {
             $table->increments('MADH');
             $table->unsignedInteger('MATK');
-            $table->integer('GIA');
-            $table->date('NGAYGIAO');
+            $table->date('NGAYORDER');
+            $table->date('NGAYGIAOHANG')->nullable();
+            $table->integer('TONGTIEN_SP');  
+            $table->integer('VOUCHERGIAM');
+            $table->integer('TONGTIENDONHANG');
+            $table->integer('PHIVANCHUYEN');
+
             $table->string('HINHTHUC_THANHTOAN');
             $table->string('TRANGTHAI_THANHTOAN');
             $table->string('TRANGTHAI_DONHANG');
-            $table->string('MAVOUCHER');
             $table->unsignedInteger('MATTGH');
             $table->longText('GHICHU');
 
             $table->foreign('MATK')->references('MATK')->on('taikhoans');
-            $table->foreign('MAVOUCHER')->references('MAVOUCHER')->on('vouchers');
-            $table->foreign('MATTGH')->references('MATTGH')->on('thongtingiaohangs');
+             $table->foreign('MATTGH')->references('MATTGH')->on('thongtingiaohangs');
             
             $table->timestamp('updated_at')->nullable(); 
             $table->timestamp('created_at')->nullable();

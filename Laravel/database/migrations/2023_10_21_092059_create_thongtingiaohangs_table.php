@@ -16,8 +16,12 @@ return new class extends Migration
         Schema::create('thongtingiaohangs', function (Blueprint $table) {
             $table->increments('MATTGH'); 
             $table->unsignedInteger('MATK');
-            $table->string('DIACHI');
+            $table->string('TEN');
             $table->string('SDT');
+            $table->string('DIACHI');
+            $table->string('TINH_TP');
+            $table->string('QUAN_HUYEN');
+            $table->string('PHUONG_XA');
 
             $table->foreign('MATK')->references('MATK')->on('taikhoans');
         });
