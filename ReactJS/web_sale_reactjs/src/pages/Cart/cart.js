@@ -3,60 +3,184 @@ import 'bootstrap/dist/css/bootstrap.css';
 import request from "../../utils/request";
 import images from "../../assets/images"; 
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
+import {  faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
  
 function Cart() {
 
-    const [isCheckedAll, setIsCheckedAll] = useState(true); 
-    const [itemCarts, setItemCart] = useState([]);
-    const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get('id'); 
- 
+    // CÁCH PHẦN CẦN XỬ LÝ TRONG FILE NÀY
+    // 1.Lấy dữ liệu sản phẩm trong giỏ hàng (bảng chitiet_giohangs) của tài khoản đang đăng nhập và hiển thị dữ liệu
+    // 2.Xử lý khi người dùng checked, chọn và bỏ chọn một sản phẩm
+    // 3.Cập nhật số lượng
+    // 4.Xoá sản phẩm khỏi giỏ hàng
+    // 5.Click để chuyển sang thanh toán
 
+    //dùng ctrl + f để biết những hàm handle nằm ở thẻ tag nào trong phần return
+
+    //isCheckedAll xử lý khi tất cả sản phẩm trong giỏ hàng được chọn để thanh toán
+    const [isCheckedAll, setIsCheckedAll] = useState(false); 
+    //itemCarts chứa thông tin từng sản phẩm trong giỏ hàng để hiển thị ra màn hình và thao tác
+    const [itemCarts, setItemCart] = useState([]);
+    const [tongTienAllItem, setTongTienAllItem] = useState(0);
+
+    //sử dụng để chuyển hướng web
+    const Navigate = useNavigate();
+
+    //khi mà người dùng nhấn chọn tất cả thì itemCarts sẽ chạy qua tất cả các sản phẩm và cho nó giá trị trái với 
+    //trạng thái nút clickAll, ví dụ nếu clickAll đang được tích thì khi nhấn tick thì tất cả sản phẩm sẽ không được chọn và ngược lại
     const handleClickCheckboxAll = () => {   
         itemCarts.forEach(item => {
-            item.selected = !isCheckedAll;
+            (!isCheckedAll ) ? item.SELECTED = 1 : item.SELECTED = 0;
         }) 
         setIsCheckedAll(!isCheckedAll);
+
+        let tinhtongtien = 0;
+        itemCarts.map(item => (item.SELECTED === 1 ) ? tinhtongtien = tinhtongtien + item.TONGGIA : tinhtongtien)
+        setTongTienAllItem(tinhtongtien);
+        console.log(tongTienAllItem, ' ', tinhtongtien)
     }
-    
-    const handleClickCheckbox = (index) => {
-        const listItemCard = [...itemCarts];
-        listItemCard[index].selected = !listItemCard[index].selected;
-        setItemCart(listItemCard);
-        setIsCheckedAll(listItemCard.every((itemCarts) => itemCarts.selected)); 
+
+     
+    //trong này cẩn xử lý 3 cái
+    const handleClickCheckbox = (index) => {  
+        // 1 là chuyển đổi trạng thái của sản phẩm khi tick vào
+        // nếu được chọn slected = 1 và ko thì = 0
+        const listItemCarts = [...itemCarts];
+        console.log(itemCarts);
+        (listItemCarts[index].SELECTED === 0 ) ? listItemCarts[index].SELECTED = 1 :  listItemCarts[index].SELECTED = 0;
+        setItemCart(listItemCarts);
+        setIsCheckedAll(listItemCarts.every((itemCarts) => listItemCarts[index].SELECTED)); 
+ 
+        // 2 tính lại tổng tiền để hiển thị
+        let tinhtongtien = 0;
+        listItemCarts.map(item => (item.SELECTED === 1 ) ? tinhtongtien = tinhtongtien + item.TONGGIA : tinhtongtien)
+        setTongTienAllItem(tinhtongtien);
+        console.log(tongTienAllItem, ' ', tinhtongtien)
+
+        //3. cập nhật thông tin của thuộc tính selected trong bảng chitiet_giohang
+        //trong chitiet_giohang thuộc tính selected để lưu trạng thái được chọn trong giỏ hàng
+        const infoUpdateSelectedProperty = {
+            matk: localStorage.getItem('auth_matk'),
+            masp: listItemCarts[index].MASP,
+            mamau: listItemCarts[index].MAMAU,
+            masize: listItemCarts[index].MASIZE,
+
+            selected: listItemCarts[index].SELECTED,
+        }
+        // cập nhật selected của một sản phẩm
+        try{
+            request.post("/api/updateSelectedProperty", infoUpdateSelectedProperty)
+            .then(res => {  
+                console.log(res.data.message);
+            })
+        }
+        catch(err){ 
+            console.log(err);
+        }
+        console.log(itemCarts[index].SELECTED);
     };
+
+    //cái này cũng xử lý 3 cái giống ở trên
     const hanelInputSoLuong = (index, event) => {
+
         const ListItemCarts = [...itemCarts];
         ListItemCarts[index].SOLUONG = parseInt(event.target.value, 10);
         ListItemCarts[index].TONGGIA = ListItemCarts[index].SOLUONG * ListItemCarts[index].GIABAN;
         setItemCart(ListItemCarts); 
+
+        let tinhtongtien = 0;
+        ListItemCarts.map(item => tinhtongtien = tinhtongtien + item.TONGGIA)
+        setTongTienAllItem(tinhtongtien);
+        
+        const infoUpdateQuantityItemCart = {
+            matk: parseInt(localStorage.getItem('auth_matk')),
+            masp: itemCarts[index].MASP,
+            mamau: itemCarts[index].MAMAU,
+            masize: itemCarts[index].MASIZE, 
+            soluong: itemCarts[index].SOLUONG,
+            tonggia: itemCarts[index].SOLUONG * itemCarts[index].GIABAN,
+        } 
+
+        try{
+            request.post("/api/updateQuantityProperty", infoUpdateQuantityItemCart)
+            .then(res => {  
+                console.log(res.data.matk);
+            })
+        }
+        catch(err){ 
+            console.log(err);
+        }
+
     }
 
-    useEffect(() => {
-         
+    //chuyển hướng sang thanh toán
+    const handleClickPayment = () => { 
+        Navigate("/payment");
+    }
+
+    const handleContinuelyBuy = () => {
+        // Navigate("/payment");
+    }
+
+    //xử lý xoá sản phẩm giống với cập nhật số lượng và chọn sản phẩm ddthanh toán
+    const handleClickDelete = (index) => {
+        
+        const infoDeleteItemCart = {
+            matk: parseInt(localStorage.getItem('auth_matk')),
+            masp: itemCarts[index].MASP,
+            mamau: itemCarts[index].MAMAU,
+            masize: itemCarts[index].MASIZE,
+ 
+        } 
+        console.log(infoDeleteItemCart);
+        request.post('/api/deleteItemCart', infoDeleteItemCart) 
+        .then(res => {
+            console.log(res.data.message);
+        })  
+
+        itemCarts.splice(index, 1);
+
+        const listItemCarts = [...itemCarts];
+        setItemCart(listItemCarts); 
+
+        let tinhtongtien = 0;
+        listItemCarts.map(item => tinhtongtien = tinhtongtien + item.TONGGIA)
+        setTongTienAllItem(tinhtongtien);
+        console.log(tongTienAllItem, ' ', tinhtongtien)
+    }
+
+    //lấy ra danh sách sản phẩm trong giỏ hàng với mã tài khoản
+    const handleGetListProductCart = () => {
         request.get(`/api/infoCart`, {params: {matk : localStorage.getItem('auth_matk')}})
         .then(res => { 
             const infoCartReverse = [...res.data.data].reverse()
-            setItemCart(
-                infoCartReverse.map(item => (
-                    {...item, selected: true}
-                ))
-            );    
-
+            setItemCart( infoCartReverse );    
+            
+            setIsCheckedAll(infoCartReverse.every((itemCarts) => itemCarts.SELECTED)); 
+            let tinhtongtien = 0;
+            infoCartReverse.map(item => tinhtongtien = tinhtongtien + item.TONGGIA)
+            setTongTienAllItem(tinhtongtien); 
+            console.log(res.matk);
         })
         .catch(e => {
             console.log(e);
         })  
+    }
 
+    useEffect(() => {
+        handleGetListProductCart();
     }, [])
 
     
 
-    const renderInfoCart = itemCarts.map((item, index) => {  
+    const renderInfoCart = itemCarts.map((item, index) => {   
+        
         return (
             <tr class="row1" key={index}>
                 <td>
-                    <input type="checkbox" name="checkboxProductInCart" id=""   checked = {item.selected}  onChange={() => handleClickCheckbox(index)}
+                    <input type="checkbox" name="checkboxProductInCart" id=""   checked = {(item.SELECTED === 1) ? true : false}   onChange={() => handleClickCheckbox(index)}
                     />
                 </td>
 
@@ -91,9 +215,12 @@ function Cart() {
                 </td>
                 <td>
                     <div class="box-row1-column5 box-row1">
-                        <button class="btn-delete"><i class="fa-solid fa-xmark"></i></button>
+                        <button class="btn-delete" onClick={() => handleClickDelete(index)}>
+                            <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+                        </button> 
                     </div>
                 </td>
+                
             </tr>
         )
     })
@@ -116,7 +243,9 @@ function Cart() {
                         <th class="header-column2">Giá</th>
                         <th class="header-column3">Số lượng</th>
                         <th class="header-column4">Thành tiền</th>
-                        <th class="header-column5"></th>
+                        <th class="header-column5">  
+                            <button><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></button>
+                        </th> 
                     </tr>
                 </thead>
                     <tbody>
@@ -127,20 +256,25 @@ function Cart() {
 
         <div class="container mt-5 content-bottom">
             <div>
-                <button class="btn-continue">Tiếp tục mua sắm</button>
+                <button class="btn-continue" onClick={handleContinuelyBuy}>Tiếp tục mua sắm</button>
             </div>
             <div class="box-thanh-toan">
-                <div class="box-thanh-toan-discount">
+                {/* <div class="box-thanh-toan-discount">
                     <p><b>Mã giảm giá</b></p>
                     <p>Chọn hoặc nhập mã</p>
-                </div>
+                </div> */}
                 <hr class="line-thanh-toan"/>
                 <div class="box-thanh-toan-tongtien">
                     <p><b>Tổng tiền</b></p>
-                    <p class="total"><b>779.000đ</b></p>
+                    <p class="total">
+                        <b>
+                            {tongTienAllItem}
+                            đ
+                        </b>
+                    </p>
                 </div>
                 <div class="box-thanh-toan-button">
-                    <button class="btn-thanh-toan">THANH TOÁN</button>
+                    <button class="btn-thanh-toan" onClick={handleClickPayment}>THANH TOÁN</button>
                 </div>
             </div>
         </div>

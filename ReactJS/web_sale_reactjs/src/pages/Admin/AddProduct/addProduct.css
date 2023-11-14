@@ -259,7 +259,58 @@ tr {
 .button_confirm:hover {
     background-color: rgba(0, 0, 0, 80%);
 }
+.form-control{
+    width: 80%;
+}
+.input_gia{
+    display: flex;
+    justify-content: space-between;
+}
+.input_gia_div{
+    width: 50%;
+}
+.checkbox_sizes{
+    margin: 0px 3px 0px 15px;
+}
 
-.body_box{
-    padding-bottom: 50px;
+.choose_size{
+    display: flex;
+    flex-direction: column;
+    justify-content: left;
+}
+.checkbox_color{
+    width: 3vh;
+    height: 3vh;
+    border-radius: 3vh;
+}
+
+.input_quantity__size_name{
+    text-align: left; 
+}
+
+.input_quantity__product_color{
+    width: 5vh;
+    height: 5vh;
+    border-radius: 5vh;
+    margin-left: 10%;
+}
+.input_quantity__quantity{
+    display: flex;
+    align-content: center;
+}
+
+.input_quantity__quantity_haved{
+    padding: 3px 10px;
+    border: 1px solid red;
+    border-radius: 0.5em;
+    margin: 0px 1em;
+}
+.display_hidden{
+    display: none;
+}
+.list_checbox_color{
+    display: flex;
+}
+.list_checbox_color_item{
+    display: flex;
 }

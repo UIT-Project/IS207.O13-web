@@ -1,4 +1,6 @@
  
+const admin = 'admin';
+
 const routes = {
     home: "/",
     nam: "/nam",
@@ -11,5 +13,7 @@ const routes = {
     cart: "/cart",
     cart_test: "/cart_test",
     payment: "/payment",
+    addProduct: "/admin/addProduct",
+    paymentResult: "/paymentResult",
 }
 export default routes;

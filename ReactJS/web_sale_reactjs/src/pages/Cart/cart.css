@@ -416,6 +416,9 @@ a, button{
 .table-header-row .header-column0 {
     width: 10px;
 } 
+.table-header-row .header-column6 {
+    width: 10px;
+} 
  
 .tbody_table_cart{
     height: 60vh;

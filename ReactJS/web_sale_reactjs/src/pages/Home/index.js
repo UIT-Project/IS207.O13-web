@@ -10,24 +10,33 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
 
 function Home(){
+
+    // NHỮNG THỨ CẦN XỬ LÝ
+    // 1.Lấy thông tin sản phẩm từ DB và hiển thị
+    // 2.Xử dụng các hàm hỗ trợ lấy dữ liệu và dùng biến renderNewProduct để render dữ liệu ra màn hình
+
+    // chứa thông tin sản phẩm mới
     const [productsInNewProduct, setProductsInNewProduct] = useState([]);
+    // chứa thông tin sản phẩm hot
+    const [hotProduct, setHotProduct] = useState([]);
     const [cart, setCart] = useState([]);
  
-    useEffect(() => { 
-        renderProductInNewProduct();
-    }, []); 
-
-    const renderProductInNewProduct = () => { 
-        request.get('/api/test')
-        .then(res=>{
-            console.log(res);
-            setProductsInNewProduct(res); 
+    // khi load trang thì useEffect sẽ gọi getInfoAtStartLoadingHome để gửi request 1 lần đến serve để lấy dữ liệu 
+    const getInfoAtStartLoadingHome = () => { 
+        request.get('/api/getInfoAtStartLoadingHome')
+        .then(res=>{ 
+            setProductsInNewProduct(res.dataNewProduct); 
+            setHotProduct(res.HotProduct);
         })
         .catch(res=>{
             console.log(res.data);
         })
     }
-
+    useEffect(() => { 
+        getInfoAtStartLoadingHome();
+    }, []); 
+    
+    // addProductToCart không cần quan tâm, cái này định phát triển làm chức năng lưu  sản phẩm yêu thích mà chắc để sau
     const addProductToCart = (product) => {
         const cartItem = {
             MASP: product.MASP,
@@ -43,14 +52,15 @@ function Home(){
         localStorage.setItem('cart', JSON.stringify(cart));
     }
 
-    const product = productsInNewProduct.map( (product) => {
+    //hiển thị thông tin sản phẩm mới
+    const renderNewProduct = productsInNewProduct.map( (product) => {
         const url = `/infoProduct?id=${product.MASP}`;
         return (
             <div key={product.MASP} class="product_item_div__out">
                 <a href={url}>
                     <div class="product_item_div__in"> 
                         <div>
-                            <img src={images.product_1} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
+                            <img src={product.imgURL} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
                         </div>
                         <div class="product_item__summary">
                             <a href="#">
@@ -80,10 +90,8 @@ function Home(){
             </div>
         )
     })
-     
-    return (        
-        
-        
+ 
+    return (         
         <div class="container">
         {/* <!-- carousel slide là phần ảnh slide --> */}
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
@@ -125,38 +133,21 @@ function Home(){
             <div class="product_item_container__out">
                 {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}
                 <div class="product_item_container__in">
-                    {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */}
-                    <div class="product_item_div__out">
-                        <div class="product_item_div__in">
-                            <a href="#">
-                                <div>
-                                    <img src={images.product_1} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
-                                </div>
-                            </a>
-                            <div class="product_item__summary">
-                                <a href="#">
-                                    <h6 class="product_item__summary__title">Loa BlueTooth Mini BinTech chất lượng cao chống nước tốt thích hợp</h6>
-                                </a>
-                                <div class="product_item__summary__price_and_heart">
-                                    <div class="product_item__summary__price">
-                                        <span class="product_item__summary__sale_price">340.000₫
-                                        </span>
-                                        <span class="product_item__summary__origin_price">
-                                            <del>400.000₫</del>
-                                        </span>
-                                    </div> 
-                                    <div>
-                                        <i onClick={() => isWishReq} class="fa-regular fa-heart product_item__summary__heart"></i>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="grid__column_10__product_thumbail__yeuthich">
-                                <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
-                                <span class="grid__column_10__product_thumbail__text_yeuthich">Hot</span> 
-                            </div> 
-                        </div>
-                    </div>
-                    {product} 
+                    {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
+                    {renderNewProduct} 
+                </div>
+            </div>
+        </div>
+        <div class="show_product">
+            <div class="show_product__title_div">
+                <h1 class="show_product__title">Sản phẩm HOT</h1> 
+            </div>
+            {/* <!-- product_item_container__out khối bọc ngoài cho tất cả sản phẩm để dễ padding, margin --> */}
+            <div class="product_item_container__out">
+                {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}
+                <div class="product_item_container__in">
+                    {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
+                    {/* {renderHotProduct}  */}
                 </div>
             </div>
         </div>

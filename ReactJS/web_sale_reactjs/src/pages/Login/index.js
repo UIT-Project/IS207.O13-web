@@ -10,11 +10,18 @@ import useGlobalVariableContext from '../../context_global_variable/context_glob
 
 function Login(){ 
 
+    // Trong file này cần xử lý
+    // 1.kiểm tra xem người dùng đã nhấn đăng ký hay đăng nhập
+    // 2. nếu nhấn đăng ký thì http://localhost:3000/login hiển thị phần đăng ký và ngược lại
+    // 3.nếu đăng ký thì xử lý lưu thông tin tài khoản, đăng nhập thì kiểm tra xem trùng khớp với db không rồi login
+
     // đoạn code này để chuyển slide sign in or sign up
-     
+    //nếu isSignUpActive = true thì có nghĩa là người dùng đã chọn đăng ký
+    //bởi vì http://localhost:3000/login dùng cho cả đăng ký và đăng nhập nên và phải sử dụng  isSignUpActive để biết là đang nhấn đăng nhập hay đăng ký
     const [isSignUpActive, setIsSignUpActive] = useState(false);
     const {loginOrLogout} = useGlobalVariableContext();
 
+    //nếu người dùng click đăng nhập thì setIsSignUpActive false và ngược lại
     useEffect(()=>{ 
       if(loginOrLogout === 'signIn'){
         setIsSignUpActive(false);
@@ -33,6 +40,8 @@ function Login(){
     }
 
     const Navigate = useNavigate();
+
+    //lưu giá trị từ những ô nhập thông tin đăng ký
     const [registerInput, setRegisterInput] = useState({
       name_register: '',
       email_register: '',
@@ -40,26 +49,31 @@ function Login(){
       error_list_register: [],
     });
 
+    // xử lý nhập liệu vào các ô đăng ký
+    //để ý đến name, value và onchange ở các thẻ input
     const handleInputRegister = (e) => {
       e.persist();
       setRegisterInput({...registerInput, [e.target.name]: e.target.value});
     }
-     
+    
+    //đây là đoạn mã gửi thông tin đăng ký
     const registerSubmit = async (e) => {
       e.preventDefault();
 
+      //dữ liệu sẽ gửi xuống để lưu thông tin đăng ký
       const data_register = {
         name: registerInput.name_register,
         email: registerInput.email_register,
         password: registerInput.password_register,
       }
  
+      //sử dụng sanctum để lưu thông tin đăng ký và check valid ở phần backend
       Request.get('/sanctum/csrf-cookie')
         .then(async () => {
-          Request.post('/api/register', data_register) 
+          Request.post('/api/register', data_register) //request post để lưu thông tin
         .then(res => {
           console.log(res.data.status)
-          if(res.data.status === 200){
+          if(res.data.status === 200){// nếu lưu thông tin thành công thì status trả về từ server là 200 
             console.log(res.data.email);
             localStorage.setItem('auth_token', res.data.token);
             localStorage.setItem('auth_email', res.data.email);
