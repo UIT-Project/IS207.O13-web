@@ -183,3 +183,21 @@ body {
     margin: 3px;
     font-size: 30px;
 }
+.pagination {
+    display: flex;
+    justify-content: center;
+}
+.pagination a {
+    color: black;
+    border: 1px solid #ddd; /* Gray */
+    float: left;
+    padding: 8px 16px;
+    text-decoration: none;
+  }
+  
+  .pagination a.active {
+    background-color: #4CAF50;
+    color: white;
+  }
+  
+  .pagination a:hover:not(.active) {background-color: #ddd;}
