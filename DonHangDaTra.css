@@ -193,9 +193,9 @@ a, button{
     margin-top: 15px;
     margin-left: 30px;
     border-radius: 5px;
-    background-color: orange;
+    background-color: black;
     color: #fff;
-    border: 1px solid orange; 
+    border: 1px solid black; 
 }
 .circular-image {
     margin-top: 40px;
@@ -212,7 +212,7 @@ a, button{
 
 .form_container{
     margin-top: 90px;
-    margin-bottom: 70px;
+    margin-bottom: 0px;
 }
 .name_row{
     margin-top: 20px;
