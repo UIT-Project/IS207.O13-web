@@ -270,8 +270,10 @@ button {
     font-size: 0.9rem;
     color: #4b4b4b;
 }
-.fa-solid fa-star {
-    border: 1px solid black;
+.reviews .fa-solid {
+    cursor: pointer;
+    color: #e4e4e4;
+    margin: 10px;
 }
 .reviews {
     display: flex;
