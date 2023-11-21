@@ -9,9 +9,12 @@ import Cart from "../pages/Cart/cart";
 import Payment from "../pages/Payment/payment";
 import AddProduct from "../pages/Admin/AddProduct/addProduct";
 import PaymentResult from "../pages/PaymentResult/paymentResult";
+import InfoAccount from "../pages/InfoAccount/infoAccount";
 
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
+import OrderManagement from "../pages/Admin/OrderManage/orderManage";
+import OrderManage from "../pages/Admin/OrderManage/orderManage";
 
 const publicRoutes = [
 
@@ -31,6 +34,9 @@ const publicRoutes = [
     {path: config.routes.payment, component: Payment, layout: DefaultLayout },
     {path: config.routes.addProduct, component: AddProduct, layout: AdminLayout},
     {path: config.routes.paymentResult, component: PaymentResult, layout: DefaultLayout},
+    {path: config.routes.infoAccount, component: InfoAccount, layout: DefaultLayout},
+    {path: config.routes.orderManage, component: OrderManage, layout: AdminLayout},
+
 ];
 
 const privateRoutes = [];
