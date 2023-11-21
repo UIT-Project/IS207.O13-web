@@ -15,5 +15,10 @@ const routes = {
     payment: "/payment",
     addProduct: "/admin/addProduct",
     paymentResult: "/paymentResult",
+    myOrder: "/myOrder",
+    manageOrder: "/admin/manageOrder",
+    manageProduct: "/admin/manageProduct",
+    updateProduct: "/admin/updateProduct",
+    updateProduct2: "/admin/updateProduct2",
 }
 export default routes;
