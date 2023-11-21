@@ -32,6 +32,28 @@ function AddProduct(){
         checkboxSize: [],
         indexThumnail: 0,
     });
+    const [infoProductDetail, setInfoProductDetail] = useState({
+        dataProductDetail_sanphams: [],
+        dataProductDetail_sanpham_mausac_sizes__sizes: [],
+        dataProductDetail_sanpham_mausac_sizes__colors: [], 
+        dataProductDetail_sanpham_mausac_sizes__hinhanhs: [],
+    })
+    const [infoUpdateProduct, setInfoUpdateProduct] = useState({
+        nameProduct: '',
+        originPrice: '',
+        sellPrice: '',
+        typeProduct: '',
+        desctiption: '',
+        checkboxColor: [],
+        checkboxSize: [],
+        indexThumnail: 0,
+        listHEX: [],
+        listColor: [],
+        images: [],
+        imgurl: [], 
+        previewImages: [],
+        deleted: []
+    });
     //lưu thông tin ảnh sẽ lưu xuống DB
     const [images, setImages] = useState([]);
 
@@ -52,13 +74,13 @@ function AddProduct(){
         var value = e.target.value;
         if(infoAddNewProduct[name].includes(value)){
             setInfoAddNewProduct({...infoAddNewProduct, [name]: infoAddNewProduct[name].filter(item => item !== value)});
-            console.log(infoAddNewProduct);
-
+            console.log(infoAddNewProduct); 
         }
         else{
             setInfoAddNewProduct({...infoAddNewProduct, [name]: [...infoAddNewProduct[name], value]})
-        }
- 
+        }  
+        console.log(infoAddNewProduct.checkboxColor);
+        console.log(infoAddNewProduct.checkboxSize);
     }
 
     //xử lý nhập ảnh, chọn ảnh từ máy client
@@ -83,8 +105,7 @@ function AddProduct(){
             containFileImagesToRead.push(imageURL);
         }
  
-        setPreviewImages(containFileImagesToRead);
- 
+        setPreviewImages(containFileImagesToRead); 
     }
 
     //xử lý lưu tt sp, hình ảnh sp xuống db khi click vào thêm sản phẩm
@@ -120,7 +141,7 @@ function AddProduct(){
         request.get('api/getInfoForAddProduct')
         .then(res => {
             setListColor(res.data.listColor);
-            console.log(res.data.listColor);
+            console.log(res.data.listColor, "ok");
         })
         .catch(error =>{
             console.log(error)
@@ -133,8 +154,51 @@ function AddProduct(){
         console.log(infoAddNewProduct.indexThumnail);
     }
 
+    const handleClickDeleteImage = (index) => {
+        const updatedImages = [...images];
+        const updatedPreviewImages = [...previewImages];
+      
+        // // Xoá hình ảnh tại vị trí index
+        updatedImages.splice(index, 1);
+        updatedPreviewImages.splice(index, 1);
+      
+        // // Cập nhật state với các mảng đã cập nhật
+        setImages(updatedImages);
+        setPreviewImages(updatedPreviewImages);
+    }
+
+    const getInforProductDetail = (masp) => {
+        request.get(`/api/infoProductDetail?masp=${masp}`)
+        .then(res => {   
+            
+            setInfoAddNewProduct({
+                ...infoUpdateProduct,
+                nameProduct: 'ok'
+            })
+            
+            console.log(res);
+            // res.data.dataProductDetail_sanphams.map(item => 
+            //     setInfoAddNewProduct({
+            //         ...infoUpdateProduct,
+            //         nameProduct: item.TENSP
+            //     })
+            // )
+            console.log(res);
+            setInfoProductDetail({
+                dataProductDetail_sanphams: res.dataProductDetail_sanphams,
+                dataProductDetail_sanpham_mausac_sizes__sizes: res.dataProductDetail_sanpham_mausac_sizes__sizes,
+                dataProductDetail_sanpham_mausac_sizes__colors: res.dataProductDetail_sanpham_mausac_sizes__colors, 
+                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
+            })
+            
+        })
+    };
+
     useEffect(() => {
         getInfoForAddProduct();
+        console.log('color')
+        getInforProductDetail(1);
+        console.log(infoProductDetail, 'ok')
     }, [])
 
     
@@ -186,9 +250,14 @@ function AddProduct(){
     //hiển thị ảnh preview
     const renderPreViewImage = previewImages.map((image, index) =>{ 
         return ( 
-            <div>
+            <div key={index} className="prview_image">
                 <img src={image} key={index} width={250} height={350}></img> 
                 <input type="radio" name="indexThumnail" value={index} onChange={handleChooseThumnail}></input>
+                <div className="delete_prview_image">
+                    <button onClick={() => handleClickDeleteImage(index)}>
+                        <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+                    </button>
+                </div>
             </div>
         )
     })
@@ -325,10 +394,13 @@ function AddProduct(){
             <div>
                 <h2>Nhập số lượng</h2>
 
+                <div className="displayhidden">hi</div>
+                <div className="">ba</div>
                 <div class="col-auto"></div>
                 <div class="body_box container col-lg-7">
                     {renderInputSoLuong} 
                 </div>
+                
                 <div class="col-auto"></div>
 
             </div>
