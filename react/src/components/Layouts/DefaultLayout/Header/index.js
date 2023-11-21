@@ -134,6 +134,7 @@ function Header({settoggleFunctionLoginLogout}){
     //click ở phía quản lý tài khoản, trong trạgn thái login, đăng nhập thì logout 
     const clickInfoAccount = (event) => {
         event.preventDefault();
+        Navigate("/infoAccount")
     }
 
     // khi logout thì sẽ xoá dữ liệu được lưu trong localsorage
@@ -194,6 +195,27 @@ function Header({settoggleFunctionLoginLogout}){
             console.log(e);
         })
     }
+
+    //handle nhấn enter
+    const handleKeyDown = (event) => {
+        if (event.key === 'Enter') {
+          // Ngăn chặn hành động mặc định của phím Enter (ví dụ: ngăn chặn việc gửi form)
+          event.preventDefault();
+          request.get(`/api/search?query=${textQuery}`)
+          .then(res=>{
+              setResultQuery(res.data.data); 
+              console.log(res.data.data);
+              Navigate(`/search?query=${textQuery}`);
+          })
+          .catch(e => {
+              console.log(e);
+          })
+          
+          // Thực hiện tìm kiếm với từ khóa `searchTerm`
+    
+          // Đối với ứng dụng thực tế, bạn có thể gọi một hàm tìm kiếm tại đây hoặc chuyển từ khóa tìm kiếm đến thành phần cha để xử lý nó.
+        }
+    };
 
     //có thể đọc thêm về map trong javascript hoặc chatgpt để hiểu rõ thêm
     //đoạn code dưới đây để hiển thị ra từng sản phẩm trong giỏ hàng
@@ -265,7 +287,9 @@ function Header({settoggleFunctionLoginLogout}){
                     <div class="header_body__search__div_css">
 
                         {/* ở đây có onChange */}
-                        <input type="text" placeholder="Tìm kiếm sản phẩm" class="header_body__search__input" name='searchProduct' onChange={(e) => setTextQuery(e.target.value)}/> 
+                        <input type="text" placeholder="Tìm kiếm sản phẩm" class="header_body__search__input" name='searchProduct'
+                        onChange={(e) => setTextQuery(e.target.value)}
+                        onKeyDown={handleKeyDown}/> 
                         
                         {/* ở đây có  onClick*/}
                         <button class="header_body__search__button" onClick={handleSearchProduct}>
