@@ -6,9 +6,8 @@
     padding: 16px;
     display: flex;
 }
-.product_image__main_image__img{
-    width: 100%;
-} 
+
+
 .product_image__list_mini_image__item__img{
     height: 86px;
     width: 3.75rem;

@@ -5,7 +5,7 @@ import "bootstrap"
 import { useParams } from "react-router-dom";
 import request from "../../utils/request";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
-
+import {Media} from "./image";
 function InfoProduct(){
 
     //dùng để lấy thông tin từ thanh địa chỉ (URL), cái này sẽ còn được ứng dụng để lấy thông tin thanh toán mà ngân hàng trả về
@@ -20,7 +20,7 @@ function InfoProduct(){
 
     //
     const buttonAddToCartRef = useRef(null);  
-
+    const[file,setFile]=useState(null);
     //tạo biến selectPropertyProduct để lưu thông tin sản phẩm thêm và giỏ hàng
     const [selectPropertyProduct, setSelectPropertyProduct] = useState({
         mamau: '',
@@ -153,26 +153,36 @@ function InfoProduct(){
             <div class="container-fluid">
                 <div class="container_info_product"> 
                     <div class="product_image col-sm-7">
-                    <div class="product_image__list_mini_image" id="style-7">
-                        <div class="product_image__list_mini_image__item">
-                            <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                        </div> 
-                        <div class="product_image__list_mini_image__item">
-                            <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
+                        <div class="product_image__list_mini_image" id="style-7">
+                            <div class="product_image__list_mini_image__item">
+                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
+                            </div> 
+                            <div class="product_image__list_mini_image__item">
+                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
+                            </div>
+                            <div class="product_image__list_mini_image__item">
+                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
+                            </div>
+                            <div class="product_image__list_mini_image__item">
+                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
+                            </div>
+                            <div class="product_image__list_mini_image__item" onClick={()=>setFile(images)}>
+                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
+                            </div>
                         </div>
-                        <div class="product_image__list_mini_image__item">
-                            <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
+                        <div class="product_image__main_image">
+                            {
+                                Media.map((file,index)=>(
+                                    <div className="media" key={index} onClick={()=>setFile(file)}>
+                                        {
+                                            file.type === 'image'
+                                            ? <img class="product_image__main_image__img" src={file.url} alt=""/>
+                                            : <video class="product_image__main_image__img" src={file.url} muted/>
+                                        }
+                                    </div>
+                                ))
+                            }
                         </div>
-                        <div class="product_image__list_mini_image__item">
-                            <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                        </div>
-                        <div class="product_image__list_mini_image__item">
-                            <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                        </div>
-                    </div>
-                    <div class="product_image__main_image">
-                        <img src={images.mini_image__item} alt="" class="product_image__main_image__img"/>
-                    </div>
                     </div>
                     <div class="detail_info_product col-sm-5">
                         <div class="detail_info_product__title">
@@ -290,6 +300,14 @@ function InfoProduct(){
                         </div>
                     </div>
                 </div>
+            </div>
+            <div className="popup-media" style={{display: file ? 'block' : 'none'}}>
+                <span onClick={()=>setFile(null)}>&times;</span>
+                {
+                    file?.type ==='video'
+                    ? <video src={file?.url} muted autoPlay controls/>
+                    : <img src={images.mini_image__item}/>
+                }
             </div> 
         </div>
     )
