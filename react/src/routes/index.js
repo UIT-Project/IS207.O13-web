@@ -12,9 +12,8 @@ import PaymentResult from "../pages/PaymentResult/paymentResult";
 import InfoAccount from "../pages/InfoAccount/infoAccount";
 
 import DefaultLayout from "../components/Layouts/DefaultLayout";
-import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
-import OrderManagement from "../pages/Admin/OrderManage/orderManage";
-import OrderManage from "../pages/Admin/OrderManage/orderManage";
+import AdminLayout from "../components/Layouts/AdminLayout/adminLayout"; 
+import OrderManage from "../pages/Admin/test_OrderManage/orderManage"; 
 
 const publicRoutes = [
 
@@ -36,7 +35,6 @@ const publicRoutes = [
     {path: config.routes.paymentResult, component: PaymentResult, layout: DefaultLayout},
     {path: config.routes.infoAccount, component: InfoAccount, layout: DefaultLayout},
     {path: config.routes.orderManage, component: OrderManage, layout: AdminLayout},
-
 ];
 
 const privateRoutes = [];
