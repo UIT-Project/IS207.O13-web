@@ -224,7 +224,6 @@ function Cart() {
             </tr>
         )
     })
-
     return( 
     <div class="container mt-3 container-content">
         <h1 class="text-header-content">GIỎ HÀNG</h1>
@@ -280,5 +279,6 @@ function Cart() {
         </div>
         </div>
     )
+    
 }
 export default Cart;
