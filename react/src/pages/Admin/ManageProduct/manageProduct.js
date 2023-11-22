@@ -336,11 +336,12 @@ function ManageProduct()
 
     useEffect(() => {   
         orderStatus_Array.map(item => {
-            numberPagination ?  getInfoOrderForUsers(item, numberPagination)  :  getInfoOrderForUsers(item, 1)
+            numberPagination > 1 ?  getInfoOrderForUsers(item, numberPagination)  :  getInfoOrderForUsers(item, 1)
+            // item.key === nameStatusParam ? handleClickNavState(item, 1) : ''
             return (item.key === nameStatusParam ? handleClickNavState(item, 1) : '' )
             }
         )
-
+ 
         getQuantityOrderToDevidePage()
         // console.log(document.getElementById(`product_${maspParam}`));
         // maspParam ?  document.getElementById(`product_${maspParam}`).scrollIntoView({ behavior: 'smooth' })

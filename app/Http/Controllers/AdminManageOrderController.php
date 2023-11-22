@@ -53,17 +53,18 @@ class AdminManageOrderController extends Controller
         $madh = $request->query('madh');
         $data_relative_Donhang =  DB::select(
             "SELECT donhangs.MADH, thongtingiaohangs.TEN, SDT, DIACHI, 
-            TINH_TP, QUAN_HUYEN, PHUONG_XA, TONGTIEN, SOLUONG, TONGTIEN_SP,
+            TINH_TP, QUAN_HUYEN, PHUONG_XA, TONGTIEN, TONGTIEN_SP,
             VOUCHERGIAM, TONGTIENDONHANG, HINHTHUC_THANHTOAN, TRANGTHAI_THANHTOAN, GHICHU
             from donhangs, chitiet_donhangs, thongtingiaohangs 
             where donhangs.MADH = '$madh'  AND donhangs.MADH = chitiet_donhangs.MADH 
             AND thongtingiaohangs.MATTGH = donhangs.MATTGH"
         );
         $data_sanPham_relative_CTDH = DB::select(
-            "SELECT TENSP, GIABAN, TENMAU, HEX, MASIZE  
-            from mausacs, chitiet_donhangs, sanphams, sanpham_mausac_sizes 
+            "SELECT TENSP, GIABAN, TENMAU, HEX, MASIZE, TONGTIEN, chitiet_donhangs.SOLUONG, imgURL  
+            from mausacs, chitiet_donhangs, sanphams, sanpham_mausac_sizes, hinhanhsanphams
             where chitiet_donhangs.MADH = '$madh' AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
-            AND sanpham_mausac_sizes.MASP = sanphams.MASP AND sanpham_mausac_sizes.MAMAU = mausacs.MAMAU"
+            AND sanpham_mausac_sizes.MASP = sanphams.MASP AND sanpham_mausac_sizes.MAMAU = mausacs.MAMAU
+            AND sanpham_mausac_sizes.MAHINHANH = hinhanhsanphams.MAHINHANH"
         );
         return response()->json([
             'data_relative_Donhang' => $data_relative_Donhang,
