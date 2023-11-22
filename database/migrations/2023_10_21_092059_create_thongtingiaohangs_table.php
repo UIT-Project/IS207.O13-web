@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('TINH_TP');
             $table->string('QUAN_HUYEN');
             $table->string('PHUONG_XA');
+            $table->integer('DANGSUDUNG');
 
             $table->foreign('MATK')->references('MATK')->on('taikhoans');
         });
