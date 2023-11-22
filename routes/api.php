@@ -71,6 +71,7 @@ Route::post('processPaymentResult', [PaymentController::class, 'processPaymentRe
 Route::post('addProduct', [AddProductController::class, 'addProduct']);
 Route::get('getInfoForAddProduct', [AddProductController::class, 'getInfoForAddProduct']);
 Route::get('linkImageProduct', [AddProductController::class, 'linkImageProduct']);
+Route::get('updateQuantity', [AddProductController::class, 'updateQuantity']);
 
 
 

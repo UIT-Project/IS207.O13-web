@@ -21,14 +21,8 @@ use stdClass;
 class AddProductController extends Controller
 {
     public function addProduct(Request $request){
-        $objectInfoAddNewProduct = json_decode($request->input('infoAddNewProduct'));
-        // $TENSP = $request->input('nameProduct');
-        // $GIAGOC = $request->input('originPrice');
-        // $GIABAN = $request->input('sellPrice');
-        // $MAPL_SP = $request->input('typeProduct');
-        // $MOTA = $request->input('desctiption');
-        // $checkboxColor = $request->input('checkboxColor');
-        // $checkboxSize = $request->input('checkboxSize'); 
+        $objectInfoAddNewProduct = json_decode($request->input('infoAddNewProduct')); 
+        $listQuantity = json_decode($request->input('listQuantity')); 
 
         $TENSP = $objectInfoAddNewProduct->nameProduct;
         $GIAGOC = $objectInfoAddNewProduct->originPrice;
@@ -45,9 +39,13 @@ class AddProductController extends Controller
         );
         $masp = DB::select("SELECT MASP FROM sanphams ORDER BY created_at DESC LIMIT 1");
         $masp_query = $masp[0]->MASP;
+
+        $i = 0;
         foreach ($checkboxSize as $itemSize){
             foreach($checkboxColor as $itemColor){
-                DB::insert("insert into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', 0)");
+                $soluong = $listQuantity[$i];
+                DB::insert("insert into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', $soluong)");
+                $i++;
             }
         }
 
@@ -109,5 +107,14 @@ class AddProductController extends Controller
         return response()->json([
             'data_imgURL' => $imgURLs,
         ]);
+    }
+
+    public function updateQuantity(Request $request){
+        $listHEXQuantity = $request->query('listHEXQuantity');
+
+        foreach($listHEXQuantity as $item){
+            $soluong = $item['Quantity'];
+            DB::insert("UPDATE hinhanhsanphams");
+        }
     }
 }

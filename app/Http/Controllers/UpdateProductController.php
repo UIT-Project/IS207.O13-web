@@ -29,7 +29,7 @@ class UpdateProductController extends Controller
         // $checkboxColor = $request->input('checkboxColor');
         // $checkboxSize = $request->input('checkboxSize'); 
 
-        // $TENSP = $objectInfoUpdateProduct->nameProduct;
+        $TENSP = $objectInfoUpdateProduct->nameProduct;
         $GIAGOC = $objectInfoUpdateProduct->originPrice;
         $GIABAN = $objectInfoUpdateProduct->sellPrice;
         $MAPL_SP = $objectInfoUpdateProduct->typeProduct;
@@ -43,15 +43,20 @@ class UpdateProductController extends Controller
         $quantityImgurl = $objectInfoUpdateProduct->quantityImgurl;
         $mahinhanh = $objectInfoUpdateProduct->mahinhanh;
         $indexThumnailCong1 = $indexThumnail + 1;
-        // DB::insert(
-        //     "INSERT into sanphams(TENSP, GIAGOC, GIABAN, MAPL_SP, MOTA, created_at, updated_at) 
-        //     values('$TENSP', '$GIAGOC', '$GIABAN', '$MAPL_SP', '$MOTA', NOW(), NOW())"
-        // ); 
-        // foreach ($checkboxSize as $itemSize){
-        //     foreach($checkboxColor as $itemColor){
-        //         DB::insert("insert into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', 0)");
-        //     }
-        // }
+
+
+        DB::insert(
+            "INSERT into sanphams(TENSP, GIAGOC, GIABAN, MAPL_SP, MOTA, created_at, updated_at) 
+            values('$TENSP', '$GIAGOC', '$GIABAN', '$MAPL_SP', '$MOTA', NOW(), NOW())"
+        ); 
+
+
+        foreach ($checkboxSize as $itemSize){
+            foreach($checkboxColor as $itemColor){
+                DB::insert("insert into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', 0)");
+                DB::update("UPDATE sanpham_mausac_sizes SET MAMAU = $itemColor, MASIZE = '$itemSize'");
+            }
+        }
 
         // $hex = DB::select("SELECT distinct(HEX) from mausacs, sanpham_mausac_sizes where mausacs.MAMAU = sanpham_mausac_sizes.MAMAU AND MASP = $masp_query");
 

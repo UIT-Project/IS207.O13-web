@@ -21,6 +21,7 @@ class thongtingiaohangFactory extends Factory
     {
         $taikhoan = taikhoan::inRandomOrder()->first();
         $taikhoandefault = 1;
+        $DANGSUDUNGdefault = 1;
         return [
             'MATK' => $taikhoandefault,
             'DIACHI' => $this->faker->address(),
@@ -29,6 +30,7 @@ class thongtingiaohangFactory extends Factory
             'TINH_TP' =>  $this->faker->firstNameMale(),
             'QUAN_HUYEN' => $this->faker->firstNameMale(),
             'PHUONG_XA' =>  $this->faker->firstNameMale(),
+            'DANGSUDUNG' => $DANGSUDUNGdefault
         ];
     }
 }

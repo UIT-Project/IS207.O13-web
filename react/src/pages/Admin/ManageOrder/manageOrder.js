@@ -154,7 +154,7 @@ function ManageOrder(){
                                 ],  
                                 spaceGetDataFromOrderList: [
                                     ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
-                                     {
+                                    {
                                         paginationNumber: openingPage,
                                         ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
                                         startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,

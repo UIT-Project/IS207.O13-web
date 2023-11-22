@@ -16,10 +16,10 @@ function AddProduct(){
 
     // statusPressAddProduct = true thì hiện nút thêm sản phẩm
     const [statusPressAddProduct, setStatusPressAddProduct] = useState(true);
-
+    let i = 0;
     //chứa danh sách màu lấy từ db
     const [listColor, setListColor] = useState([]);
-
+    const [listQuantity, setListQuantity] = useState([]);
     //mã hex để hiện thị màu sắc lấy thực thuộc tính hex trong bảng mausacs
     const [listHEX, setListHEX] = useState([]);
     const [infoAddNewProduct, setInfoAddNewProduct] = useState({
@@ -29,31 +29,9 @@ function AddProduct(){
         typeProduct: '',
         desctiption: '',
         checkboxColor: [],
-        checkboxSize: [],
-        indexThumnail: 0,
-    });
-    const [infoProductDetail, setInfoProductDetail] = useState({
-        dataProductDetail_sanphams: [],
-        dataProductDetail_sanpham_mausac_sizes__sizes: [],
-        dataProductDetail_sanpham_mausac_sizes__colors: [], 
-        dataProductDetail_sanpham_mausac_sizes__hinhanhs: [],
-    })
-    const [infoUpdateProduct, setInfoUpdateProduct] = useState({
-        nameProduct: '',
-        originPrice: '',
-        sellPrice: '',
-        typeProduct: '',
-        desctiption: '',
-        checkboxColor: [],
-        checkboxSize: [],
-        indexThumnail: 0,
-        listHEX: [],
-        listColor: [],
-        images: [],
-        imgurl: [], 
-        previewImages: [],
-        deleted: []
-    });
+        checkboxSize: [], 
+        indexThumnail: 0, 
+    }); 
     //lưu thông tin ảnh sẽ lưu xuống DB
     const [images, setImages] = useState([]);
 
@@ -78,9 +56,7 @@ function AddProduct(){
         }
         else{
             setInfoAddNewProduct({...infoAddNewProduct, [name]: [...infoAddNewProduct[name], value]})
-        }  
-        console.log(infoAddNewProduct.checkboxColor);
-        console.log(infoAddNewProduct.checkboxSize);
+        }   
     }
 
     //xử lý nhập ảnh, chọn ảnh từ máy client
@@ -120,17 +96,17 @@ function AddProduct(){
         }
         //thêm thông tin infoAddNewProduct vào form data, vì đây là một đối tượng nên cần stringify
         formData.append('infoAddNewProduct', JSON.stringify(infoAddNewProduct));
+        listQuantity.shift();
+        formData.append('listQuantity', JSON.stringify(listQuantity));
 
-        // setStatusPressAddProduct(!statusPressAddProduct);
+        setStatusPressAddProduct(!statusPressAddProduct);
         // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
         request.post(`api/addProduct`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
               },
-        })
-        // request.post(`api/addProduct`, infoAddNewProduct)
-        .then(res => { 
-            setListHEX(res.data.listHEX);
+        }) 
+        .then(res => {  
         })
         .catch(error => { 
             console.log(error);
@@ -165,43 +141,13 @@ function AddProduct(){
         // // Cập nhật state với các mảng đã cập nhật
         setImages(updatedImages);
         setPreviewImages(updatedPreviewImages);
-    }
-
-    const getInforProductDetail = (masp) => {
-        request.get(`/api/infoProductDetail?masp=${masp}`)
-        .then(res => {   
-            
-            setInfoAddNewProduct({
-                ...infoUpdateProduct,
-                nameProduct: 'ok'
-            })
-            
-            console.log(res);
-            // res.data.dataProductDetail_sanphams.map(item => 
-            //     setInfoAddNewProduct({
-            //         ...infoUpdateProduct,
-            //         nameProduct: item.TENSP
-            //     })
-            // )
-            console.log(res);
-            setInfoProductDetail({
-                dataProductDetail_sanphams: res.dataProductDetail_sanphams,
-                dataProductDetail_sanpham_mausac_sizes__sizes: res.dataProductDetail_sanpham_mausac_sizes__sizes,
-                dataProductDetail_sanpham_mausac_sizes__colors: res.dataProductDetail_sanpham_mausac_sizes__colors, 
-                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
-            })
-            
-        })
-    };
+    } 
 
     useEffect(() => {
         getInfoForAddProduct();
-        console.log('color')
-        getInforProductDetail(1);
-        console.log(infoProductDetail, 'ok')
+        console.log('color') 
     }, [])
-
-    
+ 
 
     const renderListColor = listColor.map((item) => {
         return (
@@ -220,23 +166,43 @@ function AddProduct(){
         )   
     })
 
+
+    const handleInputQuantity = (e, i) => { 
+        const update = [...listQuantity];
+        update[i] = e.target.value
+        setListQuantity(update)
+        console.log(listQuantity, "nhập số lượng")
+    }
+
+    const renderInputQuantity = (i) => { 
+        return(
+            <input 
+                type="text" class="form-control" 
+                placeholder="Nhập số lượng"
+                name="listQuantity"
+                onChange={(e) => handleInputQuantity(e, i)}
+            />
+        )
+    }
+
     //hiển thị các ô nhập số lượng sau khi nhấn button thêm sản phẩm
     const renderInputSoLuong =  infoAddNewProduct.checkboxSize.map(itemSize => {
+        
         return (
             <div>
                 <h6 className="input_quantity__size_name">Size {itemSize}</h6> 
                 {
-                    listHEX.map(itemColor => {
+                    infoAddNewProduct.checkboxColor.map((itemColor, index) => {
                         console.log(itemColor)
                         return(
-                            <div className="input_quantity__quantity">
-                                <div className="input_quantity__product_color" style={{backgroundColor: `${itemColor.HEX}`}}></div>
+                            <div className="input_quantity__quantity" key={index}>
+                                <div className="input_quantity__product_color" style={{backgroundColor: `${listColor[index].HEX}`}}></div>
                                 <div>
                                     <span className="input_quantity__quantity_haved">0</span>
                                 </div>
                                 <div class="input_gia_div">
-                                        {/* <label for="#" class="form-label">Giá niêm yết</label> */}
-                                        <input type="text" class="form-control" placeholder="Nhập số lượng"/>
+                                        {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
+                                    {renderInputQuantity(++i)}    
                                 </div>
                             </div> 
 
@@ -309,9 +275,10 @@ function AddProduct(){
                                 <select class="form-select" required
                                     onChange={handleInputInfoAddNewProduct}
                                     name="typeProduct"
-                                    value={infoAddNewProduct.typeProduct}
+                                    value={infoAddNewProduct.typeProduct} 
                                 >
-                                <option selected value="1">Nam</option>
+                                <option selected value="0"></option>
+                                <option value="1">Nam</option>
                                 <option value="2">Nữ</option>
                                 <option value="3">Trẻ em</option>
                                 </select>
@@ -380,29 +347,26 @@ function AddProduct(){
                             They offer free tutorials in all web development technologies.
                         </textarea>
 
-                        <div class="address_update_button_contain row">
-                            <div class={`${statusPressAddProduct ? '' : 'display_hidden'}`}>
-                                <button class={`address_confirm_button btn btn-dark`} onClick={handleClickAddProduct}>Thêm sản phẩm</button>
-                                <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
-                            </div> 
-                        </div>
+                        
                     </div> 
                     
                 </div>
                 <div class="col-auto"></div>
             </div>
-            <div>
-                <h2>Nhập số lượng</h2>
-
-                <div className="displayhidden">hi</div>
-                <div className="">ba</div>
+            <div class={`${statusPressAddProduct ? '' : 'display_hidden'}`}>
+                <h2>Nhập số lượng</h2> 
                 <div class="col-auto"></div>
                 <div class="body_box container col-lg-7">
                     {renderInputSoLuong} 
                 </div>
-                
-                <div class="col-auto"></div>
-
+                 
+                <div class="col-auto"></div> 
+            </div>
+            <div class="address_update_button_contain row">
+                <div class={`${statusPressAddProduct ? '' : 'display_hidden'}`}>
+                    <button class={`address_confirm_button btn btn-dark`} onClick={handleClickAddProduct}>Thêm sản phẩm</button>
+                    <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
+                </div> 
             </div>
         </div>
     )
