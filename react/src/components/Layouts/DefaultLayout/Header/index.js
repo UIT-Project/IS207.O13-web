@@ -249,6 +249,10 @@ function Header({settoggleFunctionLoginLogout}){
     const handleXemGioHang = () => {
         Navigate("/cart");
     }
+
+    const handleClickLogo = () => {
+        Navigate("/")
+    }
     
     // ở dưới đây là phần hiển thị thông tin giống html 
     // những sẽ có một số thẻ chứa thuộc tính là onChange, onClick để bắt sự kiện
@@ -261,7 +265,7 @@ function Header({settoggleFunctionLoginLogout}){
             <div class="header_body row">
                 {/* <!-- col-sm-2 là một class trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu" --> */}
                 <div class="header_body__logo col-sm-2">
-                    <img src="https://dosi-in.com/images/assets/icons/logo.svg" alt="logo dosi-in"/>
+                    <img src="https://dosi-in.com/images/assets/icons/logo.svg" alt="logo dosi-in" type="link" onClick={handleClickLogo}/>
                 </div>
                 <div class="header_body__search col-sm-7"> 
                     <div class="header_body__search__div_css">
