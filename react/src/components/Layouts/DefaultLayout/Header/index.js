@@ -134,6 +134,8 @@ function Header({settoggleFunctionLoginLogout}){
     //click ở phía quản lý tài khoản, trong trạgn thái login, đăng nhập thì logout 
     const clickInfoAccount = (event) => {
         event.preventDefault();
+        Navigate("/infoAccount");
+
     }
 
     // khi logout thì sẽ xoá dữ liệu được lưu trong localsorage
