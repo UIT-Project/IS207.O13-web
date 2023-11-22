@@ -92,7 +92,7 @@ function Home(){
     })
  
     return (         
-        <div class="container">
+        <div class="container left">
         {/* <!-- carousel slide là phần ảnh slide --> */}
         <div id="demo" class="carousel slide" data-bs-ride="carousel">
 
