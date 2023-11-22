@@ -20,5 +20,7 @@ const routes = {
     manageProduct: "/admin/manageProduct",
     updateProduct: "/admin/updateProduct",
     updateProduct2: "/admin/updateProduct2",
+    infoAccount: "/infoAccount",
+    printOrder: "/admin/printOrder",
 }
 export default routes;
