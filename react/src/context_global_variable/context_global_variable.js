@@ -9,6 +9,7 @@ export function GlobalVariable({children}){
     const [resultQuery, setResultQuery] = useState(""); 
     const [statusPressAddToCart, setStatusPressAddToCart] = useState(false);
     const divPopupCartRef = useRef(null);
+    const [infoCarts, setInfoCarts] = useState([]);
 
     return <GlobalVariableContext.Provider 
                 value={{
@@ -16,7 +17,8 @@ export function GlobalVariable({children}){
                     textQuery, setTextQuery, 
                     resultQuery, setResultQuery, 
                     statusPressAddToCart, setStatusPressAddToCart,
-                    divPopupCartRef
+                    divPopupCartRef,
+                    infoCarts, setInfoCarts
                 }}
             >
         {children}

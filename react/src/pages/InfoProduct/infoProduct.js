@@ -8,6 +8,10 @@ import useGlobalVariableContext from "../../context_global_variable/context_glob
 
 function InfoProduct(){
 
+    // Trong file này cần xử lý
+    // 1. lấy dữ liệu và hiển thị
+    // 2. xử lý thêm nhấn vào thêm sản phẩm vào giỏ hàng và xử lý khi thêm sp vào giỏ trùng với sản phẩm đã có trong giỏ thì upadte số lượng
+
     //dùng để lấy thông tin từ thanh địa chỉ (URL), cái này sẽ còn được ứng dụng để lấy thông tin thanh toán mà ngân hàng trả về
     //sau khi thanh toán thành công
     const urlParams = new URLSearchParams(window.location.search);

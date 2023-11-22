@@ -1,4 +1,7 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import "../Assets/adminLayout.css"
+import { faBars, faCogs, faDonate, faEnvelope, faExclamationTriangle, faList, faSearch, faSignOut, faUser } from "@fortawesome/free-solid-svg-icons";
+import { faBell, faFileAlt } from "@fortawesome/free-regular-svg-icons";
 // import "../Assets/vendor/jquery/jquery.min.js"
 // import "../Assets/vendor/bootstrap/js/bootstrap.bundle.min.js"
 // import "../Assets/vendor/jquery-easing/jquery.easing.min.js"
@@ -8,7 +11,7 @@ function NavigateAdmin(){
     return (
         <nav class="navbar navbar-expand navbar-light bg-white topbar mb-4 static-top shadow"> 
             <button id="sidebarToggleTop" class="btn btn-link d-md-none rounded-circle mr-3">
-                <i class="fa fa-bars"></i>
+                <FontAwesomeIcon icon={faBars} class="fa fa-bars"></FontAwesomeIcon>
             </button>
 
             <h2>Trang chủ</h2>
@@ -18,7 +21,7 @@ function NavigateAdmin(){
                 <li class="nav-item dropdown no-arrow d-sm-none">
                     <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-search fa-fw"></i>
+                        <FontAwesomeIcon icon={faSearch} class="fas fa-search fa-fw" ></FontAwesomeIcon>
                     </a>
                     <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in"
                         aria-labelledby="searchDropdown">
@@ -29,7 +32,7 @@ function NavigateAdmin(){
                                     aria-describedby="basic-addon2"/>
                                 <div class="input-group-append">
                                     <button class="btn btn-primary" type="button">
-                                        <i class="fas fa-search fa-sm"></i>
+                                        <FontAwesomeIcon icon={faSearch} class="fas fa-search fa-sm"></FontAwesomeIcon>
                                     </button>
                                 </div>
                             </div>
@@ -40,7 +43,7 @@ function NavigateAdmin(){
                 <li class="nav-item dropdown no-arrow mx-1">
                     <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-bell fa-fw"></i>
+                        <FontAwesomeIcon icon={faBell} class="fas fa-bell fa-fw"></FontAwesomeIcon>
                         <span class="badge badge-danger badge-counter">3+</span>
                     </a>
                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -51,7 +54,7 @@ function NavigateAdmin(){
                         <a class="dropdown-item d-flex align-items-center" href="#">
                             <div class="mr-3">
                                 <div class="icon-circle bg-primary">
-                                    <i class="fas fa-file-alt text-white"></i>
+                                    <FontAwesomeIcon icon={faFileAlt} class="fas fa-file-alt text-white"></FontAwesomeIcon>
                                 </div>
                             </div>
                             <div>
@@ -62,7 +65,7 @@ function NavigateAdmin(){
                         <a class="dropdown-item d-flex align-items-center" href="#">
                             <div class="mr-3">
                                 <div class="icon-circle bg-success">
-                                    <i class="fas fa-donate text-white"></i>
+                                    <FontAwesomeIcon icon={faDonate} class="fas fa-donate text-white"></FontAwesomeIcon>
                                 </div>
                             </div>
                             <div>
@@ -73,7 +76,7 @@ function NavigateAdmin(){
                         <a class="dropdown-item d-flex align-items-center" href="#">
                             <div class="mr-3">
                                 <div class="icon-circle bg-warning">
-                                    <i class="fas fa-exclamation-triangle text-white"></i>
+                                    <FontAwesomeIcon icon={faExclamationTriangle} class="fas fa-exclamation-triangle text-white"></FontAwesomeIcon>
                                 </div>
                             </div>
                             <div>
@@ -88,7 +91,7 @@ function NavigateAdmin(){
                 <li class="nav-item dropdown no-arrow mx-1">
                     <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                         data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                        <i class="fas fa-envelope fa-fw"></i>
+                        <FontAwesomeIcon icon={faEnvelope} class="fas fa-envelope fa-fw"></FontAwesomeIcon>
                         <span class="badge badge-danger badge-counter">7</span>
                     </a>
                     <div class="dropdown-list dropdown-menu dropdown-menu-right shadow animated--grow-in"
@@ -160,20 +163,20 @@ function NavigateAdmin(){
                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                         aria-labelledby="userDropdown">
                         <a class="dropdown-item" href="#">
-                            <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <FontAwesomeIcon icon={faUser} class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></FontAwesomeIcon>
                             Profile
                         </a>
                         <a class="dropdown-item" href="#">
-                            <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <FontAwesomeIcon icon={faCogs} class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></FontAwesomeIcon>
                             Settings
                         </a>
                         <a class="dropdown-item" href="#">
-                            <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <FontAwesomeIcon icon={faList} class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></FontAwesomeIcon>
                             Activity Log
                         </a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="#" data-toggle="modal" data-target="#logoutModal">
-                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                            <FontAwesomeIcon icon={faSignOut} class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></FontAwesomeIcon>
                             Logout
                         </a>
                     </div>

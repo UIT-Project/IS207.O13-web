@@ -13,6 +13,8 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 function SearchProduct(){ 
 
     // trang này hiển thị thông tin sản phẩm tìm kiếm được khi search ở thanh tìm kiếm trong header
+    // sau đó sử dụng các bộ lọc để lọc sản phẩm
+    // sau khi đọc các trang trước thì trang này mọi người có thể soi code để hiểu
 
     const { resultQuery,  setResultQuery, textQuery, setTextQuery} = useGlobalVariableContext();
 
