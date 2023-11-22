@@ -9,7 +9,7 @@ import Cart from "../pages/Cart/cart";
 import Payment from "../pages/Payment/payment";
 import AddProduct from "../pages/Admin/AddProduct/addProduct";
 import PaymentResult from "../pages/PaymentResult/paymentResult";
-// import MyOrder from "../pages/MyOrder/myorder"
+import MyOrder from "../pages/MyOrder/myorder"
 import ManageOrder from "../pages/Admin/ManageOrder/manageOrder"; 
 import ManageProduct from "../pages/Admin/ManageProduct/manageProduct";
 import UpdateProduct from "../pages/Admin/UpdateProduct/updateProduct";
@@ -36,7 +36,7 @@ const publicRoutes = [
     {path: config.routes.payment, component: Payment, layout: DefaultLayout },
     {path: config.routes.addProduct, component: AddProduct, layout: AdminLayout},
     {path: config.routes.paymentResult, component: PaymentResult, layout: DefaultLayout},
-    // {path: config.routes.myOrder, component: MyOrder, layout: DefaultLayout},
+    {path: config.routes.myOrder, component: MyOrder, layout: DefaultLayout},
     {path: config.routes.manageOrder, component: ManageOrder, layout: AdminLayout},
     {path: config.routes.manageProduct, component: ManageProduct, layout: AdminLayout},
     {path: config.routes.updateProduct, component: UpdateProduct, layout: AdminLayout},

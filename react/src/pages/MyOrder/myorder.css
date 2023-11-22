@@ -173,7 +173,7 @@ a, button{
 .sub_info_2 {
     border-bottom: 2px solid rgba(0, 0, 0, 25%);
 }
-button {
+/* button {
     font-size: large;
     font-weight: bold;
     color: white;
@@ -187,7 +187,7 @@ button:hover {
 }
 button:disabled {
     background-color: rgba(0, 0, 0, 50%);
-}
+} */
 
 /* footer */
 p{
