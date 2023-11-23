@@ -1,14 +1,13 @@
 {
-    "name": "web-application",
-    "version": "1.0.0",
-    "description": "web application for IS207.013",
-    "main": "index.js",
+    "private": true,
+    "type": "module",
     "scripts": {
-      "start": "node index.js",
-      "lint": "eslint src"
+        "dev": "vite",
+        "build": "vite build"
     },
-    "author": "Shenkedokato",
-    "dependencies": {
-      "express": "^4.17.1"
+    "devDependencies": {
+        "axios": "^1.1.2",
+        "laravel-vite-plugin": "^0.8.0",
+        "vite": "^4.0.0"
     }
 }

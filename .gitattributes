@@ -1,4 +1,4 @@
-* text=auto eol=crlf
+* text=auto eol=lf
 
 *.blade.php diff=html
 *.css diff=css
@@ -9,5 +9,3 @@
 /.github export-ignore
 CHANGELOG.md export-ignore
 .styleci.yml export-ignore
-
-# git config --global core.autocrlf false
