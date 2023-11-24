@@ -21,7 +21,7 @@
     outline: none;
     text-decoration: none;
     border: none;
-    cursor: pointer;
+    cursor: text !important;
     border-radius: var(--value_radius__header_search); 
     background-color: var(--color_search_bg); 
     flex: 1;
