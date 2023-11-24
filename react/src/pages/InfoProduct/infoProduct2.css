@@ -9,10 +9,7 @@
   display: flex;
 }
 
-.product_image__list_mini_image{ 
-}
-.product_image__list_mini_image__item{ 
-}
+
 .product_image__list_mini_image__item__img{
   height: 86px;
   width: 3.75rem;
@@ -23,10 +20,7 @@
   padding: 16px;
   
 }
-.detail_info_product__title{ 
-}
-.detail_info_product__price{
-}
+
 .detail_info_product__price__info_price{
   padding-bottom: 12px;
 }
@@ -88,6 +82,8 @@
   background-color: black; 
   /* giúp hiển thị chữ trong label, resize kích thước trùng với với label */
   -webkit-background-clip: text;
+  -moz-background-clip: text; 
+  background-clip: text;
 }
 .detail_info_product__quantity__input_text{
   width: 3.125rem;

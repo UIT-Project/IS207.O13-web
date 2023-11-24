@@ -43,7 +43,6 @@ body {
 
 .sidebar_nav_item {
     padding: 10px;
-    padding-left: 15px;
     margin-bottom: 10px;
 }
 
@@ -57,9 +56,9 @@ body {
     color: #fff;
 }
 
-.sidebar_subnav {
+/* .sidebar_subnav {
     padding-left: 10px;
-}
+} */
 
 .medium_font {
     font-size: medium;

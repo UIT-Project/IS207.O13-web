@@ -252,6 +252,10 @@ function Header({settoggleFunctionLoginLogout}){
         Navigate("/cart");
     }
 
+    const handleThanhToan = () => {
+        Navigate("/payment")
+    }
+
     const handleClickLogo = () => {
         Navigate("/")
     }
@@ -309,7 +313,7 @@ function Header({settoggleFunctionLoginLogout}){
                                             {renderInfoCart()}
                                         </ul>  
                                     <footer class="header__body__cart__orders__footer">
-                                        <button class="header__body__cart__orders__watch_cart_button">
+                                        <button class="header__body__cart__orders__watch_cart_button" onClick={handleThanhToan}>
                                             Thanh toán
                                         </button>
                                         {/* có onclick */}
