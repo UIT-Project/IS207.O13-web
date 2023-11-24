@@ -114,6 +114,9 @@ a, button{
 .header_body__logo {
     display: flex;
 }
+.header_body__logo:hover {
+    cursor: pointer;
+}
 /* .crossbar{
     width: 100%;
     height: 15px;
