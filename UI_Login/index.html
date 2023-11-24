@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script
+      src="https://kit.fontawesome.com/64d58efce2.js"
+      crossorigin="anonymous"
+    ></script>
+    <link rel="stylesheet" href="index.css" />
+    <title>Sign in & Sign up Form</title>
+    <!-- 2 thẻ link và script nhúng vào để sử dụng bootstrap 5-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- link đến cdn fontawesome để sử dụng các icon trên web fontawesome.com -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- link đến cdn normalize để chỉnh sửa lại các thuộc tính cơ bản của một trang html để dễ code hơn -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css?_cacheOverride=1696731791293" integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  </head>
+  <body>
+    <div class="container_all">
+      <div class="container">
+        <div class="forms-container">
+          <div class="signin-signup">
+            <form action="#" class="sign-in-form">
+              <h2 class="title"> Đăng Nhập</h2>
+              <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="text" placeholder="Username" />
+              </div>
+              <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Password" />
+              </div>
+              <input type="submit" style="font-weight: 700; border-color: rgb(11, 11, 11); border-radius: 10px;" value="Đăng Nhập" class="btn solid btn_login" />
+              <p class="social-text">Hoặc đăng nhập với</p>
+              <div class="social-media">
+                <a href="#" class="social-icon">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-google"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+              </div>
+            </form>
+            <form action="#" class="sign-up-form">
+              <h2 class="title"> Đăng Ký</h2>
+              
+                <div class="input-field">
+                  <i class="fas fa-user"></i>
+                  <input type="text" placeholder="First Name" />
+                </div>
+                <div class="input-field">
+                  <i class="fas fa-user"></i>
+                  <input type="text" placeholder="Last Name" />
+                </div>
+                <div class="gender-input">
+                <div id=" male-input">
+                  
+                  <input type="radio" name="gender" value="male" id="male" style="transform: scale(1.5);" />
+                  <label for="male">Nam</label>
+                </div>
+                <div id="female-input">
+                  
+                  <input type="radio" name="gender" value="female" id="female" style="transform: scale(1.5);" />
+                  <label for="female">Nữ</label>
+                </div>
+                </div>
+               
+                <div class="input-field">
+                  <i class="fas fa-cake"></i>
+                  <input type="date" placeholder="Birthday" style="color: #aaa;" />
+                </div>
+                
+              <div class="input-field">
+                <i class="fas fa-envelope"></i>
+                <input type="email" placeholder="Email" />
+              </div>
+              <div class="input-field">
+                <i class="fas fa-lock"></i>
+                <input type="password" placeholder="Password" />
+              </div>
+              
+
+
+              <input type="submit" style="font-weight: 700; border-color: rgb(11, 11, 11); border-radius: 10px;" class="btn btn_sign_up" value="Đăng Ký" />
+              <p class="social-text"> Hoặc đăng nhập với</p>
+              <div class="social-media">
+                <a href="#" class="social-icon">
+                  <i class="fab fa-facebook-f"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-twitter"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-google"></i>
+                </a>
+                <a href="#" class="social-icon">
+                  <i class="fab fa-linkedin-in"></i>
+                </a>
+              </div>
+            </form>
+          </div>
+        </div>
+  
+        <div class="panels-container">
+          <div class="panel left-panel">
+            <div class="content">
+              <h3> Bạn mới biết đến cửa hàng chúng tôi ?</h3>
+              <p style="text-align: justify;">
+                Cửa hàng chúng tôi là điểm đến lý tưởng cho những người yêu thời trang và muốn thể hiện phong cách cá nhân. 
+                Chúng tôi tự hào là một cửa hàng thời trang chất lượng, mang đến những bộ sưu tập đa dạng về quần áo, giày 
+                dép và phụ kiện để đáp ứng mọi nhu cầu thời trang của bạn.
+              </p>
+              <button class="btn transparent" id="sign-up-btn">
+                 Đăng Ký
+              </button>
+            </div>
+            <img src="/Users/macbook/Downloads/login/Sliding-Sign-In-Sign-Up-Form/img/log.svg" class="image" alt="" />
+          </div>
+          <div class="panel right-panel">
+            <div class="content">
+              <h3>Đã có tài khoản ?</h3>
+              <p style="text-align: justify;">
+                Cửa hàng chúng tôi là điểm đến lý tưởng cho những người yêu thời trang và muốn thể hiện phong cách cá nhân. 
+                Chúng tôi tự hào là một cửa hàng thời trang chất lượng, mang đến những bộ sưu tập đa dạng về quần áo, giày 
+                dép và phụ kiện để đáp ứng mọi nhu cầu thời trang của bạn.
+              </p>
+              <button class="btn transparent" id="sign-in-btn">
+                 Đăng Nhập
+              </button>
+            </div>
+            <img src="/Users/macbook/Downloads/login/Sliding-Sign-In-Sign-Up-Form/img/register.svg" class="image" alt="" />
+          </div>
+        </div>
+      </div>
+    </div>
+<!--footer-->
+    <footer>
+      <div class="container_footer">
+          <div class="container_footer_in">
+              <div class="row">
+                  <div class="col-sm-3">
+                      <h3>Giới thiệu</h3>
+                      <span>Đây là một trang web bán áo quần, phục vụ cho đồ án môn phát triển web của học sinh trường UIT</span>
+                  </div>
+                  <div class="col-sm-3">
+                      <h3>Thông tin liên hệ</h3>
+                      <ul class="footer__contact_info_ul">
+                          <li class="foooter__contact_info_li">
+                              <i class="fa-solid fa-location-dot"></i>
+                              <span>25, Nguyễn Du, Khu Phố 6, phường Linh Trung, TP. Thủ Đức</span>
+                          </li>
+                          <li class="foooter__contact_info_li">
+                              <i class="fa-solid fa-phone"></i>
+                              <span>0867474444</span>
+                          </li>
+                          <li class="foooter__contact_info_li">
+                              <i class="fa-solid fa-envelope"></i>
+                              <span>email123@gmail.com</span>
+                          </li>
+                          <li class="foooter__contact_info_li">
+                              <i class="fa-solid fa-calendar-days"></i>
+                              <span>9h-18h từ thứ 2 đến chủ nhật</span>
+                          </li>
+                      </ul>
+                  </div>
+                  <div class="col-sm-3">
+                      <h3>Nội dung chính sách</h3>
+                      <ul class="footer__policy_ul">
+                          <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Những câu hỏi thường gặp</a></li>
+                          <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách thành viên</a></li>
+                          <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách thanh toán</a></li>
+                          <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách vận chuyển</a></li>
+                          <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách khiếu nại</a></li>
+                          <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách đổi trả</a></li>
+                          <li class="footer__policy_li"><a class="footer__policy_li_link" href="#">Chính sách bảo hành</a></li>
+                      </ul>
+                  </div>
+                  <div class="col-sm-3">
+                      <h3>Fanpage</h3>
+                      <a href="#"><i class="contact_info__icon fa-brands fa-facebook"></i></a>
+                      <a href="#"><i class="contact_info__icon fa-brands fa-square-instagram"></i></a>
+                      <a href="#"><i class="contact_info__icon fa-brands fa-linkedin"></i></a>                        
+                  </div>
+              </div> 
+          </div>
+          <div class="bottom_footer">
+              <p>
+                  Copyright © 2023
+                  <a href="">Web_Name</a> 
+                  .
+                  <a href="">Powered by Nhom_2</a>
+              </p>
+          </div>
+      </div>
+  </footer>
+    <script src="app.js"></script>
+  </body>
+</html>

@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- thẻ meta charset hỗ trợ viết tiếng việt -->
+    <meta charset="UTF-8">
+    <!-- thẻ meta name="viewport" hỗ trợ làm web responsive -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- 2 thẻ link và script nhúng vào để sử dụng bootstrap 5-->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- link đến cdn fontawesome để sử dụng các icon trên web fontawesome.com -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- link đến cdn normalize để chỉnh sửa lại các thuộc tính cơ bản của một trang html để dễ code hơn -->
+    <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css?_cacheOverride=1696731791293"
+        integrity="sha512-NhSC1YmyruXifcj/KFRWoC561YpHpc5Jtzgvbuzx5VozKpWvQ+4nXhPdFgmx8xqexRcpAglTj9sIBWINXa8x5w=="
+        crossorigin="anonymous" referrerpolicy="no-referrer">
+    <!-- link css -->
+    <link rel="stylesheet" href="thanh_toan.css">
+    <title>Order status</title>
+</head>
+
+<body>
+    <!-- header -->
+    <header class="header_block">
+        <!-- class container là một class trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu" -->
+        <div class="container">
+            <!-- header_body chứa logo, search, sản phẩm yêu thích, trong giỏ hàng, đăng nhập, đăng xuất -->
+            <!-- row là một class  trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu"-->
+            <div class="header_body row">
+                <!-- col-sm-2 là một class trong bootstrap5 - ko hiểu thì gg search "container bootstap5 w3school để hiểu" -->
+                <div class="header_body__logo col-sm-2">
+                    <img src="https://dosi-in.com/images/assets/icons/logo.svg" alt="logo dosi-in">
+                </div>
+                <div class="header_body__page_name col-sm-7 d-flex align-items-center">
+                    <span class="fs-2 fw-bold">| Thanh toán</span>
+                </div>
+                <div class="header_body__option_and_info col-sm-3">
+                    <div class="header_body__option_and_info__div_css">
+                        <button class="header_body__option_and_info__button">
+                            <i class="fa-regular fa-heart"></i>
+                        </button>
+                        <button class="header_body__option_and_info__button">
+                            <i class="fa-solid fa-cart-shopping"></i>
+                        </button>
+                        <div class="header_body__option_and_info__user__div_css">
+                            <button class="header_body__option_and_info__button">
+                                <i class="fa-solid fa-user"></i>
+                            </button>
+                            <div class="header_body__option_and_info__user__text">
+                                <span class="header_body__option_and_info__user__text_taikhoan">Tài khoản</span>
+                                <span class="header_body__option_and_info__user__text_xinchao">Xin chào!</span>
+                            </div>
+                            <i class="fa-solid fa-caret-down caret_down_css"></i>
+                            <!--  -->
+                            <div class="header_body__option_and_info__user__select_login_or_logout">
+                                <span class="header_body__option_and_info__user__select_login_or_logout__in">Đăng
+                                    nhập</span>
+                                <span class="header_body__option_and_info__user__select_login_or_logout__in">Đăng
+                                    ký</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div></div>
+            </div>
+        </div>
+    </header>
+
+    <!-- body -->
+    <div class="col-auto"></div>
+    <div class="body_box container col-lg-7">
+        <div class="address_box">
+            <div class="address_title row text-start">
+                <div>
+                    <i class="fa-solid fa-location-dot"></i>
+                    <span>Địa chỉ nhận hàng</span>
+                </div>
+            </div>
+            <div class="address_info row justify-content-between">
+                <div class="col-auto fw-bold">
+                    <span>Nguyễn Văn A</span>
+                    <span>(+84)123456789</span>
+                </div>
+                <div class="col-auto">
+                    <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
+                </div>
+                <div class="col-auto">
+                    <a class="link-dark" data-bs-toggle="collapse" href="#address_change">Thay đổi</a>
+                </div>
+            </div>
+        </div>
+        <div class="address_change collapse" id="address_change">
+            <div class="address_box_container">
+                <div class="address_box">
+                    <div class="address_info row">
+                        <div class="col-1">
+                            <input type="radio" name="address_radio" data-bs-toggle="collapse" href="#address_change"
+                                checked>
+                        </div>
+                        <div class="col-5 fw-bold">
+                            <span>Nguyễn Văn A</span>
+                            <span>(+84)123456789</span>
+                        </div>
+                        <div class="col-6">
+                            <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="address_box">
+                    <div class="address_info row">
+                        <div class="col-1">
+                            <input type="radio" name="address_radio" data-bs-toggle="collapse" href="#address_change"
+                                checked>
+                        </div>
+                        <div class="col-5 fw-bold">
+                            <span>Nguyễn Văn A</span>
+                            <span>(+84)123456789</span>
+                        </div>
+                        <div class="col-6">
+                            <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="address_box">
+                    <div class="address_info row">
+                        <div class="col-1">
+                            <input type="radio" name="address_radio" data-bs-toggle="collapse" href="#address_change"
+                                checked>
+                        </div>
+                        <div class="col-5 fw-bold">
+                            <span>Nguyễn Văn A</span>
+                            <span>(+84)123456789</span>
+                        </div>
+                        <div class="col-6">
+                            <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
+                        </div>
+                    </div>
+                </div>
+                <button type="button" class="address_add_button">+ Thêm địa chỉ mới</button>
+            </div>
+        </div>
+        <div class="address_update" id="address_update">
+            <div class="row mb-2">
+                <div class="col-12">
+                    <label for="#" class="form-label">Tên người nhận hàng</label>
+                    <input type="text" class="form-control" value="Nguyễn Văn A">
+                </div>
+            </div>
+            <div class="row mb-2">
+                <div class="col-12">
+                    <label for="#" class="form-label">Địa chỉ</label>
+                    <input type="text" class="form-control" value="1 đường A">
+                </div>
+            </div>
+            <div class="row mb-3">
+                <div class="col-4">
+                    <label for="#" class="form-label">Thành phố</label>
+                    <select class="form-select" required>
+                    <option selected value="">Tp.HCM</option>
+                    <option value="">Hà Nội</option>
+                    <option value="">Đà Nẵng</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="#" class="form-label">Quận</label>
+                    <select class="form-select" required>
+                    <option selected value="">Quận 1</option>
+                    <option value="">Quận 2</option>
+                    <option value="">Quận 3</option>
+                    <option value="">Quận 4</option>
+                    <option value="">Quận 5</option>
+                    </select>
+                </div>
+                <div class="col-4">
+                    <label for="#" class="form-label">Phường</label>
+                    <select class="form-select" required>
+                    <option selected value="">Phường A</option>
+                    <option value="">Phường B</option>
+                    <option value="">Phường C</option>
+                    <option value="">Phường D</option>
+                    <option value="">Phường E</option>
+                    </select>
+                </div>
+            </div>
+            <div class="address_update_button_contain row">
+                <div>
+                    <button class="address_confirm_button btn btn-dark">Xác nhận</button>
+                    <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
+                </div>
+                
+            </div>
+        </div>
+        <div class="product_list">
+            <table>
+                <tr>
+                    <th class="ps-5" colspan="2">Sản phẩm</th>
+                    <th>Đơn giá</th>
+                    <th>Số lượng</th>
+                    <th>Thành tiền</th>
+                </tr>
+                <tr>
+                    <td class="col-2">
+                        <img class="payment_product rounded mx-auto d-block"
+                            src="../thong_tin_don_hang/img/dam-yem-nhum-co-xep-ly-tang-2-510x765 1.png" alt="">
+                    </td>
+                    <td class="col-4">
+                        <span class="fw-bold">Đầm cổ yếm xòe</span>
+                        <br />
+                        <span>màu Hồng, size M</span>
+                    </td>
+                    <td class="col-2">300000</td>
+                    <td class="col-2">2</td>
+                    <td class="col-2">600000</td>
+                </tr>
+                <tr>
+                    <td class="col-2">
+                        <img class="payment_product rounded mx-auto d-block"
+                            src="../thong_tin_don_hang/img/dam-yem-nhum-co-xep-ly-tang-2-510x765 1.png" alt="">
+                    </td>
+                    <td class="col-4">
+                        <span class="fw-bold">Đầm cổ yếm xòe</span>
+                        <br />
+                        <span>màu Hồng, size M</span>
+                    </td>
+                    <td class="col-2">300000</td>
+                    <td class="col-2">2</td>
+                    <td class="col-2">600000</td>
+                </tr>
+                <tr>
+                    <td class="col-2">
+                        <img class="payment_product rounded mx-auto d-block"
+                            src="../thong_tin_don_hang/img/dam-yem-nhum-co-xep-ly-tang-2-510x765 1.png" alt="">
+                    </td>
+                    <td class="col-4">
+                        <span class="fw-bold">Đầm cổ yếm xòe</span>
+                        <br />
+                        <span>màu Hồng, size M</span>
+                    </td>
+                    <td class="col-2">300000</td>
+                    <td class="col-2">2</td>
+                    <td class="col-2">600000</td>
+                </tr>
+            </table>
+        </div>
+        <div class="payment_info">
+            <div class="row justify-content-end">
+                <div class="col-3">
+                    <span>Voucher của shop:</span>
+                </div>
+                <div class="col-4"></div>
+                <div class="col-2 text-end">
+                    <span class="discount_price">-12000đ</span>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="vertical_align_center col-3">
+                    <span>Phí vận chuyển:</span>
+                </div>
+                <div class="col-4">
+                    <select class="form-select" required>
+                        <option selected value="">Giao hàng tiêu chuẩn</option>
+                        <option value="">Giao hàng hỏa tốc</option>
+                    </select>
+                </div>
+                <div class="vertical_align_center horizontal_align_right col-2 text-end">
+                    <span>32000đ</span>
+                </div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="vertical_align_center col-3">
+                    <span>Phương thức thanh toán</span>
+                </div>
+                <div class="col-4">
+                    <select class="form-select" required>
+                        <option selected value="">Thanh toán khi nhận hàng</option>
+                        <option value="">Chuyển khoản</option>
+                    </select>
+                </div>
+                <div class="col-2"></div>
+            </div>
+            <div class="row justify-content-end">
+                <div class="col-7 text-end">
+                    <span class="fs-4">Tổng số tiền:</span>
+                </div>
+                <div class="col-2 text-end">
+                    <span class="discount_price fs-4 fw-bold">1820000đ</span>
+                </div>
+            </div>
+        </div>
+        <div class="payment_confirm justify-content-end">
+            <button class="button_confirm float-end">Thanh toán</button>
+        </div>
+    </div>
+    <div class="col-auto"></div>
+</body>
+
+</html>
