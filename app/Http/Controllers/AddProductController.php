@@ -35,7 +35,7 @@ class AddProductController extends Controller
 
         DB::insert(
             "INSERT into sanphams(TENSP, GIAGOC, GIABAN, MAPL_SP, MOTA, created_at, updated_at) 
-            values('$TENSP', '$GIAGOC', '$GIABAN', '$MAPL_SP', '$MOTA', NOW(), NOW())"
+            values('$TENSP', $GIAGOC, $GIABAN, $MAPL_SP, '$MOTA', NOW(), NOW())"
         );
         $masp = DB::select("SELECT MASP FROM sanphams ORDER BY created_at DESC LIMIT 1");
         $masp_query = $masp[0]->MASP;

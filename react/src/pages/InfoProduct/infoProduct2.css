@@ -258,7 +258,7 @@
   }
 
   .product-content-right-product-rating{
-    display: flex; 
+    /* display: flex;  */
     align-items: center;
   }
   .product-content-right-product-rating_sao{

@@ -23,8 +23,8 @@ function UpdateProduct()
     const searchParams  = new URLSearchParams(window.location.search);
     const maspParam = searchParams.get('masp');
     const numberPagination = searchParams.get('numberPagination');
-    const nameStatus = searchParams.get('nameStatus');
-    console.log(numberPagination, nameStatus)
+    const nameStatus = searchParams.get('nameStatus'); 
+    
     //mã hex để hiện thị màu sắc lấy thực thuộc tính hex trong bảng mausacs 
     const [checkBoxSizeDefault, setCheckBoxSizeDefault] = useState(["S", "M", "L", "XL", "XXL", "3XL"]);
     const [infoUpdateProduct, setInfoUpdateProduct] = useState({
@@ -49,22 +49,7 @@ function UpdateProduct()
         dataProductDetail_sanpham_mausac_sizes__sizes: [],
         dataProductDetail_sanpham_mausac_sizes__colors: [], 
         dataProductDetail_sanpham_mausac_sizes__hinhanhs: [],
-    })
-    // const [infoUpdateProduct, setInfoUpdateProduct] = useState({
-    //     nameProduct: '',
-    //     originPrice: '',
-    //     sellPrice: '',
-    //     typeProduct: '',
-    //     desctiption: '',
-    //     checkboxColor: [],
-    //     checkboxSize: [],
-    //     indexThumnail: 0,
-    //     listHEX: [],
-    //     listColor: [],
-    //     images: [],
-    //     previewImages: [],
-    //     deleted: []
-    // });
+    }) 
     //lưu thông tin ảnh sẽ lưu xuống DB
     const [images, setImages] = useState([]);
 

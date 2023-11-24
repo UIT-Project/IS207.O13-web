@@ -3,31 +3,41 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
 import * as request from "../../../utils/request";
+
+import requestGet from "../../../utils/request";
+import requestPost from "../../../utils/request";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
+import { faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import {  faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 function ManageProduct()
 {
-    const numberOrderEachPage = 20;
-    const [xoadau, setXoaDau] = useState(0);
+    const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchProductDetail, setWatchProductDetail] = useState(false);
+
+    //update
+    const searchParams  = new URLSearchParams(window.location.search);
+    const maspParam = searchParams.get('maspParam');  
+    const numberPagination = searchParams.get('numberPagination');  
+    const nameStatusParam = searchParams.get('nameStatus');
+
+    let i = 0; 
+    const [statusPressUpdateProduct, setStatusPressUpdateProduct] = useState(true);
+    const Navigate = useNavigate();
+    const [listQuantity, setListQuantity] = useState([{
+        id: 1,
+        soluong: 0,
+    }]);
     const [infoProductDetail, setInfoProductDetail] = useState({
         dataProductDetail_sanphams: [],
         dataProductDetail_sanpham_mausac_sizes__sizes: [],
         dataProductDetail_sanpham_mausac_sizes__colors: [], 
         dataProductDetail_sanpham_mausac_sizes__hinhanhs: [],
     })
-
-    const searchParams  = new URLSearchParams(window.location.search);
-    const maspParam = searchParams.get('maspParam');  
-    const numberPagination = searchParams.get('numberPagination');  
-    const nameStatusParam = searchParams.get('nameStatus');
-    const Navigate = useNavigate();
     const [infoUpdateProduct, setInfoUpdateProduct] = useState({
         nameProduct: '',
         originPrice: '',
@@ -36,62 +46,24 @@ function ManageProduct()
         desctiption: '',
         checkboxColor: [],
         checkboxSize: [],
-        indexThumnail: 0,
-        listHEX: [],
-        listColor: [],
-        images: [],
         imgurl: [], 
-        previewImages: [],
-        deleted: []
+        listHEX: [],
+        quantity: [],
+        maHinhAnhDeleted: [],
+        mahinhanh: [],
+        masp: 1,
+        quantityImgurl: 0,
+        indexThumnail: 0,
     });
+    const [listColor, setListColor] = useState([]); 
+    const [images, setImages] = useState([]);
+    const [previewImages, setPreviewImages] = useState([]);
+    const [checkBoxSizeDefault, setCheckBoxSizeDefault] = useState(["S", "M", "L", "XL", "XXL", "3XL"]);
 
-    const handleInputInfoUpdateProduct = (e) => {
-        e.persist();
-        setInfoUpdateProduct({...infoUpdateProduct, [e.target.name]: e.target.value});
-        console.log(e.target.name + " " + e.target.value);
-    }
-
-    const handleInputInfoUpdateProduct_checkbox = (e) => {
-        e.persist();
-        var name = e.target.name;
-        var value = e.target.value;
-        if(infoUpdateProduct[name].includes(value)){
-            setInfoUpdateProduct({...infoUpdateProduct, [name]: infoUpdateProduct[name].filter(item => item !== value)});
-            console.log(infoUpdateProduct); 
-        }
-        else{
-            setInfoUpdateProduct({...infoUpdateProduct, [name]: [...infoUpdateProduct[name], value]})
-        }  
-    }
-
-    const handleClickUploadImage = async (e) => {
-        const fileImages = e.target.files;
-        setInfoUpdateProduct({...infoUpdateProduct, images: [...infoUpdateProduct.images, ...fileImages]});
-
-        const containFileImagesToRead = [...infoUpdateProduct.previewImages] 
-
-        //khối lệnh xử lý mã hoá để hiển thị preview ảnh
-        const readAsDataURL = (file) => {
-            return new Promise((resolve) => {
-              const reader = new FileReader();
-              reader.onloadend = () => resolve(reader.result);
-              reader.readAsDataURL(file);
-            });
-        };
-
-        for (const file of fileImages) {
-            const imageURL = await readAsDataURL(file); 
-            containFileImagesToRead.push(imageURL);
-        }
- 
-        setInfoUpdateProduct(containFileImagesToRead); 
-    }
-
-    const handleChooseThumnail = (e) =>{
-        setInfoUpdateProduct({...infoUpdateProduct, [e.target.name]: e.target.value}); 
-        console.log(infoUpdateProduct.indexThumnail);
-    }
-
+    
+    // manageProduct
+    const [keySearch, setKeySearch] = useState('');
+    const [typeSearch, setTypeSearch] = useState('MASP');
     const [orderStatus, setOrderStatus] = useState({
         nam:{
             nameState: 'Nam',
@@ -145,20 +117,260 @@ function ManageProduct()
         //         endIndex: numberOrderEachPage,
         //     }]
         // }  
-    }) 
-
+    })  
     const orderStatus_Array = Object.entries(orderStatus).map(([key, value]) => (
         {
             key: key,
             value: value
         }
     )) 
-    const handleScrollToTop = () => {
-        window.scrollTo({ top: 0, behavior: 'instant' });
-    };
     const [orderStatusPointer, setOrderStatusPointer] = useState(
         nameStatusParam ? orderStatus[nameStatusParam]?.nameState : orderStatus.nam.nameState
     );
+
+    //update
+    const handleInputInfoUpdateProduct = (e) => {
+        e.persist();
+        setInfoUpdateProduct({...infoUpdateProduct, [e.target.name]: e.target.value});
+        // console.log(e.target.name + " " + e.target.value);
+    }
+
+    //hiển thị các ô nhập số lượng sau khi nhấn button thêm sản phẩm
+     
+
+    //xử lý nhập tt sp với các checkbox
+    const handleInputInfoUpdateProduct_checkbox = (e) => {
+        e.persist();
+        var name = e.target.name;
+        var value = e.target.value;
+        if(name === 'checkboxColor')
+            value = parseInt(value)
+        if(infoUpdateProduct[name].includes(value)){
+            setInfoUpdateProduct({...infoUpdateProduct, [name]: infoUpdateProduct[name].filter(item => item !== value)});
+            // console.log(infoUpdateProduct); 
+        }
+        else{
+            setInfoUpdateProduct({...infoUpdateProduct, [name]: [...infoUpdateProduct[name], value]})
+        }   
+    }
+
+    //xử lý nhập ảnh, chọn ảnh từ máy client
+    //xử lý theo async, chờ upload hết ảnh mới hiển thị, không thì sẽ hiển thị sai
+    const handleClickUploadImage = async (e) => {
+        const fileImages = e.target.files;
+        setImages([...images, ...fileImages])
+
+        const containFileImagesToRead = [...previewImages] 
+
+        //khối lệnh xử lý mã hoá để hiển thị preview ảnh
+        const readAsDataURL = (file) => {
+            return new Promise((resolve) => {
+              const reader = new FileReader();
+              reader.onloadend = () => resolve(reader.result);
+              reader.readAsDataURL(file);
+            });
+        };
+        let i = 0;
+        for (const file of fileImages) {
+            const imageURL = await readAsDataURL(file); 
+            containFileImagesToRead.push({id: i, src: imageURL});
+            i++;
+        }
+ 
+        setPreviewImages(containFileImagesToRead); 
+    }
+
+    //xử lý lưu tt sp, hình ảnh sp xuống db khi click vào thêm sản phẩm
+    const handleClickUpdateProduct = () => {
+        // console.log(infoUpdateProduct, 'lklklklkl', infoUpdateProduct.quantityImgurl)
+        //sử dụng formData để nhét hình ảnh và thông tin vào một cục rồi đẩy xuống db
+        const formData = new FormData();
+        for(const img of images){
+            //images[] phải đặt tên như v thì laravel mới nhận ra đây là array với tên là images
+            //xuống laravel dùng $images = $request->file('images');
+            formData.append('images[]', img);//thêm image vào formdata
+        }
+        //thêm thông tin infoUpdateProduct vào form data, vì đây là một đối tượng nên cần stringify
+        formData.append('infoUpdateProduct', JSON.stringify(infoUpdateProduct));
+        listQuantity.shift();
+        formData.append('listQuantity', JSON.stringify(listQuantity));
+        // console.log(listQuantity, 'ffff', infoUpdateProduct.checkboxColor, 'áldkalsd', infoUpdateProduct.checkboxSize);
+
+
+        // setStatusPressUpdateProduct(!statusPressUpdateProduct);
+        // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
+        requestPost.post(`api/updateProduct?formData=${formData}`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+              },
+        })
+        // request.post(`api/UpdateProduct`, infoUpdateProduct)
+        .then(res => { 
+            // console.log(res.data);
+         })
+        .catch(error => { 
+            console.log(error);
+        })
+    }
+
+    const getInfoForUpdateProduct = () => {
+        requestGet.get(`/api/getInfoForAddProduct`)
+        .then(res => {
+            setListColor(res.data.listColor);
+            // console.log(res.data.listColor, 'color      lll');
+        })
+        .catch(error =>{
+            console.log(error)
+        })
+    }
+
+    //chọn một ảnh làm thumnail
+    const handleChooseThumnail = (e) =>{
+        setInfoUpdateProduct({...infoUpdateProduct, [e.target.name]: parseInt(e.target.value)}); 
+        // console.log(infoUpdateProduct.indexThumnail, "ok test choosethumnail", e.target.value);
+    }
+
+    const handleDeletePreviewImage = (type, index) => {
+        if(type === 'imageFromClient'){
+            const updatedImages = [...images];
+            const updatedPreviewImages = [...previewImages];
+        
+            // // Xoá hình ảnh tại vị trí index
+            updatedImages.splice(index, 1);
+            updatedPreviewImages.splice(index, 1);
+        
+            // // Cập nhật state với các mảng đã cập nhật
+            setImages(updatedImages);
+            setPreviewImages(updatedPreviewImages);
+            if(index === infoUpdateProduct.indexThumnail){
+                setInfoUpdateProduct({
+                    ...infoUpdateProduct,  
+                    indexThumnail: 0
+                })
+            }
+            else if(index < infoUpdateProduct.indexThumnail && index != 0){
+                const newIndexThumnail = infoUpdateProduct.indexThumnail - 1;
+                setInfoUpdateProduct({ 
+                    indexThumnail: newIndexThumnail
+                })
+            }
+            else if(index < infoUpdateProduct.indexThumnail && index == 0){
+                const newIndexThumnail = infoUpdateProduct.indexThumnail - 1;
+                setInfoUpdateProduct({
+                    ...infoUpdateProduct,   
+                    indexThumnail: newIndexThumnail
+                })
+            } 
+        }
+        else if(type === 'imageFromServe'){ 
+            const listDeleted = infoUpdateProduct.mahinhanh.filter((item, indexMAHINHANH) => {
+                // console.log(item, "okokok", index, '  ', indexMAHINHANH)
+                if(indexMAHINHANH === index){
+                    console.log(item, "ok in ra")
+                    return item
+                }
+            });
+            
+            infoUpdateProduct.mahinhanh.splice(index, 1);
+            infoUpdateProduct.imgurl.splice(index, 1);
+
+            // console.log(listDeleted, 'xoá nào');
+            if(index === infoUpdateProduct.indexThumnail){
+                setInfoUpdateProduct({
+                    ...infoUpdateProduct, 
+                    maHinhAnhDeleted: [
+                        ...infoUpdateProduct.maHinhAnhDeleted.filter(item => item), 
+                        ...listDeleted.filter(item => item)
+                    ],
+                    quantityImgurl: infoUpdateProduct.mahinhanh.length,
+                    indexThumnail: 0
+                })
+            }
+            else if(index < infoUpdateProduct.indexThumnail && index != 0){
+                const newIndexThumnail = infoUpdateProduct.indexThumnail - 1;
+                setInfoUpdateProduct({
+                    ...infoUpdateProduct, 
+                    maHinhAnhDeleted: [
+                        ...infoUpdateProduct.maHinhAnhDeleted.filter(item => item), 
+                        ...listDeleted.filter(item => item)
+                    ],
+                    quantityImgurl: infoUpdateProduct.mahinhanh.length,
+                    indexThumnail: newIndexThumnail
+                })
+            }
+            else if(index < infoUpdateProduct.indexThumnail && index == 0){
+                const newIndexThumnail = infoUpdateProduct.indexThumnail - 1;
+                setInfoUpdateProduct({
+                    ...infoUpdateProduct, 
+                    maHinhAnhDeleted: [
+                        ...infoUpdateProduct.maHinhAnhDeleted.filter(item => item), 
+                        ...listDeleted.filter(item => item)
+                    ],
+                    quantityImgurl: infoUpdateProduct.mahinhanh.length,
+                    indexThumnail: newIndexThumnail
+                })
+            }
+            else{
+                setInfoUpdateProduct({
+                    ...infoUpdateProduct, 
+                    maHinhAnhDeleted: [
+                        ...infoUpdateProduct.maHinhAnhDeleted.filter(item => item), 
+                        ...listDeleted.filter(item => item)
+                    ],
+                    quantityImgurl: infoUpdateProduct.mahinhanh.length, 
+                })
+            }
+  
+        } 
+        console.log("mã hình ảnh ", infoUpdateProduct.indexThumnail, ' ', index) 
+        
+    }
+
+    const getInforProductDetail = (masp) => {
+        request.get(`/api/infoProductDetail?masp=${masp}`)
+        .then(res => {   
+            
+            setInfoUpdateProduct({
+                ...infoUpdateProduct,
+                nameProduct: res.dataProductDetail_sanphams[0].TENSP,
+                originPrice: res.dataProductDetail_sanphams[0].GIAGOC,
+                sellPrice: res.dataProductDetail_sanphams[0].GIABAN,
+                typeProduct: res.dataProductDetail_sanphams[0].MAPL_SP,
+                desctiption: res.dataProductDetail_sanphams[0].MOTA, 
+                checkboxSize:  res.dataProductDetail_sanpham_mausac_sizes__sizes.map(item => item.MASIZE),
+                imgurl:  res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.imgURL),
+                listHEX:  res.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.HEX),
+                quantity: res.dataProductDetail_sanpham_mausac_sizes__soluongs,
+                checkboxColor:  res.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.MAMAU),
+                masp: masp,
+                quantityImgurl: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.length,
+                mahinhanh:  res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.MAHINHANH),
+                indexThumnail: parseInt(res.indexthumnail) - 1,
+            }) 
+ 
+            
+            console.log(parseInt(res.indexthumnail), 'test 00000');
+            // res.data.dataProductDetail_sanphams.map(item => 
+            //     setInfoUpdateProduct({
+            //         ...infoUpdateProduct,
+            //         nameProduct: item.TENSP
+            //     })
+            // )
+            // console.log(res);
+            setInfoProductDetail({
+                dataProductDetail_sanphams: res.dataProductDetail_sanphams,
+                dataProductDetail_sanpham_mausac_sizes__sizes: res.dataProductDetail_sanpham_mausac_sizes__sizes,
+                dataProductDetail_sanpham_mausac_sizes__colors: res.dataProductDetail_sanpham_mausac_sizes__colors, 
+                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
+            })
+            
+        })
+    };
+
+    //manageProduct
+    const handleScrollToTop = () => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
+    };
 
     const handleClickNavState = (item_status, item_pagina) => {
         // console.log(e.target.value) 
@@ -171,7 +383,7 @@ function ManageProduct()
             }
         );
         setOrderStatus(updateOpeningPage) 
-        console.log(item_status, 'test', item_pagina);
+        // console.log(item_status, 'test', item_pagina);
         getInfoOrderForUsers(item_status, item_pagina); 
     }
 
@@ -194,7 +406,47 @@ function ManageProduct()
     const handleWatchProductDetail = (item, masp) => {
         getInforProductDetail(masp);
         setWatchProductDetail(true); 
-        Navigate(`/admin/updateProduct?nameStatus=${[item.key]}&numberPagination=${[item.value.openingPage]}&masp=${masp}`);
+        getInfoForUpdateProduct();
+        console.log(item)
+        // Navigate(`/admin/updateProduct?nameStatus=${[item.key]}&numberPagination=${[item.value.openingPage]}&masp=${masp}`);
+    }
+
+    const handleDeleteProduct = (masp, item_ofOrderStatusArray) => {  
+
+        // const pageQuantityShow = Math.ceil((item_ofOrderStatusArray.value.orderList.length - 1) / numberOrderEachPage);
+        
+        // if(pageQuantityShow < item_ofOrderStatusArray.value.pageQuantity){
+        //     let arrAddToPaginationList = [];
+        //     for(let i = 1; i <= pageQuantityShow; i++)
+        //         arrAddToPaginationList.push(i); 
+        //     setOrderStatus(prevOrderStatus => ({
+        //         ...prevOrderStatus, 
+        //         [item_ofOrderStatusArray.key] : 
+        //             {
+        //                 ...prevOrderStatus[item_ofOrderStatusArray.key],  
+        //                 orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.filter(item => item.MASP !== masp),
+        //                 pageQuantity: pageQuantityShow, 
+        //                 paginationList: arrAddToPaginationList
+        //             }, 
+        //     }))
+        //     console.log(item_ofOrderStatusArray.value.paginationList, 'okok');
+        // }
+        // else{
+            setOrderStatus(prevOrderStatus => ({
+                ...prevOrderStatus, 
+                [item_ofOrderStatusArray.key] : 
+                    {...prevOrderStatus[item_ofOrderStatusArray.key],  
+                    orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.filter(item => item.MASP !== masp)}
+            }))
+            console.log(item_ofOrderStatusArray.value.orderList);
+
+        // }
+
+
+        request.post(`api/deleteProduct?masp=${masp}`)
+        .then(res => {
+            console.log(res)
+        })
     }
 
     const getInfoOrderForUsers =  (itemInOrderStatus_Array, openingPage) => {   
@@ -206,24 +458,26 @@ function ManageProduct()
         try{
             request.get(`/api/getInfoManageProduct?tenDanhMuc=${queryForGetInfoOrderForUsers.tenDanhMuc}
                 &start=${queryForGetInfoOrderForUsers.start}&numberOrderEachPage=${numberOrderEachPage}`)
-            .then(res=>{      
-                // console.log(res.data_thongtin_sanpham) 
-                // console.log(res.data_soluong_daban)
-
-                // const data_thongtin_sanpham = res.data_thongtin_sanpham;
-                // const data_soluong_daban = res.data_soluong_daban;
-
-                // const data_thongtin_sanpham_mix = data_thongtin_sanpham.map((item, index) => {
-                //     return {...item, SOLUONG_DABAN: data_soluong_daban[index]}
-                // })
-     
+            .then(res=>{       
                 setOrderStatus(prevOrderStatus => {
                     const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
                         item => item.paginationNumber === openingPage
                     );
+                    // if(res.data_thongtin_sanpham.length === 0){
+                    //     return {
+                    //         ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                    //         [itemInOrderStatus_Array.key] : 
+                    //         {   
+                    //             ...prevOrderStatus[itemInOrderStatus_Array.key],  
+                    //             pageQuantity: itemInOrderStatus_Array.value.pageQuantity - 1, 
+                    //             paginationList: itemInOrderStatus_Array.value.paginationList.splice(itemInOrderStatus_Array.value.paginationList.length - 1, 1),
+                    //             openingPage: itemInOrderStatus_Array.value.openingPage - 1,
+                    //         }
+                    //     }
+                    // }
                     if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
                         setPaginationNumberRunFirst(1);
-                        // console.log(res.orderList_DB.length)
+                        console.log(res.data_thongtin_sanpham, 'đ', openingPage)
                         return {
                             ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                             [itemInOrderStatus_Array.key] : 
@@ -235,7 +489,7 @@ function ManageProduct()
                                 ],  
                                 spaceGetDataFromOrderList: [
                                     ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
-                                     {
+                                    {
                                         paginationNumber: openingPage,
                                         ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
                                         startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
@@ -269,7 +523,7 @@ function ManageProduct()
                 orderStatus_Array.forEach(itemStatus => {
                     if(itemStatusFromDB.TENPL === itemStatus.value.nameState)
                     {
-                        const pageQuantityShow = parseInt(itemStatusFromDB.SL_MASP / numberOrderEachPage) + ((itemStatusFromDB.SL_MASP % numberOrderEachPage) > 0 ? 1 : 0)
+                        const pageQuantityShow = Math.ceil(itemStatusFromDB.SL_MASP / numberOrderEachPage)  
 
                         let arrAddToPaginationList = [];
                         for(let i = 1; i <= pageQuantityShow; i++)
@@ -277,98 +531,68 @@ function ManageProduct()
                         // console.log(pageQuantityShow);
                         setOrderStatus(prevOrderStatus => ({
                             ...prevOrderStatus, 
-                            [itemStatus.key] : {...prevOrderStatus[itemStatus.key],  pageQuantity: itemStatusFromDB.SL_MASP, paginationList: arrAddToPaginationList}
+                            [itemStatus.key] : 
+                                {...prevOrderStatus[itemStatus.key],  
+                                pageQuantity: itemStatusFromDB.SL_MASP, 
+                                paginationList: arrAddToPaginationList}
                         }))
                     }
                 })
             });
             // console.log(orderStatus) 
          }) 
-    } 
-    const getInforProductDetail = (masp) => {
-        request.get(`/api/infoProductDetail?masp=${masp}`)
-        .then(res => {  
-            setInfoProductDetail({
-                dataProductDetail_sanphams: res.dataProductDetail_sanphams,
-                dataProductDetail_sanpham_mausac_sizes__sizes: res.dataProductDetail_sanpham_mausac_sizes__sizes,
-                dataProductDetail_sanpham_mausac_sizes__colors: res.dataProductDetail_sanpham_mausac_sizes__colors, 
-                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
-            })
-            console.log(res, ' ', infoProductDetail, ' ', masp, '  ', res.dataProductDetail_sanphams[0].GIAGOC);
-            setInfoUpdateProduct({
-                ...infoUpdateProduct,
-                nameProduct: 'ok'
-            })
+    }  
+    const handleSearchInput = (e) => {
+        setKeySearch(e.target.value)
+    }
 
-            res.dataProductDetail_sanphams.map(item => 
-                setInfoUpdateProduct({
-                    ...infoUpdateProduct,
-                    nameProduct: item.TENSP,
-                })
-            )
-            
-            setInfoUpdateProduct(prevState  => ({
-                ...prevState,
-                checkboxColor: [
-                    ...prevState.checkboxColor.filter(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__colors.filter(item => item)
-                ]
-            }))
-            setInfoUpdateProduct({
-                ...infoUpdateProduct,
-                checkboxSize: [
-                    ...infoUpdateProduct.checkboxSize.filter(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__sizes.filter(item => item)
-                ]
-            }) 
-            console.log(infoUpdateProduct, "get2")
+    const handleSearch = () => {
+        Navigate(`/admin/searchProductAdmin?keySearch=${keySearch}&typeSearch=${typeSearch}`)
+    }
 
-            res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => 
-                setInfoUpdateProduct({
-                    ...infoUpdateProduct,
-                    imgurl: [...infoUpdateProduct.imgurl, item.imgURL]
-                })
-            )
-            
-            
-        })
-    };
+    const handleInputInfoTypeSearch = (e) => {
+        setTypeSearch(e.target.value)
+        console.log(typeSearch)
+    }
 
     useEffect(() => {   
-        orderStatus_Array.map(item => {
-            numberPagination > 1 ?  getInfoOrderForUsers(item, numberPagination)  :  getInfoOrderForUsers(item, 1)
-            // item.key === nameStatusParam ? handleClickNavState(item, 1) : ''
-            return (item.key === nameStatusParam ? handleClickNavState(item, 1) : '' )
-            }
-        )
- 
-        getQuantityOrderToDevidePage()
-        // console.log(document.getElementById(`product_${maspParam}`));
-        // maspParam ?  document.getElementById(`product_${maspParam}`).scrollIntoView({ behavior: 'smooth' })
-        // :  handleScrollToTop();
-        console.log(orderStatus, " ok")
-        orderStatus_Array.map(item => 
-            item.key === nameStatusParam ? handleClickNavState(item, 1) : ''
-        )
-    }, []) 
-    // useEffect(() => {
-    //     // Đây là một ví dụ cơ bản, bạn cần điều chỉnh logic ở đây để phù hợp với việc lấy dữ liệu từ API
-    //     if (infoUpdateProduct.nameProduct !== '') {
-    //       // Nếu dữ liệu đã có, bạn có thể thực hiện các xử lý tiếp theo ở đây
-    //       getInforProductDetail(1)   
+        orderStatus_Array.map(item => getInfoOrderForUsers(item, 1) ) 
+        getQuantityOrderToDevidePage()  
+        getInfoForUpdateProduct();
+        console.log(orderStatus.nam.orderList)
+    }, [])  
 
-    //       console.log('Dữ liệu đã được cập nhật:', infoUpdateProduct);
-    //     }
-    //   }, [infoUpdateProduct]);
+    //update
 
-    const renderListColor = infoUpdateProduct.listColor.map((item) => {
+    const handleInputQuantity = (e, i) => {  
+        let value = e.target.value
+        
+        const updatedList = listQuantity.filter(item => item.id !== i);
+        updatedList.push({ id: i, soluong: value });
+         
+        setListQuantity(updatedList)  
+        console.log(listQuantity, "nhập số lượng")
+    }
+
+    const renderInputQuantity = (i) => {  
+        return(
+            <input 
+                type="text" class="form-control" 
+                placeholder="Nhập số lượng"
+                name="listQuantity"
+                onChange={(e) => handleInputQuantity(e, i)}
+            />
+        )
+    }
+
+    const renderListColor = listColor.map((item) => {
         return (
             <div className="list_checbox_color_item">
                 <input 
                     type="checkbox" id={item.MAMAU} className="checkbox_sizes" 
                     name="checkboxColor"
                     value={item.MAMAU}
-                    checked={infoUpdateProduct.checkboxColor.includes(`${item.MAMAU}`)}
+                    checked={infoUpdateProduct.checkboxColor.includes(item.MAMAU)}
                     onChange={handleInputInfoUpdateProduct_checkbox}
                 ></input>
                 <label for={item.MAMAU}>
@@ -379,22 +603,36 @@ function ManageProduct()
     })
 
     //hiển thị các ô nhập số lượng sau khi nhấn button thêm sản phẩm
-    const renderInputSoLuong =  infoUpdateProduct.checkboxSize.map((itemSize, index) => {
+    const renderInputSoLuong =  infoUpdateProduct.checkboxSize.map((itemSize, indexSize) => {
         return (
-            <div key={index}>
-                <h6 className="input_quantity__size_name">Size {itemSize}</h6> 
+            <div> 
+                <h6 className="input_quantity__size_name" key={indexSize}>Size {itemSize}</h6> 
                 {
-                    infoUpdateProduct.listHEX.map(itemColor => {
-                        console.log(itemColor)
+                    infoUpdateProduct.checkboxColor.map((itemColor, indexColor) => {
+                        // console.log(itemColor, 'item')
                         return(
-                            <div className="input_quantity__quantity">
-                                <div className="input_quantity__product_color" style={{backgroundColor: `${itemColor.HEX}`}}></div>
-                                <div>
-                                    <span className="input_quantity__quantity_haved">0</span>
+                            <div className="input_quantity__quantity" key={indexColor}>
+                                <div className="input_quantity__product_color" style={{backgroundColor: `${listColor[itemColor - 1].HEX}`}}></div>
+                                <div> 
+                                    {
+                                        infoUpdateProduct.quantity.map((item, indexQuantity) => {
+                                            // console.log(item)
+                                            if(item.HEX === `${listColor[itemColor - 1].HEX}` && item.MASIZE === itemSize){
+                                                return(
+                                                    <span className="input_quantity__quantity_haved" key={indexQuantity}>{item.SOLUONG}</span> 
+                                                ) 
+                                            } 
+                                        })
+                                    }
                                 </div>
-                                <div class="input_gia_div">
-                                        {/* <label for="#" class="form-label">Giá niêm yết</label> */}
+                                {/* <div class="input_gia_div">
+                                        <label for="#" class="form-label">Giá niêm yết</label>
                                         <input type="text" class="form-control" placeholder="Nhập số lượng"/>
+                                </div> */}
+                                <div class="input_gia_div">
+                                        {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
+                                    {renderInputQuantity(++i)}    
+                                    
                                 </div>
                             </div> 
 
@@ -406,15 +644,186 @@ function ManageProduct()
     })
 
     //hiển thị ảnh preview
-    const renderPreViewImage = infoUpdateProduct.previewImages.map((image, index) =>{ 
+    const renderPreViewImage = previewImages.map((image, index) =>{ 
         return ( 
-            <div key={index}>
-                <img src={image} key={index} width={250} height={350}></img> 
-                <input type="radio" name="indexThumnail" value={index} onChange={handleChooseThumnail}></input>
+            <div className="prview_image" key={image.id}>
+                <img src={image.src} key={image.id} width={250} height={350}></img> 
+                <input 
+                    type="radio" name="indexThumnail" 
+                    value={infoUpdateProduct.mahinhanh.length + index} 
+                    checked={(infoUpdateProduct.mahinhanh.length + index) === (infoUpdateProduct.indexThumnail)}
+                    onChange={handleChooseThumnail}
+                ></input>
+                <div className="delete_prview_image">
+                    <button onClick={() => handleDeletePreviewImage('imageFromClient', image.id)}>
+                        <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>lll
+                    </button>
+                </div>
             </div>
         )
     })
+
+    const renderPreViewImageFromImgUrl = infoUpdateProduct.imgurl.map((item, index) => {
+        // console.log(item)
+        return ( 
+            <div key={index} className="prview_image">
+                <img src={item} key={index} width={250} height={350}></img> 
+                <input 
+                    type="radio" name="indexThumnail" value={index} 
+                    onChange={handleChooseThumnail}
+                    checked={(infoUpdateProduct.indexThumnail) === index}
+                ></input>
+                <div className="delete_prview_image">
+                    <button onClick={() => handleDeletePreviewImage('imageFromServe', index)}>
+                        <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
+                    </button>
+                </div>
+            </div>
+        )
+    })
+
+    const renderCheckBoxSize = checkBoxSizeDefault.map((item, index) =>
+        <div key={index}>
+            <input type="checkbox" id={`${item}`} className="checkbox_sizes"  
+                name="checkboxSize"
+                value={`${item}`}
+                checked={infoUpdateProduct.checkboxSize.includes(`${item}`)}
+                onChange={handleInputInfoUpdateProduct_checkbox}
+            ></input>
+            <label for={`${item}`}>{item}</label> 
+        </div> 
+    )
  
+    
+    const renderUpdateProduct = () => { 
+        return(
+            <div  className={`${watchProductDetail ? '' : 'display_hidden'}`}>
+                <div>
+                    <button onClick={handleTurnBack}>turn back</button>
+                    <div class="icon-update">
+                        <span>
+                            <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
+                        </span>
+                    </div>
+                    <h2>Cập nhật sản phẩm</h2>
+                    <div class="col-auto"></div>
+                    <div class="body_box container col-lg-7">
+                        
+                        <div class="address_update" id="address_update">
+                            <div class="row mb-2">
+                                <div class="col-12">
+                                    {/* <label for="#" class="form-label">Tên sản phẩm</label> */}
+                                    <input 
+                                        type="text" class="form-control" placeholder="Nhập tên sản phẩm" 
+                                        onChange={handleInputInfoUpdateProduct} 
+                                        name="nameProduct" 
+                                        value={infoUpdateProduct.nameProduct}
+                                    />
+                                </div>
+                            </div>
+                            <div class="row mb-2">
+                                <div class="col-12 input_gia">
+                                    <div class="input_gia_div">
+                                        {/* <label for="#" class="form-label">Giá niêm yết</label> */}
+                                        <input 
+                                            type="text" class="form-control" placeholder="Giá niêm yết" 
+                                            onChange={handleInputInfoUpdateProduct}
+                                            name="originPrice"  
+                                            value={infoUpdateProduct.originPrice}
+                                        />
+                                    </div>
+                                    <div class="input_gia_div">
+                                        {/* <label for="#" class="form-label">Giá bán</label> */}
+                                        <input 
+                                            type="text" class="form-control" placeholder="Giá bán" 
+                                            onChange={handleInputInfoUpdateProduct}
+                                            name="sellPrice"   
+                                            value={infoUpdateProduct.sellPrice}
+                                        />
+                                    </div>
+                                </div> 
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-4">
+                                    <label for="#" class="form-label">Phân loại</label>
+                                    <select class="form-select" required
+                                        onChange={handleInputInfoUpdateProduct}
+                                        name="typeProduct"
+                                        value={infoUpdateProduct.typeProduct}
+                                    >
+                                    <option selected value="1">Nam</option>
+                                    <option value="2">Nữ</option>
+                                    <option value="3">Trẻ em</option>
+                                    </select>
+                                </div> 
+                            </div>
+
+                            <div className="row">
+                                <div className="col-5 choose_size">
+                                    <div>
+                                        <label>Chọn các loại size</label>
+                                    </div>
+                                    <div>
+                                        {renderCheckBoxSize} 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="row">
+                                <div className="col-5 choose_size">
+                                    <div>
+                                        <label>Chọn các loại màu</label>
+                                    </div>
+                                    <div className="list_checbox_color">
+                                        {renderListColor} 
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div>
+                                <input type="file" multiple name="image" accept="image/*" onChange={handleClickUploadImage}></input>
+                                <div>
+                                    { renderPreViewImageFromImgUrl }
+                                    { renderPreViewImage }
+                                </div>
+                            </div>
+
+                            <textarea 
+                                id="w3review" name="desctiption" rows="4" cols="80"
+                                value={infoUpdateProduct.desctiption} 
+                                onChange={handleInputInfoUpdateProduct}
+                            >
+                                At w3schools.com you will learn how to make a website.
+                                They offer free tutorials in all web development technologies.
+                            </textarea>
+
+                            
+                        </div> 
+                        
+                    </div>
+                    <div class="col-auto"></div>
+                </div>
+                <div>
+                    <h2>Nhập số lượng</h2>
+ 
+                    <div class="col-auto"></div>
+                    <div class="body_box container col-lg-7">
+                        {renderInputSoLuong} 
+                    </div>
+                    <div class="address_update_button_contain row">
+                        <div class={`${statusPressUpdateProduct ? '' : 'display_hidden'}`}>
+                            <button class={`address_confirm_button btn btn-dark`} onClick={handleClickUpdateProduct}>Cập nhật sản phẩm</button>
+                            <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
+                        </div> 
+                    </div>
+                    <div class="col-auto"></div>
+
+                </div>
+            </div>
+        ) 
+    }
+    
+    //manageProduct
     const renderNavState = orderStatus_Array.map((item, index) =>  
         <li class="nav-item col-auto p-2" key={index}>
             <button 
@@ -426,7 +835,6 @@ function ManageProduct()
             </button>
         </li> 
     )
- 
     const renderEachProduct = (item, indexOrder) => {
         let index = {
             start: 0,
@@ -449,16 +857,15 @@ function ManageProduct()
                             <td data-label="Address">{product.GIAGOC}</td>
                             <td data-label="Day">{product.SOLUONGCONLAI}</td>
                             <td><button type="button" id="btn-status-deliveried">Đã giao</button>
-                            </td>
-                            <td><button type="button" id="btn-payment-after">Trả sau</button>
-                            </td>
-                            <td data-label="Subtotal">540.000</td>
+                            </td>  
                             <td data-label="update">
                                 <div class="icon-update">
                                     <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
-                                    <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
-                                    <span onClick={()=>handleWatchProductDetail(item, product.MASP)}>
+                                    <span onClick={()=>handleWatchProductDetail(item, product.MASP, product)}>
                                         <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
+                                    </span>
+                                    <span onClick={() =>handleDeleteProduct(product.MASP, item)}>
+                                        <FontAwesomeIcon icon={faTrashAlt} className="faTrashAlt"></FontAwesomeIcon>
                                     </span>
                                 </div>
                                 
@@ -474,167 +881,6 @@ function ManageProduct()
             <button key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
-
-    const renderProductDetail = () => {
-        // console.log("ok");
-        // getInforOrderDetail()   
-        // console.log(infoProductDetail, 'render') 
-        if(watchProductDetail === true)
-        {
-            // className={`${watchProductDetail ? "" : "display_hidden"}`}
-            return(  
-                <div >
-                    <h3>product detail</h3>
-                    <button onClick={handleTurnBack}>turn back</button>
-                    <div class="icon-update">
-                        <span>
-                            <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
-                        </span>
-                    </div>
-                    <div>
-                        <h6>{infoProductDetail.dataProductDetail_sanphams.TENSP}</h6>  
-                        <h6>{infoProductDetail.dataProductDetail_sanphams.MAPL_SP}</h6>  
-
-                    </div>
-                    <div>
-                        <h2>Thêm sản phẩm</h2>
-                        <div class="col-auto"></div>
-                        <div class="body_box container col-lg-7">
-                            
-                            <div class="address_update" id="address_update">
-                                <div class="row mb-2">
-                                    <div class="col-12">
-                                        {/* <label for="#" class="form-label">Tên sản phẩm</label> */}
-                                        <input 
-                                            type="text" class="form-control" placeholder="Nhập tên sản phẩm" 
-                                            onChange={handleInputInfoUpdateProduct} 
-                                            name="nameProduct" 
-                                            value={infoUpdateProduct.nameProduct}
-                                        />
-                                    </div>
-                                </div>
-                                <div class="row mb-2">
-                                    <div class="col-12 input_gia">
-                                        <div class="input_gia_div">
-                                            {/* <label for="#" class="form-label">Giá niêm yết</label> */}
-                                            <input 
-                                                type="text" class="form-control" placeholder="Giá niêm yết" 
-                                                onChange={handleInputInfoUpdateProduct}
-                                                name="originPrice"  
-                                                value={infoUpdateProduct.originPrice}
-                                            />
-                                        </div>
-                                        <div class="input_gia_div">
-                                            {/* <label for="#" class="form-label">Giá bán</label> */}
-                                            <input 
-                                                type="text" class="form-control" placeholder="Giá bán" 
-                                                onChange={handleInputInfoUpdateProduct}
-                                                name="sellPrice"   
-                                                value={infoUpdateProduct.sellPrice}
-                                            />
-                                        </div>
-                                    </div> 
-                                </div>
-                                <div class="row mb-3">
-                                    <div class="col-4">
-                                        <label for="#" class="form-label">Phân loại</label>
-                                        <select class="form-select" required
-                                            onChange={handleInputInfoUpdateProduct}
-                                            name="typeProduct"
-                                            value={infoUpdateProduct.typeProduct}
-                                        >
-                                        <option selected value="1">Nam</option>
-                                        <option value="2">Nữ</option>
-                                        <option value="3">Trẻ em</option>
-                                        </select>
-                                    </div> 
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-5 choose_size">
-                                        <div>
-                                            <label>Chọn các loại size</label>
-                                        </div>
-                                        <div>
-                                            <input type="checkbox" id="S" className="checkbox_sizes"  
-                                                name="checkboxSize"
-                                                value="S"
-                                                checked={infoUpdateProduct.checkboxSize.includes("S")}
-                                                onChange={handleInputInfoUpdateProduct_checkbox}
-                                            ></input>
-                                            <label for="S">S</label>
-
-                                            <input 
-                                                type="checkbox" id="M" className="checkbox_sizes" 
-                                                name="checkboxSize"
-                                                value="M"
-                                                checked={infoUpdateProduct.checkboxSize.includes("M")}
-                                                onChange={handleInputInfoUpdateProduct_checkbox}
-                                            ></input>
-                                            <label for="M">M</label>
-
-                                            <input 
-                                                type="checkbox" id="L" className="checkbox_sizes" 
-                                                name="checkboxSize"
-                                                value="L"
-                                                checked={infoUpdateProduct.checkboxSize.includes("L")}
-                                                onChange={handleInputInfoUpdateProduct_checkbox}
-                                            ></input>
-                                            <label for="L">L</label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div className="row">
-                                    <div className="col-5 choose_size">
-                                        <div>
-                                            <label>Chọn các loại màu</label>
-                                        </div>
-                                        <div className="list_checbox_color">
-                                            {renderListColor} 
-                                        </div>
-                                    </div>
-                                </div>
-
-                                <div>
-                                    <input type="file" multiple name="image" accept="image/*" onChange={handleClickUploadImage}></input>
-                                    <div>
-                                        { renderPreViewImage }
-                                    </div>
-                                </div>
-
-                                <textarea 
-                                    id="w3review" name="desctiption" rows="4" cols="80"
-                                    value={infoUpdateProduct.desctiption} 
-                                    onChange={handleInputInfoUpdateProduct}
-                                >
-                                    At w3schools.com you will learn how to make a website.
-                                    They offer free tutorials in all web development technologies.
-                                </textarea>
-
-                                <div class="address_update_button_contain row">
-                                    {/* <div class={`${statusPressAddProduct ? '' : 'display_hidden'}`}>
-                                        <button class={`address_confirm_button btn btn-dark`} onClick={handleClickAddProduct}>Thêm sản phẩm</button>
-                                        <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
-                                    </div>  */}
-                                </div>
-                            </div> 
-                            
-                        </div>
-                        <div class="col-auto"></div>
-                    </div>
-                    {
-                        infoProductDetail.dataProductDetail_sanphams.map((item, index) => 
-                            <div>
-                                <h6 key={index}>{item.TENSP}</h6>  
-                            </div>
-                        )
-                    }
-                </div>  
-            ) 
-
-        }
-    }
  
     const renderShowProductEveryState = orderStatus_Array.map((item, index) =>   
         {  
@@ -645,10 +891,7 @@ function ManageProduct()
                     <div 
                         class={`row justify-content-center ${orderStatusPointer === item.value.nameState ? "" : 'hiddenEachState'}`}
                         key={index} 
-                    > 
-                    {
-                        renderProductDetail()
-                    }
+                    >  
                     <div class={`content_list_order  ${watchProductDetail ? "display_hidden" : ""}`}>
                         <table class="table">
                             <thead>
@@ -657,10 +900,8 @@ function ManageProduct()
                                 <th scope="col">Tên sản phẩm</th>
                                 <th scope="col">Giá bán</th>
                                 <th scope="col">Giá gốc</th>
-                                <th scope="col" >Số lượng còn lại</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col">Thanh toán</th>
-                                <th scope="col">Tổng tiền</th>
+                                <th scope="col" >Số lượng còn lại</th> 
+                                <th scope="col" >Số lượng đã bán</th> 
                                 <th scope="col"></th>
 
                             </tr>
@@ -682,14 +923,39 @@ function ManageProduct()
             <div class="heading text-uppercase text-center">
                 <h1>Sản phẩm</h1>
             </div>
+            <div className="div_search">
+                <div>
+                    Tìm kiếm: 
+                </div>
+                <div>
+                    <input 
+                        name="keySearch"
+                        onChange={handleSearchInput}
+                    ></input> 
+                </div>
+                <div class="col-2"> 
+                    <select class="form-select" required
+                        onChange={handleInputInfoTypeSearch}
+                        name="typeSearch"
+                        value={typeSearch} 
+                    > 
+                    <option selected value="MASP">Mã Sản phẩm</option>
+                    <option value="TENSP">Tên Sản Phẩm</option>
+                    {/* <option value="GIABAN">Giá bán</option>
+                    <option value="GIAGOC">Giá gốc</option>  */}
+                    </select>
+                </div> 
+                <button onClick={handleSearch}>Search</button>
+            </div>
             {/* <!-- nav bar trạng thái đơn hàng --> */}
-            <ul class="nav nav-underline justify-content-center"> 
-                {renderNavState}
-            </ul>
-        
-        {/* <!--1 đơn hàng đang giao --> */} 
-        {renderShowProductEveryState}  
- 
+            <div className={`${watchProductDetail ? 'display_hidden' : ''}`}>
+                <ul class="nav nav-underline justify-content-center"> 
+                    {renderNavState}
+                </ul>
+                {/* <!--1 đơn hàng đang giao --> */} 
+                {renderShowProductEveryState}    
+            </div> 
+            {renderUpdateProduct()}
     </div>
     )
 }

@@ -20,14 +20,8 @@ use stdClass;
 class UpdateProductController extends Controller
 {
     public function updateProduct(Request $request){
-        $objectInfoUpdateProduct = json_decode($request->input('infoUpdateProduct'));
-        // $TENSP = $request->input('nameProduct');
-        // $GIAGOC = $request->input('originPrice');
-        // $GIABAN = $request->input('sellPrice');
-        // $MAPL_SP = $request->input('typeProduct');
-        // $MOTA = $request->input('desctiption');
-        // $checkboxColor = $request->input('checkboxColor');
-        // $checkboxSize = $request->input('checkboxSize'); 
+        $objectInfoUpdateProduct = json_decode($request->input('infoUpdateProduct')); 
+        $listQuantity = json_decode($request->input('listQuantity')); 
 
         $TENSP = $objectInfoUpdateProduct->nameProduct;
         $GIAGOC = $objectInfoUpdateProduct->originPrice;
@@ -45,16 +39,61 @@ class UpdateProductController extends Controller
         $indexThumnailCong1 = $indexThumnail + 1;
 
 
-        DB::insert(
-            "INSERT into sanphams(TENSP, GIAGOC, GIABAN, MAPL_SP, MOTA, created_at, updated_at) 
-            values('$TENSP', '$GIAGOC', '$GIABAN', '$MAPL_SP', '$MOTA', NOW(), NOW())"
+        DB::update(
+            "UPDATE sanphams 
+            SET TENSP = '$TENSP', GIAGOC = $GIAGOC, GIABAN = $GIABAN, 
+            MAPL_SP = $MAPL_SP, MOTA = '$MOTA', updated_at = NOW()
+            WHERE MASP = $masp_query"
         ); 
 
-
+        $i = 0;
         foreach ($checkboxSize as $itemSize){
             foreach($checkboxColor as $itemColor){
-                DB::insert("insert into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', 0)");
-                DB::update("UPDATE sanpham_mausac_sizes SET MAMAU = $itemColor, MASIZE = '$itemSize'");
+                $soluong = $listQuantity[$i];
+
+                $test_daco = DB::select(
+                    "SELECT MAXDSP FROM sanpham_mausac_sizes 
+                    WHERE MASP = $masp_query AND MAMAU = $itemColor AND MASIZE = '$itemSize'"
+                );
+                if( count($test_daco) > 0){
+                    DB::update("UPDATE sanpham_mausac_sizes SET SOLUONG = $soluong");
+                }
+                else if(count($test_daco) == 0){
+                    DB::insert("INSERT into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', $soluong)");
+                }
+                ++$i;
+            }
+        }
+
+        $KiemTraDeLuocBo = DB::select(
+            "SELECT MAMAU, MASIZE, MAXDSP FROM sanpham_mausac_sizes 
+            WHERE MASP = $masp_query"
+        );
+
+        foreach($KiemTraDeLuocBo as $item){
+            $i = 0; 
+            foreach ($checkboxSize as $itemSize){
+                foreach($checkboxColor as $itemColor){
+                    if($item->MASIZE == $itemSize && $item->MAMAU == $itemColor){
+                        $i++;
+                        break;
+                    }
+                }
+                if($i != 0){
+                    break;
+                }
+            }
+            if($i == 0){
+                $KiemTraCoTrongCTDHkhong = DB::select(
+                    "SELECT COUNT(MAXDSP) FROM chitiet_donhangs 
+                    WHERE MAXDSP = $item->MAXDSP"
+                );
+                if(count($KiemTraCoTrongCTDHkhong) == 0){
+                    DB::delete("DELETE FROM sanpham_mausac_sizes Where MAXDSP = $item->MAXDSP");
+                }
+                else{
+                    DB::update("UPDATE sanpham_mausac_sizes SET SOLUONG = 0 WHERE MAXDSP = $item->MAXDSP ");
+                }
             }
         }
 

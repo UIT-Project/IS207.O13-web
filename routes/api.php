@@ -79,6 +79,12 @@ Route::get('updateQuantity', [AddProductController::class, 'updateQuantity']);
 Route::get('getQuantityOrderToDevidePage', [AdminManageOrderController::class, 'getQuantityOrderToDevidePage']);
 Route::get('getInfoManageOrder', [AdminManageOrderController::class, 'getInfoManageOrder']);
 Route::get('infoOrderDetail', [AdminManageOrderController::class, 'infoOrderDetail']);
+Route::post('saveNote', [AdminManageOrderController::class, 'saveNote']);
+Route::post('updateOrderStatus', [AdminManageOrderController::class, 'updateOrderStatus']);
+
+//Admin - SearchOrder
+Route::get('getInfoSearchOrder', [AdminManageOrderController::class, 'getInfoSearchOrder']);
+Route::get('getQuantityOrderToDevidePage_Search', [AdminManageOrderController::class, 'getQuantityOrderToDevidePage_Search']);
 
 
 Route::get('testtest', [TestController::class, 'testtest']);
@@ -89,7 +95,12 @@ Route::get('testlaythongtin', [TestController::class, 'testlaythongtin']);
 Route::get('getQuantityProductToDevidePage', [ManageProductController::class, 'getQuantityProductToDevidePage']);
 Route::get('getInfoManageProduct', [ManageProductController::class, 'getInfoManageProduct']);
 Route::get('infoProductDetail', [ManageProductController::class, 'infoProductDetail']);
+Route::post('deleteProduct', [ManageProductController::class, 'deleteProduct']);
 
+//Admin - SearchProduct
+Route::get('getInfoSearchProductAdmin', [ManageProductController::class, 'getInfoSearchProductAdmin']);
+Route::get('getQuantityProductToDevidePage_SearchProductAdmin', [ManageProductController::class, 'getQuantityProductToDevidePage_SearchProductAdmin']);
+ 
 //Admin - UpdateProduct
 Route::post('updateProduct', [UpdateProductController::class, 'updateProduct']);
 Route::post('updateProduct2', [UpdateProductController::class, 'updateProduct2']);

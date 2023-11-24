@@ -115,4 +115,121 @@ class ManageProductController extends Controller
             'indexthumnail' => $indexthumnail,
         ]);
     }   
+
+    public function getQuantityProductToDevidePage_SearchProductAdmin(Request $request){ 
+
+        $keySearch = $request->query('keySearch');
+        $typeSearch = $request->query('typeSearch');
+
+        if(is_numeric($keySearch) && $typeSearch == 'MASP'){
+            $quantity = DB::select(
+                "SELECT COUNT(MASP)AS SL_MASP , TENPL 
+                FROM sanphams, phanloai_sanphams 
+                WHERE sanphams.MAPL_SP = phanloai_sanphams.MAPL
+                AND sanphams.$typeSearch = $keySearch
+                GROUP BY MAPL, TENPL "
+            );  
+        }
+        else{
+            $quantity = DB::select(
+                "SELECT COUNT(MASP)AS SL_MASP , TENPL 
+                FROM sanphams, phanloai_sanphams 
+                WHERE sanphams.MAPL_SP = phanloai_sanphams.MAPL
+                AND sanphams.$typeSearch LIKE '%$keySearch%'
+                GROUP BY MAPL, TENPL "
+            ); 
+        }
+
+
+        return response()->json([
+            'quantity'=> $quantity, 
+        ]); 
+    }
+
+    public function getInfoSearchProductAdmin(Request $request){
+        $tenDanhMuc = $request->query('tenDanhMuc');
+        $start = $request->query('start');
+        $numberOrderEachPage = $request->query('numberOrderEachPage'); 
+        
+        $keySearch = $request->query('keySearch');
+        $typeSearch = $request->query('typeSearch');
+
+        if(is_numeric($keySearch) && $typeSearch == 'MASP'){
+            $data_thongtin_sanpham = DB::select(
+                "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, 
+                -- SUM(chitiet_donhangs.SOLUONG) AS SOLUONGDABAN
+                SUM(sanpham_mausac_sizes.SOLUONG) AS SOLUONGCONLAI
+                FROM sanphams, sanpham_mausac_sizes, phanloai_sanphams
+                -- chitiet_donhangs, 
+                WHERE TENPL = '$tenDanhMuc'
+                AND sanphams.$typeSearch = $keySearch
+                AND sanphams.MASP = sanpham_mausac_sizes.MASP 
+                -- AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP
+                AND phanloai_sanphams.MAPL = sanphams.MAPL_SP
+                GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC
+                ORDER BY sanphams.MASP DESC
+                LIMIT $start, $numberOrderEachPage" 
+            );
+
+        }
+        else{
+            $data_thongtin_sanpham = DB::select(
+                "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, 
+                -- SUM(chitiet_donhangs.SOLUONG) AS SOLUONGDABAN
+                SUM(sanpham_mausac_sizes.SOLUONG) AS SOLUONGCONLAI
+                FROM sanphams, sanpham_mausac_sizes, phanloai_sanphams
+                -- chitiet_donhangs, 
+                WHERE TENPL = '$tenDanhMuc'
+                AND MASP LIKE '%$keySearch%'
+                AND sanphams.MASP = sanpham_mausac_sizes.MASP 
+                -- AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP
+                AND phanloai_sanphams.MAPL = sanphams.MAPL_SP
+                GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC
+                ORDER BY sanphams.MASP DESC
+                LIMIT $start, $numberOrderEachPage" 
+            );
+        }
+        // $data_soluong_daban = DB::select(
+        //     "SELECT chitiet_donhangs.maxdsp, sum(chitiet_donhangs.soluong), sanphams.masp, count(madh) 
+        //     from chitiet_donhangs, sanpham_mausac_sizes, phanloai_sanphams, sanphams 
+        //     where chitiet_donhangs.maxdsp = sanpham_mausac_sizes.maxdsp 
+        //     and phanloai_sanphams.mapl = sanphams.mapl_sp 
+        //     and sanpham_mausac_sizes.masp = sanphams.masp and TENPL = '$tenDanhMuc'
+        //     GROUP BY SANPHAMS.MASP"
+        // );
+
+        // $data_soluong_daban = SanPham::join('phanloai_sanphams', 'phanloai_sanphams.mapl', '=', 'sanphams.mapl_sp')
+        // ->join('sanpham_mausac_sizes', 'sanpham_mausac_sizes.masp', '=', 'sanphams.masp')
+        // ->join('chitiet_donhangs', 'chitiet_donhangs.maxdsp', '=', 'sanpham_mausac_sizes.maxdsp')
+        // ->where('tenpl', 'Nam')
+        // ->select('sanphams.masp', 'sanphams.tensp', 'sanphams.giasp', \DB::raw('MAX(chitiet_donhangs.maxdsp) as maxdsp'), \DB::raw('SUM(chitiet_donhangs.soluong) as total_soluong'), \DB::raw('COUNT(madh) as madh_count'))
+        // ->groupBy('sanphams.masp')
+        // ->get();
+        return response()->json([
+            'data_thongtin_sanpham' => $data_thongtin_sanpham,
+            // 'data_soluong_daban' => $data_soluong_daban,
+        ]);
+    }
+
+    public function deleteProduct(Request $request){
+        $masp = $request->input('masp');  
+        $haveInCTDH = DB::select(
+            "SELECT sanpham_mausac_sizes.MAXDSP 
+            FROM sanpham_mausac_sizes, chitiet_donhangs
+            WHERE MASP = $masp
+            AND sanpham_mausac_sizes.MAXDSP = chitiet_donhangs.MAXDSP"
+        );
+
+        if(count($haveInCTDH) == 0){
+            DB::delete("DELETE FROM sanpham_mausac_sizes WHERE MASP = $masp");
+            DB::delete("DELETE FROM hinhanhsanphams WHERE MASP = $masp");
+            DB::delete("DELETE FROM sanphams WHERE MASP = $masp");
+            return response()->json([
+                'massage' => 'xoa thanh cong',
+            ]);
+        }
+        return response()->json([
+            'massage' => 'xoa khong thanh cong',
+        ]);
+    }
 }
