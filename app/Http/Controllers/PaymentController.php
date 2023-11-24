@@ -21,7 +21,13 @@ class PaymentController extends Controller
 {
     public function infoForPayment(Request $request){
         $matk = $request->query('matk');
-        $data_sanpham = DB::select("SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  FROM chitiet_giohangs, sanphams, mausacs WHERE MATK = 1 AND chitiet_giohangs.MASP = sanphams.MASP AND mausacs.MAMAU = chitiet_giohangs.MAMAU");
+        $data_sanpham = DB::select(
+            "SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, 
+            chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  
+            FROM chitiet_giohangs, sanphams, mausacs 
+            WHERE MATK = $matk AND chitiet_giohangs.MASP = sanphams.MASP 
+            AND mausacs.MAMAU = chitiet_giohangs.MAMAU"
+        );
 
         $currentDate = Carbon::now()->format('Y-m-d');
         $data_voucher = DB::select("SELECT MAVOUCHER, GIATRIGIAM FROM vouchers WHERE SOLUONG > 0 AND THOIGIANKT > '$currentDate'");

@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import request from "../../utils/request";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 import {Media} from "./image";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 function InfoProduct(){
     // Trong file này cần xử lý
     // 1. lấy dữ liệu và hiển thị
@@ -93,7 +95,7 @@ function InfoProduct(){
             if(item.MASP === parseInt(dataAddProductToCart.masp) && item.MATK === parseInt(dataAddProductToCart.matk)
                 && item.MAMAU === parseInt(dataAddProductToCart.mamau) && item.MASIZE === dataAddProductToCart.masize){
                     try{
-                        request.post("/api/updateQuantityProductInCart", dataAddProductToCart)
+                        request.post(`api/updateQuantityProductInCart`, dataAddProductToCart)
                         .then(res => {  
                             setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
                         })
@@ -252,8 +254,8 @@ function InfoProduct(){
                             <div class="detail_info_product_button_detail " >
                                 {/* quan trọng */}
                                 <button id="them_hang" ref={buttonAddToCartRef} onClick={handleAddToCart}>
-                                    <i class="fa-solid fa-cart-shopping detail_info_product_button_detail__icon_addToCart"></i>
-                                    <p className="detail_info_product_button_detail__text_addToCart">THÊM VÀO GIỎ HÀNG</p>
+                                    <FontAwesomeIcon icon={faCartShopping} class="detail_info_product_button_detail__icon_addToCart"></FontAwesomeIcon>
+                                    <p className="detail_info_product_button_detail__text_addToCart">THÊM VÀO GIỎ</p>
                                 </button>
                                 <button id="mua_hang">MUA NGAY</button>
                                 <button id="fav"><i class="fa-solid fa-heart"></i></button>

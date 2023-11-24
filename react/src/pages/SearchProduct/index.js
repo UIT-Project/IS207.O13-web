@@ -1,7 +1,7 @@
 import images from "../../assets/images"; 
 import './index.css'
 import 'bootstrap/dist/css/bootstrap.css'; 
-import * as request from "../../utils/request";
+import request from "../../utils/request";
 import { useEffect, useState } from "react";
 import { Button } from "bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -16,7 +16,7 @@ function SearchProduct(){
     // sau đó sử dụng các bộ lọc để lọc sản phẩm
     // sau khi đọc các trang trước thì trang này mọi người có thể soi code để hiểu
 
-    const { resultQuery,  setResultQuery, textQuery, setTextQuery} = useGlobalVariableContext();
+    const { resultQuery, setResultQuery, textQuery, setTextQuery} = useGlobalVariableContext();
 
     const [filter, setFilter] = useState('');
     const [listFilter, setListFilter] = useState(['moinhat', 'banchay', 'thapDenCao', 'caoDenThap'])
@@ -30,10 +30,10 @@ function SearchProduct(){
             giatri: 1,
         }
         console.log(dataForFilterSearch);
-        request.get(`/api/filterSearchProduct`, dataForFilterSearch)
+        request.get(`/api/filterSearchProduct`, {params: dataForFilterSearch} )
         .then(res => { 
             console.log(res);
-            // setResultQuery(res.data.data_product);
+            setResultQuery(res.data.data_product);
         })
         .catch(err => {
             console.log(err);
@@ -43,40 +43,48 @@ function SearchProduct(){
     useEffect(() => {  
     }, []);  
     
-    const product = resultQuery.map((product) => (
-        <div key={product.MASP} class="product_item_div__out">
-            <div class="product_item_div__in">
-                <a href="#">
-                    <div>
-                        <img src={images.product_1} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
-                    </div>
-                </a>
-                <div class="product_item__summary">
-                    <a href="#">
-                        <h6 class="product_item__summary__title">{product.TENSP}</h6>
-                    </a>
-                    <div class="product_item__summary__price_and_heart">
-                        <div class="product_item__summary__price">
-                            <span class="product_item__summary__sale_price">{product.GIABAN}₫
-                            </span>
-                            <span class="product_item__summary__origin_price">
-                                <del>{product.GIAGOC}₫</del>
-                            </span>
-                        </div> 
-                        <div>
-                            <button  className="product_item__summary__heart">
-                                <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
-                            </button> 
+    const product = () => {
+        if(Array.isArray(resultQuery)){
+            return(
+                resultQuery.map((product) => (
+                    <div key={product.MASP} class="product_item_div__out">
+                        <div class="product_item_div__in">
+                            <a href="#">
+                                <div>
+                                    <img src={images.product_1} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
+                                </div>
+                            </a>
+                            <div class="product_item__summary">
+                                <a href="#">
+                                    <h6 class="product_item__summary__title">{product.TENSP}</h6>
+                                </a>
+                                <div class="product_item__summary__price_and_heart">
+                                    <div class="product_item__summary__price">
+                                        <span class="product_item__summary__sale_price">{product.GIABAN}₫
+                                        </span>
+                                        <span class="product_item__summary__origin_price">
+                                            <del>{product.GIAGOC}₫</del>
+                                        </span>
+                                    </div> 
+                                    <div>
+                                        <button  className="product_item__summary__heart">
+                                            <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
+                                        </button> 
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="grid__column_10__product_thumbail__yeuthich">
+                                <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
+                                <span class="grid__column_10__product_thumbail__text_yeuthich">Hot</span> 
+                            </div> 
                         </div>
                     </div>
-                </div>
-                <div class="grid__column_10__product_thumbail__yeuthich">
-                    <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
-                    <span class="grid__column_10__product_thumbail__text_yeuthich">Hot</span> 
-                </div> 
-            </div>
-        </div>
-    ))
+                ))
+            )
+        }
+    }
+
+    
      
     return ( 
         <div class="container"> 
@@ -181,7 +189,7 @@ function SearchProduct(){
                     {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}
                     <div class="product_item_container__in">
                         {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
-                        {product} 
+                        {product()} 
                     </div>
                 </div>
             </div> 

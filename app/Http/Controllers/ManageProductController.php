@@ -32,9 +32,9 @@ class ManageProductController extends Controller
         ]); 
     }
     public function getInfoManageProduct(Request $request){
-        $tenDanhMuc = $request->query('tenDanhMuc');
-        $start = $request->query('start');
-        $numberOrderEachPage = $request->query('numberOrderEachPage');
+        $tenDanhMuc = $request->input('tenDanhMuc');
+        $start = $request->input('start');
+        $numberOrderEachPage = $request->input('numberOrderEachPage');
 
         $data_thongtin_sanpham = DB::select(
             "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, 
@@ -73,7 +73,7 @@ class ManageProductController extends Controller
     }
 
     public function infoProductDetail(Request $request){
-        $masp = $request->query('masp');
+        $masp = $request->input('masp');
         $dataProductDetail_sanphams = DB::select("SELECT TENSP, GIAGOC, GIABAN, MAPL_SP, MOTA from sanphams where MASP = $masp");
         $dataProductDetail_sanpham_mausac_sizes__sizes = DB::select("SELECT DISTINCT(MASIZE) FROM sanpham_mausac_sizes where MASP = $masp");
         $dataProductDetail_sanpham_mausac_sizes__colors = DB::select(
@@ -180,7 +180,7 @@ class ManageProductController extends Controller
                 FROM sanphams, sanpham_mausac_sizes, phanloai_sanphams
                 -- chitiet_donhangs, 
                 WHERE TENPL = '$tenDanhMuc'
-                AND MASP LIKE '%$keySearch%'
+                AND $typeSearch LIKE '%$keySearch%'
                 AND sanphams.MASP = sanpham_mausac_sizes.MASP 
                 -- AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP
                 AND phanloai_sanphams.MAPL = sanphams.MAPL_SP

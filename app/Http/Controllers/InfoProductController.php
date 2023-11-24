@@ -61,4 +61,14 @@ class InfoProductController extends Controller
             'matk' => $matk,
         ]);
     }
+    public function updateQuantityProductInCart(Request $request){
+        $soluong = $request->input('soluongsp');
+        $matk = $request->input('matk');
+        $masp = $request->input('masp');
+        $masize = $request->input('masize');
+        $mamau = $request->input('mamau');
+
+        DB::update("UPDATE chitiet_giohangs SET SOLUONG = SOLUONG + $soluong WHERE MATK = '$matk' 
+        AND MASP = '$masp' AND MASIZE = '$masize' AND MAMAU = '$mamau'");
+    }
 }

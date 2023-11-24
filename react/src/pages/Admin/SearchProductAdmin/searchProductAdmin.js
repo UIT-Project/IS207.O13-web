@@ -2,7 +2,7 @@ import "./searchProductAdmin.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
-import * as request from "../../../utils/request";
+import request from "../../../utils/request";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -198,6 +198,9 @@ function SearchProductAdmin()
         var queryForGetInfoOrderForUsers = { 
             start: numberOrderEachPage * ( openingPage - 1),
             tenDanhMuc: itemInOrderStatus_Array.value.nameState,
+            numberOrderEachPage: numberOrderEachPage,
+            typeSearch: typeSearch,
+            keySearch: keySearch,
         }   
         console.log(keySearch, ' test test', typeSearch)
         if(typeSearch === 'MASP'){
@@ -205,9 +208,7 @@ function SearchProductAdmin()
         }
 
         try{
-            request.get(`/api/getInfoSearchProductAdmin?tenDanhMuc=${queryForGetInfoOrderForUsers.tenDanhMuc}
-                &start=${queryForGetInfoOrderForUsers.start}&numberOrderEachPage=${numberOrderEachPage}&keySearch=${keySearch}
-                &typeSearch=${typeSearch}`)
+            request.get(`/api/getInfoSearchProductAdmin`, {params: queryForGetInfoOrderForUsers})
             .then(res=>{       
                 setOrderStatus(prevOrderStatus => {
                     const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
@@ -215,7 +216,7 @@ function SearchProductAdmin()
                     );
                     if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
                         setPaginationNumberRunFirst(1);
-                        // console.log(res.orderList_DB.length)
+                        // console.log(res.data.orderList_DB.length)
                         return {
                             ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                             [itemInOrderStatus_Array.key] : 
@@ -223,7 +224,7 @@ function SearchProductAdmin()
                                 ...prevOrderStatus[itemInOrderStatus_Array.key], 
                                 orderList:  [
                                     ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
-                                    ...res.data_thongtin_sanpham.filter(item =>  item)
+                                    ...res.data.data_thongtin_sanpham.filter(item =>  item)
                                 ],  
                                 spaceGetDataFromOrderList: [
                                     ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
@@ -231,7 +232,7 @@ function SearchProductAdmin()
                                         paginationNumber: openingPage,
                                         ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
                                         startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                        endIndex: res.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                        endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
                                     },
                                 ] 
                             }
@@ -253,11 +254,15 @@ function SearchProductAdmin()
         }
          
     }
+    const data = {
+        keySearch: keySearch,
+        typeSearch: typeSearch,
+    }
 
     const getQuantityOrderToDevidePage = () => {
-        request.get(`/api/getQuantityProductToDevidePage_SearchProductAdmin?keySearch=${keySearch}&typeSearch=${typeSearch}`)
+        request.get(`/api/getQuantityProductToDevidePage_SearchProductAdmin`, {params: data})
         .then(res=> {
-            res.quantity.forEach(itemStatusFromDB => {
+            res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
                     if(itemStatusFromDB.TENPL === itemStatus.value.nameState)
                     {
@@ -278,21 +283,21 @@ function SearchProductAdmin()
          }) 
     } 
     const getInforProductDetail = (masp) => {
-        request.get(`/api/infoProductDetail?masp=${masp}`)
+        request.get(`/api/infoProductDetail`, {params: {masp: masp}})
         .then(res => {  
             setInfoProductDetail({
-                dataProductDetail_sanphams: res.dataProductDetail_sanphams,
-                dataProductDetail_sanpham_mausac_sizes__sizes: res.dataProductDetail_sanpham_mausac_sizes__sizes,
-                dataProductDetail_sanpham_mausac_sizes__colors: res.dataProductDetail_sanpham_mausac_sizes__colors, 
-                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
+                dataProductDetail_sanphams: res.data.dataProductDetail_sanphams,
+                dataProductDetail_sanpham_mausac_sizes__sizes: res.data.dataProductDetail_sanpham_mausac_sizes__sizes,
+                dataProductDetail_sanpham_mausac_sizes__colors: res.data.dataProductDetail_sanpham_mausac_sizes__colors, 
+                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
             })
-            console.log(res, ' ', infoProductDetail, ' ', masp, '  ', res.dataProductDetail_sanphams[0].GIAGOC);
+            console.log(res, ' ', infoProductDetail, ' ', masp, '  ', res.data.dataProductDetail_sanphams[0].GIAGOC);
             setInfoUpdateProduct({
                 ...infoUpdateProduct,
                 nameProduct: 'ok'
             })
 
-            res.dataProductDetail_sanphams.map(item => 
+            res.data.dataProductDetail_sanphams.map(item => 
                 setInfoUpdateProduct({
                     ...infoUpdateProduct,
                     nameProduct: item.TENSP,
@@ -303,19 +308,19 @@ function SearchProductAdmin()
                 ...prevState,
                 checkboxColor: [
                     ...prevState.checkboxColor.filter(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__colors.filter(item => item)
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__colors.filter(item => item)
                 ]
             }))
             setInfoUpdateProduct({
                 ...infoUpdateProduct,
                 checkboxSize: [
                     ...infoUpdateProduct.checkboxSize.filter(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__sizes.filter(item => item)
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__sizes.filter(item => item)
                 ]
             }) 
             console.log(infoUpdateProduct, "get2")
 
-            res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => 
+            res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => 
                 setInfoUpdateProduct({
                     ...infoUpdateProduct,
                     imgurl: [...infoUpdateProduct.imgurl, item.imgURL]
