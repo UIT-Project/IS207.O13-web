@@ -1,16 +1,16 @@
-import "./manageOrder.css"
+import "./searchOrder.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
 import * as request from "../../../utils/request"; 
-import requestPost from "../../../utils/request"; 
+// import requestPost from "../../../utils/request"; 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
-function ManageOrder(){
+function SearchOrder(){
     const numberOrderEachPage = 20;
     const [xoadau, setXoaDau] = useState(0);
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
@@ -20,13 +20,10 @@ function ManageOrder(){
         data_sanPham_relative_CTDH: [],
     })
     const [note, setNote] = useState('');
-    const [keySearch, setKeySearch] = useState('');
-    const [listMASPTranferState, setListMASPTranferState] = useState([]);
-    const [isCheckedAll, setIsCheckedAll] = useState(false); 
     const Navigate = useNavigate();
-    const [typeSearch, setTypeSearch] = useState('MADH');
     const searchParams  = new URLSearchParams(window.location.search);
-    const numberPagination = searchParams.get('numberPagination');
+    var keySearch = searchParams.get('keySearch');
+    const typeSearch = searchParams.get('typeSearch');
 
     const [orderStatus, setOrderStatus] = useState({
         danggiao:{
@@ -90,7 +87,7 @@ function ManageOrder(){
     )) 
     const handleScrollToTop = () => {
         window.scrollTo({ top: 0, behavior: 'instant' });
-    };
+      };
     const [orderStatusPointer, setOrderStatusPointer] = useState(
         orderStatus.danggiao.nameState
     );
@@ -139,11 +136,16 @@ function ManageOrder(){
         var queryForGetInfoOrderForUsers = { 
             start: numberOrderEachPage * ( openingPage - 1),
             tenTrangThai: itemInOrderStatus_Array.value.nameState,
+            keySearch: keySearch,
         }  
-
+        console.log(keySearch, ' test test', typeSearch)
+        if(typeSearch === 'MADH'){
+            keySearch = parseInt(keySearch);
+        }
         try{
-            request.get(`/api/getInfoManageOrder?tenTrangThai=${queryForGetInfoOrderForUsers.tenTrangThai}
-                &start=${queryForGetInfoOrderForUsers.start}&numberOrderEachPage=${numberOrderEachPage}`)
+            request.get(`/api/getInfoSearchOrder?tenTrangThai=${queryForGetInfoOrderForUsers.tenTrangThai}
+                &start=${queryForGetInfoOrderForUsers.start}&numberOrderEachPage=${numberOrderEachPage}&keySearch=${keySearch}
+                &typeSearch=${typeSearch}`)
             .then(res=>{      
                 // console.log(res.orderList_DB[0]) 
      
@@ -180,10 +182,8 @@ function ManageOrder(){
                             ...prevOrderStatus, 
                         } 
                     } 
-                }) 
-                // orderStatus[itemInOrderStatus_Array.key].paginationList.filter((item, index) => 
-                //     orderStatus[itemInOrderStatus_Array.key].paginationList.indexOf(item) === index
-                // );     
+                })  
+                console.log(res);
             }) 
         }
         catch(err){
@@ -192,14 +192,17 @@ function ManageOrder(){
          
     }
 
-    const getQuantityOrderToDevidePage = () => {
-        request.get('/api/getQuantityOrderToDevidePage')
+    const getQuantityOrderToDevidePage_Search = () => {
+        if(typeSearch === 'MADH'){
+            keySearch = parseInt(keySearch);
+        }
+        request.get(`/api/getQuantityOrderToDevidePage_Search?keySearch=${keySearch}&typeSearch=${typeSearch}`)
         .then(res=> {
             res.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
                     if(itemStatusFromDB.TRANGTHAI_DONHANG === itemStatus.value.nameState)
                     {
-                        const pageQuantityShow = Math.ceil(itemStatusFromDB.SL_MADH / numberOrderEachPage)  
+                        const pageQuantityShow = parseInt(itemStatusFromDB.SL_MADH / numberOrderEachPage) + ((itemStatusFromDB.SL_MADH % numberOrderEachPage) > 0 ? 1 : 0)
 
                         let arrAddToPaginationList = [];
                         for(let i = 1; i <= pageQuantityShow; i++)
@@ -207,10 +210,7 @@ function ManageOrder(){
                         // console.log(pageQuantityShow);
                         setOrderStatus(prevOrderStatus => ({
                             ...prevOrderStatus, 
-                                [itemStatus.key] : 
-                                    {...prevOrderStatus[itemStatus.key],  
-                                    pageQuantity: itemStatusFromDB.SL_MADH, 
-                                    paginationList: arrAddToPaginationList}
+                            [itemStatus.key] : {...prevOrderStatus[itemStatus.key],  pageQuantity: itemStatusFromDB.SL_MADH, paginationList: arrAddToPaginationList}
                         }))
                     }
                 })
@@ -250,77 +250,14 @@ function ManageOrder(){
         }
     }
 
-    const handleSearchInput = (e) => {
-        setKeySearch(e.target.value)
-    }
-
-    const handleSearch = () => {
-        Navigate(`/admin/searchOrder?keySearch=${keySearch}&typeSearch=${typeSearch}`)
-    }
-
-    const handleInputInfoTypeSearch = (e) => {
-        setTypeSearch(e.target.value)
-        console.log(typeSearch)
-    }
-
-    const handleClickCheckbox = (product, item) => {
-
-        setListMASPTranferState([...listMASPTranferState, product.MADH]);
-        console.log(listMASPTranferState);
- 
-        if(listMASPTranferState.includes(product.MADH)){
-            setListMASPTranferState(listMASPTranferState.filter(item => item !== product.MADH)) 
-        }
-        else{
-            setListMASPTranferState([...listMASPTranferState, product.MADH]);
-        }  
-    }
-
-    const handleUpdateState = (nameStatusWillUpdate) => {
-        console.log(listMASPTranferState);
-
-        try{ 
-            request.post(
-                `api/updateOrderStatus?nameStatusWillUpdate=${nameStatusWillUpdate}
-                &listMASPTranferState=${listMASPTranferState}`
-                , 
-                {
-                    nameStatusWillUpdate: nameStatusWillUpdate,
-                    listMASPTranferState: listMASPTranferState
-                }
-            )
-            .then(res => {})
-        }
-        catch(err){
-            console.log(err)
-        }
-    }
-
-    const handleClickCheckboxAll = (item) => {  
-            if(!isCheckedAll){ 
-                // setListMASPTranferState([
-                //     ...listMASPTranferState,
-                //     item.value.orderList.filter(item => {
-                //         if(item.MADH !== listMASPTranferState.includes(item.MADH))
-                //             return item.MADH
-                //     })
-                // ]);
-
-                const allItems = item.value.orderList.map(orderItem => orderItem.MADH);
-                // Thêm tất cả các phần tử đã được chọn vào listMASPTranferState
-                setListMASPTranferState(allItems);
-
-            }
-            else if(isCheckedAll){
-                listMASPTranferState.splice(0, listMASPTranferState.length);
-            }  
-        setIsCheckedAll(!isCheckedAll); 
+    const handleTurnBackToManageOrder = () => {
+        Navigate('/admin/manageOrder');
     }
 
     useEffect(() => {   
         orderStatus_Array.map(item => getInfoOrderForUsers(item, 1))
-        getQuantityOrderToDevidePage()
-        // getInforOrderDetail(1);
+        getQuantityOrderToDevidePage_Search()
+        getInforOrderDetail(1);
     }, [])
 
  
@@ -335,6 +272,8 @@ function ManageOrder(){
             </button>
         </li> 
     )
+
+
  
 
     const renderEachProduct = (item, indexOrder) => {
@@ -353,14 +292,6 @@ function ManageOrder(){
             item.value.orderList.slice(index.start, index.end).map((product, index) =>  
                 // <div class="order_status_cover " key={index}> 
                         <tr key={index}>
-                            <td>
-                                <input 
-                                    type="checkbox" 
-                                    name="checkboxProductInCart" id=""   
-                                    checked = {listMASPTranferState.includes(product.MADH)}   
-                                    onChange={() => handleClickCheckbox(product, index)}
-                                />
-                            </td>
                             <td data-label="Order-code">{product.MADH}</td>
                             <td data-label="Name">{product.TEN}</td>
                             <td data-label="Phone-number">{product.SDT}</td>
@@ -459,7 +390,15 @@ function ManageOrder(){
     const renderShowProductEveryState = orderStatus_Array.map((item, index) =>   
         {  
             // console.log(item)
-            if(orderStatusPointer === item.value.nameState){ 
+            if(orderStatusPointer === item.value.nameState){
+                // console.log(orderStatusPointer); 
+                // console.log(item, ' ', item.value.orderList.length) 
+
+                // if(item.value.orderList.length === numberOrderEachPage * 2 && xoadau === 0){
+                //     orderStatus.danggiao.orderList.splice(numberOrderEachPage, orderStatus.danggiao.orderList.length) 
+                //     orderStatus.danggiao.spaceGetDataFromOrderList.splice(1, 1) 
+                //     setXoaDau(1);
+                // }
                 return(
                     <div 
                         class={`row justify-content-center ${orderStatusPointer === item.value.nameState ? "" : 'hiddenEachState'}`}
@@ -469,24 +408,10 @@ function ManageOrder(){
                         renderOrderDetail()
                     }
                     <div class={`content_list_order  ${watchOrderDetail ? "display_hidden" : ""}`}>
-                        <div className={`${orderStatus_Array.length !== index + 1 ? '' : 'display_hidden'}`}>
-                            Cập nhật trạng thái sang 
-                            <span className="StateWillTranfer">
-                                {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''}
-                            </span>
-                            <button className="buttonUpdate" onClick={() => handleUpdateState(orderStatus_Array[index + 1].value.nameState)}>Update</button>
-                        </div>
+                        
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">                        
-                                    <input 
-                                        type="checkbox" 
-                                        name="checkboxProductInCart" id=""  
-                                        checked = {isCheckedAll} 
-                                        onChange={() => handleClickCheckboxAll(item)}
-                                    />
-                                </th>
                                 <th scope="col" >Mã đơn hàng</th>
                                 <th scope="col">Tên khách hàng</th>
                                 <th scope="col">SĐT</th>
@@ -516,28 +441,8 @@ function ManageOrder(){
             <div class="heading text-uppercase text-center">
                 <h1>Đơn hàng</h1>
             </div>
-            <div className="div_search">
-                <div>
-                    Tìm kiếm: 
-                </div>
-                <div>
-                    <input 
-                        name="keySearch"
-                        onChange={handleSearchInput}
-                    ></input> 
-                </div>
-                <div class="col-2"> 
-                    <select class="form-select" required
-                        onChange={handleInputInfoTypeSearch}
-                        name="typeSearch"
-                        value={typeSearch} 
-                    > 
-                    <option selected value="MADH">Mã hoá đơn</option>
-                    <option value="TEN">Tên khách hàng</option>
-                    <option value="SDT">Số điện thoại</option>
-                    </select>
-                </div> 
-                <button onClick={handleSearch}>Search</button>
+            <div> 
+                <button  onClick={handleTurnBackToManageOrder}>Turn back</button>
             </div>
             {/* <!-- nav bar trạng thái đơn hàng --> */}
             <ul class="nav nav-underline justify-content-center"> 
@@ -551,4 +456,4 @@ function ManageOrder(){
     )
 }
 
-export default ManageOrder;
+export default SearchOrder;

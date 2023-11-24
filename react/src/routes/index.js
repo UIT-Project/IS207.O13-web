@@ -16,7 +16,8 @@ import UpdateProduct from "../pages/Admin/UpdateProduct/updateProduct";
 import UpdateProduct2 from "../pages/Admin/UpdateProduct/updateProduct2";
 import InfoAccount from "../pages/InfoAccount/infoAccount";
 import PrintOrder from "../pages/Admin/PrintOrder/printOrder";
-
+import SearchOrder from "../pages/Admin/SearchOrder/searchOrder";
+import SearchProductAdmin from "../pages/Admin/SearchProductAdmin/searchProductAdmin";
 
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
@@ -47,6 +48,8 @@ const publicRoutes = [
     {path: config.routes.updateProduct2, component: UpdateProduct2, layout: AdminLayout},
     {path: config.routes.infoAccount, component: InfoAccount, layout: DefaultLayout},
     {path: config.routes.printOrder, component: PrintOrder, layout: AdminLayout},
+    {path: config.routes.searchOrder, component: SearchOrder, layout: AdminLayout},
+    {path: config.routes.searchProductAdmin, component: SearchProductAdmin, layout: AdminLayout},
 ];
 
 const privateRoutes = [];

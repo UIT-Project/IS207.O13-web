@@ -252,26 +252,26 @@
   border-color: black;
 }
 
-.product-content-right-product-rating{
-  display: flex; 
-  align-items: center;
-}
-.product-content-right-product-rating_sao{
-  color: #f3b335;
-}
-.detail_info_product_button_detail__icon_addToCart{
-  margin-right: 5px;
-}
-.detail_info_product_button_detail__text_addToCart{
-  margin-bottom: 0;
-}
-.detail_info_product_tab_header{
-  display: flex;
-}
-.detail_info_product_tab_header__style1{
-  color:black;
-}
-
+  .product-content-right-product-rating{
+    /* display: flex;  */
+    align-items: center;
+  }
+  .product-content-right-product-rating_sao{
+    color: #f3b335;
+  }
+  .detail_info_product_button_detail__icon_addToCart{
+    margin-right: 5px;
+  }
+  .detail_info_product_button_detail__text_addToCart{
+    margin-bottom: 0;
+  }
+  .detail_info_product_tab_header{
+    display: flex;
+  }
+  .detail_info_product_tab_header__style1{
+    color:black;
+  }
+  
 .product_image__list_mini_image{
 height: 26.875em;
 overflow-y: scroll;

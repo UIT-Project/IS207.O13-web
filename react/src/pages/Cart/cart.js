@@ -180,7 +180,11 @@ function Cart() {
         return (
             <tr class="row1" key={index}>
                 <td>
-                    <input type="checkbox" name="checkboxProductInCart" id=""   checked = {(item.SELECTED === 1) ? true : false}   onChange={() => handleClickCheckbox(index)}
+                    <input 
+                        type="checkbox" 
+                        name="checkboxProductInCart" id=""   
+                        checked = {(item.SELECTED === 1) ? true : false}   
+                        onChange={() => handleClickCheckbox(index)}
                     />
                 </td>
 

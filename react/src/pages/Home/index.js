@@ -26,7 +26,7 @@ function Home(){
         request.get('/api/getInfoAtStartLoadingHome')
         .then(res=>{ 
             setProductsInNewProduct(res.dataNewProduct); 
-            setHotProduct(res.HotProduct);
+            setHotProduct(res.dataHotProduct);
         })
         .catch(res=>{
             console.log(res.data);
@@ -83,7 +83,46 @@ function Home(){
                         </div>
                         <div class="grid__column_10__product_thumbail__yeuthich">
                             <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
-                            <span class="grid__column_10__product_thumbail__text_yeuthich">Hot</span> 
+                            <span class="grid__column_10__product_thumbail__text_yeuthich">NEW</span> 
+                        </div> 
+                    </div> 
+                </a>
+            </div>
+        )
+    })
+
+    // //hiển thị thông tin sản phẩm hot
+    const renderHotProduct = hotProduct.map( (product) => {
+        const url = `/infoProduct?id=${product.MASP}`;
+        return (
+            <div key={product.MASP} class="product_item_div__out">
+                <a href={url}>
+                    <div class="product_item_div__in"> 
+                        <div>
+                            <img src={product.imgURL} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
+                        </div>
+                        <div class="product_item__summary">
+                            <a href="#">
+                                <h6 class="product_item__summary__title">{product.TENSP}</h6>
+                            </a>
+                            <div class="product_item__summary__price_and_heart">
+                                <div class="product_item__summary__price">
+                                    <span class="product_item__summary__sale_price">{product.GIABAN}₫
+                                    </span>
+                                    <span class="product_item__summary__origin_price">
+                                        <del>{product.GIAGOC}₫</del>
+                                    </span>
+                                </div> 
+                                <div>
+                                    <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
+                                        <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
+                                    </button> 
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid__column_10__product_thumbail__yeuthich">
+                            <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
+                            <span class="grid__column_10__product_thumbail__text_yeuthich">HOT</span> 
                         </div> 
                     </div> 
                 </a>
@@ -147,7 +186,7 @@ function Home(){
                 {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}
                 <div class="product_item_container__in">
                     {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
-                    {/* {renderHotProduct}  */}
+                    {renderHotProduct}
                 </div>
             </div>
         </div>

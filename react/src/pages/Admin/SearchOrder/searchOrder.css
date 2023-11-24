@@ -489,17 +489,3 @@ tr {
     flex-direction: column;
     justify-content: left;
 }
-
-.div_search{
-    display: flex;
-}
-.StateWillTranfer{
-    color: red;
-    margin-left: 1%;
-    margin-right: 1%;
-}
-
-.buttonUpdate{
-    border: 1px solid rebeccapurple;
-    border-radius: 3px;
-}

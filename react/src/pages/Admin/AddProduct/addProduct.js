@@ -1,6 +1,7 @@
 import "./addProduct.css"
 import 'bootstrap';
 import request from "../../../utils/request";
+ 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -101,7 +102,7 @@ function AddProduct(){
 
         setStatusPressAddProduct(!statusPressAddProduct);
         // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
-        request.post(`api/addProduct`, formData, {
+        request.post(`api/addProduct?formData=${formData}`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
               },
@@ -196,7 +197,7 @@ function AddProduct(){
                         console.log(itemColor)
                         return(
                             <div className="input_quantity__quantity" key={index}>
-                                <div className="input_quantity__product_color" style={{backgroundColor: `${listColor[index].HEX}`}}></div>
+                                <div className="input_quantity__product_color" style={{backgroundColor: `${listColor[itemColor - 1].HEX}`}}></div>
                                 <div>
                                     <span className="input_quantity__quantity_haved">0</span>
                                 </div>
@@ -363,7 +364,7 @@ function AddProduct(){
                 <div class="col-auto"></div> 
             </div>
             <div class="address_update_button_contain row">
-                <div class={`${statusPressAddProduct ? '' : 'display_hidden'}`}>
+                <div class={`${statusPressAddProduct ? '' : ''}`}>
                     <button class={`address_confirm_button btn btn-dark`} onClick={handleClickAddProduct}>Thêm sản phẩm</button>
                     <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
                 </div> 

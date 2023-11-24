@@ -322,10 +322,7 @@ tr {
     background-color: red;
 } */
 
-
-.content {
-    margin-left: 70px;
-}
+ 
 
 .content_header {
     background-color: #fff;
@@ -476,4 +473,14 @@ tr {
 
 .hidden_OrderList{
     display: none;
+}
+
+
+.faTrashAlt{
+    color: red;
+    
+}
+
+.input_gia_div{
+    width: 50%;
 }
