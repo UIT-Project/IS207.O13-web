@@ -276,6 +276,7 @@
 height: 26.875em;
 overflow-y: scroll;
 overflow-x: hidden;
+
 }
 
 #style-7::-webkit-scrollbar-track
@@ -322,8 +323,9 @@ top:50%;
 left: 50%;
 transform: translate(-50%,-50%);
 display: block;
-max-width: 95%;
-max-height: 95%;
+/* max-width: 95%; */
+max-height: 100%;
+width: 750px;
 object-fit: contain;
 border: 3px solid #fff;
 }
