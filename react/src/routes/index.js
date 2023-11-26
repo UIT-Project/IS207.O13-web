@@ -12,8 +12,7 @@ import PaymentResult from "../pages/PaymentResult/paymentResult";
 import MyOrder from "../pages/MyOrder/myorder"
 import ManageOrder from "../pages/Admin/ManageOrder/manageOrder"; 
 import ManageProduct from "../pages/Admin/ManageProduct/manageProduct";
-import UpdateProduct from "../pages/Admin/UpdateProduct/updateProduct";
-import UpdateProduct2 from "../pages/Admin/UpdateProduct/updateProduct2";
+import UpdateProduct from "../pages/Admin/UpdateProduct/updateProduct"; 
 import InfoAccount from "../pages/InfoAccount/infoAccount";
 import PrintOrder from "../pages/Admin/PrintOrder/printOrder";
 import SearchOrder from "../pages/Admin/SearchOrder/searchOrder";
@@ -44,8 +43,7 @@ const publicRoutes = [
     {path: config.routes.myOrder, component: MyOrder, layout: DefaultLayout},
     {path: config.routes.manageOrder, component: ManageOrder, layout: AdminLayout},
     {path: config.routes.manageProduct, component: ManageProduct, layout: AdminLayout},
-    {path: config.routes.updateProduct, component: UpdateProduct, layout: AdminLayout},
-    {path: config.routes.updateProduct2, component: UpdateProduct2, layout: AdminLayout},
+    {path: config.routes.updateProduct, component: UpdateProduct, layout: AdminLayout}, 
     {path: config.routes.infoAccount, component: InfoAccount, layout: DefaultLayout},
     {path: config.routes.printOrder, component: PrintOrder, layout: AdminLayout},
     {path: config.routes.searchOrder, component: SearchOrder, layout: AdminLayout},

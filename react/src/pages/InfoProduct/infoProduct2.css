@@ -340,3 +340,8 @@ cursor: pointer;
 color: #fff;
 user-select: none;
 }
+
+.detail_info_product_button_detail__icon_addToCart{
+  width: 1.5em;
+  height: 1.5em;
+}

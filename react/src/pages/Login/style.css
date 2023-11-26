@@ -157,10 +157,10 @@ form.sign-in-form {
   top: 0;
   left: 0;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(2, 1fr); 
 }
 
-.container-pluid:before {
+.container-pluid::before {
   content: "";
   position: absolute;
   height: 2000px;
@@ -233,7 +233,7 @@ form.sign-in-form {
 
 /* ANIMATION */
 
-.container-pluid.sign-up-mode:before {
+.container-pluid.sign-up-mode::before {
   transform: translate(100%, -50%);
   right: 52%;
 }
@@ -504,4 +504,29 @@ form.sign-in-form {
 .btn_sign_up {
   font-weight: 600;
   border-color: black;
+}
+
+.input-field__faclock{
+  margin-left: 5%;
+}
+
+.css-gender{
+  transform: scale(1.5)
+}
+
+.gender-input {
+  width: 100%;
+  display: flex; /* Sử dụng display: flex để căn chỉnh các phần tử con */
+  justify-content: space-evenly; /* Tạo khoảng cách giữa các phần tử con */ 
+}
+
+#male-input {
+  padding:  80px;
+  margin-left: 0;
+  margin-right: 80px !important;
+  box-sizing: content-box ;
+}
+
+.css_birthday_input{
+  color: #aaa;
 }

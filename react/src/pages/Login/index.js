@@ -140,113 +140,132 @@ function Login(){
         })
     }
     return (
-<div>
-    <div class="container-pluid_all">
-      <div className={`container-pluid ${isSignUpActive ? "sign-up-mode" : ""}`}>
-        <div class="forms-container-pluid">
-          <div class="signin-signup">
-            <form action="#" class="sign-in-form" onSubmit={loginSubmit}>
-              <h2 class="title">Sign in</h2>
-              <div class="input-field">
-                <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
-                {/* <i class="fas fa-user"></i> */}
-                <input type="text" name="email_login" onChange={handleInputLogin} value={loginInput.email_login} placeholder="Email" />
-              </div>
-              <span>{loginInput.error_list_login.email}</span>
-              <div class="input-field">
-                <FontAwesomeIcon icon={faClock}></FontAwesomeIcon>
-                {/* <i class="fas fa-lock"></i> */}
-                <input type="password" name="password_login" onChange={handleInputLogin} value={loginInput.password_login} placeholder="Password" />
-              </div>
-              <span>{loginInput.error_list_login.password}</span>
-              <input type="submit" value="Login" class="btn solid btn_login" />
-              <p class="social-text">Or Sign in with social platforms</p>
-              <div class="social-media">
-                <a href="#" class="social-icon">
-                    <FontAwesomeIcon icon={faFaceAngry}></FontAwesomeIcon>
-                  {/* <i class="fab fa-facebook-f"></i> */}
-                </a>
-                <a href="#" class="social-icon">
+    <div>
+      <div class="container-pluid_all">
+        <div className={`container-pluid ${isSignUpActive ? "sign-up-mode" : ""}`}>
+          <div class="forms-container-pluid">
+            <div class="signin-signup">
+              <form action="#" class="sign-in-form" onSubmit={loginSubmit}>
+                <h2 class="title">Đăng Nhập</h2>
+                <div class="input-field">
+                  <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+                  {/* <i class="fas fa-user"></i> */}
+                  <input type="text" name="email_login" onChange={handleInputLogin} value={loginInput.email_login} placeholder="Email" />
+                </div>
+                <span>{loginInput.error_list_login.email}</span>
+                <div class="input-field">
+                  <FontAwesomeIcon icon={faClock} className='input-field__faclock'></FontAwesomeIcon>
+                  {/* <i class="fas fa-lock"></i> */}
+                  <input type="password" name="password_login" onChange={handleInputLogin} value={loginInput.password_login} placeholder="Password" />
+                </div>
+                <span>{loginInput.error_list_login.password}</span>
+                <input type="submit" value="Đăng nhập" class="btn solid btn_login" />
+                <p class="social-text">Or Sign in with social platforms</p>
+                <div class="social-media">
+                  <a href="#" class="social-icon">
+                      <FontAwesomeIcon icon={faFaceAngry}></FontAwesomeIcon>
+                    {/* <i class="fab fa-facebook-f"></i> */}
+                  </a>
+                  <a href="#" class="social-icon">
+                      
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="#" class="social-icon">
+                    <i class="fab fa-google"></i>
+                  </a>
+                  <a href="#" class="social-icon">
+                    <i class="fab fa-linkedin-in"></i>
+                  </a>
+                </div>
+              </form>
+              <form action="#" class="sign-up-form" onSubmit={registerSubmit}>
+                <h2 class="title">Đăng Ký</h2>
+                <div class="input-field">
+                  <i class="fas fa-user"></i>
+                  <input type="text" name="name_register" onChange={handleInputRegister} value={registerInput.name_register} placeholder="Name"/> 
+                </div>
+                <span>{registerInput.error_list_register.name}</span>
+                <div class="input-field">
+                  <i class="fas fa-envelope"></i>
+                  <input type="email" name="email_register" onChange={handleInputRegister} value={registerInput.email_register} placeholder="Email" />
+                </div>
+                <span>{registerInput.error_list_register.email}</span>
+
+                <div class="input-field">
+                  <i class="fas fa-lock"></i>
+                  <input type="password" name="password_register" onChange={handleInputRegister} value={registerInput.password_register} placeholder="Password" />
+                </div>
+                <span>{registerInput.error_list_register.password}</span>
+                <div class="gender-input">
+                  <div id=" male-input">
                     
-                  <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="social-icon">
-                  <i class="fab fa-google"></i>
-                </a>
-                <a href="#" class="social-icon">
-                  <i class="fab fa-linkedin-in"></i>
-                </a>
-              </div>
-            </form>
-            <form action="#" class="sign-up-form" onSubmit={registerSubmit}>
-              <h2 class="title">Sign up</h2>
-              <div class="input-field">
-                <i class="fas fa-user"></i>
-                <input type="text" name="name_register" onChange={handleInputRegister} value={registerInput.name_register} placeholder="Name"/> 
-              </div>
-              <span>{registerInput.error_list_register.name}</span>
-              <div class="input-field">
-                <i class="fas fa-envelope"></i>
-                <input type="email" name="email_register" onChange={handleInputRegister} value={registerInput.email_register} placeholder="Email" />
-              </div>
-              <span>{registerInput.error_list_register.email}</span>
+                    <input type="radio" name="gender" value="male" id="male" className='css-gender' />
+                    <label for="male">Nam</label>
+                  </div>
+                  <div id="female-input">
+                    
+                    <input type="radio" name="gender" value="female" id="female" className='css-gender' />
+                    <label for="female">Nữ</label>
+                  </div>
+                </div>
 
-              <div class="input-field">
-                <i class="fas fa-lock"></i>
-                <input type="password" name="password_register" onChange={handleInputRegister} value={registerInput.password_register} placeholder="Password" />
-              </div>
-              <span>{registerInput.error_list_register.password}</span>
+                <div class="input-field">
+                  <i class="fas fa-cake"></i>
+                  <input type="date" placeholder="Birthday" className='css_birthday_input' />
+                </div>
 
-              <input type="submit" class="btn btn_sign_up" value="Sign up" />
-              <p class="social-text">Or Sign up with social platforms</p>
-              <div class="social-media">
-                <a href="#" class="social-icon">
-                  <i class="fab fa-facebook-f"></i>
-                </a>
-                <a href="#" class="social-icon">
-                  <i class="fab fa-twitter"></i>
-                </a>
-                <a href="#" class="social-icon">
-                  <i class="fab fa-google"></i>
-                </a>
-                <a href="#" class="social-icon">
-                  <i class="fab fa-linkedin-in"></i>
-                </a>
+                <input type="submit" class="btn btn_sign_up" value="Đăng ký" />
+                <p class="social-text">Or Sign up with social platforms</p>
+                <div class="social-media">
+                  <a href="#" class="social-icon">
+                    <i class="fab fa-facebook-f"></i>
+                  </a>
+                  <a href="#" class="social-icon">
+                    <i class="fab fa-twitter"></i>
+                  </a>
+                  <a href="#" class="social-icon">
+                    <i class="fab fa-google"></i>
+                  </a>
+                  <a href="#" class="social-icon">
+                    <i class="fab fa-linkedin-in"></i>
+                  </a>
+                </div>
+              </form>
+            </div>
+          </div>
+      
+          <div class="panels-container-pluid">
+            <div class="panel left-panel">
+              <div class="content">
+                <h3>Bạn mới biết đến cửa hàng chúng tôi ?</h3>
+                <p>
+                Cửa hàng chúng tôi là điểm đến lý tưởng cho những người yêu thời trang và muốn thể hiện phong cách cá nhân. 
+                Chúng tôi tự hào là một cửa hàng thời trang chất lượng, mang đến những bộ sưu tập đa dạng về quần áo, giày 
+                dép và phụ kiện để đáp ứng mọi nhu cầu thời trang của bạn.
+                </p>
+                <button class="btn transparent" id="sign-up-btn" onClick={click_signup}>
+                Đăng Ký
+                </button>
               </div>
-            </form>
-          </div>
-        </div>
-  
-        <div class="panels-container-pluid">
-          <div class="panel left-panel">
-            <div class="content">
-              <h3>New here ?</h3>
-              <p>
-                Lorem ipsum, dolor sit amet consectetur adipisicing elit. Debitis,
-                ex ratione. Aliquid!
-              </p>
-              <button class="btn transparent" id="sign-up-btn" onClick={click_signup}>
-                Sign up
-              </button>
+              {/* <img src="https://dosi-in.com/images/assets/icons/logo.svg" class="image" alt="" /> */}
             </div>
-            <img src="https://dosi-in.com/images/assets/icons/logo.svg" class="image" alt="" />
-          </div>
-          <div class="panel right-panel">
-            <div class="content">
-              <h3>One of us ?</h3>
-              <p>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Nostrum
-                laboriosam ad deleniti.
-              </p>
-              <button class="btn transparent" id="sign-in-btn" onClick={click_signin}>
-                Sign in
-              </button>
+            <div class="panel right-panel">
+              <div class="content">
+                <h3>Đã có tài khoản ?</h3>
+                <p>
+                Cửa hàng chúng tôi là điểm đến lý tưởng cho những người yêu thời trang và muốn thể hiện phong cách cá nhân. 
+                Chúng tôi tự hào là một cửa hàng thời trang chất lượng, mang đến những bộ sưu tập đa dạng về quần áo, giày 
+                dép và phụ kiện để đáp ứng mọi nhu cầu thời trang của bạn.
+                </p>
+                <button class="btn transparent" id="sign-in-btn" onClick={click_signin}>
+                Đăng Nhập
+                </button>
+              </div>
+              {/* <img src="https://dosi-in.com/images/assets/icons/logo.svg" class="image" alt="" /> */}
             </div>
-            <img src="https://dosi-in.com/images/assets/icons/logo.svg" class="image" alt="" />
           </div>
         </div>
       </div>
-    </div>
 
     <footer>
       <div class="container-pluid_footer">

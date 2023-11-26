@@ -2,10 +2,8 @@ import "./manageProduct.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
-import * as request from "../../../utils/request";
-
-import requestGet from "../../../utils/request";
-import requestPost from "../../../utils/request";
+import request from "../../../utils/request";
+  
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -192,14 +190,15 @@ function ManageProduct()
         }
         //thêm thông tin infoUpdateProduct vào form data, vì đây là một đối tượng nên cần stringify
         formData.append('infoUpdateProduct', JSON.stringify(infoUpdateProduct));
-        listQuantity.shift();
+        // listQuantity.shift();
+        console.log(listQuantity);
         formData.append('listQuantity', JSON.stringify(listQuantity));
         // console.log(listQuantity, 'ffff', infoUpdateProduct.checkboxColor, 'áldkalsd', infoUpdateProduct.checkboxSize);
 
 
         // setStatusPressUpdateProduct(!statusPressUpdateProduct);
         // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
-        requestPost.post(`api/updateProduct?formData=${formData}`, formData, {
+        request.post(`api/updateProduct`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
               },
@@ -214,7 +213,7 @@ function ManageProduct()
     }
 
     const getInfoForUpdateProduct = () => {
-        requestGet.get(`/api/getInfoForAddProduct`)
+        request.get(`/api/getInfoForAddProduct`)
         .then(res => {
             setListColor(res.data.listColor);
             // console.log(res.data.listColor, 'color      lll');
@@ -327,29 +326,32 @@ function ManageProduct()
     }
 
     const getInforProductDetail = (masp) => {
-        request.get(`/api/infoProductDetail?masp=${masp}`)
+        const data = {
+            masp: masp,
+        } 
+        request.get(`/api/infoProductDetail`, {params: data})
         .then(res => {   
-            
+            console.log(res.data.dataProductDetail_sanphams[0].GIAGOC, 'ok')
             setInfoUpdateProduct({
                 ...infoUpdateProduct,
-                nameProduct: res.dataProductDetail_sanphams[0].TENSP,
-                originPrice: res.dataProductDetail_sanphams[0].GIAGOC,
-                sellPrice: res.dataProductDetail_sanphams[0].GIABAN,
-                typeProduct: res.dataProductDetail_sanphams[0].MAPL_SP,
-                desctiption: res.dataProductDetail_sanphams[0].MOTA, 
-                checkboxSize:  res.dataProductDetail_sanpham_mausac_sizes__sizes.map(item => item.MASIZE),
-                imgurl:  res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.imgURL),
-                listHEX:  res.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.HEX),
-                quantity: res.dataProductDetail_sanpham_mausac_sizes__soluongs,
-                checkboxColor:  res.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.MAMAU),
+                nameProduct: res.data.dataProductDetail_sanphams[0].TENSP,
+                originPrice: res.data.dataProductDetail_sanphams[0].GIAGOC,
+                sellPrice: res.data.dataProductDetail_sanphams[0].GIABAN,
+                typeProduct: res.data.dataProductDetail_sanphams[0].MAPL_SP,
+                desctiption: res.data.dataProductDetail_sanphams[0].MOTA, 
+                checkboxSize:  res.data.dataProductDetail_sanpham_mausac_sizes__sizes.map(item => item.MASIZE),
+                imgurl:  res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.imgURL),
+                listHEX:  res.data.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.HEX),
+                quantity: res.data.dataProductDetail_sanpham_mausac_sizes__soluongs,
+                checkboxColor:  res.data.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.MAMAU),
                 masp: masp,
-                quantityImgurl: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.length,
-                mahinhanh:  res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.MAHINHANH),
-                indexThumnail: parseInt(res.indexthumnail) - 1,
+                quantityImgurl: res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.length,
+                mahinhanh:  res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.MAHINHANH),
+                indexThumnail: parseInt(res.data.indexthumnail) - 1,
             }) 
  
             
-            console.log(parseInt(res.indexthumnail), 'test 00000');
+            console.log(parseInt(res.data.indexthumnail), 'test 00000');
             // res.data.dataProductDetail_sanphams.map(item => 
             //     setInfoUpdateProduct({
             //         ...infoUpdateProduct,
@@ -358,10 +360,10 @@ function ManageProduct()
             // )
             // console.log(res);
             setInfoProductDetail({
-                dataProductDetail_sanphams: res.dataProductDetail_sanphams,
-                dataProductDetail_sanpham_mausac_sizes__sizes: res.dataProductDetail_sanpham_mausac_sizes__sizes,
-                dataProductDetail_sanpham_mausac_sizes__colors: res.dataProductDetail_sanpham_mausac_sizes__colors, 
-                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
+                dataProductDetail_sanphams: res.data.dataProductDetail_sanphams,
+                dataProductDetail_sanpham_mausac_sizes__sizes: res.data.dataProductDetail_sanpham_mausac_sizes__sizes,
+                dataProductDetail_sanpham_mausac_sizes__colors: res.data.dataProductDetail_sanpham_mausac_sizes__colors, 
+                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
             })
             
         })
@@ -450,76 +452,68 @@ function ManageProduct()
     }
 
     const getInfoOrderForUsers =  (itemInOrderStatus_Array, openingPage) => {   
-        var queryForGetInfoOrderForUsers = { 
+        const queryForGetInfoOrderForUsers = { 
             start: numberOrderEachPage * ( openingPage - 1),
             tenDanhMuc: itemInOrderStatus_Array.value.nameState,
+            numberOrderEachPage: numberOrderEachPage,
         }  
-
-        try{
-            request.get(`/api/getInfoManageProduct?tenDanhMuc=${queryForGetInfoOrderForUsers.tenDanhMuc}
-                &start=${queryForGetInfoOrderForUsers.start}&numberOrderEachPage=${numberOrderEachPage}`)
-            .then(res=>{       
-                setOrderStatus(prevOrderStatus => {
-                    const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
-                        item => item.paginationNumber === openingPage
-                    );
-                    // if(res.data_thongtin_sanpham.length === 0){
-                    //     return {
-                    //         ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-                    //         [itemInOrderStatus_Array.key] : 
-                    //         {   
-                    //             ...prevOrderStatus[itemInOrderStatus_Array.key],  
-                    //             pageQuantity: itemInOrderStatus_Array.value.pageQuantity - 1, 
-                    //             paginationList: itemInOrderStatus_Array.value.paginationList.splice(itemInOrderStatus_Array.value.paginationList.length - 1, 1),
-                    //             openingPage: itemInOrderStatus_Array.value.openingPage - 1,
-                    //         }
-                    //     }
-                    // }
-                    if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
-                        setPaginationNumberRunFirst(1);
-                        console.log(res.data_thongtin_sanpham, 'đ', openingPage)
-                        return {
-                            ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-                            [itemInOrderStatus_Array.key] : 
-                            {   
-                                ...prevOrderStatus[itemInOrderStatus_Array.key], 
-                                orderList:  [
-                                    ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
-                                    ...res.data_thongtin_sanpham.filter(item =>  item)
-                                ],  
-                                spaceGetDataFromOrderList: [
-                                    ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
-                                    {
-                                        paginationNumber: openingPage,
-                                        ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
-                                        startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                        endIndex: res.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                    },
-                                ] 
-                            }
-                        } 
-                    }
-                    else{  
-                        return {
-                            ...prevOrderStatus, 
-                        } 
+        console.log(queryForGetInfoOrderForUsers, 'oksdoksodk')
+        request.get(`/api/getInfoManageProduct`, {params: queryForGetInfoOrderForUsers}) 
+        .then(res=>{       
+            setOrderStatus(prevOrderStatus => {
+                const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
+                    item => item.paginationNumber === openingPage
+                );
+                // if(res.data_thongtin_sanpham.length === 0){
+                //     return {
+                //         ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                //         [itemInOrderStatus_Array.key] : 
+                //         {   
+                //             ...prevOrderStatus[itemInOrderStatus_Array.key],  
+                //             pageQuantity: itemInOrderStatus_Array.value.pageQuantity - 1, 
+                //             paginationList: itemInOrderStatus_Array.value.paginationList.splice(itemInOrderStatus_Array.value.paginationList.length - 1, 1),
+                //             openingPage: itemInOrderStatus_Array.value.openingPage - 1,
+                //         }
+                //     }
+                // }
+                if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
+                    setPaginationNumberRunFirst(1);
+                    console.log(res.data.data_thongtin_sanpham, 'đ', openingPage)
+                    return {
+                        ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                        [itemInOrderStatus_Array.key] : 
+                        {   
+                            ...prevOrderStatus[itemInOrderStatus_Array.key], 
+                            orderList:  [
+                                ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
+                                ...res.data.data_thongtin_sanpham.filter(item =>  item)
+                            ],  
+                            spaceGetDataFromOrderList: [
+                                ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
+                                {
+                                    paginationNumber: openingPage,
+                                    ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
+                                    startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                    endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                },
+                            ] 
+                        }
                     } 
-                }) 
-                // orderStatus[itemInOrderStatus_Array.key].paginationList.filter((item, index) => 
-                //     orderStatus[itemInOrderStatus_Array.key].paginationList.indexOf(item) === index
-                // );     
-            }) 
-        }
-        catch(err){
-            console.log(err)
-        }
+                }
+                else{  
+                    return {
+                        ...prevOrderStatus, 
+                    } 
+                } 
+            })   
+        })  
          
     }
 
     const getQuantityOrderToDevidePage = () => {
         request.get('/api/getQuantityProductToDevidePage')
         .then(res=> {
-            res.quantity.forEach(itemStatusFromDB => {
+            res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
                     if(itemStatusFromDB.TENPL === itemStatus.value.nameState)
                     {

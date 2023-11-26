@@ -102,7 +102,7 @@ function AddProduct(){
 
         setStatusPressAddProduct(!statusPressAddProduct);
         // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
-        request.post(`api/addProduct?formData=${formData}`, formData, {
+        request.post(`api/addProduct`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
               },

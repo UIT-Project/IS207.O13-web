@@ -52,4 +52,12 @@ class SearchProductController extends Controller
             'filter'=> $filter,
         ]);
     }
+    public function search(Request $request){
+        $searchQuery = $request->query('query');
+        $data = sanpham::where('TENSP', 'LIKE', "%$searchQuery%")->get();
+
+        return response()->json([
+            'data' => $data,
+        ]);
+    }
 }

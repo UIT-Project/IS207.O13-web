@@ -91,6 +91,7 @@ function Header({settoggleFunctionLoginLogout}){
         request.get(`/api/infoCart`, {params: {matk : localStorage.getItem('auth_matk')}})
         .then(res => {
             setInfoCarts([...res.data.data].reverse()); 
+            console.log(res)
         })
         .catch(e => {
 
@@ -203,6 +204,7 @@ function Header({settoggleFunctionLoginLogout}){
         return (
             infoCarts.map((item, index) => {
                if(infoCarts !== null){
+                console.log(item, 'ok')
                    const url = `/infoProduct?id=${item.MASP}`;
                    return (
                        <li class="header__body__cart__orders__item_body" key={index}>
@@ -308,7 +310,7 @@ function Header({settoggleFunctionLoginLogout}){
                                         <p class="header__body__cart__orders__text_header">Sản phẩm đã thêm</p>
                                     </header>   
                                         <ul class="header__body__cart__orders__body" ref={bodyPopupCart}> 
-                                            {renderInfoCart}
+                                            {renderInfoCart()}
                                         </ul>  
                                     <footer class="header__body__cart__orders__footer">
                                         <button class="header__body__cart__orders__watch_cart_button" onClick={handleThanhToan}>

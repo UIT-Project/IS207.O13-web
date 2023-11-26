@@ -2,9 +2,7 @@ import "./updateProduct.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
-import * as request from "../../../utils/request";
-import requestGet from "../../../utils/request";
-import requestPost from "../../../utils/request";
+import request from "../../../utils/request"; 
 import { useEffect, useState } from "react";
 import {  Navigate, useLocation, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -24,6 +22,10 @@ function UpdateProduct()
     const maspParam = searchParams.get('masp');
     const numberPagination = searchParams.get('numberPagination');
     const nameStatus = searchParams.get('nameStatus'); 
+    const [listQuantity, setListQuantity] = useState([{
+        id: 1,
+        soluong: 0,
+    }]);
     
     //mã hex để hiện thị màu sắc lấy thực thuộc tính hex trong bảng mausacs 
     const [checkBoxSizeDefault, setCheckBoxSizeDefault] = useState(["S", "M", "L", "XL", "XXL", "3XL"]);
@@ -107,7 +109,7 @@ function UpdateProduct()
 
     //xử lý lưu tt sp, hình ảnh sp xuống db khi click vào thêm sản phẩm
     const handleClickUpdateProduct = () => {
-        console.log(infoUpdateProduct.indexThumnail, 'lklklklkl', infoUpdateProduct.quantityImgurl)
+        // console.log(infoUpdateProduct, 'lklklklkl', infoUpdateProduct.quantityImgurl)
         //sử dụng formData để nhét hình ảnh và thông tin vào một cục rồi đẩy xuống db
         const formData = new FormData();
         for(const img of images){
@@ -117,17 +119,22 @@ function UpdateProduct()
         }
         //thêm thông tin infoUpdateProduct vào form data, vì đây là một đối tượng nên cần stringify
         formData.append('infoUpdateProduct', JSON.stringify(infoUpdateProduct));
+        // listQuantity.shift();
+        console.log(listQuantity);
+        formData.append('listQuantity', JSON.stringify(listQuantity));
+        // console.log(listQuantity, 'ffff', infoUpdateProduct.checkboxColor, 'áldkalsd', infoUpdateProduct.checkboxSize);
+
 
         // setStatusPressUpdateProduct(!statusPressUpdateProduct);
         // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
-        requestPost.post(`api/updateProduct`, formData, {
+        request.post(`api/updateProduct`, formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
               },
         })
         // request.post(`api/UpdateProduct`, infoUpdateProduct)
         .then(res => { 
-            console.log(res.data);
+            // console.log(res.data);
          })
         .catch(error => { 
             console.log(error);
@@ -135,7 +142,7 @@ function UpdateProduct()
     }
 
     const getInfoForUpdateProduct = () => {
-        requestGet.get(`/api/getInfoForAddProduct`)
+        request.get(`/api/getInfoForAddProduct`)
         .then(res => {
             setListColor(res.data.listColor);
             console.log(res.data.listColor, 'color      lll');
@@ -155,35 +162,34 @@ function UpdateProduct()
     }
 
     const getInforProductDetail = (masp) => {
-        request.get(`/api/infoProductDetail?masp=${masp}`)
-        .then(res => {   
-            
+        request.get(`/api/infoProductDetail`, {params: {masp: masp}})
+        .then(res => {    
             setInfoUpdateProduct({
                 ...infoUpdateProduct,
-                nameProduct: res.dataProductDetail_sanphams[0].TENSP,
-                originPrice: res.dataProductDetail_sanphams[0].GIAGOC,
-                sellPrice: res.dataProductDetail_sanphams[0].GIABAN,
-                typeProduct: res.dataProductDetail_sanphams[0].MAPL_SP,
-                desctiption: res.dataProductDetail_sanphams[0].MOTA, 
+                nameProduct: res.data.dataProductDetail_sanphams[0].TENSP,
+                originPrice: res.data.dataProductDetail_sanphams[0].GIAGOC,
+                sellPrice: res.data.dataProductDetail_sanphams[0].GIABAN,
+                typeProduct: res.data.dataProductDetail_sanphams[0].MAPL_SP,
+                desctiption: res.data.dataProductDetail_sanphams[0].MOTA, 
                 checkboxSize: [...infoUpdateProduct.checkboxSize.map(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__sizes.map(item => item.MASIZE)],
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__sizes.map(item => item.MASIZE)],
                 imgurl: [...infoUpdateProduct.imgurl.map(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.imgURL)],
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.imgURL)],
                 listHEX: [...infoUpdateProduct.listHEX.map(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.HEX)],
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.HEX)],
                 quantity: [...infoUpdateProduct.quantity.map(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__soluongs.map(item => item)],
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__soluongs.map(item => item)],
                 checkboxColor: [...infoUpdateProduct.checkboxColor.map(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.MAMAU)],
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__colors.map(item => item.MAMAU)],
                 masp: maspParam,
-                quantityImgurl: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.length,
+                quantityImgurl: res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.length,
                 mahinhanh: [...infoUpdateProduct.mahinhanh.map(item => item), 
-                    ...res.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.MAHINHANH)],
-                indexThumnail: parseInt(res.indexthumnail) - 1,
+                    ...res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.MAHINHANH)],
+                indexThumnail: parseInt(res.data.indexthumnail) - 1,
             }) 
  
             
-            console.log(parseInt(res.indexthumnail), 'test 00000');
+            console.log(parseInt(res.data.indexthumnail), 'test 00000');
             // res.data.dataProductDetail_sanphams.map(item => 
             //     setInfoUpdateProduct({
             //         ...infoUpdateProduct,
@@ -192,10 +198,10 @@ function UpdateProduct()
             // )
             console.log(res);
             setInfoProductDetail({
-                dataProductDetail_sanphams: res.dataProductDetail_sanphams,
-                dataProductDetail_sanpham_mausac_sizes__sizes: res.dataProductDetail_sanpham_mausac_sizes__sizes,
-                dataProductDetail_sanpham_mausac_sizes__colors: res.dataProductDetail_sanpham_mausac_sizes__colors, 
-                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
+                dataProductDetail_sanphams: res.data.dataProductDetail_sanphams,
+                dataProductDetail_sanpham_mausac_sizes__sizes: res.data.dataProductDetail_sanpham_mausac_sizes__sizes,
+                dataProductDetail_sanpham_mausac_sizes__colors: res.data.dataProductDetail_sanpham_mausac_sizes__colors, 
+                dataProductDetail_sanpham_mausac_sizes__hinhanhs: res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
             })
             
         })
@@ -509,13 +515,7 @@ function UpdateProduct()
                             At w3schools.com you will learn how to make a website.
                             They offer free tutorials in all web development technologies.
                         </textarea>
-
-                        <div class="address_update_button_contain row">
-                            <div class={`${statusPressUpdateProduct ? '' : 'display_hidden'}`}>
-                                <button class={`address_confirm_button btn btn-dark`} onClick={handleClickUpdateProduct}>Thêm sản phẩm</button>
-                                <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
-                            </div> 
-                        </div>
+ 
                     </div> 
                     
                 </div>
@@ -524,13 +524,16 @@ function UpdateProduct()
             <div>
                 <h2>Nhập số lượng</h2>
 
-                <div className="displayhidden">hi</div>
-                <div className="">ba</div>
                 <div class="col-auto"></div>
                 <div class="body_box container col-lg-7">
                     {renderInputSoLuong} 
                 </div>
-                
+                <div class="address_update_button_contain row">
+                    <div class={`${statusPressUpdateProduct ? '' : 'display_hidden'}`}>
+                        <button class={`address_confirm_button btn btn-dark`} onClick={handleClickUpdateProduct}>Cập nhật sản phẩm</button>
+                        <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
+                    </div> 
+                </div>
                 <div class="col-auto"></div>
 
             </div>

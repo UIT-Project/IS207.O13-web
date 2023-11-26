@@ -1,4 +1,4 @@
-import * as requestGet from "../../utils/request";
+ 
 import images from "../../assets/images";
 import "./payment.css";
 import 'bootstrap/dist/css/bootstrap.css'; 
@@ -83,14 +83,14 @@ function Payment(){
             matk: localStorage.getItem('auth_matk'),
             selected: 1,
         }  
-        requestGet.get("/api/infoForPayment",  conditionToGetInfoForPayment)
+        request.get("/api/infoForPayment", {params: conditionToGetInfoForPayment})
         .then(res => { 
             setInfoForPayment({
-                infoProduct: res.data_sanpham,
-                infoVoucher: res.data_voucher,
-                infoAdress: res.data_adress,
+                infoProduct: res.data.data_sanpham,
+                infoVoucher: res.data.data_voucher,
+                infoAdress: res.data.data_adress,
             });  
-            console.log(res.data_sanpham);
+            console.log(res.data.data_sanpham);
         })
         
     }
@@ -190,12 +190,12 @@ function Payment(){
 
         console.log(phuongThucThanhToan); 
             // gọi api phương thức saveInfoForPayment và kèm thông tin allDataForSaveInfoPayment để lưu xuỐNG DB
-            request.post("/api/saveInfoForPayment", allDataForSaveInfoPayment)
+            request.post("api/saveInfoForPayment", allDataForSaveInfoPayment)
             .then(res => {  
                 console.log(res.data, "ok");
                 setHienThiThanhToan(true);
                 console.log(res.data.data.data);
-                // window.location.href = res.data.data.data;
+                window.location.href = res.data.data.data;
             }) 
             .catch(error => {
                 console.log(error);

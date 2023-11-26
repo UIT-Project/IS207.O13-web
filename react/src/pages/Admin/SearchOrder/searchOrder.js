@@ -2,8 +2,7 @@ import "./searchOrder.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
-import * as request from "../../../utils/request"; 
-// import requestPost from "../../../utils/request"; 
+import request from "../../../utils/request";  
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -133,21 +132,21 @@ function SearchOrder(){
     }
 
     const getInfoOrderForUsers =  (itemInOrderStatus_Array, openingPage) => {   
-        var queryForGetInfoOrderForUsers = { 
+        const queryForGetInfoOrderForUsers = { 
             start: numberOrderEachPage * ( openingPage - 1),
             tenTrangThai: itemInOrderStatus_Array.value.nameState,
             keySearch: keySearch,
+            typeSearch: typeSearch,
+            numberOrderEachPage: numberOrderEachPage,
         }  
         console.log(keySearch, ' test test', typeSearch)
         if(typeSearch === 'MADH'){
             keySearch = parseInt(keySearch);
         }
         try{
-            request.get(`/api/getInfoSearchOrder?tenTrangThai=${queryForGetInfoOrderForUsers.tenTrangThai}
-                &start=${queryForGetInfoOrderForUsers.start}&numberOrderEachPage=${numberOrderEachPage}&keySearch=${keySearch}
-                &typeSearch=${typeSearch}`)
+            request.get(`/api/getInfoSearchOrder`, {params: queryForGetInfoOrderForUsers})
             .then(res=>{      
-                // console.log(res.orderList_DB[0]) 
+                // console.log(res.data.orderList_DB[0]) 
      
                 setOrderStatus(prevOrderStatus => {
                     const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
@@ -155,7 +154,7 @@ function SearchOrder(){
                     );
                     if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
                         setPaginationNumberRunFirst(1);
-                        // console.log(res.orderList_DB.length)
+                        // console.log(res.data.orderList_DB.length)
                         return {
                             ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                             [itemInOrderStatus_Array.key] : 
@@ -163,7 +162,7 @@ function SearchOrder(){
                                 ...prevOrderStatus[itemInOrderStatus_Array.key], 
                                 orderList:  [
                                     ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
-                                    ...res.orderList_DB.filter(item =>  item)
+                                    ...res.data.orderList_DB.filter(item =>  item)
                                 ],  
                                 spaceGetDataFromOrderList: [
                                     ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
@@ -171,7 +170,7 @@ function SearchOrder(){
                                         paginationNumber: openingPage,
                                         ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
                                         startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                        endIndex: res.orderList_DB.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                        endIndex: res.data.orderList_DB.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
                                     },
                                 ] 
                             }
@@ -196,9 +195,13 @@ function SearchOrder(){
         if(typeSearch === 'MADH'){
             keySearch = parseInt(keySearch);
         }
-        request.get(`/api/getQuantityOrderToDevidePage_Search?keySearch=${keySearch}&typeSearch=${typeSearch}`)
-        .then(res=> {
-            res.quantity.forEach(itemStatusFromDB => {
+        const data = {
+            keySearch: keySearch,
+            typeSearch: typeSearch,
+        }
+        request.get(`/api/getQuantityOrderToDevidePage_Search`, {params: data})
+        .then(res => {
+            res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
                     if(itemStatusFromDB.TRANGTHAI_DONHANG === itemStatus.value.nameState)
                     {
@@ -220,27 +223,31 @@ function SearchOrder(){
     }
     
     const getInforOrderDetail = (madh) => {
-        request.get(`/api/infoOrderDetail?madh=${madh}`)
+        request.get(`/api/infoOrderDetail`, {params: {madh: madh}})
         .then(res => {  
-            // if(typeof res.data_relative_Donhang !== 'object')
+            // if(typeof res.data.data_relative_Donhang !== 'object')
                 setInfoOrderDetail({
-                    data_relative_Donhang: res.data_relative_Donhang[0],
-                    data_sanPham_relative_CTDH: res.data_sanPham_relative_CTDH,
+                    data_relative_Donhang: res.data.data_relative_Donhang[0],
+                    data_sanPham_relative_CTDH: res.data.data_sanPham_relative_CTDH,
                 })
             // else
             // setInfoOrderDetail({
-            //     data_relative_Donhang: res.data_relative_Donhang,
-            //     data_sanPham_relative_CTDH: res.data_sanPham_relative_CTDH,
+            //     data_relative_Donhang: res.data.data_relative_Donhang,
+            //     data_sanPham_relative_CTDH: res.data.data_sanPham_relative_CTDH,
             // })
-            setNote(res.data_relative_Donhang[0].GHICHU);
+            setNote(res.data.data_relative_Donhang[0].GHICHU);
             console.log(res, ' ', infoOrderDetail, ' ', madh);
         })
     };
 
     const saveNote = (madh, note) => {
         console.log(madh, "okokokok", note)
+        const data = {
+            madh: madh,
+            note: note,
+        }
         try{
-            request.post(`api/saveNote?note=${note}&madh=${madh}`, {note, madh})
+            request.post(`api/saveNote`, data)
             .then(res => {
                 console.log(res)
             })

@@ -46,10 +46,16 @@ class UpdateProductController extends Controller
             WHERE MASP = $masp_query"
         ); 
 
-        $i = 0;
+        $i = 1;
+        $soluong = 0;
         foreach ($checkboxSize as $itemSize){
             foreach($checkboxColor as $itemColor){
-                $soluong = $listQuantity[$i];
+                foreach($listQuantity as $itemQuantity){
+                    if($itemQuantity->id == $i){
+                        $soluong = $itemQuantity->soluong;
+                        break; 
+                    }
+                }
 
                 $test_daco = DB::select(
                     "SELECT MAXDSP FROM sanpham_mausac_sizes 

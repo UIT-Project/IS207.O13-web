@@ -30,9 +30,9 @@ class AdminManageOrderController extends Controller
         ]); 
     }
     public function getInfoManageOrder(Request $request){
-        $tenTrangThai = $request->query('tenTrangThai');
-        $start = $request->query('start');
-        $numberOrderEachPage = $request->query('numberOrderEachPage');
+        $tenTrangThai = $request->input('tenTrangThai');
+        $start = $request->input('start');
+        $numberOrderEachPage = $request->input('numberOrderEachPage');
         // $orderList_DB = donhang::where('TRANGTHAI_DONHANG', 'LIKE', "%$tenTrangThai%")->orderBy('MADH', 'desc')
         // ->skip($start)->take($numberOrderEachPage)->get(); 
 
@@ -161,13 +161,13 @@ class AdminManageOrderController extends Controller
     }
 
     public function updateOrderStatus(Request $request){
-        $nameStatusWillUpdate = $request->query('nameStatusWillUpdate');
-        $listMASPTranferState = $request->query('listMASPTranferState');
+        $nameStatusWillUpdate = $request->input('nameStatusWillUpdate');
+        $listMASPTranferState = $request->input('listMASPTranferState');
 
         // $listMASPTranferState_Array = json_decode($listMASPTranferState);
-        $listMASPTranferStateArray = explode(",", $listMASPTranferState);
+        // $listMASPTranferStateArray = explode(",", $listMASPTranferState);
 
-        foreach($listMASPTranferStateArray as $item){
+        foreach($listMASPTranferState as $item){
             DB::update("UPDATE donhangs set TRANGTHAI_DONHANG = '$nameStatusWillUpdate' where MADH = $item");
         }
         // DB::update("UPDATE donhangs set TRANGTHAI_DONHANG = '$nameStatusWillUpdate' where MADH = 55");

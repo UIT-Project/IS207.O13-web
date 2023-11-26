@@ -2,8 +2,7 @@ import "./manageOrder.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
-import * as request from "../../../utils/request"; 
-import requestPost from "../../../utils/request"; 
+import request from "../../../utils/request";  
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -136,16 +135,17 @@ function ManageOrder(){
     }
 
     const getInfoOrderForUsers =  (itemInOrderStatus_Array, openingPage) => {   
-        var queryForGetInfoOrderForUsers = { 
+        const queryForGetInfoOrderForUsers = { 
             start: numberOrderEachPage * ( openingPage - 1),
             tenTrangThai: itemInOrderStatus_Array.value.nameState,
+            numberOrderEachPage: numberOrderEachPage,
         }  
 
         try{
-            request.get(`/api/getInfoManageOrder?tenTrangThai=${queryForGetInfoOrderForUsers.tenTrangThai}
-                &start=${queryForGetInfoOrderForUsers.start}&numberOrderEachPage=${numberOrderEachPage}`)
+            request.get(`/api/getInfoManageOrder`, {params: queryForGetInfoOrderForUsers})
+                // request.get('api/getInfoManageOrder', queryForGetInfoOrderForUsers)
             .then(res=>{      
-                // console.log(res.orderList_DB[0]) 
+                console.log(res.data, 'okk') ;
      
                 setOrderStatus(prevOrderStatus => {
                     const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
@@ -153,7 +153,7 @@ function ManageOrder(){
                     );
                     if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
                         setPaginationNumberRunFirst(1);
-                        // console.log(res.orderList_DB.length)
+                        // console.log(res.data.orderList_DB.length)
                         return {
                             ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
                             [itemInOrderStatus_Array.key] : 
@@ -161,7 +161,7 @@ function ManageOrder(){
                                 ...prevOrderStatus[itemInOrderStatus_Array.key], 
                                 orderList:  [
                                     ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
-                                    ...res.orderList_DB.filter(item =>  item)
+                                    ...res.data.orderList_DB.filter(item =>  item)
                                 ],  
                                 spaceGetDataFromOrderList: [
                                     ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
@@ -169,7 +169,7 @@ function ManageOrder(){
                                         paginationNumber: openingPage,
                                         ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
                                         startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                        endIndex: res.orderList_DB.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                        endIndex: res.data.orderList_DB.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
                                     },
                                 ] 
                             }
@@ -195,7 +195,7 @@ function ManageOrder(){
     const getQuantityOrderToDevidePage = () => {
         request.get('/api/getQuantityOrderToDevidePage')
         .then(res=> {
-            res.quantity.forEach(itemStatusFromDB => {
+            res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
                     if(itemStatusFromDB.TRANGTHAI_DONHANG === itemStatus.value.nameState)
                     {
@@ -220,27 +220,35 @@ function ManageOrder(){
     }
     
     const getInforOrderDetail = (madh) => {
-        request.get(`/api/infoOrderDetail?madh=${madh}`)
+        const data = {
+            madh: madh
+        }
+        request.get(`/api/infoOrderDetail`, {params: data})
         .then(res => {  
-            // if(typeof res.data_relative_Donhang !== 'object')
+            // if(typeof res.data.data_relative_Donhang !== 'object')
                 setInfoOrderDetail({
-                    data_relative_Donhang: res.data_relative_Donhang[0],
-                    data_sanPham_relative_CTDH: res.data_sanPham_relative_CTDH,
+                    data_relative_Donhang: res.data.data_relative_Donhang[0],
+                    data_sanPham_relative_CTDH: res.data.data_sanPham_relative_CTDH,
                 })
             // else
             // setInfoOrderDetail({
-            //     data_relative_Donhang: res.data_relative_Donhang,
-            //     data_sanPham_relative_CTDH: res.data_sanPham_relative_CTDH,
+            //     data_relative_Donhang: res.data.data_relative_Donhang,
+            //     data_sanPham_relative_CTDH: res.data.data_sanPham_relative_CTDH,
             // })
-            setNote(res.data_relative_Donhang[0].GHICHU);
+            setNote(res.data.data_relative_Donhang[0].GHICHU);
             console.log(res, ' ', infoOrderDetail, ' ', madh);
         })
     };
 
     const saveNote = (madh, note) => {
         console.log(madh, "okokokok", note)
+        const data = {
+            note: note, 
+            madh: madh
+        }
         try{
-            request.post(`api/saveNote?note=${note}&madh=${madh}`, {note, madh})
+            // requestPost.post(`api/saveNote?note=${note}&madh=${madh}`, {note, madh})
+            request.post('api/saveNote', data)
             .then(res => {
                 console.log(res)
             })
@@ -278,16 +286,13 @@ function ManageOrder(){
 
     const handleUpdateState = (nameStatusWillUpdate) => {
         console.log(listMASPTranferState);
-
+        const data = {
+            nameStatusWillUpdate: nameStatusWillUpdate,
+            listMASPTranferState: listMASPTranferState
+        }
         try{ 
             request.post(
-                `api/updateOrderStatus?nameStatusWillUpdate=${nameStatusWillUpdate}
-                &listMASPTranferState=${listMASPTranferState}`
-                , 
-                {
-                    nameStatusWillUpdate: nameStatusWillUpdate,
-                    listMASPTranferState: listMASPTranferState
-                }
+                `api/updateOrderStatus`, data
             )
             .then(res => {})
         }
