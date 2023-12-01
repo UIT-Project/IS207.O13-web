@@ -6,6 +6,8 @@ import { useParams } from "react-router-dom";
 import request from "../../utils/request";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 import {Media} from "./image";
+
+import ImageSlider from "./ImageSlider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
 function InfoProduct(){
@@ -25,7 +27,7 @@ function InfoProduct(){
     const [hetHang, setHetHang] = useState(false);
     //
     const buttonAddToCartRef = useRef(null);  
-    const[file,setFile]=useState(null);
+
     //tạo biến selectPropertyProduct để lưu thông tin sản phẩm thêm và giỏ hàng
     const [selectPropertyProduct, setSelectPropertyProduct] = useState({
         mamau: 0,
@@ -51,7 +53,18 @@ function InfoProduct(){
         soluongsp: 1,
         tonggia: 1, 
     });
- 
+    const slides = [
+        { url: "http://localhost:3000/hai1.jpg", type: "image" },
+        { url: "http://localhost:3000/Thumbnail1.jpg", type: "image" },
+        { url: "http://localhost:3000/Thumbnail2.jpg", type: "image" },
+        { url: "http://localhost:3000/Thumbnail3.jpg", type: "image" },
+        { url: "http://localhost:3000/Thumbnail4.jpg", type: "image" }
+    ];
+    const containerStyles = {
+        width: "500px",
+        height: "280px",
+        margin: "0 auto",
+    };
     //sử dụng ctrl + f để tìm hàm này thì sẽ thấy nó nằm trong onchange của thẻ input radio chọn màu và size
     //trong thẻ input chú ý đến name và value, giá trị name phải trùng với key trong setSelectPropertyProduct và sẽ nhận được giá trị từ e.target.value
     //setSelectPropertyProduct({...selectPropertyProduct, [e.target.name] : e.target.value}); : đoạn code này là chèn thêm dữ liệu mới và dữ nguyên dữ liệu cũ
@@ -92,7 +105,7 @@ function InfoProduct(){
                 soluong :  newQuantity}); 
         console.log(selectPropertyProduct.soluong, 'sjdjnsd')
     }
- 
+
     //thực hiện lấy thông tin sản phẩm khi load vào trang với id tương ứng
     const getInfo = () => {  
         request.get(`/api/infoProduct?id=${id}`)
@@ -204,38 +217,7 @@ function InfoProduct(){
         <div class="container col-sm-12 ">
             <div class="container-fluid">
                 <div class="container_info_product"> 
-                    <div class="product_image col-sm-7">
-                        <div class="product_image__list_mini_image" id="style-7">
-                            <div class="product_image__list_mini_image__item">
-                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                            </div> 
-                            <div class="product_image__list_mini_image__item">
-                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                            </div>
-                            <div class="product_image__list_mini_image__item">
-                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                            </div>
-                            <div class="product_image__list_mini_image__item">
-                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                            </div>
-                            <div class="product_image__list_mini_image__item" onClick={()=>setFile(images)}>
-                                <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
-                            </div>
-                        </div>
-                        {/* <div class="product_image__main_image">
-                            {
-                                Media.map((file,index)=>(
-                                    <div className="media" key={index} onClick={()=>setFile(file)}>
-                                        {
-                                            file.type === 'image'
-                                            ? <img class="product_image__main_image__img" src={file.url} alt=""/>
-                                            : <video class="product_image__main_image__img" src={file.url} muted/>
-                                        }
-                                    </div>
-                                ))
-                            }
-                        </div> */}
-                    </div>
+                    <ImageSlider slides={slides}/>
                     <div class="detail_info_product col-sm-5">
                         <div class="detail_info_product__title">
                             <h4>{infoProduct.data_sanpham.TENSP}</h4>
@@ -401,14 +383,7 @@ function InfoProduct(){
                     </div>
                 </div>
             </div>
-            <div className="popup-media" style={{display: file ? 'block' : 'none'}}>
-                <span onClick={()=>setFile(null)}>&times;</span>
-                {
-                    file?.type ==='video'
-                    ? <video src={file?.url} muted autoPlay controls/>
-                    : <img src={images.mini_image__item}/>
-                }
-            </div> 
+ 
         </div>
     )
 }
