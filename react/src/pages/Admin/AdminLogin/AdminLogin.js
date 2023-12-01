@@ -2,13 +2,13 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faUser } from '@fortawesome/free-solid-svg-icons';
-import './style.css';
+import './AdminLogin.css';
 import { useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
-import Request from "../../utils/request";
-import useGlobalVariableContext from '../../context_global_variable/context_global_variable'; 
+import request from '../../../utils/request';
+import useGlobalVariableContext from '../../../context_global_variable/context_global_variable'; 
 
-function Login(){ 
+function AdminLogin(){ 
 
     // Trong file này cần xử lý
     // 1.kiểm tra xem người dùng đã nhấn đăng ký hay đăng nhập
@@ -67,31 +67,31 @@ function Login(){
     const registerSubmit = async (e) => {
       e.preventDefault();
       //dữ liệu sẽ gửi xuống để lưu thông tin đăng ký
-      setIsLoading(true)
+      // setIsLoading(true)
       const data_register = {
         name: registerInput.name_register,
         email: registerInput.email_register,
         password: registerInput.password_register,
         confirmPassword: registerInput.confirmPassword_register,
         gender: registerInput.gender_register,
-        role: "Khách hàng",
-        AdminVerify: 0,
+        role: "Nhân viên",
+        AdminVerify: 'Đã xác nhận',
       }
       console.log(data_register)
       //sử dụng sanctum để lưu thông tin đăng ký và check valid ở phần backend
-      Request.get('/sanctum/csrf-cookie')
+      request.get('/sanctum/csrf-cookie')
         .then(async () => {
-          Request.post('/api/register', data_register) //request post để lưu thông tin
+          request.post('/api/register', data_register) //request post để lưu thông tin
         .then(res => {
           console.log(res.data.status)
           if(res.data.status === 200){// nếu lưu thông tin thành công thì status trả về từ server là 200 
-            console.log(res.data.email);
+            console.log(res.data.role, 'kạdkjs');
             localStorage.setItem('auth_token', res.data.token);
             localStorage.setItem('auth_email', res.data.email);
-            setIsNotifyOpenMailToVerify(true);
+            // setIsNotifyOpenMailToVerify(true);
 
             // swal("success", res.data.message, "success");
-            Navigate('/login');
+            // Navigate('/login');
           }
           else{
             
@@ -132,9 +132,9 @@ function Login(){
       }
       console.log('loginSubmit')
 
-      Request.get('/sanctum/csrf-cookie')
+      request.get('/sanctum/csrf-cookie')
         .then(async () => {
-          Request.post('/api/login', data_login) 
+          request.post('/api/login', data_login) 
         .then(res => {
           console.log(res.data.status, 'a')
           if(res.data.status === 200){
@@ -183,7 +183,7 @@ function Login(){
       }
       setIsLoading(true)
       console.log('recoverPassword')
-      Request.post('/api/sendMailRecoverPassword', data)
+      request.post('/api/sendMailRecoverPassword', data)
       .then(res => {
         console.log(res.data.status)
         if(res.data.status === 200){// nếu lưu thông tin thành công thì status trả về từ server là 200 
@@ -478,4 +478,4 @@ function Login(){
     )
 }
 
-export default Login;
+export default AdminLogin;

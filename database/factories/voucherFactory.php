@@ -22,10 +22,9 @@ class voucherFactory extends Factory
         $THOIGIANKT = $this->faker->dateTimeBetween('now', '+1 year')->format('Y-m-d');
         
         return [
-            'MAVOUCHER' => $this->faker->firstNameMale(),
-            'TEN' => $this->faker->name(),
+            'MAVOUCHER' => $this->faker->firstNameMale(), 
             'SOLUONG' => $this->faker->randomNumber(2, false),
-
+            
             'THOIGIANBD' => $THOIGIANBD,
             'THOIGIANKT' => $THOIGIANKT,
             'MOTA' => $this->faker->paragraph(),

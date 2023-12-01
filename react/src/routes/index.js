@@ -17,10 +17,14 @@ import InfoAccount from "../pages/InfoAccount/infoAccount";
 import PrintOrder from "../pages/Admin/PrintOrder/printOrder";
 import SearchOrder from "../pages/Admin/SearchOrder/searchOrder";
 import SearchProductAdmin from "../pages/Admin/SearchProductAdmin/searchProductAdmin";
+import AdminLogin from "../pages/Admin/AdminLogin/AdminLogin";
+import ManageAccountStaff from "../pages/Admin/ManageAccountStaff/ManageAccountStaff";
+import ManageAccountCustomer from "../pages/Admin/ManageAccountCustomer/ManageAccountCustomer";
+import AddVoucher from "../pages/Admin/AddVoucher/AddVoucher";
+import ManageVoucher from "../pages/Admin/ManageVoucher/ManageVoucher";
 
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
-
 
 const publicRoutes = [
 
@@ -48,6 +52,11 @@ const publicRoutes = [
     {path: config.routes.printOrder, component: PrintOrder, layout: AdminLayout},
     {path: config.routes.searchOrder, component: SearchOrder, layout: AdminLayout},
     {path: config.routes.searchProductAdmin, component: SearchProductAdmin, layout: AdminLayout},
+    {path: config.routes.adminLogin, component: AdminLogin, layout: null},
+    {path: config.routes.manageAccountStaff, component: ManageAccountStaff, layout: AdminLayout},
+    {path: config.routes.manageAccountCustomer, component: ManageAccountCustomer, layout: AdminLayout},
+    {path: config.routes.addVoucher, component: AddVoucher, layout: AdminLayout},
+    {path: config.routes.manageVoucher, component: ManageVoucher, layout: AdminLayout},
 ];
 
 const privateRoutes = [];

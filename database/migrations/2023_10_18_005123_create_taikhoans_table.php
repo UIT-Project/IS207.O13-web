@@ -17,6 +17,12 @@ return new class extends Migration
             $table->string('TEN');
             $table->string('EMAIL');
             $table->string('PASSWORD');
+            $table->string('GIOITINH')->nullable();
+            $table->string('SDT')->nullable();
+            $table->string('DIACHI')->nullable();
+            $table->integer('ROLE')->nullable();
+            $table->integer('AdminVerify')->nullable();
+            $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
     }

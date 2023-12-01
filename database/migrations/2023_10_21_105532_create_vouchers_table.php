@@ -16,12 +16,15 @@ return new class extends Migration
         Schema::dropIfExists('vouchers');
 
         Schema::create('vouchers', function (Blueprint $table) {
-            $table->string('MAVOUCHER', 50)->primary();
-            $table->string('TEN');
+            $table->string('MAVOUCHER', 50)->primary(); 
             $table->integer('SOLUONG');
+            $table->integer('SOLUONG_CONLAI');
+            $table->integer('GIATRI_DH_MIN');
+            $table->integer('GIATRI_GIAM_MAX');
             $table->date('THOIGIANBD');
             $table->date('THOIGIANKT');
             $table->longText('MOTA');
+            $table->string('PHANLOAI_VOUCHER');
             $table->decimal('GIATRIGIAM', 3, 2);
             
             $table->timestamp('updated_at')->nullable(); 

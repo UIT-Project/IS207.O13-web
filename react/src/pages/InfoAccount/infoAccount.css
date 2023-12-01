@@ -3,8 +3,8 @@
 }
 
 .last-button{
-    margin-top: 40px;
-    margin-left: 1000px;
+    margin-top: 2em;
+    margin-left: 17.15em;
     width: 150px;
     background-color: orange;
     color: #fff;
@@ -34,7 +34,7 @@
 }
 
 .form_container{
-    margin-top: 90px;
+    margin-top: 50px;
     margin-bottom: 0px;
 }
 .name_row{
@@ -77,3 +77,57 @@ button:hover {
 button:disabled {
     background-color: rgba(0, 0, 0, 50%);
 } */
+
+.round_corner_input{
+    border: 0px;
+    border-radius: 0.4em;
+}
+.thongtintaikhoan{
+    margin-top: 4em;
+}
+
+.changePassword-button{
+    margin-top: 0.8em;
+    margin-left: 8em;
+    width: 150px;
+    background-color: orange;
+    color: #fff;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid orange; 
+}
+.notifySaveInfoAccount{
+    margin-left: -13em;
+    margin-top: 0.2em;
+
+}
+
+.notifySaveInfoChangePassword{
+    margin-top: 0.7em; 
+    margin-left: 4em;
+
+}
+.donut_InfoAccount {
+    width: 2rem;
+    height: 2rem;
+    margin-top: 1rem;
+    margin-left: 20rem;
+    border-radius: 50%;
+    border: 0.3rem solid white;
+    border-top-color: #979fd0;
+    animation: 1.5s spin infinite linear;
+  
+    &.multi_InfoAccount {
+      border-bottom-color: #979fd0;
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+.display_hidden{
+    display: none;
+}

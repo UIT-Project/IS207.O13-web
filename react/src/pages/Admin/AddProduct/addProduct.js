@@ -100,7 +100,7 @@ function AddProduct(){
         listQuantity.shift();
         formData.append('listQuantity', JSON.stringify(listQuantity));
 
-        setStatusPressAddProduct(!statusPressAddProduct);
+        // setStatusPressAddProduct(!statusPressAddProduct);
         // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
         request.post(`api/addProduct`, formData, {
             headers: {
@@ -238,7 +238,7 @@ function AddProduct(){
                     
                     <div class="address_update" id="address_update">
                         <div class="row mb-2">
-                            <div class="col-12">
+                            <div class="input_ten_div">
                                 {/* <label for="#" class="form-label">Tên sản phẩm</label> */}
                                 <input 
                                     type="text" class="form-control" placeholder="Nhập tên sản phẩm" 

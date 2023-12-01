@@ -1,4 +1,4 @@
-import "./manageProduct.css"
+import "./ManageAccountStaff.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
@@ -7,11 +7,11 @@ import request from "../../../utils/request";
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import {  faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import { faCircleXmark, faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
+import {  faCheck, faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
-function ManageProduct()
+function ManageAccountStaff()
 {
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
@@ -24,6 +24,7 @@ function ManageProduct()
     const nameStatusParam = searchParams.get('nameStatus');
 
     let i = 0; 
+    const [listMASPTranferState, setListMASPTranferState] = useState([]);
     const [statusPressUpdateProduct, setStatusPressUpdateProduct] = useState(true);
     const Navigate = useNavigate();
     const [listQuantity, setListQuantity] = useState([{
@@ -63,13 +64,14 @@ function ManageProduct()
     const [keySearch, setKeySearch] = useState('');
     const [typeSearch, setTypeSearch] = useState('MASP');
     const [orderStatus, setOrderStatus] = useState({
-        nam:{
-            nameState: 'Nam',
+        choXacNhan:{
+            nameState: 'Chờ xác nhận',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
             openingPage: 1,
             indexOfOderListHelpDelete: 0,
+            hasChangeFromPreState: 0,
             spaceGetDataFromOrderList: [{
                 paginationNumber: 1,
                 ordinalNumber: 1,
@@ -77,27 +79,14 @@ function ManageProduct()
                 endIndex: numberOrderEachPage,
             }]
         },
-        nu: {
-            nameState: 'Nữ',
+        daXacNhan: {
+            nameState: 'Đã xác nhận',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
             openingPage: 1, 
             indexOfOderListHelpDelete: 0,
-            spaceGetDataFromOrderList: [{
-                paginationNumber: 1,
-                ordinalNumber: 1,
-                startIndex: 0,
-                endIndex: numberOrderEachPage,
-            }]
-        },
-        treEm: {
-            nameState: 'Trẻ em',
-            orderList: [],
-            pageQuantity: 0,
-            paginationList: [],
-            openingPage: 1, 
-            indexOfOderListHelpDelete: 0,
+            hasChangeFromPreState: 0,
             spaceGetDataFromOrderList: [{
                 paginationNumber: 1,
                 ordinalNumber: 1,
@@ -113,7 +102,7 @@ function ManageProduct()
         }
     )) 
     const [orderStatusPointer, setOrderStatusPointer] = useState(
-        nameStatusParam ? orderStatus[nameStatusParam]?.nameState : orderStatus.nam.nameState
+        nameStatusParam ? orderStatus[nameStatusParam]?.nameState : orderStatus.choXacNhan.nameState
     );
 
     //update
@@ -365,18 +354,24 @@ function ManageProduct()
 
     const handleClickNavState = (item_status, item_pagina) => {
         // console.log(e.target.value) 
-        
+        console.log(item_status.value.hasChangeFromPreState, 'ksdnksdkns')
         setOrderStatusPointer(item_status.value.nameState) 
-        const updateOpeningPage = prevOrderStatus => (
-            {
-                ...prevOrderStatus, 
-                [item_status.key] : {...prevOrderStatus[item_status.key],  openingPage:  item_pagina}
-            }
-        );
-        setOrderStatus(updateOpeningPage) 
+        if( item_status.value.hasChangeFromPreState === 1){ 
+            const updateOpeningPage = prevOrderStatus => (
+                {
+                    ...prevOrderStatus, 
+                    [item_status.key] : {
+                        ...prevOrderStatus[item_status.key],  
+                        openingPage:  item_pagina,
+                        hasChangeFromPreState: 0,
+                    }
+                }
+            );
+            setOrderStatus(updateOpeningPage) 
+            getInfoOrderForUsers(item_status, item_pagina); 
+        }
         // console.log(item_status, 'test', item_pagina);
-        getInfoOrderForUsers(item_status, item_pagina); 
-        quantityDeleteProductInOnePage = 0;
+        quantityDeleteProductInOnePage = 0; 
     }
 
     const handleClickItemPagination = (item_status, item_pagina) => {
@@ -403,7 +398,75 @@ function ManageProduct()
         // Navigate(`/admin/updateProduct?nameStatus=${[item.key]}&numberPagination=${[item.value.openingPage]}&masp=${masp}`);
     }
 
-    const handleDeleteProduct = (masp, item_ofOrderStatusArray) => {  
+    const handleUpdateState = (orderStatus_Array, matk, index) => {
+        console.log(listMASPTranferState);
+        const itemWillUpdate = orderStatus_Array[index+1];
+        const itemCurent = orderStatus_Array[index];
+        const data = {
+            nameStatusWillUpdate: itemWillUpdate.value.nameState,
+            matk: matk
+        }
+        
+        setOrderStatus({
+            ...orderStatus, 
+            [itemWillUpdate.key]: {
+                ...orderStatus[itemWillUpdate.key],
+                hasChangeFromPreState: 1,
+            },
+            [itemCurent.key]: {
+                ...orderStatus[itemCurent.key], 
+                orderList: orderStatus[itemCurent.key].orderList.map(item =>{
+                    if(item !== null){
+                        if(item.MATK == matk) 
+                            return null; 
+                        else{
+                            return item;
+                        }
+                    }
+                    else{
+                        return item;
+                    } 
+                })
+            }
+        })
+        try{ 
+            request.post(
+                `api/updateStatusOfAccountStaff`, data
+            )
+            .then(res => {
+                        
+                let indexNull = {
+                    start: 0,
+                    end: 0,
+                } 
+                itemCurent.value.spaceGetDataFromOrderList.forEach(item => {
+                    if(itemCurent.value.openingPage === item.paginationNumber){ 
+                        indexNull.start = item.startIndex;
+                        indexNull.end = item.endIndex;
+                    }
+                })
+                // index.end = item_ofOrderStatusArray.value.openingPage * numberOrderEachPage - 1;
+                console.log(indexNull.start, ' ', indexNull.end, 'orderlist: ', itemCurent.value.orderList)
+                // nếu toàn bộ item_ofOrderStatusArray từ start đến end thì reload trang
+                let i = 0; 
+                itemCurent.value.orderList.slice(indexNull.start, indexNull.end).forEach(item => {
+                    if(item === null){
+                        i++;
+                    }
+                })
+                console.log(i + 1 , ' ', indexNull.end)
+
+                if(i + 1 === indexNull.end)  
+                    window.location.reload(); 
+            }) 
+        }
+        catch(err){
+            console.log(err)
+        }
+        setListMASPTranferState([]);
+    }
+
+    const handleDeleteAccountStaff = (matk, item_ofOrderStatusArray) => {  
         
         setOrderStatus(prevOrderStatus => ({
             ...prevOrderStatus, 
@@ -411,7 +474,7 @@ function ManageProduct()
                 {...prevOrderStatus[item_ofOrderStatusArray.key],  
                 orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.map(item => {
                     if(item !== null){
-                        if(item.MASP === masp){
+                        if(item.MATK === matk){
                             return null;
                         }
                         else{
@@ -423,8 +486,8 @@ function ManageProduct()
                     }
                 })}
         }))  
-
-        request.post(`api/deleteProduct?masp=${masp}`)
+        console.log(matk)
+        request.post(`api/deleteAccountStaff?matk=${matk}`)
         .then(res => {
             console.log(res)
             let index = {
@@ -455,10 +518,10 @@ function ManageProduct()
     const getInfoOrderForUsers =  (itemInOrderStatus_Array, openingPage) => {   
         const queryForGetInfoOrderForUsers = { 
             start: numberOrderEachPage * ( openingPage - 1),
-            tenDanhMuc: itemInOrderStatus_Array.value.nameState,
+            AdminVerify: itemInOrderStatus_Array.value.nameState,
             numberOrderEachPage: numberOrderEachPage,
         }  
-        request.get(`/api/getInfoManageProduct`, {params: queryForGetInfoOrderForUsers}) 
+        request.get(`/api/getInfoManageAccountStaff`, {params: queryForGetInfoOrderForUsers}) 
         .then(res=>{  
             console.log(res.data)
             if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
@@ -506,15 +569,15 @@ function ManageProduct()
     }
 
     const getQuantityOrderToDevidePage = () => {
-        request.get('/api/getQuantityProductToDevidePage')
+        request.get('/api/getQuantityAccountStaffToDevidePage')
         .then(res=> {
             console.log(res.data.quantity, 'jnsjdjsbjn')
             res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
-                    if(itemStatusFromDB.TENPL === itemStatus.value.nameState)
+                    if(itemStatusFromDB.AdminVerify === itemStatus.value.nameState)
                     {
-                        const pageQuantityShow = Math.ceil(itemStatusFromDB.SL_MASP / numberOrderEachPage)  
-                        console.log(itemStatusFromDB.SL_MASP, 'eee')
+                        const pageQuantityShow = Math.ceil(itemStatusFromDB.SL_MATK / numberOrderEachPage)  
+                        console.log(itemStatusFromDB.SL_MATK, 'eee')
                         let arrAddToPaginationList = [];
                         for(let i = 1; i <= pageQuantityShow; i++){
                             arrAddToPaginationList.push(i);
@@ -524,7 +587,7 @@ function ManageProduct()
                             ...prevOrderStatus, 
                             [itemStatus.key] : 
                                 {...prevOrderStatus[itemStatus.key],  
-                                pageQuantity: itemStatusFromDB.SL_MASP, 
+                                pageQuantity: itemStatusFromDB.SL_MATK, 
                                 paginationList: arrAddToPaginationList}
                         }))
                     }
@@ -550,7 +613,7 @@ function ManageProduct()
         orderStatus_Array.map(item => getInfoOrderForUsers(item, 1) ) 
         getQuantityOrderToDevidePage()  
         getInfoForUpdateProduct();
-        console.log(orderStatus.nam.orderList)
+        console.log(orderStatus.choXacNhan.orderList)
     }, [])  
 
     //update
@@ -826,7 +889,7 @@ function ManageProduct()
             </button>
         </li> 
     )
-    const renderEachProduct = (item, indexOrder) => {
+    const renderEachProduct = (orderStatus_Array, item, indexOrder) => {
         let index = {
             start: 0,
             end: 0,
@@ -848,22 +911,22 @@ function ManageProduct()
                     }
                     else{
                         return (
-                            <tr key={index}  id={`product_${product.MASP}`}>
-                                <td data-label="Order-code">{product.MASP}</td>
-                                <td data-label="Name">{product.TENSP}</td>
-                                <td data-label="Phone-number">{product.GIABAN}</td>
-                                <td data-label="Address">{product.GIAGOC}</td>
-                                <td data-label="Day">{product.SOLUONGCONLAI}</td>
-                                <td><button type="button" id="btn-status-deliveried">Đã giao</button>
-                                </td>  
+                            <tr key={index}  id={`product_${product.MATK}`}>
+                                <td data-label="Order-code">{product.TEN}</td>
+                                <td data-label="Name">{product.EMAIL}</td>
+                                <td data-label="Phone-number">{product.GIOITINH}</td>
+                                <td data-label="Address">{product.SDT}</td>  
                                 <td data-label="update">
                                     <div class="icon-update">
-                                        <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
-                                        <span onClick={()=>handleWatchProductDetail(item, product.MASP, product)}>
-                                            <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
+                                        {/* <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon> */}
+                                        <span onClick={()=>handleDeleteAccountStaff(product.MATK, item)}>
+                                            <FontAwesomeIcon class="fa-solid faCircleXmark" icon={faCircleXmark} ></FontAwesomeIcon>
                                         </span>
-                                        <span onClick={() =>handleDeleteProduct(product.MASP, item)}>
-                                            <FontAwesomeIcon icon={faTrashAlt} className="faTrashAlt"></FontAwesomeIcon>
+                                        <span 
+                                            onClick={() =>handleUpdateState(orderStatus_Array, product.MATK, 0)} 
+                                            className={`${item.value.nameState === 'Đã xác nhận' ? 'display_hidden' : ''}`}
+                                        >
+                                            <FontAwesomeIcon icon={faCheck} className="fa-solid faCheck"></FontAwesomeIcon>
                                         </span>
                                     </div>
                                     
@@ -897,18 +960,16 @@ function ManageProduct()
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col" >Mã sản phẩm</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Giá bán</th>
-                                <th scope="col">Giá gốc</th>
-                                <th scope="col" >Số lượng còn lại</th> 
-                                <th scope="col" >Số lượng đã bán</th> 
+                                <th scope="col" >Tên</th>
+                                <th scope="col">EMAIL</th>
+                                <th scope="col">Giới tính</th>
+                                <th scope="col">Số điện thoại</th> 
                                 <th scope="col"></th>
 
                             </tr>
                             </thead>
                             <tbody class="table-group-divider">
-                                { renderEachProduct(item, index) } 
+                                { renderEachProduct(orderStatus_Array, item, index) } 
                             </tbody>
                         </table>
                     </div>
@@ -922,7 +983,7 @@ function ManageProduct()
     return(
         <div class="order_info_body container">
             <div class="heading text-uppercase text-center">
-                <h1>Sản phẩm</h1>
+                <h1>Nhân viên</h1>
             </div>
             <div className="div_search">
                 <div>
@@ -961,4 +1022,4 @@ function ManageProduct()
     )
 }
 
-export default ManageProduct;
+export default ManageAccountStaff;

@@ -1,4 +1,4 @@
-import "./manageProduct.css"
+import "./ManageVoucher.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
@@ -11,7 +11,7 @@ import { faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-
 import {  faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
-function ManageProduct()
+function ManageVoucher()
 {
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
@@ -63,8 +63,8 @@ function ManageProduct()
     const [keySearch, setKeySearch] = useState('');
     const [typeSearch, setTypeSearch] = useState('MASP');
     const [orderStatus, setOrderStatus] = useState({
-        nam:{
-            nameState: 'Nam',
+        chuaApDung:{
+            nameState: 'Chưa áp dụng',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
@@ -77,8 +77,8 @@ function ManageProduct()
                 endIndex: numberOrderEachPage,
             }]
         },
-        nu: {
-            nameState: 'Nữ',
+        dangApDung: {
+            nameState: 'Đang áp dụng',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
@@ -91,8 +91,8 @@ function ManageProduct()
                 endIndex: numberOrderEachPage,
             }]
         },
-        treEm: {
-            nameState: 'Trẻ em',
+        daApDung: {
+            nameState: 'Đã qua sử dụng',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
@@ -113,7 +113,7 @@ function ManageProduct()
         }
     )) 
     const [orderStatusPointer, setOrderStatusPointer] = useState(
-        nameStatusParam ? orderStatus[nameStatusParam]?.nameState : orderStatus.nam.nameState
+        nameStatusParam ? orderStatus[nameStatusParam]?.nameState : orderStatus.chuaApDung.nameState
     );
 
     //update
@@ -506,7 +506,7 @@ function ManageProduct()
     }
 
     const getQuantityOrderToDevidePage = () => {
-        request.get('/api/getQuantityProductToDevidePage')
+        request.get('/api/getQuantityVoucherToDevidePage')
         .then(res=> {
             console.log(res.data.quantity, 'jnsjdjsbjn')
             res.data.quantity.forEach(itemStatusFromDB => {
@@ -550,7 +550,7 @@ function ManageProduct()
         orderStatus_Array.map(item => getInfoOrderForUsers(item, 1) ) 
         getQuantityOrderToDevidePage()  
         getInfoForUpdateProduct();
-        console.log(orderStatus.nam.orderList)
+        console.log(orderStatus.chuaApDung.orderList)
     }, [])  
 
     //update
@@ -922,7 +922,7 @@ function ManageProduct()
     return(
         <div class="order_info_body container">
             <div class="heading text-uppercase text-center">
-                <h1>Sản phẩm</h1>
+                <h1>Voucher</h1>
             </div>
             <div className="div_search">
                 <div>
@@ -961,4 +961,4 @@ function ManageProduct()
     )
 }
 
-export default ManageProduct;
+export default ManageVoucher;

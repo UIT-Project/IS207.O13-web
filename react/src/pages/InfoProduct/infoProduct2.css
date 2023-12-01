@@ -343,3 +343,10 @@ user-select: none;
   width: 1.5em;
   height: 1.5em;
 }
+
+.border_size_color{
+  border: 3px solid red;
+}
+.display_hidden{
+  display: none;
+}

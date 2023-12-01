@@ -49,23 +49,7 @@ class ManageProductController extends Controller
             GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC
             ORDER BY sanphams.MASP DESC
             LIMIT $start, $numberOrderEachPage" 
-        );
-        // $data_soluong_daban = DB::select(
-        //     "SELECT chitiet_donhangs.maxdsp, sum(chitiet_donhangs.soluong), sanphams.masp, count(madh) 
-        //     from chitiet_donhangs, sanpham_mausac_sizes, phanloai_sanphams, sanphams 
-        //     where chitiet_donhangs.maxdsp = sanpham_mausac_sizes.maxdsp 
-        //     and phanloai_sanphams.mapl = sanphams.mapl_sp 
-        //     and sanpham_mausac_sizes.masp = sanphams.masp and TENPL = '$tenDanhMuc'
-        //     GROUP BY SANPHAMS.MASP"
-        // );
-
-        // $data_soluong_daban = SanPham::join('phanloai_sanphams', 'phanloai_sanphams.mapl', '=', 'sanphams.mapl_sp')
-        // ->join('sanpham_mausac_sizes', 'sanpham_mausac_sizes.masp', '=', 'sanphams.masp')
-        // ->join('chitiet_donhangs', 'chitiet_donhangs.maxdsp', '=', 'sanpham_mausac_sizes.maxdsp')
-        // ->where('tenpl', 'Nam')
-        // ->select('sanphams.masp', 'sanphams.tensp', 'sanphams.giasp', \DB::raw('MAX(chitiet_donhangs.maxdsp) as maxdsp'), \DB::raw('SUM(chitiet_donhangs.soluong) as total_soluong'), \DB::raw('COUNT(madh) as madh_count'))
-        // ->groupBy('sanphams.masp')
-        // ->get();
+        ); 
         return response()->json([
             'data_thongtin_sanpham' => $data_thongtin_sanpham,
             // 'data_soluong_daban' => $data_soluong_daban,
@@ -219,7 +203,7 @@ class ManageProductController extends Controller
             WHERE MASP = $masp
             AND sanpham_mausac_sizes.MAXDSP = chitiet_donhangs.MAXDSP"
         );
-
+        
         if(count($haveInCTDH) == 0){
             DB::delete("DELETE FROM sanpham_mausac_sizes WHERE MASP = $masp");
             DB::delete("DELETE FROM hinhanhsanphams WHERE MASP = $masp");

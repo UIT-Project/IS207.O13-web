@@ -25,12 +25,14 @@ class InfoProductController extends Controller
         $data_mausac = DB::select("SELECT * FROM sanpham_mausac_sizes WHERE MASP = '$id' ");
         $data_MAMAU = DB::select("SELECT DISTINCT(mausacs.MAMAU), HEX, TENMAU FROM sanpham_mausac_sizes, mausacs WHERE sanpham_mausac_sizes.MAMAU = mausacs.MAMAU AND MASP = '$id' ");
         $data_SIZE = DB::select("SELECT DISTINCT(MASIZE) FROM sanpham_mausac_sizes WHERE MASP = '$id'");
+        $data_xacDinhSoLuong = DB::select("SELECT MASIZE, MAMAU, SOLUONG FROM SANPHAM_MAUSAC_SIZES WHERE MASP = $id");
 
         return response()->json([
             'data_sanpham' => $data_sanpham,
             'data_mausac' => $data_mausac,
             'data_mamau' => $data_MAMAU,
             'data_size' => $data_SIZE,
+            'data_xacDinhSoLuong' => $data_xacDinhSoLuong,
         ]);
     }
     public function addToCart(Request $request){ 

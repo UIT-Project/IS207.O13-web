@@ -14,6 +14,7 @@ function SideBar(){
     const [stateClickInSideBar, setStateClickInSideBar] = useState({
         taikhoan: false,
         sanpham: false,
+        voucher: false
     })
 
     const handleClickInSideBar = (name) => {  
@@ -49,10 +50,10 @@ function SideBar(){
                     <div class={`panel ${stateClickInSideBar.taikhoan ? "block_category" : "block_category_none"}`}>
                         <ul class="sidebar_subnav">
                             <li class="sidebar_nav_item">
-                                <a class="sidebar_nav_item_content medium_font" href="#">Quản lý khách hàng</a>
+                                <a class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/manageAccountCustomer')}}>Quản lý khách hàng</a>
                             </li>
                             <li class="sidebar_nav_item">
-                                <a class="sidebar_nav_item_content medium_font" href="#">Quản lý nhân viên</a>
+                                <a class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/manageAccountStaff')}}>Quản lý nhân viên</a>
                             </li>
                         </ul>
                     </div>
@@ -100,12 +101,12 @@ function SideBar(){
                     </li> -->
 
                     <!-- nav item: report --> */}
-                    <li class="sidebar_nav_item">
+                    {/* <li class="sidebar_nav_item">
                         <a class="sidebar_nav_item_content" href="#"> 
                             <FontAwesomeIcon icon={faClipboardList}></FontAwesomeIcon>
                             <span className="category_text_inSideBar">Hóa đơn</span>
                         </a>
-                    </li>
+                    </li> */}
                     <li class="sidebar_nav_item">
                         <a class="sidebar_nav_item_content" href="#"> 
                             <FontAwesomeIcon icon={faClipboardList}></FontAwesomeIcon>
@@ -114,6 +115,27 @@ function SideBar(){
                     </li>
 
                     {/* <!-- nav item: chart --> */}
+                    <li 
+                        class={`sidebar_nav_item accordion ${stateClickInSideBar.voucher ? "active" : ""}`} 
+                        onClick={() => handleClickInSideBar('voucher')}
+                    >
+                        <a class="sidebar_nav_item_content" href="#">
+                            <i class="fa-solid fa-shirt"></i> 
+                            <FontAwesomeIcon icon={faShirt}></FontAwesomeIcon>
+                            <span className="category_text_inSideBar">Voucher</span> 
+                            <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>
+                        </a> 
+                    </li>
+                    <div class={`panel ${stateClickInSideBar.voucher ? "block_category" : "block_category_none"}`}>
+                        <ul class="sidebar_subnav"> 
+                            <li class="sidebar_nav_item">
+                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/manageVoucher')}}>Danh sách Voucher</span>
+                            </li>
+                            <li class="sidebar_nav_item">
+                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/AddVoucher')}}>Thêm Voucher</span>
+                            </li>
+                        </ul>
+                    </div>
                     <li class="sidebar_nav_item">
                         <a class="sidebar_nav_item_content" href="#"> 
                             <FontAwesomeIcon icon={faChartLine}></FontAwesomeIcon>

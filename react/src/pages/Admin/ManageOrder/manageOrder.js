@@ -34,6 +34,8 @@ function ManageOrder(){
             pageQuantity: 0,
             paginationList: [],
             openingPage: 1,
+            hasLoadFirtTime: 0,
+            hasChangeFromPreState: 0,
             spaceGetDataFromOrderList: [{
                 paginationNumber: 1,
                 ordinalNumber: 1,
@@ -47,6 +49,8 @@ function ManageOrder(){
             pageQuantity: 0,
             paginationList: [],
             openingPage: 1, 
+            hasLoadFirtTime: 0,
+            hasChangeFromPreState: 0,
             spaceGetDataFromOrderList: [{
                 paginationNumber: 1,
                 ordinalNumber: 1,
@@ -60,6 +64,8 @@ function ManageOrder(){
             pageQuantity: 0,
             paginationList: [],
             openingPage: 1, 
+            hasLoadFirtTime: 0,
+            hasChangeFromPreState: 0,
             spaceGetDataFromOrderList: [{
                 paginationNumber: 1,
                 ordinalNumber: 1,
@@ -73,6 +79,8 @@ function ManageOrder(){
             pageQuantity: 0,
             paginationList: [],
             openingPage: 1, 
+            hasLoadFirtTime: 0,
+            hasChangeFromPreState: 0,
             spaceGetDataFromOrderList: [{
                 paginationNumber: 1,
                 ordinalNumber: 1,
@@ -98,14 +106,21 @@ function ManageOrder(){
         // console.log(e.target.value) 
         
         setOrderStatusPointer(item_status.value.nameState) 
-        const updateOpeningPage = prevOrderStatus => (
-            {
-                ...prevOrderStatus, 
-                [item_status.key] : {...prevOrderStatus[item_status.key],  openingPage:  item_pagina}
-            }
-        );
-        setOrderStatus(updateOpeningPage) 
-        getInfoOrderForUsers(item_status, item_pagina); 
+        if(item_status.value.hasLoadFirtTime === 0 || item_status.value.hasChangeFromPreState === 1){
+            const updateOpeningPage = prevOrderStatus => (
+                {
+                    ...prevOrderStatus, 
+                    [item_status.key] : {
+                        ...prevOrderStatus[item_status.key], 
+                            openingPage:  item_pagina,
+                            hasLoadFirtTime: 1,
+                            hasChangeFromPreState: 0,
+                        }
+                }
+            );
+            setOrderStatus(updateOpeningPage) 
+            getInfoOrderForUsers(item_status, item_pagina); 
+        } 
     }
 
     const handleClickItemPagination = (item_status, item_pagina) => {
@@ -272,33 +287,86 @@ function ManageOrder(){
     }
 
     const handleClickCheckbox = (product, item) => {
-
-        setListMASPTranferState([...listMASPTranferState, product.MADH]);
-        console.log(listMASPTranferState);
+ 
  
         if(listMASPTranferState.includes(product.MADH)){
             setListMASPTranferState(listMASPTranferState.filter(item => item !== product.MADH)) 
+            setIsCheckedAll(false)
         }
         else{
             setListMASPTranferState([...listMASPTranferState, product.MADH]);
+            console.log(listMASPTranferState.length, 'length');
+            if(listMASPTranferState.length + 1 === numberOrderEachPage)
+                setIsCheckedAll(!isCheckedAll); 
         }  
     }
 
-    const handleUpdateState = (nameStatusWillUpdate) => {
+    const handleUpdateState = (orderStatus_Array, index) => {
         console.log(listMASPTranferState);
+        const itemWillUpdate = orderStatus_Array[index+1];
+        const itemCurent = orderStatus_Array[index];
         const data = {
-            nameStatusWillUpdate: nameStatusWillUpdate,
+            nameStatusWillUpdate: itemWillUpdate.value.nameState,
             listMASPTranferState: listMASPTranferState
         }
+        
+        setOrderStatus({
+            ...orderStatus, 
+            [itemWillUpdate.key]: {
+                ...orderStatus[itemWillUpdate.key],
+                hasChangeFromPreState: 1,
+            },
+            [itemCurent.key]: {
+                ...orderStatus[itemCurent.key], 
+                orderList: orderStatus[itemCurent.key].orderList.map(item =>{
+                    if(item !== null){
+                        if(listMASPTranferState.includes(item.MADH)) 
+                            return null; 
+                        else{
+                            return item;
+                        }
+                    }
+                    else{
+                        return item;
+                    } 
+                })
+            }
+        })
         try{ 
             request.post(
                 `api/updateOrderStatus`, data
             )
-            .then(res => {})
+            .then(res => {
+                        
+                let indexNull = {
+                    start: 0,
+                    end: 0,
+                } 
+                itemCurent.value.spaceGetDataFromOrderList.forEach(item => {
+                    if(itemCurent.value.openingPage === item.paginationNumber){ 
+                        indexNull.start = item.startIndex;
+                        indexNull.end = item.endIndex;
+                    }
+                })
+                // index.end = item_ofOrderStatusArray.value.openingPage * numberOrderEachPage - 1;
+                console.log(indexNull.start, ' ', indexNull.end, 'orderlist: ', itemCurent.value.orderList)
+                // nếu toàn bộ item_ofOrderStatusArray từ start đến end thì reload trang
+                let i = 0; 
+                itemCurent.value.orderList.slice(indexNull.start, indexNull.end).forEach(item => {
+                    if(item === null){
+                        i++;
+                    }
+                })
+                console.log(i + listMASPTranferState.length , ' ', indexNull.end)
+
+                if(i + listMASPTranferState.length === indexNull.end)  
+                    window.location.reload(); 
+            }) 
         }
         catch(err){
             console.log(err)
         }
+        setListMASPTranferState([]);
     }
 
     const handleClickCheckboxAll = (item) => {  
@@ -311,8 +379,12 @@ function ManageOrder(){
                 //     })
                 // ]);
 
-                const allItems = item.value.orderList.map(orderItem => orderItem.MADH);
+                const allItems = item.value.orderList.map(orderItem => {
+                    if(orderItem !== null)
+                        return  orderItem.MADH;
+                });
                 // Thêm tất cả các phần tử đã được chọn vào listMASPTranferState
+                console.log(allItems, 'jasdhjh')
                 setListMASPTranferState(allItems);
 
             }
@@ -327,6 +399,9 @@ function ManageOrder(){
         getQuantityOrderToDevidePage()
         // getInforOrderDetail(1);
     }, [])
+    useEffect(() => {   
+        console.log(orderStatus);
+    }, [orderStatus.dagiao.orderList])
 
  
     const renderNavState = orderStatus_Array.map((item, index) =>  
@@ -357,36 +432,46 @@ function ManageOrder(){
         return ( 
             item.value.orderList.slice(index.start, index.end).map((product, index) =>  
                 // <div class="order_status_cover " key={index}> 
-                        <tr key={index}>
-                            <td>
-                                <input 
-                                    type="checkbox" 
-                                    name="checkboxProductInCart" id=""   
-                                    checked = {listMASPTranferState.includes(product.MADH)}   
-                                    onChange={() => handleClickCheckbox(product, index)}
-                                />
-                            </td>
-                            <td data-label="Order-code">{product.MADH}</td>
-                            <td data-label="Name">{product.TEN}</td>
-                            <td data-label="Phone-number">{product.SDT}</td>
-                            <td data-label="Address">65 Lý Tự Trọng, TPHCM</td>
-                            <td data-label="Day">15-06-2023</td>
-                            <td><button type="button" id="btn-status-deliveried">Đã giao</button>
-                            </td>
-                            <td><button type="button" id="btn-payment-after">Trả sau</button>
-                            </td>
-                            <td data-label="Subtotal">540.000</td>
-                            <td data-label="update">
-                                <div class="icon-update">
-                                    <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
-                                    <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
-                                    <span onClick={()=>handleWatchOrderDetail(product.MADH)}>
-                                        <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
-                                    </span>
-                                </div>
-                                
-                            </td>
-                        </tr>  
+                {
+                    if(product === null){ 
+                        console.log(product, 'đây null ', index)
+                        return null;
+                    }
+                    else{
+                        return(
+                            <tr key={index}>
+                                <td>
+                                    <input 
+                                        type="checkbox" 
+                                        name="checkboxProductInCart" id=""   
+                                        checked = {listMASPTranferState.includes(product.MADH)}   
+                                        onChange={() => handleClickCheckbox(product, index)}
+                                    />
+                                </td>
+                                <td data-label="Order-code">{product.MADH}</td>
+                                <td data-label="Name">{product.TEN}</td>
+                                <td data-label="Phone-number">{product.SDT}</td>
+                                <td data-label="Address">65 Lý Tự Trọng, TPHCM</td>
+                                <td data-label="Day">15-06-2023</td>
+                                <td><button type="button" id="btn-status-deliveried">Đã giao</button>
+                                </td>
+                                <td><button type="button" id="btn-payment-after">Trả sau</button>
+                                </td>
+                                <td data-label="Subtotal">540.000</td>
+                                <td data-label="update">
+                                    <div class="icon-update">
+                                        <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
+                                        <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
+                                        <span onClick={()=>handleWatchOrderDetail(product.MADH)} >
+                                            <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
+                                        </span>
+                                    </div>
+                                    
+                                </td>
+                            </tr>  
+                        )
+                    }
+                }
                 // </div>  
             )  
         )
@@ -479,7 +564,7 @@ function ManageOrder(){
                             <span className="StateWillTranfer">
                                 {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''}
                             </span>
-                            <button className="buttonUpdate" onClick={() => handleUpdateState(orderStatus_Array[index + 1].value.nameState)}>Update</button>
+                            <button className="buttonUpdate" onClick={() => handleUpdateState(orderStatus_Array, index)}>Update</button>
                         </div>
                         <table class="table">
                             <thead>

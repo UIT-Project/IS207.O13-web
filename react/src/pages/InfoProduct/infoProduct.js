@@ -22,13 +22,13 @@ function InfoProduct(){
 
     //biến global
     const {divPopupCartRef, infoCarts, setInfoCarts, setStatusPressAddToCart, statusPressAddToCart} = useGlobalVariableContext(); 
-
+    const [hetHang, setHetHang] = useState(false);
     //
     const buttonAddToCartRef = useRef(null);  
     const[file,setFile]=useState(null);
     //tạo biến selectPropertyProduct để lưu thông tin sản phẩm thêm và giỏ hàng
     const [selectPropertyProduct, setSelectPropertyProduct] = useState({
-        mamau: '',
+        mamau: 0,
         masize: '',
         soluong: 1,
     })  
@@ -38,7 +38,8 @@ function InfoProduct(){
         data_sanpham: [],
         data_mausac: [],
         data_mamau: [],
-        data_size: []
+        data_size: [],
+        data_xacDinhSoLuong: []
     });
 
     //dataAddProductToCart là biến trung gian để lấy giá trị từ infoProduct gán vào để lưu sản phẩm vào giỏ hàng xuống DB
@@ -56,7 +57,40 @@ function InfoProduct(){
     //setSelectPropertyProduct({...selectPropertyProduct, [e.target.name] : e.target.value}); : đoạn code này là chèn thêm dữ liệu mới và dữ nguyên dữ liệu cũ
     //có thể chatgpt để hiểu thêm về cách viết này, đây là cú pháp trong es6 của js
     const handleInputPropertyProduct = (e) => {
-        setSelectPropertyProduct({...selectPropertyProduct, [e.target.name] : e.target.value});
+        // console.log(e.target.name, [setSelectPropertyProduct.soluong]);
+        // setSelectPropertyProduct({...selectPropertyProduct, [e.target.name] : e.target.value});
+        let { name, value } = e.target;
+        setHetHang(false)
+        if (name === 'soluong') {
+            // Kiểm tra nếu value không phải là số thì không cập nhật state
+            if (!/^\d*$/.test(value)) {
+                return;
+            }
+        }
+        if(name === 'mamau')
+            value = parseInt(value)
+        setSelectPropertyProduct({
+            ...selectPropertyProduct,
+            [name]: value
+        });
+        console.log(value)
+    }
+    useEffect(() => {
+        console.log(selectPropertyProduct.mamau, 'aksdj')
+    }, [ selectPropertyProduct.mamau])
+    const handleClickButtonChangeQuantity = (e) => {
+        let newQuantity = parseInt(selectPropertyProduct.soluong);
+        if (e.target.value === '-' && parseInt(selectPropertyProduct.soluong) > 1) {
+            newQuantity = parseInt(selectPropertyProduct.soluong) - 1;
+        } 
+        else if (e.target.value === '+'){
+            newQuantity = parseInt(selectPropertyProduct.soluong) + 1;
+        }
+        // if(selectPropertyProduct.soluong - 1 >= 1)
+            setSelectPropertyProduct({
+                ...selectPropertyProduct, 
+                soluong :  newQuantity}); 
+        console.log(selectPropertyProduct.soluong, 'sjdjnsd')
     }
  
     //thực hiện lấy thông tin sản phẩm khi load vào trang với id tương ứng
@@ -68,6 +102,7 @@ function InfoProduct(){
                 data_mausac: res.data.data_mausac,
                 data_mamau: res.data.data_mamau,
                 data_size: res.data.data_size,
+                data_xacDinhSoLuong: res.data.data_xacDinhSoLuong,
             });  
         })
         .catch(e => {
@@ -78,50 +113,62 @@ function InfoProduct(){
     // xử lý khi hết hàng vẫn cố chấp thêm 
     const handleAddToCart =  (e) => {
         e.preventDefault(); 
-        dataAddProductToCart = { 
-            matk: localStorage.getItem("auth_matk"),
-            masp: id,
-            mamau:  selectPropertyProduct.mamau,
-            masize: selectPropertyProduct.masize,
-            soluongsp: selectPropertyProduct.soluong,
-            tonggia: selectPropertyProduct.soluong * infoProduct.data_sanpham.GIABAN,
+        let i = 0;
+        let soLuongMua = selectPropertyProduct.soluong;
+        infoProduct.data_xacDinhSoLuong.forEach(item => {
+            if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG === 0){
+                setHetHang(true);
+                i++;
+            }
+            if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG < soLuongMua)
+                soLuongMua = item.SOLUONG
+        });
+        if(i === 0) {
+            dataAddProductToCart = { 
+                matk: localStorage.getItem("auth_matk"),
+                masp: id,
+                mamau:  selectPropertyProduct.mamau,
+                masize: selectPropertyProduct.masize,
+                soluongsp: soLuongMua,
+                tonggia: soLuongMua * infoProduct.data_sanpham.GIABAN,
+            }
+            
+            let found = false;
+    
+            infoCarts.map(item => {
+                console.log(item.MASP, 'ok');
+                console.log(item.MATK, dataAddProductToCart.matk)
+                if(item.MASP === parseInt(dataAddProductToCart.masp) && item.MATK === parseInt(dataAddProductToCart.matk)
+                    && item.MAMAU === parseInt(dataAddProductToCart.mamau) && item.MASIZE === dataAddProductToCart.masize){
+                        try{
+                            request.post(`api/updateQuantityProductInCart`, dataAddProductToCart)
+                            .then(res => {  
+                                setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
+                            })
+                        }
+                        catch(err){ 
+                            console.log(err);
+                        }
+                    found = true;
+                }
+            })
+            console.log(found)
+            if(!found){ 
+                try{
+                    request.post("/api/addToCart", dataAddProductToCart)
+                    .then(res => {  
+                        setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
+                    })
+                }
+                catch(err){ 
+                    console.log(err);
+                }
+            }
+             
+            setTimeout(() => {
+                setStatusPressAddToCart(false);
+            }, 3000); // Thay đổi giá trị thời gian theo nhu cầu của bạn 
         }
-        
-        let found = false;
-
-        infoCarts.map(item => {
-            console.log(item.MASP, 'ok');
-            console.log(item.MATK, dataAddProductToCart.matk)
-            if(item.MASP === parseInt(dataAddProductToCart.masp) && item.MATK === parseInt(dataAddProductToCart.matk)
-                && item.MAMAU === parseInt(dataAddProductToCart.mamau) && item.MASIZE === dataAddProductToCart.masize){
-                    try{
-                        request.post(`api/updateQuantityProductInCart`, dataAddProductToCart)
-                        .then(res => {  
-                            setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
-                        })
-                    }
-                    catch(err){ 
-                        console.log(err);
-                    }
-                found = true;
-            }
-        })
-        console.log(found)
-        if(!found){ 
-            try{
-                request.post("/api/addToCart", dataAddProductToCart)
-                .then(res => {  
-                    setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
-                })
-            }
-            catch(err){ 
-                console.log(err);
-            }
-        }
-         
-        setTimeout(() => {
-            setStatusPressAddToCart(false);
-        }, 3000); // Thay đổi giá trị thời gian theo nhu cầu của bạn 
     }
     
     //phần code trong này sẽ liên quan đến việc ẩn và hiện popup cart
@@ -175,7 +222,7 @@ function InfoProduct(){
                                 <img src={images.mini_image__item} alt="" class="product_image__list_mini_image__item__img"/>
                             </div>
                         </div>
-                        <div class="product_image__main_image">
+                        {/* <div class="product_image__main_image">
                             {
                                 Media.map((file,index)=>(
                                     <div className="media" key={index} onClick={()=>setFile(file)}>
@@ -187,7 +234,7 @@ function InfoProduct(){
                                     </div>
                                 ))
                             }
-                        </div>
+                        </div> */}
                     </div>
                     <div class="detail_info_product col-sm-5">
                         <div class="detail_info_product__title">
@@ -218,8 +265,22 @@ function InfoProduct(){
                                 {infoProduct.data_mamau.map((item, index) => { 
                                     return(
                                         <div class="detail_info_product__color__item" key={index}>
-                                            <input type="radio" class="check_color" id={"color_" + index} name="mamau" onChange={handleInputPropertyProduct} value={item.MAMAU}/>
-                                            <label for={"color_" + index} class="color_icon" style={{backgroundColor: item.HEX}}></label>
+                                            <input 
+                                                type="radio" 
+                                                class="check_color" 
+                                                id={"color_" + index} 
+                                                name="mamau" 
+                                                onChange={handleInputPropertyProduct} 
+                                                value={item.MAMAU}
+                                                
+                                            />
+                                            <label 
+                                                for={"color_" + index} 
+                                                class={`color_icon ${selectPropertyProduct.mamau === item.MAMAU ? 'border_size_color' : ''}`} 
+                                                style={{
+                                                    backgroundColor: item.HEX,  
+                                                }} 
+                                            />
                                         </div> 
                                     )
                                 })} 
@@ -233,8 +294,19 @@ function InfoProduct(){
                                 {infoProduct.data_size.map((item, index) => { 
                                     return(
                                         <div class="detail_info_product__size__item" key={index}>
-                                            <input type="radio" class="check_size" id={"size_" + index} name="masize" onChange={handleInputPropertyProduct} value={item.MASIZE}/>
-                                            <label for={"size_" + index} class="size_icon" id="size_1">
+                                            <input 
+                                                type="radio" 
+                                                class="check_size" 
+                                                id={"size_" + index} 
+                                                name="masize" 
+                                                onChange={handleInputPropertyProduct} 
+                                                value={item.MASIZE}
+                                            />
+                                            <label 
+                                                for={"size_" + index} 
+                                                class={`size_icon ${selectPropertyProduct.masize === item.MASIZE ? 'border_size_color' : ''}`} 
+                                                id="size_1"
+                                            >
                                                 <span class="detail_info_product__size__item__text">{item.MASIZE}</span>
                                             </label>
                                         </div>
@@ -244,13 +316,35 @@ function InfoProduct(){
                         </div>
                         <div class="detail_info_product__quantity detail_info_product__price__css_chung">
                             <div class="detail_info_product__quantity__div-small">
-                                <input type="button" value="-" class="detail_info_product__quantity__adjust"/>
+                                <input 
+                                    type="button" 
+                                    value="-" 
+                                    class="detail_info_product__quantity__adjust"
+                                    onClick={handleClickButtonChangeQuantity}
+                                />
                                 {/* onchange */}
                                 <input type="text"  onChange={handleInputPropertyProduct} value={selectPropertyProduct.soluong} min={1} name="soluong"  class="detail_info_product__quantity__input_text"/>
-                                <input type="button" value="+" class="detail_info_product__quantity__adjust"/>
+                                <input 
+                                    type="button" 
+                                    value="+" 
+                                    class="detail_info_product__quantity__adjust"
+                                    onClick={handleClickButtonChangeQuantity}
+                                />
                             </div>
                         </div>
                         <div class="detail_info_product_button " >
+                            {
+                                infoProduct.data_xacDinhSoLuong.map((item, index) => 
+                                    <div 
+                                        key={index} 
+                                        className={`
+                                            ${(
+                                                selectPropertyProduct.mamau === item.MAMAU 
+                                                && selectPropertyProduct.masize === item.MASIZE
+                                            ) ? '' : 'display_hidden'}`}
+                                    >số lượng còn lại: {item.SOLUONG}</div>
+                                )
+                            } 
                             <div class="detail_info_product_button_detail " >
                                 {/* quan trọng */}
                                 <button id="them_hang" ref={buttonAddToCartRef} onClick={handleAddToCart}>
@@ -260,6 +354,7 @@ function InfoProduct(){
                                 <button id="mua_hang">MUA NGAY</button>
                                 <button id="fav"><i class="fa-solid fa-heart"></i></button>
                             </div>
+                            <div className={`${hetHang ? '' : 'display_hidden'}`}>Hết hàng</div>
                         </div>
                         <div class="detail_info_product_tab_header">
                             <ul class="nav nav-underline">

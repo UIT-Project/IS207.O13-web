@@ -6,16 +6,20 @@ use App\Http\Controllers\TestController;
 use App\Http\Controllers\ManageProductController; 
 use App\Http\Controllers\PayOnlineController;
 use App\Http\Controllers\AddProductController;
+use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AdminManageOrderController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoProductController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\InfoAccountController;
  
 use App\Http\Controllers\SearchProductController;
 use App\Http\Controllers\UpdateProductController;
 use App\Http\Controllers\LoginController;
-
+use App\Http\Controllers\ManageAccountCustomerController;
+use App\Http\Controllers\ManageAccountStaff;
+use App\Http\Controllers\VoucherController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,10 +41,19 @@ Route::get('getInfoAtStartLoadingHome', [HomeController::class, 'getInfoAtStartL
 //Login
 Route::post('register', [LoginController::class, 'register']);
 Route::post('login', [LoginController::class, 'login']);
+Route::post('sendMailRecoverPassword', [LoginController::class, 'sendMailRecoverPassword']);
 
 Route::middleware(['auth:sanctum'])->group(function() {
     Route::post('logout', [LoginController::class, 'logout']); 
 });
+Route::get('/email/verify/{id}/{hash}', [LoginController::class, 'verify']) 
+->middleware(['signed'])->name('verification.verify');
+
+//AdminLogin
+Route::post('adminRegister', [AdminLoginController::class, 'adminRegister']);
+Route::post('Adminlogin', [AdminLoginController::class, 'Adminlogin']);
+
+
 
 //Search Product
 Route::get('search', [SearchProductController::class, 'search']);
@@ -66,6 +79,11 @@ Route::post('payOnline', [PayOnlineController::class, 'payOnline']);
 
 //Payment Result
 Route::post('processPaymentResult', [PaymentController::class, 'processPaymentResult']);
+
+//Info Account
+Route::get('getInfoAccount', [InfoAccountController::class, 'getInfoAccount']);
+Route::post('saveInfoAccount', [InfoAccountController::class, 'saveInfoAccount']);
+Route::post('changePassword', [InfoAccountController::class, 'changePassword']);
 
 //Admin - AddProduct
 Route::post('addProduct', [AddProductController::class, 'addProduct']);
@@ -104,3 +122,18 @@ Route::get('getQuantityProductToDevidePage_SearchProductAdmin', [ManageProductCo
 //Admin - UpdateProduct
 Route::post('updateProduct', [UpdateProductController::class, 'updateProduct']);
 Route::post('updateProduct2', [UpdateProductController::class, 'updateProduct2']);
+
+
+//Admin - ManageAccountStaff 
+Route::get('getQuantityAccountStaffToDevidePage', [ManageAccountStaff::class, 'getQuantityAccountStaffToDevidePage']);
+Route::get('getInfoManageAccountStaff', [ManageAccountStaff::class, 'getInfoManageAccountStaff']);
+Route::post('deleteAccountStaff', [ManageAccountStaff::class, 'deleteAccountStaff']);
+Route::post('updateStatusOfAccountStaff', [ManageAccountStaff::class, 'updateStatusOfAccountStaff']);
+
+//Admin - ManageAccountStaff 
+Route::get('getQuantityAccountCustomerToDevidePage', [ManageAccountCustomerController::class, 'getQuantityAccountCustomerToDevidePage']);
+Route::get('getInfoManageAccountCustomer', [ManageAccountCustomerController::class, 'getInfoManageAccountCustomer']);
+
+//Admin - Voucher
+Route::post('addVoucher', [VoucherController::class, 'addVoucher']);
+Route::get('getQuantityVoucherToDevidePage_Search', [VoucherController::class, 'getQuantityVoucherToDevidePage_Search']);

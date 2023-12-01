@@ -154,9 +154,11 @@ function Header({settoggleFunctionLoginLogout}){
                 localStorage.removeItem('auth_matk');
                 // swal("Success",res.data.message,"success"); 
                 console.log(res.data.message);
+                Navigate('/login')
             }
         });
         setHasLogin(false); 
+        
     }
 
     //xoá sản phẩm khỏi giỏ hàng

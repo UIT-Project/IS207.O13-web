@@ -264,12 +264,13 @@ tr {
 }
 .input_gia{
     display: flex;
-    justify-content: space-between;
+    justify-content: space-around;
 }
 .input_gia_div{
     width: 50%;
     display: flex;
     justify-content: center;
+    flex-direction: column;
 }
 .checkbox_sizes{
     margin: 0px 3px 0px 15px;
@@ -321,4 +322,24 @@ tr {
     width: 200%;
     display: flex;
     justify-content: center;
+}
+.phanLoai_chooseGiaTriGiam{
+    display: flex;
+    justify-content: space-around;
+}
+.soLanSuDungInput{
+    width: 100%;
+}
+
+.soLanSuDungDiv{
+    display: flex;
+    justify-content: center;
+}
+.inputDate{
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+.widthInputDate{
+    width: 100%;
 }

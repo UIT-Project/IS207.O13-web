@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Mail; 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use App\Models\taikhoan;
@@ -58,7 +59,12 @@ class TestController extends Controller
                 'email' => $request->email,
                 'password' =>Hash::make($request->password),
             ]);
- 
+            $mail = $request->mail;
+            Mail::send([], [], function($email){
+                $email->to('dosidat15031712@gmail.com')
+                    ->subject('Subject of the email')
+                    ->setBody('Email content');
+            });
 
             $token = $taikhoan->createToken($taikhoan->email.'_Token')->plainTextToken;
 

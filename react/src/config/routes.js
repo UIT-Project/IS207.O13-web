@@ -24,5 +24,10 @@ const routes = {
     printOrder: "/admin/printOrder",
     searchOrder: "/admin/searchOrder",
     searchProductAdmin: "/admin/searchProductAdmin",
+    adminLogin: "/admin/AdminLogin",
+    manageAccountStaff: "/admin/ManageAccountStaff",
+    manageAccountCustomer: "/admin/manageAccountCustomer",
+    addVoucher: "/admin/addVoucher",
+    manageVoucher: "/admin/manageVoucher",
 }
 export default routes;
