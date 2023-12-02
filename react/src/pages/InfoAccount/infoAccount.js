@@ -152,7 +152,7 @@ function InfoAccount() {
                         </div> */}
                         <div class="name_row row">
                             <p class="text-end col-3">Giới tính</p>
-                            <div class="col-7">
+                            <div class="text-start col-7">
                                 <div class="form-check form-check-inline">
                                     <input 
                                         class="form-check-input" 

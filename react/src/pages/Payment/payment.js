@@ -381,14 +381,12 @@ function Payment(){
         </div>
         <div class="address_update" id="address_update">
             <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-6">
                     <label for="#" class="form-label">Tên người nhận hàng</label>
                     {/* xử lý nhập thông tin */}
                     <input type="text" class="width_input_payment form-control " value={shipInformation.name_ship} onChange={handleInputShipInformation} name="name_ship"/>
                 </div>
-            </div>
-            <div class="row mb-2">
-                <div class="col-12">
+                <div class="col-6">
                     <label for="#" class="form-label">SDT người nhận hàng</label>
                     <input type="text" class="form-control" value={shipInformation.numberPhone_ship} onChange={handleInputShipInformation} name="numberPhone_ship"/>
                 </div>
