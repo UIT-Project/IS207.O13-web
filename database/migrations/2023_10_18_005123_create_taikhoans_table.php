@@ -20,8 +20,8 @@ return new class extends Migration
             $table->string('GIOITINH')->nullable();
             $table->string('SDT')->nullable();
             $table->string('DIACHI')->nullable();
-            $table->integer('ROLE')->nullable();
-            $table->integer('AdminVerify')->nullable();
+            $table->string('ROLE')->nullable();
+            $table->string('AdminVerify')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->timestamps();
         });
