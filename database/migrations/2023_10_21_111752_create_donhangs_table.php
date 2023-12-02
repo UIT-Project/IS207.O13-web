@@ -30,7 +30,7 @@ return new class extends Migration
             $table->longText('GHICHU');
 
             $table->foreign('MATK')->references('MATK')->on('taikhoans');
-             $table->foreign('MATTGH')->references('MATTGH')->on('thongtingiaohangs');
+            $table->foreign('MATTGH')->references('MATTGH')->on('thongtingiaohangs');
             
             $table->timestamp('updated_at')->nullable(); 
             $table->timestamp('created_at')->nullable();

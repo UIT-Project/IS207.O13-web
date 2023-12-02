@@ -136,4 +136,5 @@ Route::get('getInfoManageAccountCustomer', [ManageAccountCustomerController::cla
 
 //Admin - Voucher
 Route::post('addVoucher', [VoucherController::class, 'addVoucher']);
-Route::get('getQuantityVoucherToDevidePage_Search', [VoucherController::class, 'getQuantityVoucherToDevidePage_Search']);
+Route::get('getQuantityVoucherToDevidePage', [VoucherController::class, 'getQuantityVoucherToDevidePage']);
+Route::get('getInfoManageVoucher', [VoucherController::class, 'getInfoManageVoucher']);

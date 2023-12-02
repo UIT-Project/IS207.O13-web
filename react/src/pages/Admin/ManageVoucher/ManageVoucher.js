@@ -458,7 +458,7 @@ function ManageVoucher()
             tenDanhMuc: itemInOrderStatus_Array.value.nameState,
             numberOrderEachPage: numberOrderEachPage,
         }  
-        request.get(`/api/getInfoManageProduct`, {params: queryForGetInfoOrderForUsers}) 
+        request.get(`/api/getInfoManageVoucher`, {params: queryForGetInfoOrderForUsers}) 
         .then(res=>{  
             console.log(res.data)
             if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
@@ -511,10 +511,10 @@ function ManageVoucher()
             console.log(res.data.quantity, 'jnsjdjsbjn')
             res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
-                    if(itemStatusFromDB.TENPL === itemStatus.value.nameState)
+                    if(itemStatusFromDB.TEN_TRANGTHAI === itemStatus.value.nameState)
                     {
-                        const pageQuantityShow = Math.ceil(itemStatusFromDB.SL_MASP / numberOrderEachPage)  
-                        console.log(itemStatusFromDB.SL_MASP, 'eee')
+                        const pageQuantityShow = Math.ceil(itemStatusFromDB.SL_MAVOUCHER / numberOrderEachPage)  
+                        console.log(itemStatusFromDB.SL_MAVOUCHER, 'eee')
                         let arrAddToPaginationList = [];
                         for(let i = 1; i <= pageQuantityShow; i++){
                             arrAddToPaginationList.push(i);
@@ -524,7 +524,7 @@ function ManageVoucher()
                             ...prevOrderStatus, 
                             [itemStatus.key] : 
                                 {...prevOrderStatus[itemStatus.key],  
-                                pageQuantity: itemStatusFromDB.SL_MASP, 
+                                pageQuantity: itemStatusFromDB.SL_MAVOUCHER, 
                                 paginationList: arrAddToPaginationList}
                         }))
                     }
@@ -848,18 +848,22 @@ function ManageVoucher()
                     }
                     else{
                         return (
-                            <tr key={index}  id={`product_${product.MASP}`}>
-                                <td data-label="Order-code">{product.MASP}</td>
-                                <td data-label="Name">{product.TENSP}</td>
-                                <td data-label="Phone-number">{product.GIABAN}</td>
-                                <td data-label="Address">{product.GIAGOC}</td>
-                                <td data-label="Day">{product.SOLUONGCONLAI}</td>
-                                <td><button type="button" id="btn-status-deliveried">Đã giao</button>
-                                </td>  
+                            <tr key={index}  id={`product_${product.MAVOUCHER}`}>
+                                <td data-label="Order-code">{product.MAVOUCHER}</td> 
+                                <td data-label="Order-code">{product.PHANLOAI_VOUCHER}</td>
+                                <td data-label="Name">{product.GIATRIGIAM}</td>
+                                <td data-label="Phone-number">{product.THOIGIANBD}</td>
+                                <td data-label="Address">{product.THOIGIANKT}</td>
+                                <td data-label="Day">{product.SOLUONG}</td>
+                                <td data-label="Day">{product.GIATRI_DH_MIN}</td>
+                                <td data-label="Day">{product.GIATRI_GIAM_MAX}</td> 
                                 <td data-label="update">
                                     <div class="icon-update">
                                         <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
-                                        <span onClick={()=>handleWatchProductDetail(item, product.MASP, product)}>
+                                        <span 
+                                            onClick={()=>handleWatchProductDetail(item, product.MASP, product)} 
+                                            className={`${item.value.nameState !== 'Đã qua sử dụng' ? '' : 'display_hidden'}`}
+                                        >
                                             <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
                                         </span>
                                         <span onClick={() =>handleDeleteProduct(product.MASP, item)}>
@@ -897,12 +901,14 @@ function ManageVoucher()
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col" >Mã sản phẩm</th>
-                                <th scope="col">Tên sản phẩm</th>
-                                <th scope="col">Giá bán</th>
-                                <th scope="col">Giá gốc</th>
-                                <th scope="col" >Số lượng còn lại</th> 
-                                <th scope="col" >Số lượng đã bán</th> 
+                                <th scope="col" >Mã Voucher</th>
+                                <th scope="col">Loại Voucher</th>
+                                <th scope="col">Giá trị giảm</th>
+                                <th scope="col">Thời gian bắt đầu</th>
+                                <th scope="col" >Thời gian kết thúc</th> 
+                                <th scope="col" >Số lượng</th> 
+                                <th scope="col" >Giá trị đơn hàng tối thiểu</th> 
+                                <th scope="col" >Giá giảm tối đa</th> 
                                 <th scope="col"></th>
 
                             </tr>

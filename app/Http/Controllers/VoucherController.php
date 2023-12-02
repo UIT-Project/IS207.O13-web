@@ -29,28 +29,29 @@ class VoucherController extends Controller
         ); 
         return response()->json([]); 
     }
-    public function getQuantityVoucherToDevidePage_Search(Request $request){
+    public function getQuantityVoucherToDevidePage(Request $request){
         $currentDate = now()->format('Y-m-d');
 
         $quantity_chuaApDung = DB::select(
-            "SELECT COUNT(MAVOUCHER) AS SL_MATVOUCHER,
+            "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
             'Chưa áp dụng' AS TEN_TRANGTHAI
             FROM vouchers 
-            WHERE vouchers.THOIGIANKT < '$currentDate'"
+            WHERE vouchers.THOIGIANBD > $currentDate "
         ); 
         $quantity_DangSuDung = DB::select(
-            "SELECT COUNT(MAVOUCHER) AS SL_MATVOUCHER
+            "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
             'Đang áp dụng' AS TEN_TRANGTHAI 
             FROM vouchers 
-            WHERE vouchers.THOIGIANBD < '$currentDate' 
-            AND vouchers.THOIGIANKT > '$currentDate' 
+            WHERE '$currentDate' 
+            BETWEEN vouchers.THOIGIANBD 
+            AND vouchers.THOIGIANKT 
             AND SOLUONG_CONLAI > 0"
         );
         $quantity_daSuDung = DB::select(
-            "SELECT COUNT(MAVOUCHER) AS SL_MATVOUCHER
+            "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
             'Đã qua sử dụng' AS TEN_TRANGTHAI 
             FROM vouchers 
-            WHERE vouchers.THOIGIANBD > '$currentDate' OR SOLUONG_CONLAI = 0"
+            WHERE vouchers.THOIGIANKT < '$currentDate' OR SOLUONG_CONLAI = 0"
         );
 
         $quantity = array_merge($quantity_chuaApDung, $quantity_DangSuDung, $quantity_daSuDung);
@@ -58,5 +59,38 @@ class VoucherController extends Controller
         return response()->json([
             'quantity'=> $quantity, 
         ]); 
+    }
+    public function getInfoManageVoucher(Request $request){
+        $tenDanhMuc = $request->input('tenDanhMuc');
+        $start = $request->input('start');
+        $numberOrderEachPage = $request->input('numberOrderEachPage');
+        $where = '';
+        $currentDate = now()->format('Y-m-d');
+
+        if($tenDanhMuc === 'Chưa áp dụng'){
+            $where = "WHERE vouchers.THOIGIANBD > '$currentDate'";
+        }
+        else if($tenDanhMuc === 'Đang áp dụng'){
+            $where = "WHERE '$currentDate' 
+            BETWEEN vouchers.THOIGIANBD 
+            AND vouchers.THOIGIANKT 
+            AND SOLUONG_CONLAI > 0";
+        }
+        else if($tenDanhMuc === 'Đã qua sử dụng'){
+            $where = "WHERE vouchers.THOIGIANKT < '$currentDate' OR SOLUONG_CONLAI = 0";
+        }
+
+        $data_thongtin_sanpham = DB::select(
+            "SELECT MAVOUCHER, SOLUONG, THOIGIANBD, THOIGIANKT, GIATRIGIAM, GIATRI_DH_MIN, GIATRI_GIAM_MAX, PHANLOAI_VOUCHER
+            FROM vouchers
+            -- chitiet_donhangs, 
+            $where 
+            ORDER BY THOIGIANBD DESC
+            LIMIT $start, $numberOrderEachPage" 
+        ); 
+        return response()->json([
+            'data_thongtin_sanpham' => $data_thongtin_sanpham,
+            // 'data_soluong_daban' => $data_soluong_daban,
+        ]);
     }
 }

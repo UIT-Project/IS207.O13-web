@@ -4,6 +4,9 @@ import "./payment.css";
 import 'bootstrap/dist/css/bootstrap.css'; 
 import { useEffect, useState } from "react";
 import request from "../../utils/request";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faCaretDown, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import axios from "axios";
 
 
 function Payment(){
@@ -16,12 +19,12 @@ function Payment(){
         infoAdress: [],
     });
     const [hienThiThanhToan, setHienThiThanhToan] = useState(false);
-
+    const URL_APIAdsress = 'https://provinces.open-api.vn/api/';
     //lưu thông tin voucher mà người dùng nhập vào để kiểm tra voucher có sử dụng được hay không
     const [inputvouchers, setInputVoucher] = useState('');
 
     //nếu discountvoucher > 0 và < 1 thì sẽ dùng disocuntvoucher để biết nó giảm nhiêu
-    const [discountVoucher, setDiscountVoucher] = useState(0);
+    const [discountVoucher, setDiscountVoucher] = useState('0');
 
     //mã thông tin giao hàng cũ
     const [mattghOldAddress, setMattghOldAddress] = useState('');
@@ -29,7 +32,12 @@ function Payment(){
     //chọn phương thức thanh toán
     const [phuongThucThanhToan, setPhuongThucThanhToan] = useState('Thanh toán khi nhận hàng');
     var tongtienSP = 0;
-    var phivanchuyen = 25000;
+    const [phivanchuyen, setPhivanchuyen] = useState(25000);
+    const [dataAPIAddress, setDataAPIAddress] = useState({
+        province: [],
+        districts: [],
+        commune: [],
+    })
 
     //thông tin này dùng để chuẩn bị dữ liệu để lưu xuống DB thông qua laravel
     const [shipInformation, setShipInformation] = useState({
@@ -43,15 +51,64 @@ function Payment(){
 
     //valid voucher
     const handleApplyVoucher = (e) => {
-        const found = infoForPayment.infoVoucher.find(item => item.MAVOUCHER === inputvouchers);
-        if(found !== undefined) setDiscountVoucher(found.GIATRIGIAM);
-        else setDiscountVoucher("Voucher không khả dụng");
+        // const found = infoForPayment.infoVoucher.find(item => item.MAVOUCHER === inputvouchers);
+        // if(found !== undefined) setDiscountVoucher(found.GIATRIGIAM);
+        // else setDiscountVoucher("Voucher không khả dụng");
+        let i = 0;
+        infoForPayment.infoVoucher.forEach(item => {
+            if(item.MAVOUCHER === inputvouchers){
+                if(item.SOLUONG_CONLAI === 0){
+                    setDiscountVoucher("Voucher hết lượt sử dụng");
+                    console.log('1')
+                }
+                else if(item.PHANLOAI_VOUCHER === 'Vận chuyển'){
+                    setPhivanchuyen(item.GIATRIGIAM * phivanchuyen); 
+                    console.log('2')
+                }
+                else if(tongtienSP >= item.GIATRI_DH_MIN){
+                    if(tongtienSP * item.GIATRIGIAM > item.GIATRI_GIAM_MAX){
+                        setDiscountVoucher(item.GIATRI_GIAM_MAX / tongtienSP);
+                        console.log('3')
+                    }
+                    else if(tongtienSP * item.GIATRIGIAM <= item.GIATRI_GIAM_MAX){
+                        setDiscountVoucher(item.GIATRIGIAM);
+                        console.log('4')
+                    }
+                }
+                else if(tongtienSP < item.GIATRI_DH_MIN){
+                    setDiscountVoucher("Giá trị đơn hàng không đạt tối thiểu");
+                    console.log('5')
+                }
+                i++;
+            }
+        });
+        if(i === 0) setDiscountVoucher("Nhập sai mã voucher");
     }
 
     //xử lý nhập thông tin giao hàng
     const handleInputShipInformation = (e) => {
         e.persist();
         setShipInformation({...shipInformation, [e.target.name]: e.target.value});
+        let ID_Province = 1;
+        let ID_District = 1;
+        dataAPIAddress.province.forEach(item => {
+            if(item.name === e.target.value) {
+                ID_Province = item.code;
+                handleGetDistrict(ID_Province);
+                dataAPIAddress.districts.forEach(item => {
+                    if(item.name === shipInformation.option_quan) {
+                        ID_District = item.code;
+                        handleGetCommune(ID_District);
+                    }
+                })
+            }
+        })
+        dataAPIAddress.districts.forEach(item => {
+            if(item.name === e.target.value) {
+                ID_District = item.code;
+                handleGetCommune(ID_District);
+            }
+        })
     }
 
     //xử lý nhập voucher
@@ -94,10 +151,57 @@ function Payment(){
         })
         
     }
+    const handleGetProvince = () => {
+        axios.get(URL_APIAdsress)
+        .then(res => {
+            console.log(res.data);
+            setDataAPIAddress({
+                ...dataAPIAddress,
+                province: res.data.filter(item => item)
+            })
+            // setShipInformation({...shipInformation, option_thanhpho: res.data[0].name})
+        })
+    }
+    const handleGetDistrict = (ID_Province) => {
+        axios.get(`${URL_APIAdsress}p/${ID_Province}?depth=2`)
+        .then(res => {
+            console.log(res.data.districts);
+            setDataAPIAddress({
+                ...dataAPIAddress,
+                districts: res.data.districts
+            })
+            // setShipInformation({...shipInformation, option_quan: res.data.districts[0].name})
+            // setShipInformation({...shipInformation, option_quan: res.data.districts[0].name});
+            // console.log(res.data.districts[0].name, 'kạdkjakdjkadjs')
+        })
+    }
+    const handleGetCommune = (ID_District) => {
+        axios.get(`${URL_APIAdsress}d/${ID_District}?depth=2`)
+        .then(res => {
+            console.log(res.data);
+            setDataAPIAddress({
+                ...dataAPIAddress,
+                commune: res.data.wards
+            })
+            // setShipInformation({...shipInformation, option_quan: res.data.wards[0].name})
+
+        })
+    }
+    useEffect(() => {
+        console.log(dataAPIAddress)
+    }, [dataAPIAddress]);
 
     const handleClickAddNewAddress = () => {
         //cái này dùng để xem là có cần lưu thông tin từ những ô nhập thông tin giao hàng không, nếu rỗng thì không
         setMattghOldAddress('');
+        setShipInformation({
+            name_ship: '',
+            numberPhone_ship: '',
+            address_ship: '',   
+            option_thanhpho: '', 
+            option_quan: '',
+            option_phuong: '',
+        })
     }
 
     // xử lý khi chọn phương thức thanh toán là tiền măt hay chuyển khoản
@@ -108,7 +212,27 @@ function Payment(){
     infoForPayment.infoProduct.forEach(item => {
         tongtienSP += item.TONGGIA; 
     })
-
+    useEffect(() => {
+        console.log('lkasjdkjaskdllllllllllllll');
+    }, [shipInformation.option_quan])
+    const renderProvince = dataAPIAddress.province.map((item, index) =>  
+        <option 
+            value={item.name} 
+            key={index}  
+        >{item.name}</option>  
+    )
+    const renderDistrict = dataAPIAddress.districts.map((item, index) => 
+        <option 
+            value={item.name} 
+            key={index}  
+        >{item.name}</option> 
+    )
+    const renderCommune = dataAPIAddress.commune.map((item, index) => 
+        <option 
+            value={item.name} 
+            key={index}  
+        >{item.name}</option> 
+    )
     //in ra thông tin sản phẩm đã được chọn để thanh toán từ giỏ hàng
     const renderInfoProductOrders = infoForPayment.infoProduct.map((item, index) => {  
         return (
@@ -166,13 +290,13 @@ function Payment(){
             matk: localStorage.getItem('auth_matk'),
             ngayorder: getCurrentDate(),
             tongtien_SP: tongtienSP,
-            vouchergiam: tongtienSP * discountVoucher,
+            vouchergiam: typeof(discountVoucher) !== 'string' ? tongtienSP * discountVoucher : 0,
             tongtiendonhang: tongtienSP - tongtienSP * discountVoucher - phivanchuyen,
             phivanchuyen: phivanchuyen,
             hinhthucthanhtoan: phuongThucThanhToan,
             trangthaithanhtoan: 'chuatra',
-            trangthaidonhang: 'choxacnhan',
-            mavoucher: inputvouchers,
+            trangthaidonhang: 'Chờ xác nhận',
+            mavoucher: typeof(discountVoucher) !== 'string' ? inputvouchers : '',
             mattgh: mattghOldAddress,
             ghichu: 'ok',
         }
@@ -204,6 +328,7 @@ function Payment(){
 
     useEffect(()=> {
         handleGetInfoForPayment(); 
+        handleGetProvince();
     },[]);
 
     //cái này có thể không dùng đến
@@ -219,23 +344,26 @@ function Payment(){
     return (
         <div class="body_box container col-lg-7">
         <div class="address_box">
-            <div class="address_title row text-start">
+            <div class="address_title row">
                 <div>
                     <i class="fa-solid fa-location-dot"></i>
-                    <span>Địa chỉ nhận hàng</span>
+                    <span>Thông tin giao hàng đã đặt hàng những lần trước</span>
+                </div>
+                <div>
+                    <a class="link-dark" data-bs-toggle="collapse" href="#address_change">
+                        <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>
+                    </a>
                 </div>
             </div>
             <div class="address_info row justify-content-between">
-                <div class="col-auto fw-bold">
+                {/* <div class="col-auto fw-bold">
                     <span>Nguyễn Văn A</span>
                     <span>(+84)123456789</span>
                 </div>
                 <div class="col-auto">
                     <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
-                </div>
-                <div class="col-auto">
-                    <a class="link-dark" data-bs-toggle="collapse" href="#address_change">Thay đổi</a>
-                </div>
+                </div> */}
+                
             </div>
         </div>
         <div class="address_change collapse" id="address_change">
@@ -243,7 +371,12 @@ function Payment(){
                 {/* ở đây có chèn nội dung phần render  */}
                 {renderInfoAdsressShip}
                 {/* ở đây có xử lý onlcick addnewaddress khi thêm địa chỉ mới  */}
-                <button type="button" class="address_add_button" onClick={handleClickAddNewAddress}>+ Thêm địa chỉ mới</button>
+                <button 
+                    type="button" 
+                    class="address_add_button link-dark"  
+                    data-bs-toggle="collapse" href="#address_change"  
+                    onClick={handleClickAddNewAddress}
+                >+ Thêm địa chỉ mới</button>
             </div>
         </div>
         <div class="address_update" id="address_update">
@@ -251,7 +384,7 @@ function Payment(){
                 <div class="col-12">
                     <label for="#" class="form-label">Tên người nhận hàng</label>
                     {/* xử lý nhập thông tin */}
-                    <input type="text" class="form-control" value={shipInformation.name_ship} onChange={handleInputShipInformation} name="name_ship"/>
+                    <input type="text" class="width_input_payment form-control " value={shipInformation.name_ship} onChange={handleInputShipInformation} name="name_ship"/>
                 </div>
             </div>
             <div class="row mb-2">
@@ -260,62 +393,57 @@ function Payment(){
                     <input type="text" class="form-control" value={shipInformation.numberPhone_ship} onChange={handleInputShipInformation} name="numberPhone_ship"/>
                 </div>
             </div>
-            <div class="row mb-2">
-                <div class="col-12">
-                    <label for="#" class="form-label">Địa chỉ</label>
-                    <input type="text" class="form-control" value={shipInformation.address_ship} onChange={handleInputShipInformation} name="address_ship"/>
-                </div>
-            </div>
+            
             <div class="row mb-3">
                 <div class="col-4">
-                    <label for="#" class="form-label">Thành phố</label>
+                    <label for="#" class="form-label">Tỉnh/Thành phố</label>
                     {/* xử lý chọn thông tin */}
                     <select class="form-select" required 
                         value={shipInformation.option_thanhpho}
                         onChange={handleInputShipInformation}
                         name="option_thanhpho"
                     >
-                        <option value="Tp.HCM">Tp.HCM</option>
-                        <option value="Hà Nội">Hà Nội</option>
-                        <option value="Đà Nẵng">Đà Nẵng</option>
+                        <option selected value="">-- Chọn tỉnh/thành phố --</option>  
+                        {renderProvince} 
                     </select>
                 </div>
                 <div class="col-4">
-                    <label for="#" class="form-label">Quận</label>
+                    <label for="#" class="form-label">Quận/Huyện</label>
                     <select class="form-select" required
                         value={shipInformation.option_quan}
                         onChange={handleInputShipInformation}
                         name="option_quan"
                     >
-                        <option selected value="Quận 1">Quận 1</option>
-                        <option value="Quận 2">Quận 2</option>
-                        <option value="Quận 3">Quận 3</option>
-                        <option value="Quận 4">Quận 4</option>
-                        <option value="Quận 5">Quận 5</option>
+                        <option selected value="">-- Chọn quận/huyện --</option>   
+                        {renderDistrict}
+                        <option selected value="Quận 1">Quận 1</option> 
                     </select>
                 </div>
                 <div class="col-4">
-                    <label for="#" class="form-label">Phường</label>
+                    <label for="#" class="form-label">Phường/Xã</label>
                     <select class="form-select" required
                         value={shipInformation.option_phuong}
                         onChange={handleInputShipInformation}
                         name="option_phuong"
                     >
-                    <option selected value="Phường A">Phường A</option>
-                    <option value="Phường B">Phường B</option>
-                    <option value="Phường C">Phường C</option>
-                    <option value="Phường D">Phường D</option>
-                    <option value="Phường E">Phường E</option>
+                        <option selected value="">-- Chọn phường/xã --</option>   
+                        {renderCommune} 
                     </select>
                 </div>
             </div>
-            <div class="address_update_button_contain row">
+            <div class="row mb-2">
+                <div class="col-12">
+                    <label for="#" class="form-label">Địa chỉ chi tiết</label>
+                    <input type="text" class="form-control" value={shipInformation.address_ship} onChange={handleInputShipInformation} name="address_ship"/>
+                </div>
+            </div>
+            {/* <div class="address_update_button_contain row">
                 <div>
                     <button class="address_confirm_button btn btn-dark">Xác nhận</button>
                     <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
                 </div>
                 
-            </div>
+            </div> */}
         </div>
         <div class="product_list">
             <table>
@@ -334,11 +462,38 @@ function Payment(){
                     <span>Mã Voucher:</span>
                 </div>
                 <div class="col-4">
-                    <input type="text" class="form-control" value={inputvouchers} onChange={handleInputVoucher}/>
+                    <input 
+                        type="text" 
+                        class="form-control" 
+                        value={inputvouchers} 
+                        onChange={handleInputVoucher}
+                        disabled={typeof(discountVoucher) !== 'string'}
+                    />
                 </div>
-                <div class="vertical_align_center horizontal_align_right col-2 text-end">
+                <div class="vertical_align_center col-2">
                     {/* áp dụng voucher */}
-                    <button onClick={handleApplyVoucher}>Áp dụng</button>
+                    <button 
+                        onClick={handleApplyVoucher} 
+                        className={
+                            `${
+                                (typeof(discountVoucher) !== 'string')
+                                ? 'display_hidden'
+                                : ''
+                            }`
+                        }
+                    >Áp dụng</button>
+                    <FontAwesomeIcon 
+                        icon={faCheckCircle}
+                        className={
+                            `   iconCheckApplyVoucherSuccess
+                                ${
+                                    (typeof(discountVoucher) !== 'string')
+                                    ? ''
+                                    : 'display_hidden'
+                                }
+                            `
+                        }
+                    ></FontAwesomeIcon>
                 </div>
             </div>
             <div class="row justify-content-end">
@@ -346,8 +501,11 @@ function Payment(){
                     <span>Số tiền Voucher giảm:</span>
                 </div>
                 <div class="col-4"></div>
-                <div class="col-2 text-end">
-                    <span class="discount_price">-{parseInt(discountVoucher * tongtienSP)}</span>
+                <div class="col-2 text-start">
+                    <span class="discount_price">
+                        { typeof(discountVoucher) === 'string' && discountVoucher !== '0'
+                        ? discountVoucher 
+                        : `-${parseInt(discountVoucher * tongtienSP)}đ`}</span>
                 </div>
             </div>
             <div class="row justify-content-end">
@@ -355,7 +513,7 @@ function Payment(){
                     <span>Tổng tiền sản phẩm:</span>
                 </div>
                 <div class="col-4"></div>
-                <div class="col-2 text-end">
+                <div class="col-2 text-start">
                     <span class="discount_price">{tongtienSP}</span>
                 </div>
             </div>
@@ -369,8 +527,8 @@ function Payment(){
                         <option value="">Giao hàng hỏa tốc</option>
                     </select> */}
                 </div>
-                <div class="vertical_align_center horizontal_align_right col-2 text-end">
-                    <span>25000đ</span>
+                <div class="vertical_align_center col-2 text-start">
+                    <span>{phivanchuyen}đ</span>
                 </div>
             </div>
             <div class="row justify-content-end">
@@ -393,7 +551,7 @@ function Payment(){
                 <div class="col-7 text-end">
                     <span class="fs-4">Tổng số tiền:</span>
                 </div>
-                <div class="col-2 text-end">
+                <div class="col-2 text-start">
                     <span class="discount_price fs-4 fw-bold">{tongtienSP + phivanchuyen}đ</span>
                 </div>
             </div>

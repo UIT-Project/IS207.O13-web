@@ -30,9 +30,14 @@ class PaymentController extends Controller
         );
 
         $currentDate = Carbon::now()->format('Y-m-d');
-        $data_voucher = DB::select("SELECT MAVOUCHER, GIATRIGIAM FROM vouchers WHERE SOLUONG > 0 AND THOIGIANKT > '$currentDate'");
+        $data_voucher = DB::select(
+            "SELECT MAVOUCHER, GIATRIGIAM, GIATRI_GIAM_MAX, PHANLOAI_VOUCHER, GIATRI_DH_MIN, SOLUONG_CONLAI, SOLUONG
+            FROM vouchers 
+            WHERE THOIGIANBD <= '$currentDate'
+            AND THOIGIANKT >= '$currentDate'"
+        );
 
-        $data_adress = DB::select("SELECT * FROM thongtingiaohangs ");
+        $data_adress = DB::select("SELECT * FROM thongtingiaohangs where MATK = $matk");
          
 
         return response()->json([ 
@@ -65,12 +70,12 @@ class PaymentController extends Controller
 
         $infoProductJSON = $request->input('infoProductJSON');
         $infoProduct = json_decode($infoProductJSON, true);
-
+        $mattgh_conver = 1;
         if($mattgh == ''){
             DB::insert(
-                "INSERT INTO thongtingiaohangs 
+                "INSERT INTO thongtingiaohangs(MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA)
                 VALUES( '$matk', '$name_ship', '$numberPhone_ship', '$address_ship', 
-                '$option_thanhpho', '$option_quan', '$option_phuong',)"
+                '$option_thanhpho', '$option_quan', '$option_phuong')"
             );
             $mattgh = DB::select(
                 "SELECT MATTGH FROM thongtingiaohangs WHERE 
@@ -78,20 +83,22 @@ class PaymentController extends Controller
                 AND DIACHI = '$address_ship' AND TINH_TP = '$option_thanhpho' AND QUAN_HUYEN = '$option_quan'
                 AND PHUONG_XA = 'option_phuong'"
             );
+            if($mattgh != null)
+                $mattgh_conver = $mattgh[0]->MATTGH;
         }
         DB::insert(
-            "INSERT INTO donhangs(MATK, NGAYORDER, NGAYGIAOHANG, TONGTIEN_SP, VOUCHERGIAM, 
+            "INSERT INTO donhangs(MATK, NGAYORDER, TONGTIEN_SP, VOUCHERGIAM, 
             TONGTIENDONHANG, PHIVANCHUYEN, HINHTHUC_THANHTOAN, TRANGTHAI_THANHTOAN, TRANGTHAI_DONHANG, MATTGH, GHICHU) 
-            VALUES('$matk', '$ngayorder', '$ngayorder', $tongtien_sp
+            VALUES('$matk', '$ngayorder', $tongtien_sp
             , $vouchergiam, $tongtiendonhang, '$phivanchuyen', '$hinhthuc_thanhtoan', '$trangthai_thanhtoan'
-            , '$trangthai_donhang', '$mattgh', '$ghichu')"
+            , '$trangthai_donhang',  $mattgh_conver, '$ghichu')"
         );
 
         
         $madh = DB::select("SELECT MADH FROM donhangs ORDER BY MADH DESC LIMIT 1"); 
 
         if($mavoucher == ''){
-            DB::insert("INSERT INTO donhang_vouchers values( ? , ? )", ['Kurtis', $madh[0]->MADH]);
+            // DB::insert("INSERT INTO donhang_vouchers values( ? , ? )", ['Kurtis', $madh[0]->MADH]);
         }
         else{
             DB::insert("INSERT INTO donhang_vouchers values( ? , ? )", [$mavoucher, $madh[0]->MADH]);
@@ -221,9 +228,9 @@ class PaymentController extends Controller
 
         if($mattgh == ''){
             DB::insert(
-                "INSERT INTO thongtingiaohangs 
+                "INSERT INTO thongtingiaohangs(MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA)
                 VALUES( '$matk', '$name_ship', '$numberPhone_ship', '$address_ship', 
-                '$option_thanhpho', '$option_quan', '$option_phuong',)"
+                '$option_thanhpho', '$option_quan', '$option_phuong')"
             );
             $mattgh = DB::select(
                 "SELECT MATTGH FROM thongtingiaohangs WHERE 

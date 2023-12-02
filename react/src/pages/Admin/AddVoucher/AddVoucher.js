@@ -116,14 +116,14 @@ function AddVoucher(){
     }
 
     const getInfoForAddVoucher = () => {
-        request.get('api/getInfoForAddVoucher')
-        .then(res => {
-            setListColor(res.data.listColor);
-            console.log(res.data.listColor, "ok");
-        })
-        .catch(error =>{
-            console.log(error)
-        })
+        // request.get('api/getInfoForAddVoucher')
+        // .then(res => {
+        //     setListColor(res.data.listColor);
+        //     console.log(res.data.listColor, "ok");
+        // })
+        // .catch(error =>{
+        //     console.log(error)
+        // })
     }
 
     //chọn một ảnh làm thumnail

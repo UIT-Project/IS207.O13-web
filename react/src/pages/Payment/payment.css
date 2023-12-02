@@ -263,3 +263,23 @@ tr {
 .body_box{
     padding-bottom: 50px;
 }
+
+.width_input_payment{
+    width: 100%;
+}
+.form-control{
+    width: 100% !important; 
+}
+
+.display_hidden{
+    display: none;
+}
+
+.iconCheckApplyVoucherSuccess{
+    margin-left: 1rem;
+    color: green;
+}
+
+.address_title{
+    display: flex;
+}
