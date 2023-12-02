@@ -196,6 +196,10 @@ button {
     margin-top: 20px;
 }
 
+.form-control {
+    width: 100% !important;
+}
+
 .address_confirm_button {
     float: right;
 }
