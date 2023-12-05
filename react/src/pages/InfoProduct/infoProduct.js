@@ -383,14 +383,36 @@ function InfoProduct(){
                     </div>
                 </div>
                 <div>Đánh giá</div>
-                <div className="item_review">
-                    <div className="col-sm-2">
-                        <div className="item_review__avatar__img__div">
-                            <img class="item_review__avatar__img" src="https://down-vn.img.susercontent.com/file/4a1806b9f93ddfdb116f72fe7597a6ca_tn"/>
+                <section id="review">
+                    <div class="review-heading">
+                        <h1>FEEDBACK</h1>
+                    </div>
+                    <div class="review-box-container">
+                        <div class="review-box">
+                            <div class="box-top">
+                            <div class="profile">
+                                <div class="profile-image">
+                                    <img src="https://nhacchuonghinhnen.com/wp-content/uploads/2020/03/hinh-nen-gai-xinh-full-hd-cho-dien-thoai-2-scaled.jpg" alt=""/>
+                                </div>
+                                <div class="user-name">
+                                    <strong>Mai Lien Nguyen</strong>
+                                    <span>@mlmlml03</span>
+                                </div>
+                            </div>
+                            <div class="reviews">
+                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
+                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
+                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
+                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
+                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
+                            </div>
+                        </div>
+                        <div class="clients-comment">
+                            <p>San pham tot</p>
+                        </div>
                         </div>
                     </div>
-                    <div className="col-sm-10"></div>
-                </div>
+                </section>
             </div>
  
         </div>
