@@ -474,32 +474,13 @@ tr {
 .hidden_OrderList{
     display: none;
 }
-.thongTinGiaoHang{
+
+
+.faTrashAlt{
     color: red;
+    
 }
 
-.div_thongTinGiaoHang{
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-}
-
-.div_thongtinsanpham{
-    display: flex;
-    flex-direction: column;
-    justify-content: left;
-}
-
-.div_search{
-    display: flex;
-}
-.StateWillTranfer{
-    color: red;
-    margin-left: 1%;
-    margin-right: 1%;
-}
-
-.buttonUpdate{
-    border: 1px solid rebeccapurple;
-    border-radius: 3px;
+.input_gia_div{
+    width: 50%;
 }

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->unsignedInteger('MAXDSP'); 
             $table->integer('TONGTIEN');
             $table->integer('SOLUONG');
+            $table->integer('DADANHGIA');
 
             $table->foreign('MADH')->references('MADH')->on('donhangs');
             $table->foreign('MAXDSP')->references('MAXDSP')->on('sanpham_mausac_sizes'); 

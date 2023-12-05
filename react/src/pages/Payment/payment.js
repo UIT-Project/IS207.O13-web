@@ -48,7 +48,12 @@ function Payment(){
         option_quan: '',
         option_phuong: '',
     });
-
+    const shipInformation_Array = Object.entries(shipInformation).map(([key, value]) => (
+        {
+            key: key,
+            value: value
+        }
+    )) 
     //valid voucher
     const handleApplyVoucher = (e) => {
         // const found = infoForPayment.infoVoucher.find(item => item.MAVOUCHER === inputvouchers);
@@ -119,6 +124,7 @@ function Payment(){
 
     //xử lý chọn địa chỉ cũ
     const handleChooseAdress = (index) => {
+        console.log(infoForPayment.infoAdress[index])
         setMattghOldAddress(infoForPayment.infoAdress[index].MATTGH);
         setShipInformation({
             name_ship: infoForPayment.infoAdress[index].TEN,
@@ -162,17 +168,14 @@ function Payment(){
             // setShipInformation({...shipInformation, option_thanhpho: res.data[0].name})
         })
     }
-    const handleGetDistrict = (ID_Province) => {
+    const handleGetDistrict = async (ID_Province) => {
         axios.get(`${URL_APIAdsress}p/${ID_Province}?depth=2`)
         .then(res => {
             console.log(res.data.districts);
             setDataAPIAddress({
                 ...dataAPIAddress,
                 districts: res.data.districts
-            })
-            // setShipInformation({...shipInformation, option_quan: res.data.districts[0].name})
-            // setShipInformation({...shipInformation, option_quan: res.data.districts[0].name});
-            // console.log(res.data.districts[0].name, 'kạdkjakdjkadjs')
+            }) 
         })
     }
     const handleGetCommune = (ID_District) => {
@@ -186,10 +189,7 @@ function Payment(){
             // setShipInformation({...shipInformation, option_quan: res.data.wards[0].name})
 
         })
-    }
-    useEffect(() => {
-        console.log(dataAPIAddress)
-    }, [dataAPIAddress]);
+    } 
 
     const handleClickAddNewAddress = () => {
         //cái này dùng để xem là có cần lưu thông tin từ những ô nhập thông tin giao hàng không, nếu rỗng thì không
@@ -211,10 +211,19 @@ function Payment(){
 
     infoForPayment.infoProduct.forEach(item => {
         tongtienSP += item.TONGGIA; 
-    })
+    }) 
     useEffect(() => {
-        console.log('lkasjdkjaskdllllllllllllll');
-    }, [shipInformation.option_quan])
+        const found = dataAPIAddress.province.find((item, index) => item.name === shipInformation.option_thanhpho)
+        if(found)
+            handleGetDistrict(found.code)
+    }, [shipInformation.option_thanhpho])
+    useEffect(() => {
+        const found = dataAPIAddress.districts.find((item, index) => item.name === shipInformation.option_quan) 
+        if(found){
+            handleGetCommune(found.code) 
+        }
+    }, [dataAPIAddress.districts])
+    
     const renderProvince = dataAPIAddress.province.map((item, index) =>  
         <option 
             value={item.name} 
@@ -258,8 +267,14 @@ function Payment(){
             <div class="address_box" key={index}>
                     <div class="address_info row">
                         <div class="col-1">
-                            <input type="radio" name="address_radio" data-bs-toggle="collapse" href="#address_change" onClick={() => handleChooseAdress(index)}
-                                checked />
+                            <input 
+                                type="radio" 
+                                name="address_radio" 
+                                data-bs-toggle="collapse" 
+                                href="#address_change" 
+                                onClick={() => handleChooseAdress(index)}
+                                // checked 
+                            />
                         </div>
                         <div class="col-5 fw-bold">
                             <span>{item.TEN}</span>
@@ -291,11 +306,11 @@ function Payment(){
             ngayorder: getCurrentDate(),
             tongtien_SP: tongtienSP,
             vouchergiam: typeof(discountVoucher) !== 'string' ? tongtienSP * discountVoucher : 0,
-            tongtiendonhang: tongtienSP - tongtienSP * discountVoucher - phivanchuyen,
+            tongtiendonhang: tongtienSP - tongtienSP * discountVoucher + phivanchuyen,
             phivanchuyen: phivanchuyen,
             hinhthucthanhtoan: phuongThucThanhToan,
             trangthaithanhtoan: 'chuatra',
-            trangthaidonhang: 'Chờ xác nhận',
+            trangthaidonhang: 'Đã giao',
             mavoucher: typeof(discountVoucher) !== 'string' ? inputvouchers : '',
             mattgh: mattghOldAddress,
             ghichu: 'ok',

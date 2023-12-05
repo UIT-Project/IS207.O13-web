@@ -145,7 +145,7 @@ function AdminLogin(){
             setIsLoading(false)
 
             // swal("success", res.data.message, "success");
-            Navigate('/');
+            Navigate('/admin/manageProduct');
           }
           else if(res.data.status === 401)
           {

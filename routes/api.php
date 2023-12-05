@@ -19,6 +19,8 @@ use App\Http\Controllers\UpdateProductController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\ManageAccountCustomerController;
 use App\Http\Controllers\ManageAccountStaff;
+use App\Http\Controllers\MyOrderController;
+use App\Http\Controllers\ReviewProduct;
 use App\Http\Controllers\VoucherController;
 
 /*
@@ -80,10 +82,18 @@ Route::post('payOnline', [PayOnlineController::class, 'payOnline']);
 //Payment Result
 Route::post('processPaymentResult', [PaymentController::class, 'processPaymentResult']);
 
+//MyOrder 
+Route::get('getInfoMyOrder', [MyOrderController::class, 'getInfoMyOrder']);
+Route::get('infoOrderDetail_myOder', [MyOrderController::class, 'infoOrderDetail_myOder']);
+
 //Info Account
 Route::get('getInfoAccount', [InfoAccountController::class, 'getInfoAccount']);
 Route::post('saveInfoAccount', [InfoAccountController::class, 'saveInfoAccount']);
 Route::post('changePassword', [InfoAccountController::class, 'changePassword']);
+
+//ReviewProduct
+Route::post('saveReviewProduct', [ReviewProduct::class, 'saveReviewProduct']);
+
 
 //Admin - AddProduct
 Route::post('addProduct', [AddProductController::class, 'addProduct']);
@@ -138,3 +148,6 @@ Route::get('getInfoManageAccountCustomer', [ManageAccountCustomerController::cla
 Route::post('addVoucher', [VoucherController::class, 'addVoucher']);
 Route::get('getQuantityVoucherToDevidePage', [VoucherController::class, 'getQuantityVoucherToDevidePage']);
 Route::get('getInfoManageVoucher', [VoucherController::class, 'getInfoManageVoucher']);
+Route::get('infoVoucherDetail', [VoucherController::class, 'infoVoucherDetail']);
+Route::post('updateVoucher', [VouchferController::class, 'updateVoucher']);
+Route::get('getInfoSearchVoucher', [VoucherController::class, 'getInfoSearchVoucher']);

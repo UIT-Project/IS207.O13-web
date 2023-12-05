@@ -1,4 +1,4 @@
-import "./ManageVoucher.css"
+import "./SearchVoucher.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
@@ -11,7 +11,7 @@ import { faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-
 import {  faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
-function ManageVoucher()
+function SearchVoucher()
 {
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
@@ -24,6 +24,9 @@ function ManageVoucher()
     const maspParam = searchParams.get('maspParam');  
     const numberPagination = searchParams.get('numberPagination');  
     const nameStatusParam = searchParams.get('nameStatus');
+    const [typeSearch, setTypeSearch] = useState(searchParams.get('typeSearch'));
+    const [keySearch, setKeySearch] = useState(searchParams.get('keySearch'));
+    const [isUpdate, setIsUpdate] = useState(false);
 
     let i = 0; 
     const [statusPressUpdateVoucher, setStatusPressUpdateVoucher] = useState(true);
@@ -49,9 +52,7 @@ function ManageVoucher()
         startDate: '',
         endDate: '',
         decreasePersent: 0,
-    }); 
-    const [keySearch, setKeySearch] = useState('');
-    const [typeSearch, setTypeSearch] = useState('MAVOUCHER');
+    });  
     const [orderStatus, setOrderStatus] = useState({
         chuaApDung:{
             nameState: 'Chưa áp dụng',
@@ -322,7 +323,7 @@ function ManageVoucher()
         );
         setOrderStatus(updateOpeningPage) 
         // console.log(item_status, 'test', item_pagina);
-        getInfoOrderForUsers(item_status, item_pagina); 
+        getInfoSearchVoucher(item_status, item_pagina); 
         quantityDeleteVoucherInOnePage = 0;
     }
 
@@ -334,7 +335,7 @@ function ManageVoucher()
             }
         );
         setOrderStatus(updateOpeningPage)  
-        getInfoOrderForUsers(item_status, item_pagina);
+        getInfoSearchVoucher(item_status, item_pagina);
         handleScrollToTop();
     }
 
@@ -460,6 +461,7 @@ function ManageVoucher()
             keySearch: keySearch,
             typeSearch: typeSearch,
         }  
+        console.log(queryForGetInfoOrderForUsers, 'aksdjksajdk')
         request.get(`/api/getInfoSearchVoucher`, {params: queryForGetInfoOrderForUsers}) 
         .then(res=>{  
             console.log(res.data)
@@ -480,10 +482,7 @@ function ManageVoucher()
                             [itemInOrderStatus_Array.key] : 
                             {   
                                 ...prevOrderStatus[itemInOrderStatus_Array.key], 
-                                orderList:  [
-                                    ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
-                                    ...res.data.data_thongtin_sanpham.filter(item =>  item)
-                                ],  
+                                orderList: res.data.data_thongtin_sanpham,  
                                 spaceGetDataFromOrderList: [
                                     ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
                                     {
@@ -541,6 +540,7 @@ function ManageVoucher()
 
     const handleSearch = () => { 
         Navigate(`/admin/searchVoucher?keySearch=${keySearch}&typeSearch=${typeSearch}`)
+        window.location.reload();
     }
 
     const handleInputInfoTypeSearch = (e) => {
@@ -549,12 +549,10 @@ function ManageVoucher()
     }
 
     useEffect(() => {   
-        orderStatus_Array.map(item => getInfoOrderForUsers(item, 1) ) 
-        getQuantityOrderToDevidePage()  
-        getInfoForUpdateVoucher();
-        console.log(orderStatus.chuaApDung.orderList)
+        orderStatus_Array.map(item => getInfoSearchVoucher(item, 1) ) 
+        getQuantityOrderToDevidePage()   
     }, [])  
-
+ 
     //update
 
     const handleInputQuantity = (e, i) => {  
@@ -615,7 +613,7 @@ function ManageVoucher()
                 <div>
                     <button onClick={handleTurnBack}>turn back</button>
                     <div class="icon-update">
-                        <span>
+                        <span onClick={()=>{setIsUpdate(true)}}>
                             <FontAwesomeIcon class={`fa-solid fa-pen-to-square ${orderStatusPointer === orderStatus.chuaApDung.nameState ? '' : 'display_hidden'}`} icon={faPenToSquare} ></FontAwesomeIcon>
                         </span>
                     </div>
@@ -632,6 +630,7 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher} 
                                     name="showNameVoucher" 
                                     value={infoUpdateVoucher.showNameVoucher}
+                                    disabled={!isUpdate}
                                 />
                             </div>
                         </div>
@@ -643,6 +642,7 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="typeVoucher"
                                     value={infoUpdateVoucher.typeVoucher} 
+                                    disabled={!isUpdate}
                                 >
                                 <option selected value=""></option>
                                 <option value="Đơn hàng">Đơn hàng</option>
@@ -655,6 +655,7 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="decreasePersent"
                                     value={infoUpdateVoucher.decreasePersent} 
+                                    disabled={!isUpdate}
                                 >
                                     <option selected value="0"></option>
                                     <option value="0.05">5%</option>
@@ -671,6 +672,7 @@ function ManageVoucher()
                                     className="form-control widthInputDate"
                                     onChange={handleInputInfoUpdateVoucher}
                                     value={infoUpdateVoucher.startDate}  
+                                    disabled={!isUpdate}
                                 ></input>
                             </div>
                             <div class="col-4 inputDate">
@@ -681,6 +683,7 @@ function ManageVoucher()
                                     className="form-control widthInputDate"
                                     onChange={handleInputInfoUpdateVoucher}
                                     value={infoUpdateVoucher.endDate}
+                                    disabled={!isUpdate}
                                 ></input>
                             </div>
                         </div>
@@ -693,6 +696,7 @@ function ManageVoucher()
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="minOrderValue"  
                                         value={infoUpdateVoucher.minOrderValue}
+                                        disabled={!isUpdate}
                                     />
                                 </div>
                                 <div class="col-4 inputDate">
@@ -702,6 +706,7 @@ function ManageVoucher()
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="maxDecreaseMoney"   
                                         value={infoUpdateVoucher.maxDecreaseMoney}
+                                        disabled={!isUpdate}
                                     />
                                 </div>
                             </div> 
@@ -714,6 +719,7 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="quantityUse"  
                                     value={infoUpdateVoucher.quantityUse}
+                                    disabled={!isUpdate}
                                 />
                             </div> 
                         </div>
@@ -729,6 +735,7 @@ function ManageVoucher()
                             id="w3review" name="desctiption" rows="4" cols="80"
                             value={infoUpdateVoucher.desctiption} 
                             onChange={handleInputInfoUpdateVoucher}
+                            disabled={!isUpdate}
                         >
                             At w3schools.com you will learn how to make a website.
                             They offer free tutorials in all web development technologies.
@@ -741,8 +748,8 @@ function ManageVoucher()
                     <div class="col-auto"></div>
                     <div class="address_update_button_contain row">
                         <div class={`${statusPressAddVoucher ? '' : ''}`}>
-                            <button class={`address_confirm_button btn btn-dark`} onClick={handleClickUpdateVoucher}>Cập nhật voucher</button>
-                            <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
+                            <button class={`address_confirm_button btn btn-dark`} onClick={handleClickUpdateVoucher} disabled={!isUpdate}>Cập nhật voucher</button>
+                            <button class="address_cancel_button btn btn-outline-secondary" disabled={!isUpdate}>Hủy</button>
                         </div> 
                     </div>
                 </div> 
@@ -905,4 +912,4 @@ function ManageVoucher()
     )
 }
 
-export default ManageVoucher;
+export default SearchVoucher;

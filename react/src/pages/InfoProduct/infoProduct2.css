@@ -352,3 +352,16 @@ user-select: none;
 .display_hidden{
   display: none;
 }
+
+.item_review{
+  display: flex;
+}
+
+.item_review__avatar__img{
+  border-radius: 50%;
+  width: 30%;
+}
+/* .item_review__avatar__img__div{
+  width: 3rem;
+  height: 3rem;
+} */

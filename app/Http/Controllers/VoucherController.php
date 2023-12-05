@@ -81,10 +81,83 @@ class VoucherController extends Controller
         }
 
         $data_thongtin_sanpham = DB::select(
-            "SELECT MAVOUCHER, SOLUONG, THOIGIANBD, THOIGIANKT, GIATRIGIAM, GIATRI_DH_MIN, GIATRI_GIAM_MAX, PHANLOAI_VOUCHER
+            "SELECT MAVOUCHER, SOLUONG, THOIGIANBD, THOIGIANKT, GIATRIGIAM, GIATRI_DH_MIN, GIATRI_GIAM_MAX, PHANLOAI_VOUCHER, MOTA
             FROM vouchers
             -- chitiet_donhangs, 
             $where 
+            ORDER BY THOIGIANBD DESC
+            LIMIT $start, $numberOrderEachPage" 
+        ); 
+        return response()->json([
+            'data_thongtin_sanpham' => $data_thongtin_sanpham,
+            // 'data_soluong_daban' => $data_soluong_daban,
+        ]);
+    }
+    public function infoVoucherDetail(Request $request){
+        $mavoucher = $request->input('mavoucher');
+        $dataVoucherDetail_sanphams = DB::select(
+            "SELECT MAVOUCHER, SOLUONG, THOIGIANBD, THOIGIANKT, GIATRIGIAM, GIATRI_DH_MIN, GIATRI_GIAM_MAX, PHANLOAI_VOUCHER, MOTA
+            FROM vouchers
+            -- chitiet_donhangs, 
+            WHERE MAVOUCHER = '$mavoucher'" 
+        );  
+        return response()->json([
+            'dataVoucherDetail_sanphams' => $dataVoucherDetail_sanphams, 
+        ]);
+    }
+    public function updateVoucher(Request $request){
+        $objectInfoUpdateVoucher = json_decode($request->input('infoUpdateVoucher'));  
+
+        $MAVOUCHER = $objectInfoUpdateVoucher->showNameVoucher;
+        $PHANLOAI_VOUCHER = $objectInfoUpdateVoucher->typeVoucher;
+        $GIATRIGIAM = (float)$objectInfoUpdateVoucher->decreasePersent;
+        $THOIGIANBD = $objectInfoUpdateVoucher->startDate;
+        $THOIGIANKT = $objectInfoUpdateVoucher->endDate;
+        $GIATRI_DH_MIN = $objectInfoUpdateVoucher->minOrderValue;
+        $GIATRI_GIAM_MAX = $objectInfoUpdateVoucher->maxDecreaseMoney;
+        $SOLUONG = $objectInfoUpdateVoucher->quantityUse;
+        $MOTA = $objectInfoUpdateVoucher->desctiption; 
+
+        DB::update(
+            "UPDATE vouchers 
+            SET PHANLOAI_VOUCHER = '$PHANLOAI_VOUCHER', 
+            GIATRIGIAM = '$GIATRIGIAM', THOIGIANBD = '$THOIGIANBD', 
+            THOIGIANKT = '$THOIGIANKT', GIATRI_DH_MIN = '$GIATRI_DH_MIN',
+            GIATRI_GIAM_MAX = '$GIATRI_GIAM_MAX', SOLUONG = '$SOLUONG', 
+            MOTA = '$MOTA' WHERE  MAVOUCHER = '$MAVOUCHER'"
+        );
+        return response()->json([]); 
+
+    }
+    public function getInfoSearchVoucher(Request $request){
+        $tenDanhMuc = $request->input('tenDanhMuc');
+        $start = $request->input('start');
+        $numberOrderEachPage = $request->input('numberOrderEachPage');
+        $keySearch = $request->input('keySearch');
+        $typeSearch = $request->input('typeSearch');
+        $where = '';
+        $search = "AND $typeSearch LIKE '%$keySearch%'";
+        $currentDate = now()->format('Y-m-d');
+
+        if($tenDanhMuc === 'Chưa áp dụng'){
+            $where = "WHERE vouchers.THOIGIANBD > '$currentDate'";
+        }
+        else if($tenDanhMuc === 'Đang áp dụng'){
+            $where = "WHERE '$currentDate' 
+            BETWEEN vouchers.THOIGIANBD 
+            AND vouchers.THOIGIANKT 
+            AND SOLUONG_CONLAI > 0
+            ";
+        }
+        else if($tenDanhMuc === 'Đã qua sử dụng'){
+            $where = "WHERE (vouchers.THOIGIANKT < '$currentDate' OR SOLUONG_CONLAI = 0)";
+        }
+
+        $data_thongtin_sanpham = DB::select(
+            "SELECT MAVOUCHER, SOLUONG, THOIGIANBD, THOIGIANKT, GIATRIGIAM, GIATRI_DH_MIN, GIATRI_GIAM_MAX, PHANLOAI_VOUCHER, MOTA
+            FROM vouchers
+            -- chitiet_donhangs, 
+            $where $search
             ORDER BY THOIGIANBD DESC
             LIMIT $start, $numberOrderEachPage" 
         ); 

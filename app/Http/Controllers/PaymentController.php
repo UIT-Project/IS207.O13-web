@@ -70,7 +70,7 @@ class PaymentController extends Controller
 
         $infoProductJSON = $request->input('infoProductJSON');
         $infoProduct = json_decode($infoProductJSON, true);
-        $mattgh_conver = 1;
+        $mattgh_conver = $mattgh;
         if($mattgh == ''){
             DB::insert(
                 "INSERT INTO thongtingiaohangs(MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA)
@@ -79,7 +79,7 @@ class PaymentController extends Controller
             );
             $mattgh = DB::select(
                 "SELECT MATTGH FROM thongtingiaohangs WHERE 
-                MATK = '$matk' AND TEN = '$name_ship' AND SDT = '$numberPhone_ship'
+                MATK = $matk AND TEN = '$name_ship' AND SDT = '$numberPhone_ship'
                 AND DIACHI = '$address_ship' AND TINH_TP = '$option_thanhpho' AND QUAN_HUYEN = '$option_quan'
                 AND PHUONG_XA = 'option_phuong'"
             );
@@ -111,9 +111,9 @@ class PaymentController extends Controller
                 [$item['MASP'], $item['MASIZE'], 
                 $item['MAMAU']]
             );
-            DB::insert("INSERT INTO chitiet_donhangs(MADH, MAXDSP, TONGTIEN, SOLUONG)
-             VALUES(?, ?, ?, ?)", 
-             [$madh[0]->MADH,  $maxdsp[0]->MAXDSP, $item['TONGGIA'], $item['SOLUONG']]);
+            DB::insert("INSERT INTO chitiet_donhangs(MADH, MAXDSP, TONGTIEN, SOLUONG, DADANHGIA)
+             VALUES(?, ?, ?, ?, ?)", 
+             [$madh[0]->MADH,  $maxdsp[0]->MAXDSP, $item['TONGGIA'], $item['SOLUONG'], 0]);
         }
 
         if($hinhthuc_thanhtoan == "Chuyển khoản"){

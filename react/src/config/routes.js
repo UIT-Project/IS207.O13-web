@@ -29,5 +29,7 @@ const routes = {
     manageAccountCustomer: "/admin/manageAccountCustomer",
     addVoucher: "/admin/addVoucher",
     manageVoucher: "/admin/manageVoucher",
+    searchVoucher: "/admin/SearchVoucher",
+    reviewProduct: "/reviewProduct",
 }
 export default routes;

@@ -382,6 +382,15 @@ function InfoProduct(){
                         </div>
                     </div>
                 </div>
+                <div>Đánh giá</div>
+                <div className="item_review">
+                    <div className="col-sm-2">
+                        <div className="item_review__avatar__img__div">
+                            <img class="item_review__avatar__img" src="https://down-vn.img.susercontent.com/file/4a1806b9f93ddfdb116f72fe7597a6ca_tn"/>
+                        </div>
+                    </div>
+                    <div className="col-sm-10"></div>
+                </div>
             </div>
  
         </div>

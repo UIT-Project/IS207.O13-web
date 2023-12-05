@@ -22,6 +22,8 @@ import ManageAccountStaff from "../pages/Admin/ManageAccountStaff/ManageAccountS
 import ManageAccountCustomer from "../pages/Admin/ManageAccountCustomer/ManageAccountCustomer";
 import AddVoucher from "../pages/Admin/AddVoucher/AddVoucher";
 import ManageVoucher from "../pages/Admin/ManageVoucher/ManageVoucher";
+import SearchVoucher from "../pages/Admin/SearchVoucher/SearchVoucher";
+import ReviewProduct from "../pages/ReviewProduct/ReviewProduct";
 
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
@@ -57,6 +59,8 @@ const publicRoutes = [
     {path: config.routes.manageAccountCustomer, component: ManageAccountCustomer, layout: AdminLayout},
     {path: config.routes.addVoucher, component: AddVoucher, layout: AdminLayout},
     {path: config.routes.manageVoucher, component: ManageVoucher, layout: AdminLayout},
+    {path: config.routes.searchVoucher, component: SearchVoucher, layout: AdminLayout},
+    {path: config.routes.reviewProduct, component: ReviewProduct, layout: DefaultLayout},
 ];
 
 const privateRoutes = [];
