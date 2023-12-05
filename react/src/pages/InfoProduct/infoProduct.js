@@ -9,7 +9,7 @@ import {Media} from "./image";
 
 import ImageSlider from "./ImageSlider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCartShopping } from "@fortawesome/free-solid-svg-icons";
+import { faCartShopping, faStar } from "@fortawesome/free-solid-svg-icons";
 function InfoProduct(){
     // Trong file này cần xử lý
     // 1. lấy dữ liệu và hiển thị
@@ -230,11 +230,11 @@ function InfoProduct(){
                             </div>
                             <div class="detail_info_product__price__review_quanlity">
                                 <div class="product-content-right-product-rating">
-                                    <i class="fa-solid fa-star product-content-right-product-rating_sao"></i>
-                                    <i class="fa-solid fa-star product-content-right-product-rating_sao"></i>
-                                    <i class="fa-solid fa-star product-content-right-product-rating_sao"></i>
-                                    <i class="fa-solid fa-star product-content-right-product-rating_sao"></i>
-                                    <i class="fa-solid fa-star product-content-right-product-rating_sao"></i>
+                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
                                     <span>(0 danh gia)</span>
                                 </div>
                             </div>
@@ -400,11 +400,11 @@ function InfoProduct(){
                                 </div>
                             </div>
                             <div class="reviews">
-                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
-                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
-                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
-                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
-                                <i class="fa-solid fa-star" style="color: #f3b335;"></i>
+                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
                             </div>
                         </div>
                         <div class="clients-comment">

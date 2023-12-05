@@ -258,6 +258,8 @@
   }
   .product-content-right-product-rating_sao{
     color: #f3b335;
+    width: 4%;
+    height: 4%;
   }
   .detail_info_product_button_detail__icon_addToCart{
     margin-right: 5px;
@@ -365,3 +367,81 @@ user-select: none;
   width: 3rem;
   height: 3rem;
 } */
+
+#review {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+}
+.review-heading {
+  letter-spacing: 1px;
+  margin: 30px 0px;
+  padding: 10px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.review-heading h1{
+  font-size: 2.2rem;
+  font-weight: 500;
+  padding: 10px 20px;
+}
+.review-box-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  width: 100%;
+}
+.review-box{
+  width: 500px;
+  box-shadow: 2px 2px 30px rgba(0,0,0,0.1);
+  background-color: #fff;
+  padding: 20px;
+  margin: 15px;
+  cursor: pointer;
+}
+.profile-image{
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 10px;
+
+}
+.profile-image img{
+  border-radius: 50%;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.profile {
+  display:flex;
+  align-items: center;
+}
+.user-name{
+  display: flex;
+  flex-direction: column;
+}
+.user-name strong{
+  color: #3d3d3d;
+  font-size: 1.1rem;
+  letter-spacing: 0.5px;
+}
+.user-name span{
+  color: #979797;
+  font-size: 0.8rem;
+}
+.box-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.clients-comment{
+  font-size: 0.9rem;
+  color: #4b4b4b;
+}
