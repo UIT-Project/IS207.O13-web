@@ -22,11 +22,14 @@
 }
 
 .detail_info_product__price__info_price{
-  padding-bottom: 12px;
+  padding-bottom: 12px;  
 }
 .detail_info_product__price__css_chung{  
   padding: 16px;
   border-bottom: 1px solid rgb(219, 219, 219);
+  /* display: flex;
+  flex-direction: column;
+  justify-content: center; */
 }
 #color_1{
   background-color: black;
@@ -368,17 +371,16 @@ user-select: none;
   height: 3rem;
 } */
 
-#review {
+.review {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column;
-  width: 100%;
+  /* flex-direction: column;  */
 }
 .review-heading {
   letter-spacing: 1px;
-  margin: 30px 0px;
-  padding: 10px 20px;
+  /* margin: 30px 0px;
+  padding: 10px 20px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -397,23 +399,23 @@ user-select: none;
   width: 100%;
 }
 .review-box{
-  width: 500px;
+  width: 50%;
   box-shadow: 2px 2px 30px rgba(0,0,0,0.1);
   background-color: #fff;
   padding: 20px;
-  margin: 15px;
+  /* margin: 15px; */
   cursor: pointer;
 }
 .profile-image{
-  width: 50px;
-  height: 50px;
+  width: 4rem;
+  height: 4rem;
   border-radius: 50%;
   margin-right: 10px;
 
 }
 .profile-image img{
   border-radius: 50%;
-  width: 100%;
+  width: 4rem;
   height: 100%;
   object-fit: cover;
   object-position: center;
@@ -425,11 +427,13 @@ user-select: none;
 .user-name{
   display: flex;
   flex-direction: column;
+  width: 20rem;
 }
 .user-name strong{
   color: #3d3d3d;
   font-size: 1.1rem;
   letter-spacing: 0.5px;
+  width: 12rem;
 }
 .user-name span{
   color: #979797;
@@ -437,11 +441,41 @@ user-select: none;
 }
 .box-top{
   display: flex;
-  justify-content: space-between;
+  /* justify-content: space-between; */
   align-items: center;
   margin-bottom: 20px;
 }
 .clients-comment{
-  font-size: 0.9rem;
+  font-size: 1.3rem;
   color: #4b4b4b;
+}
+
+.product-content-right-product-rating_sao_review{
+  color: #f3b335;
+  width: 6%;
+  height: 6%;
+}
+
+.detail_info_product__price__info_price__sell{
+  font-weight: bold;
+  font-size: 1.7rem;
+  color: red;
+}
+.detail_info_product__price__info_price__origin{
+  text-decoration: line-through;
+  color: #7d7d7d;
+}
+.space_item_in_a_row{
+  margin: 0 0.2rem;
+}
+
+.motasanpham{ 
+  text-decoration: none;
+  border: none; 
+  /* overflow: hidden;   */
+  /* resize: none;  */
+  background-color: #f9f9f9;
+  outline: none;
+  /* height: auto; */
+  
 }

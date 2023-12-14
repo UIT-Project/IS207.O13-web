@@ -14,6 +14,7 @@ function InfoProduct(){
     // Trong file này cần xử lý
     // 1. lấy dữ liệu và hiển thị
     // 2. xử lý thêm nhấn vào thêm sản phẩm vào giỏ hàng và xử lý khi thêm sp vào giỏ trùng với sản phẩm đã có trong giỏ thì upadte số lượng
+    
 
     //dùng để lấy thông tin từ thanh địa chỉ (URL), cái này sẽ còn được ứng dụng để lấy thông tin thanh toán mà ngân hàng trả về
     //sau khi thanh toán thành công
@@ -23,11 +24,12 @@ function InfoProduct(){
     const id = urlParams.get('id'); 
 
     //biến global
-    const {divPopupCartRef, infoCarts, setInfoCarts, setStatusPressAddToCart, statusPressAddToCart} = useGlobalVariableContext(); 
+    const { divPopupCartRef, infoCarts, setInfoCarts, 
+        setStatusPressAddToCart, statusPressAddToCart, formatPrice } = useGlobalVariableContext(); 
     const [hetHang, setHetHang] = useState(false);
     //
     const buttonAddToCartRef = useRef(null);  
-
+    const [infoReviewProduct, setInfoReviewProduct] = useState([]);
     //tạo biến selectPropertyProduct để lưu thông tin sản phẩm thêm và giỏ hàng
     const [selectPropertyProduct, setSelectPropertyProduct] = useState({
         mamau: 0,
@@ -41,7 +43,8 @@ function InfoProduct(){
         data_mausac: [],
         data_mamau: [],
         data_size: [],
-        data_xacDinhSoLuong: []
+        data_xacDinhSoLuong: [],
+        imgURL: [],
     });
 
     //dataAddProductToCart là biến trung gian để lấy giá trị từ infoProduct gán vào để lưu sản phẩm vào giỏ hàng xuống DB
@@ -110,16 +113,35 @@ function InfoProduct(){
     const getInfo = () => {  
         request.get(`/api/infoProduct?id=${id}`)
         .then(res => { 
+            const sortedData = [...res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs].sort((a, b) => {
+                if (a.imgURL.includes("thumnail") && !b.imgURL.includes("thumnail")) {
+                  return -1; // Move a to a lower index (closer to the beginning)
+                } else if (!a.imgURL.includes("thumnail") && b.imgURL.includes("thumnail")) {
+                  return 1; // Move b to a lower index (closer to the beginning)
+                } else {
+                  return 0; // Keep the original order
+                }
+            });
             setInfoProduct({
                 data_sanpham: res.data.data_sanpham[0],
                 data_mausac: res.data.data_mausac,
                 data_mamau: res.data.data_mamau,
                 data_size: res.data.data_size,
                 data_xacDinhSoLuong: res.data.data_xacDinhSoLuong,
+                imgURL: res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
             });  
+            console.log(res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs)
         })
         .catch(e => {
             console.log(e);
+        })
+    }
+
+    const getInfoReviewProduct = () => {
+        request.get(`/api/getInfoReviewProduct?masp=${id}`)
+        .then(res => {
+            console.log(res.data.infoReviewProduct, 'đây là info review')
+            setInfoReviewProduct(res.data.infoReviewProduct);
         })
     }
 
@@ -187,7 +209,7 @@ function InfoProduct(){
     //phần code trong này sẽ liên quan đến việc ẩn và hiện popup cart
     useEffect(() => {
         getInfo(); 
-
+        getInfoReviewProduct();
         //khi click ở ngoài popup thì pop sẽ ẩn đi
         const handleClickOutPopUpCart = (event) => {
             if(!buttonAddToCartRef.current.contains(event.target)){
@@ -212,21 +234,57 @@ function InfoProduct(){
             document.removeEventListener('click', handleClickOutPopUpCart);
         }; 
     } , []);
-    
+    const renderStarAtReviewProduct = (SOLUONG_SAO) => {
+         
+        const stars = []; 
+        for (let i = 1; i <= SOLUONG_SAO; i++) {
+        stars.push(
+            <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao_review"></FontAwesomeIcon>
+        );
+        }
+        return stars;
+    }
+    const renderReview = infoReviewProduct.map(item => 
+        <div class="review-box-container">
+            <div class="review-box">
+                <div class="box-top">
+                <div class="profile">
+                    <div class="profile-image">
+                        <img src="https://nhacchuonghinhnen.com/wp-content/uploads/2020/03/hinh-nen-gai-xinh-full-hd-cho-dien-thoai-2-scaled.jpg" alt=""/>
+                    </div>
+                    <div class="user-name">
+                        <strong>{item.TEN}</strong>
+                        {/* <span>@mlmlml03</span> */}
+                    </div>
+                <div class="reviews">
+                    {renderStarAtReviewProduct(item.SOLUONG_SAO)}
+                </div>
+                </div>
+            </div>
+            <div class="clients-comment">
+                <p>{item.NOIDUNG_DANHGIA}</p>
+            </div>
+            </div>
+        </div>
+    )
     return ( 
         <div class="container col-sm-12 ">
             <div class="container-fluid">
                 <div class="container_info_product"> 
-                    <ImageSlider slides={slides}/>
+                    <ImageSlider slides={infoProduct.imgURL.length > 0 ? infoProduct.imgURL : slides}/>
                     <div class="detail_info_product col-sm-5">
                         <div class="detail_info_product__title">
                             <h4>{infoProduct.data_sanpham.TENSP}</h4>
                         </div>
                         <div class="detail_info_product__price detail_info_product__price__css_chung">
                             <div class="detail_info_product__price__info_price">
-                                <span class="detail_info_product__price__info_price__sell">{infoProduct.data_sanpham.GIABAN}</span>
-                                <span class="detail_info_product__price__info_price__origin">{infoProduct.data_sanpham.GIAGOC}</span>
-                                <span class="detail_info_product__price__info_price__decrease_percent">{parseInt((infoProduct.data_sanpham.GIABAN / infoProduct.data_sanpham.GIAGOC) * 100)}%</span> 
+                                <span class="detail_info_product__price__info_price__sell space_item_in_a_row">{infoProduct.data_sanpham.GIABAN ? formatPrice(infoProduct.data_sanpham.GIABAN) : ''}₫</span>
+                                <span class="detail_info_product__price__info_price__origin space_item_in_a_row">{infoProduct.data_sanpham.GIABAN ? formatPrice(infoProduct.data_sanpham.GIAGOC) : ''}₫</span>
+
+                                {/* <span class="detail_info_product__price__info_price__sell space_item_in_a_row">{(infoProduct.data_sanpham.GIABAN)}₫</span>
+                                <span class="detail_info_product__price__info_price__origin space_item_in_a_row">{(infoProduct.data_sanpham.GIAGOC)}₫</span> */}
+
+                                <span class="detail_info_product__price__info_price__decrease_percent space_item_in_a_row">{parseInt((infoProduct.data_sanpham.GIABAN / infoProduct.data_sanpham.GIAGOC) * 100)}%</span> 
                             </div>
                             <div class="detail_info_product__price__review_quanlity">
                                 <div class="product-content-right-product-rating">
@@ -351,9 +409,9 @@ function InfoProduct(){
                                 </li>
                             </ul>
                         </div>
-                        <div class="detail_info_product_tab_body">
-                            <div class="detail_info_product_tab_body_gioi-thieu">
-                                <p>Crepe Dress tự tin thể hiện vẻ đẹp hiện đại và phong cách nổi bật cho người mặc. 
+                        <div class="detail_info_product_tab_body ">
+                            <div class="detail_info_product_tab_body_gioi-thieu ">
+                                {/* <p>Crepe Dress tự tin thể hiện vẻ đẹp hiện đại và phong cách nổi bật cho người mặc. 
                                     Đầm là một lựa chọn táo bạo, sành điệu, tôn lên vẻ đẹp cơ thể nhẹ nhàng nhưng vẫn thật gợi cảm. </p>
                                 <p>Thiết kế cổ chéo kết hợp tay dài giúp tổng thể trang phục trở nên độc đáo, nổi bật. 
                                     Phần thân dưới được xếp ly cách điệu một bên, thành công mang đến tính trendy, bắt mắt cho thiết kế.</p>
@@ -376,42 +434,18 @@ function InfoProduct(){
                                 </p>
                                 <p>Mẫu mặc size M</p>
                                 <p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do
-                                    điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p>
+                                    điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p> */}
+                                    <textarea value={infoProduct.data_sanpham.MOTA} className="motasanpham" cols="65" rows={40} disabled></textarea>
                                 
                             </div>
                         </div>
                     </div>
-                </div>
-                <div>Đánh giá</div>
+                </div> 
                 <section id="review">
                     <div class="review-heading">
-                        <h1>FEEDBACK</h1>
+                        <h1>Đánh giá</h1>
                     </div>
-                    <div class="review-box-container">
-                        <div class="review-box">
-                            <div class="box-top">
-                            <div class="profile">
-                                <div class="profile-image">
-                                    <img src="https://nhacchuonghinhnen.com/wp-content/uploads/2020/03/hinh-nen-gai-xinh-full-hd-cho-dien-thoai-2-scaled.jpg" alt=""/>
-                                </div>
-                                <div class="user-name">
-                                    <strong>Mai Lien Nguyen</strong>
-                                    <span>@mlmlml03</span>
-                                </div>
-                            </div>
-                            <div class="reviews">
-                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                            </div>
-                        </div>
-                        <div class="clients-comment">
-                            <p>San pham tot</p>
-                        </div>
-                        </div>
-                    </div>
+                    {renderReview}
                 </section>
             </div>
  

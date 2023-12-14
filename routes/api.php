@@ -65,7 +65,7 @@ Route::get('filterSearchProduct', [SearchProductController::class, 'filterSearch
 //InfoProduct
 Route::get('infoProduct', [InfoProductController::class, 'infoProduct']);
 Route::post('addToCart', [InfoProductController::class, 'addToCart']);
-// Route::get('infoPopupCart', [TestController::class, 'infoPopupCart']);
+Route::get('getInfoReviewProduct', [InfoProductController::class, 'getInfoReviewProduct']);
 Route::post('updateQuantityProductInCart', [InfoProductController::class, 'updateQuantityProductInCart']);
 
 //Cart
@@ -85,6 +85,7 @@ Route::post('processPaymentResult', [PaymentController::class, 'processPaymentRe
 //MyOrder 
 Route::get('getInfoMyOrder', [MyOrderController::class, 'getInfoMyOrder']);
 Route::get('infoOrderDetail_myOder', [MyOrderController::class, 'infoOrderDetail_myOder']);
+Route::get('getQuantityOrderToDevidePage__myOder', [MyOrderController::class, 'getQuantityOrderToDevidePage__myOder']);
 
 //Info Account
 Route::get('getInfoAccount', [InfoAccountController::class, 'getInfoAccount']);
@@ -139,15 +140,18 @@ Route::get('getQuantityAccountStaffToDevidePage', [ManageAccountStaff::class, 'g
 Route::get('getInfoManageAccountStaff', [ManageAccountStaff::class, 'getInfoManageAccountStaff']);
 Route::post('deleteAccountStaff', [ManageAccountStaff::class, 'deleteAccountStaff']);
 Route::post('updateStatusOfAccountStaff', [ManageAccountStaff::class, 'updateStatusOfAccountStaff']);
+Route::get('searchAccountStaff', [ManageAccountStaff::class, 'searchAccountStaff']);
 
-//Admin - ManageAccountStaff 
+//Admin - ManageAccountCustomer 
 Route::get('getQuantityAccountCustomerToDevidePage', [ManageAccountCustomerController::class, 'getQuantityAccountCustomerToDevidePage']);
 Route::get('getInfoManageAccountCustomer', [ManageAccountCustomerController::class, 'getInfoManageAccountCustomer']);
+Route::get('searchAccountCustomer', [ManageAccountCustomerController::class, 'searchAccountCustomer']);
 
 //Admin - Voucher
 Route::post('addVoucher', [VoucherController::class, 'addVoucher']);
 Route::get('getQuantityVoucherToDevidePage', [VoucherController::class, 'getQuantityVoucherToDevidePage']);
 Route::get('getInfoManageVoucher', [VoucherController::class, 'getInfoManageVoucher']);
 Route::get('infoVoucherDetail', [VoucherController::class, 'infoVoucherDetail']);
-Route::post('updateVoucher', [VouchferController::class, 'updateVoucher']);
+Route::post('updateVoucher', [VoucherController::class, 'updateVoucher']);
 Route::get('getInfoSearchVoucher', [VoucherController::class, 'getInfoSearchVoucher']);
+Route::post('deleteVoucher', [VoucherController::class, 'deleteVoucher']);

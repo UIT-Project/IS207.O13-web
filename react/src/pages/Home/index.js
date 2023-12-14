@@ -8,6 +8,7 @@ import { Button } from "bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
 import axios from "axios";
+import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 
 function Home(){
 
@@ -15,6 +16,7 @@ function Home(){
     // 1.Lấy thông tin sản phẩm từ DB và hiển thị
     // 2.Xử dụng các hàm hỗ trợ lấy dữ liệu và dùng biến renderNewProduct để render dữ liệu ra màn hình
 
+    const {formatPrice} = useGlobalVariableContext(); 
     // chứa thông tin sản phẩm mới
     const [productsInNewProduct, setProductsInNewProduct] = useState([]);
     // chứa thông tin sản phẩm hot
@@ -68,10 +70,10 @@ function Home(){
                             </a>
                             <div class="product_item__summary__price_and_heart">
                                 <div class="product_item__summary__price">
-                                    <span class="product_item__summary__sale_price">{product.GIABAN}₫
+                                    <span class="product_item__summary__sale_price space_item_in_a_row">{formatPrice(product.GIABAN)}₫
                                     </span>
-                                    <span class="product_item__summary__origin_price">
-                                        <del>{product.GIAGOC}₫</del>
+                                    <span class="product_item__summary__origin_price space_item_in_a_row">
+                                        <del>{formatPrice(product.GIAGOC)}₫</del>
                                     </span>
                                 </div> 
                                 <div>

@@ -503,3 +503,38 @@ tr {
     border: 1px solid rebeccapurple;
     border-radius: 3px;
 }
+
+.note__css{
+    width: 40%;
+    border-radius: 0.4rem;
+    padding: 0.3rem;
+}
+
+.btn__saveNote{
+    background-color: #12f33f;
+    padding: 0.3rem 1.7rem;
+    border-radius: 0.4rem;
+}
+
+@media print {
+    .print-container {
+        width: 210mm; /* Kích thước A4 */
+        height: 297mm;
+        margin: 0;
+        padding: 20px;
+        font-size: 16px;
+        /* Thêm các kiểu định dạng in khác tại đây */
+    }
+}
+
+.faPrint_nearUpdate{
+    width: 2rem;
+    height: 2rem;
+}
+
+.noRender{
+    /* visibility: hidden; */
+    /* position: absolute; */
+    /* top: -1200px; */
+    opacity: 0;
+}

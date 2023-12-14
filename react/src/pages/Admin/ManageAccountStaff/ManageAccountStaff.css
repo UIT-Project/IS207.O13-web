@@ -492,3 +492,7 @@ tr {
 .faCircleXmark{
     color: red;
 }
+
+.closePopup__margin{
+    margin: 0 0.3rem;
+}

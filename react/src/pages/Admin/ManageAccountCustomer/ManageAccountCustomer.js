@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import {  faCheck, faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {  faCheck, faEye, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 function ManageAccountCustomer()
@@ -23,6 +23,8 @@ function ManageAccountCustomer()
     const numberPagination = searchParams.get('numberPagination');  
     const nameStatusParam = searchParams.get('nameStatus');
 
+    const keySearchParams = searchParams.get('keySearch');
+    const typeSearchParams = searchParams.get('typeSearch');
     let i = 0; 
     const [listMASPTranferState, setListMASPTranferState] = useState([]);
     const [statusPressUpdateProduct, setStatusPressUpdateProduct] = useState(true);
@@ -61,8 +63,8 @@ function ManageAccountCustomer()
 
     
     // manageProduct
-    const [keySearch, setKeySearch] = useState('');
-    const [typeSearch, setTypeSearch] = useState('MASP');
+    const [keySearchSendRequest, setKeySearchSendRequest] = useState('');
+    const [typeSearchSendRequest, setTypeSearchSendRequest] = useState('TEN');
     const [orderStatus, setOrderStatus] = useState({
         khachHang:{
             nameState: 'Khách hàng',
@@ -505,51 +507,101 @@ function ManageAccountCustomer()
             start: numberOrderEachPage * ( openingPage - 1),
             AdminVerify: itemInOrderStatus_Array.value.nameState,
             numberOrderEachPage: numberOrderEachPage,
+            keySearch: keySearchParams,
+            typeSearch: typeSearchParams
         }  
-        request.get(`/api/getInfoManageAccountCustomer`, {params: queryForGetInfoOrderForUsers}) 
-        .then(res=>{  
-            console.log(res.data)
-            if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
-                window.location.reload();
-            }
-            else{
-                const startIndexOfOderListHelpDelete = itemInOrderStatus_Array.value.indexOfOderListHelpDelete;
-                setOrderStatus(prevOrderStatus => {
-                    const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
-                        item => item.paginationNumber === openingPage
-                    ); 
-                    if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
-                        setPaginationNumberRunFirst(1);
-                        console.log(res.data.data_thongtin_sanpham, 'đ', openingPage)
-                        return {
-                            ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-                            [itemInOrderStatus_Array.key] : 
-                            {   
-                                ...prevOrderStatus[itemInOrderStatus_Array.key], 
-                                orderList:  [
-                                    ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
-                                    ...res.data.data_thongtin_sanpham.filter(item =>  item)
-                                ],  
-                                spaceGetDataFromOrderList: [
-                                    ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
-                                    {
-                                        paginationNumber: openingPage,
-                                        ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
-                                        startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                        endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                    },
-                                ] 
-                            }
+        if(keySearchParams === null && typeSearchParams === null){
+            request.get(`/api/getInfoManageAccountCustomer`, {params: queryForGetInfoOrderForUsers}) 
+            .then(res=>{  
+                console.log(res.data)
+                if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
+                    window.location.reload();
+                }
+                else{
+                    const startIndexOfOderListHelpDelete = itemInOrderStatus_Array.value.indexOfOderListHelpDelete;
+                    setOrderStatus(prevOrderStatus => {
+                        const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
+                            item => item.paginationNumber === openingPage
+                        ); 
+                        if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
+                            setPaginationNumberRunFirst(1);
+                            console.log(res.data.data_thongtin_sanpham, 'đ', openingPage)
+                            return {
+                                ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                [itemInOrderStatus_Array.key] : 
+                                {   
+                                    ...prevOrderStatus[itemInOrderStatus_Array.key], 
+                                    orderList:  [
+                                        ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
+                                        ...res.data.data_thongtin_sanpham.filter(item =>  item)
+                                    ],  
+                                    spaceGetDataFromOrderList: [
+                                        ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
+                                        {
+                                            paginationNumber: openingPage,
+                                            ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
+                                            startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                            endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                        },
+                                    ] 
+                                }
+                            } 
+                        }
+                        else{  
+                            return {
+                                ...prevOrderStatus, 
+                            } 
                         } 
-                    }
-                    else{  
-                        return {
-                            ...prevOrderStatus, 
+                    })   
+                }
+            })  
+        }
+        else{
+            request.get(`/api/searchAccountCustomer`, {params: queryForGetInfoOrderForUsers}) 
+            .then(res=>{  
+                console.log(res.data)
+                if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
+                    window.location.reload();
+                }
+                else{
+                    const startIndexOfOderListHelpDelete = itemInOrderStatus_Array.value.indexOfOderListHelpDelete;
+                    setOrderStatus(prevOrderStatus => {
+                        const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
+                            item => item.paginationNumber === openingPage
+                        ); 
+                        if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
+                            setPaginationNumberRunFirst(1);
+                            console.log(res.data.data_thongtin_sanpham, 'đ', openingPage)
+                            return {
+                                ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                [itemInOrderStatus_Array.key] : 
+                                {   
+                                    ...prevOrderStatus[itemInOrderStatus_Array.key], 
+                                    orderList:  [
+                                        ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
+                                        ...res.data.data_thongtin_sanpham.filter(item =>  item)
+                                    ],  
+                                    spaceGetDataFromOrderList: [
+                                        ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
+                                        {
+                                            paginationNumber: openingPage,
+                                            ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
+                                            startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                            endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                        },
+                                    ] 
+                                }
+                            } 
+                        }
+                        else{  
+                            return {
+                                ...prevOrderStatus, 
+                            } 
                         } 
-                    } 
-                })   
-            }
-        })  
+                    })   
+                }
+            })
+        }
          
     }
 
@@ -582,16 +634,43 @@ function ManageAccountCustomer()
          }) 
     }  
     const handleSearchInput = (e) => {
-        setKeySearch(e.target.value)
+        setKeySearchSendRequest(e.target.value)
     }
 
-    const handleSearch = () => {
-        Navigate(`/admin/searchProductAdmin?keySearch=${keySearch}&typeSearch=${typeSearch}`)
-    }
+    const handleSearch = () => { 
+        
+        setOrderStatus({
+            khachHang:{
+                nameState: 'Khách hàng',
+                orderList: [],
+                pageQuantity: 0,
+                paginationList: [],
+                openingPage: 1,
+                indexOfOderListHelpDelete: 0,
+                hasChangeFromPreState: 0,
+                spaceGetDataFromOrderList: [{
+                    paginationNumber: 1,
+                    ordinalNumber: 1,
+                    startIndex: 0,
+                    endIndex: numberOrderEachPage,
+                }]
+            }, 
+        }) 
+        Navigate(`/admin/manageAccountCustomer?keySearch=${keySearchSendRequest}&typeSearch=${typeSearchSendRequest}`)
+        setPaginationNumberRunFirst(0);
+        
+        // console.log(orderStatus)
+        // orderStatus_Array.map(item => getInfoOrderForUsers(item, 1))
+    } 
+    useEffect(() => {   
+        orderStatus_Array.map(item => getInfoOrderForUsers(item, 1))
+        getQuantityOrderToDevidePage() 
+        // getInforOrderDetail(1); 
+    }, [paginationNumberRunFirst === 0 && keySearchParams !== null && typeSearchParams !== null])
+ 
 
     const handleInputInfoTypeSearch = (e) => {
-        setTypeSearch(e.target.value)
-        console.log(typeSearch)
+        setTypeSearchSendRequest(e.target.value) 
     }
 
     useEffect(() => {   
@@ -982,21 +1061,26 @@ function ManageAccountCustomer()
                     <input 
                         name="keySearch"
                         onChange={handleSearchInput}
+                        className="keySearch"
+                        placeholder="Nhập nội dung tìm kiếm"
                     ></input> 
                 </div>
-                <div class="col-2"> 
+                <div class="col-2 width_search"> 
                     <select class="form-select" required
                         onChange={handleInputInfoTypeSearch}
                         name="typeSearch"
-                        value={typeSearch} 
+                        value={typeSearchSendRequest} 
                     > 
-                    <option selected value="MASP">Mã Sản phẩm</option>
-                    <option value="TENSP">Tên Sản Phẩm</option>
+                    <option selected value="TEN">Tên khách hàng</option>
+                    <option value="EMAIL">Email</option>
+                    <option value="SDT">Số điện thoại</option>
                     {/* <option value="GIABAN">Giá bán</option>
                     <option value="GIAGOC">Giá gốc</option>  */}
                     </select>
                 </div> 
-                <button onClick={handleSearch}>Search</button>
+                <button onClick={handleSearch}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>   
+                </button>
             </div>
             {/* <!-- nav bar trạng thái đơn hàng --> */}
             <div className={`${watchProductDetail ? 'display_hidden' : ''}`}>

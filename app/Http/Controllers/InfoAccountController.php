@@ -37,7 +37,7 @@ class InfoAccountController extends Controller
         DB::update(
             "UPDATE taikhoans 
             SET TEN = '$name', gioitinh = '$gioitinh', SDT = '$numberPhone', DIACHI = '$address'
-            WHERE MATK  = '$matk'"
+            WHERE MATK  = $matk"
         );
         return response()->json([
             'statuscode' => 200,

@@ -44,11 +44,14 @@ function InfoAccount() {
             gender: infoAccount.gender,
             numberPhone: infoAccount.numberPhone,
             address: infoAccount.address,
+            matk: localStorage.getItem('auth_matk')
         }
         request.post('/api/saveInfoAccount', data)
         .then(res => {
             if(res.data.status === 200)
                 setNotifySaveInfoAccount('Lưu thành công');
+            console.log('lưu')
+            
         })
     }
 

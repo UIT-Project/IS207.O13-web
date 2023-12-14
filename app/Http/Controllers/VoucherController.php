@@ -23,9 +23,9 @@ class VoucherController extends Controller
 
         DB::insert(
             "INSERT into vouchers(MAVOUCHER, PHANLOAI_VOUCHER, GIATRIGIAM, THOIGIANBD, THOIGIANKT, 
-            GIATRI_DH_MIN, GIATRI_GIAM_MAX, SOLUONG, MOTA) 
+            GIATRI_DH_MIN, GIATRI_GIAM_MAX, SOLUONG, SOLUONG_CONLAI, MOTA) 
             values('$MAVOUCHER', '$PHANLOAI_VOUCHER', $GIATRIGIAM, '$THOIGIANBD', '$THOIGIANKT', 
-            $GIATRI_DH_MIN, $GIATRI_GIAM_MAX, $SOLUONG, '$MOTA')"
+            $GIATRI_DH_MIN, $GIATRI_GIAM_MAX, $SOLUONG, $SOLUONG, '$MOTA')"
         ); 
         return response()->json([]); 
     }
@@ -166,4 +166,10 @@ class VoucherController extends Controller
             // 'data_soluong_daban' => $data_soluong_daban,
         ]);
     }
+    public function deleteVoucher(Request $request){
+        $mavoucher = $request->mavoucher;
+        DB::delete("DELETE FROM vouchers WHERE MAVOUCHER = '$mavoucher'");
+    }
 }
+
+

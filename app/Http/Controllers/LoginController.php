@@ -43,7 +43,7 @@ class LoginController extends Controller
             ]);
  
  
-            // $taikhoan->sendEmailVerificationNotification();
+            $taikhoan->sendEmailVerificationNotification();
             $token = $taikhoan->createToken($taikhoan->email.'_Token')->plainTextToken;
 
             return response()->json([

@@ -10,7 +10,9 @@ export function GlobalVariable({children}){
     const [statusPressAddToCart, setStatusPressAddToCart] = useState(false);
     const divPopupCartRef = useRef(null);
     const [infoCarts, setInfoCarts] = useState([]);
-
+    const formatPrice = (price) => {
+        return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    };
     return <GlobalVariableContext.Provider 
                 value={{
                     loginOrLogout, setLoginOrLogout, 
@@ -18,7 +20,8 @@ export function GlobalVariable({children}){
                     resultQuery, setResultQuery, 
                     statusPressAddToCart, setStatusPressAddToCart,
                     divPopupCartRef,
-                    infoCarts, setInfoCarts
+                    infoCarts, setInfoCarts,
+                    formatPrice
                 }}
             >
         {children}

@@ -126,42 +126,49 @@ function ReviewProduct() {
     const handleClickSaveReview = (item, index) => {
         let infoSaveReview = {
             madh: madh,
-            maxdsp: 1,
+            masp: 1,
             soluongsao: 5,
-            noidungdanhgia: 'cảm ơn' 
+            noidungdanhgia: 'cảm ơn',
+            matk: localStorage.getItem('auth_matk'),
         }
         if(index === itemCarts.length){
             infoSaveReview = {
                 madh: madh,
-                maxdsp: itemCarts.map(item => item.MAXDSP),
+                masp: itemCarts.map(item => item.MASP),
                 soluongsao: infoReviewAll.starQuantity,
-                noidungdanhgia: infoReviewAll.contentReview 
+                noidungdanhgia: infoReviewAll.contentReview,
+                matk: localStorage.getItem('auth_matk'),
+
             }
             console.log(infoSaveReview, 'ksjdkllll')
         }
         else{
             infoSaveReview = {
                 madh: madh,
-                maxdsp: [item.MAXDSP],
+                masp: [item.MASP],
                 soluongsao: item.starQuantity,
-                noidungdanhgia: item.contentReview 
+                noidungdanhgia: item.contentReview,
+                matk: localStorage.getItem('auth_matk'),
+
             }
         } 
         console.log(infoSaveReview);
         request.post('/api/saveReviewProduct', infoSaveReview) 
         .then(res => {
             console.log(res.data.message);
+
+            if(index === itemCarts.length){
+                itemCarts.splice(0, itemCarts.length);  
+            }
+            else{
+                itemCarts.splice(index, 1); 
+            }
+            const listItemCarts = [...itemCarts];
+            setItemCart(listItemCarts); 
         })  
 
-        itemCarts.splice(index, 1);
-
-        const listItemCarts = [...itemCarts];
-        setItemCart(listItemCarts); 
-
-        let tinhtongtien = 0;
-        listItemCarts.map(item => tinhtongtien = tinhtongtien + item.TONGGIA)
-        setTongTienAllItem(tinhtongtien);
-        console.log(tongTienAllItem, ' ', tinhtongtien)
+        
+ 
     }
     const getInforOrderDetail = (madh) => {
         const data = {
@@ -342,70 +349,74 @@ function ReviewProduct() {
     return( 
     <div class="container mt-3 container-content">
         <h1 class="text-header-content">Đánh giá sản phẩm</h1>
-        <div class="tbody_table_cart">
+        <div className={`${itemCarts.length === 0 ? 'display_hidden' : ''}`}>
+            <div class="tbody_table_cart">
 
-            <table class="table table-hover">
-                <thead class="table-header">
-                    <tr class="table-header-row">
-                        <th class="header-column0">                        
-                            <input 
-                                type="checkbox" 
-                                name="checkboxProductInCart" id=""  
-                                checked = {isCheckedAll} 
-                                onChange={handleClickCheckboxAll}
-                            />
-                        </th>
-                        <th class="header-column1">Sản phẩm</th>
-                        <th class="header-column2">Đánh Giá</th>
-                        <th class="header-column3">Nội dung đánh giá</th> 
-                        <th class="header-column5">  
-                            <button><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></button>
-                        </th> 
-                    </tr>
-                </thead>
-                    <tbody>
-                        {renderInfoCart} 
-                    </tbody> 
-            </table>
+                <table class="table table-hover">
+                    <thead class="table-header">
+                        <tr class="table-header-row">
+                            <th class="header-column0">                        
+                                <input 
+                                    type="checkbox" 
+                                    name="checkboxProductInCart" id=""  
+                                    checked = {isCheckedAll} 
+                                    onChange={handleClickCheckboxAll}
+                                />
+                            </th>
+                            <th class="header-column1">Sản phẩm</th>
+                            <th class="header-column2">Đánh Giá</th>
+                            <th class="header-column3">Nội dung đánh giá</th> 
+                            <th class="header-column5">  
+                                <button><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></button>
+                            </th> 
+                        </tr>
+                    </thead>
+                        <tbody>
+                            {renderInfoCart} 
+                        </tbody> 
+                </table>
+            </div>
+            <div class="container mt-5 content-bottom">
+                <div>Đánh giá tất cả: </div>
+                <div>
+                    <input 
+                        type="checkbox" 
+                        name="checkboxProductInCart" id=""  
+                        checked = {isCheckedAll} 
+                        onChange={handleClickCheckboxAll}
+                    />
+                </div>
+                <div class="box-row1-column2 box-row1">
+                    {/* <b class="row1-item">{item.GIABAN}</b> */} 
+                        {renderStar(0, itemCarts.length)}
+                </div>
+                <div class="box-row1-column3 box-row1">
+                    <textarea
+                        placeholder="Nhập đánh giá của bạn..."
+                        value={infoReviewAll.contentReview}
+                        onChange={(e) => handleInputContentReview(itemCarts.length, e)}
+                        style={{
+                            width: '100%',
+                            height: '100px',
+                            marginTop: '10px',
+                            borderRadius: '8px', // Border radius cho ô nhập đánh giá
+                            padding: '8px' // Thêm padding cho ô nhập để đẹp hơn
+                        }}
+                        disabled={!isCheckedAll ? true : false}
+                    /> 
+                </div>
+                <div class="box-row1-column5 box-row1">
+                    <button 
+                        class="btn-delete" 
+                        onClick={() => handleClickSaveReview(0, itemCarts.length)}
+                        disabled={!isCheckedAll ? true : false}
+                    >
+                        <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
+                    </button> 
+                </div>
+            </div>
         </div>
-        <div class="container mt-5 content-bottom">
-            <div>Đánh giá tất cả: </div>
-            <div>
-                <input 
-                    type="checkbox" 
-                    name="checkboxProductInCart" id=""  
-                    checked = {isCheckedAll} 
-                    onChange={handleClickCheckboxAll}
-                />
-            </div>
-            <div class="box-row1-column2 box-row1">
-                {/* <b class="row1-item">{item.GIABAN}</b> */} 
-                    {renderStar(0, itemCarts.length)}
-            </div>
-            <div class="box-row1-column3 box-row1">
-                <textarea
-                    placeholder="Nhập đánh giá của bạn..."
-                    value={infoReviewAll.contentReview}
-                    onChange={(e) => handleInputContentReview(itemCarts.length, e)}
-                    style={{
-                        width: '100%',
-                        height: '100px',
-                        marginTop: '10px',
-                        borderRadius: '8px', // Border radius cho ô nhập đánh giá
-                        padding: '8px' // Thêm padding cho ô nhập để đẹp hơn
-                    }}
-                    disabled={!isCheckedAll ? true : false}
-                /> 
-            </div>
-            <div class="box-row1-column5 box-row1">
-                <button 
-                    class="btn-delete" 
-                    onClick={() => handleClickSaveReview(0, itemCarts.length)}
-                    disabled={!isCheckedAll ? true : false}
-                >
-                    <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
-                </button> 
-            </div>
+        <div className={`${itemCarts.length === 0 ? '' : 'display_hidden'}`}>Cám ơn bạn đã thực hiện đánh giá
         </div>
         <div class="container mt-5 content-bottom">
             <div>

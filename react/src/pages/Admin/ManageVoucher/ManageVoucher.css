@@ -451,8 +451,11 @@ tr {
 }
 .icon-update{
     width: 150px;
-
 } 
+
+.icon-update__margin{
+    margin-top: 2rem;
+}
 
 .fa-eye{
     color: #4656aa;
@@ -483,4 +486,47 @@ tr {
 
 .input_gia_div{
     width: 50%;
+}
+
+.faCircleChevronLeft{
+    color: rgb(104, 104, 255);
+    margin-right: 0.5rem;
+}
+
+.faFloppyDisk{
+    margin-left: 0.8rem;
+}
+.faXmark{
+    margin-left: 0.8rem;
+
+}
+
+.bg_color_red{
+    background-color: red;
+}
+
+
+.bg_color_green{
+    background-color: green;
+}
+
+.address_update_button_contain{
+    margin-right: 8rem;
+}
+
+.div_search{
+    margin: 2rem 0;
+    width: 50%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.keySearch{
+    border-radius: 0.5rem;
+    padding: 0.4rem;
+}
+
+.width_search{
+    width: 30%;
 }

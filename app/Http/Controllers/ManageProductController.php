@@ -40,7 +40,7 @@ class ManageProductController extends Controller
             "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, 
             -- SUM(chitiet_donhangs.SOLUONG) AS SOLUONGDABAN
             SUM(sanpham_mausac_sizes.SOLUONG) AS SOLUONGCONLAI
-            FROM sanphams, sanpham_mausac_sizes, phanloai_sanphams
+            FROM sanphams, sanpham_mausac_sizes, phanloai_sanphams 
             -- chitiet_donhangs, 
             WHERE TENPL = '$tenDanhMuc'
             AND sanphams.MASP = sanpham_mausac_sizes.MASP 

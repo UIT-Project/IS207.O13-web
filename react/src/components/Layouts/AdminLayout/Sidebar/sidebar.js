@@ -76,7 +76,7 @@ function SideBar(){
                                 <a class="sidebar_nav_item_content medium_font" href="#">Danh mục sản phẩm</a>
                             </li>
                             <li class="sidebar_nav_item">
-                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/manageProduct')}}>Danh sách sản phẩm</span>
+                                <span class="sidebar_nav_item_content medium_font" onClick={()=> { window.location.href = `/admin/manageProduct`}}>Danh sách sản phẩm</span>
                             </li>
                             <li class="sidebar_nav_item">
                                 <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/addProduct')}}>Thêm sản phẩm</span>

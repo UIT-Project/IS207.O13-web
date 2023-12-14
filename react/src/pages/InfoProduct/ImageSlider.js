@@ -81,7 +81,7 @@ const ImageSlider = ({ slides }) => {
   };
   const slideStylesWidthBackground = {
     ...slideStyles,
-    backgroundImage: `url(${slides[currentIndex].url})`,
+    backgroundImage: `url(${slides[currentIndex].imgURL})`,
   };
 
   return (
@@ -91,7 +91,7 @@ const ImageSlider = ({ slides }) => {
         {
           slides.map((slide, slideIndex) => (
           <div class="product_image__list_mini_image__item" >
-            <img src={slide.url} alt="" class="product_image__list_mini_image__item__img" onClick={() => goToSlide(slideIndex)}/>
+            <img src={slide.imgURL} alt="" class="product_image__list_mini_image__item__img" onClick={() => goToSlide(slideIndex)}/>
           </div>
           ))
         }
@@ -120,7 +120,7 @@ const ImageSlider = ({ slides }) => {
           </div>
           <div className="popup-media" style={{ display: slide ? 'block' : 'none' }}>
             <span onClick={() => setSlide(null)}>&times;</span>
-            <img src={slide?.url} />
+            <img src={slide?.imgURL} />
           </div>
         </div>
       </div>

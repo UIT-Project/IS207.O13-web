@@ -333,12 +333,7 @@ function SearchProductAdmin()
  
 
     useEffect(() => {   
-        orderStatus_Array.map(item => {
-              getInfoOrderForUsers(item, 1)
-            // item.key === nameStatusParam ? handleClickNavState(item, 1) : ''
-            // return (item.key === nameStatusParam ? handleClickNavState(item, 1) : '' )
-            }
-        )
+        orderStatus_Array.map(item => getInfoOrderForUsers(item, 1))
  
         getQuantityOrderToDevidePage()
         // console.log(document.getElementById(`product_${maspParam}`));

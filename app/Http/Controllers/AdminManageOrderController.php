@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers; 
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -38,13 +38,17 @@ class AdminManageOrderController extends Controller
 
         $orderList_DB = DB::select(
             "SELECT donhangs.MADH, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG, NGAYORDER,
-            TRANGTHAI_THANHTOAN, HINHTHUC_THANHTOAN
+            TRANGTHAI_THANHTOAN, HINHTHUC_THANHTOAN, TONGTIENDONHANG, TONGTIEN_SP
             FROM donhangs, thongtingiaohangs 
             WHERE TRANGTHAI_DONHANG = '$tenTrangThai' 
             AND thongtingiaohangs.MATTGH = donhangs.MATTGH
             ORDER BY donhangs.MADH DESC
             LIMIT $start, $numberOrderEachPage"
         );
+        foreach ($orderList_DB as $order) {
+            $order->NGAYORDER = Carbon::parse($order->NGAYORDER)->format('d/m/Y');
+        }
+    
 
         return response()->json([
             'orderList_DB' => $orderList_DB, 
@@ -52,22 +56,27 @@ class AdminManageOrderController extends Controller
     }
     public function infoOrderDetail(Request $request){
         $madh = $request->query('madh');
-        $OK = '1'; 
+        
         $data_relative_Donhang =  DB::select(
             "SELECT donhangs.MADH, thongtingiaohangs.TEN, SDT, DIACHI, 
             TINH_TP, QUAN_HUYEN, PHUONG_XA, TONGTIEN, TONGTIEN_SP,
-            VOUCHERGIAM, TONGTIENDONHANG, HINHTHUC_THANHTOAN, TRANGTHAI_THANHTOAN, GHICHU
+            VOUCHERGIAM, TONGTIENDONHANG, HINHTHUC_THANHTOAN, TRANGTHAI_THANHTOAN, 
+            GHICHU, NGAYORDER, TRANGTHAI_DONHANG, PHIVANCHUYEN
             from donhangs, chitiet_donhangs, thongtingiaohangs 
-            where donhangs.MADH = '$madh'  AND donhangs.MADH = chitiet_donhangs.MADH 
+            where donhangs.MADH = $madh  AND donhangs.MADH = chitiet_donhangs.MADH 
             AND thongtingiaohangs.MATTGH = donhangs.MATTGH"
         );
         $data_sanPham_relative_CTDH = DB::select(
             "SELECT TENSP, GIABAN, TENMAU, HEX, MASIZE, TONGTIEN, chitiet_donhangs.SOLUONG, imgURL, sanpham_mausac_sizes.MAXDSP  
             from mausacs, chitiet_donhangs, sanphams, sanpham_mausac_sizes, hinhanhsanphams
-            where chitiet_donhangs.MADH = '$madh' AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
+            where chitiet_donhangs.MADH = $madh AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
             AND sanpham_mausac_sizes.MASP = sanphams.MASP AND sanpham_mausac_sizes.MAMAU = mausacs.MAMAU
-            AND sanpham_mausac_sizes.MASP = hinhanhsanphams.MASP"
+            AND sanpham_mausac_sizes.MASP = hinhanhsanphams.MASP AND hinhanhsanphams.MAHINHANH LIKE '%thumnail%'"
         );
+
+        foreach ($data_relative_Donhang as $order) {
+            $order->NGAYORDER = Carbon::parse($order->NGAYORDER)->format('d/m/Y');
+        }
         return response()->json([
             'data_relative_Donhang' => $data_relative_Donhang,
             'data_sanPham_relative_CTDH' => $data_sanPham_relative_CTDH,
@@ -91,8 +100,10 @@ class AdminManageOrderController extends Controller
             $keySearch = intval($keySearch);
             $quantity = DB::select(
                 "SELECT COUNT(MADH)AS SL_MADH , TRANGTHAI_DONHANG 
-                FROM donhangs, taikhoans
-                WHERE $typeSearch = $keySearch AND taikhoans.MATK = donhangs.MATK
+                FROM donhangs
+                -- , taikhoans
+                WHERE $typeSearch = $keySearch
+                -- AND taikhoans.MATK = donhangs.MATK
                 GROUP BY TRANGTHAI_DONHANG "
             ); 
             $state = 'madh';
@@ -100,8 +111,10 @@ class AdminManageOrderController extends Controller
         else{
             $quantity = DB::select(
                 "SELECT COUNT(MADH)AS SL_MADH , TRANGTHAI_DONHANG 
-                FROM donhangs, thongtingiaohangs
-                WHERE $typeSearch LIKE '%$keySearch%' AND thongtingiaohangs.MATK = donhangs.MATK
+                FROM donhangs
+                , thongtingiaohangs
+                WHERE $typeSearch LIKE '%$keySearch%' 
+                AND thongtingiaohangs.MATK = donhangs.MATK
                 GROUP BY TRANGTHAI_DONHANG "
             ); 
             $state = 'non-madh';
@@ -127,7 +140,7 @@ class AdminManageOrderController extends Controller
             intval($keySearch);
             $orderList_DB = DB::select(
                 "SELECT donhangs.MADH, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG, NGAYORDER,
-                TRANGTHAI_THANHTOAN, HINHTHUC_THANHTOAN
+                TRANGTHAI_THANHTOAN, HINHTHUC_THANHTOAN, TONGTIENDONHANG, TONGTIEN_SP
                 FROM donhangs, thongtingiaohangs 
                 WHERE $typeSearch = $keySearch 
                 AND thongtingiaohangs.MATTGH = donhangs.MATTGH
@@ -141,7 +154,7 @@ class AdminManageOrderController extends Controller
         else{
             $orderList_DB = DB::select(
                 "SELECT donhangs.MADH, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG, NGAYORDER,
-                TRANGTHAI_THANHTOAN, HINHTHUC_THANHTOAN
+                TRANGTHAI_THANHTOAN, HINHTHUC_THANHTOAN, TONGTIENDONHANG, TONGTIEN_SP
                 FROM donhangs, thongtingiaohangs 
                 WHERE $typeSearch like '%$keySearch%' 
                 AND thongtingiaohangs.MATTGH = donhangs.MATTGH
@@ -152,7 +165,9 @@ class AdminManageOrderController extends Controller
             $state = 'non-madh';
 
         }
-
+        foreach ($orderList_DB as $order) {
+            $order->NGAYORDER = Carbon::parse($order->NGAYORDER)->format('d/m/Y');
+        }
         return response()->json([
             'orderList_DB' => $orderList_DB, 
             'state' => $state,

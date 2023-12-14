@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import {  faCheck, faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {  faCheck, faEye, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 function ManageAccountStaff()
@@ -22,7 +22,9 @@ function ManageAccountStaff()
     const maspParam = searchParams.get('maspParam');  
     const numberPagination = searchParams.get('numberPagination');  
     const nameStatusParam = searchParams.get('nameStatus');
-
+    const keySearchParams = searchParams.get('keySearch');
+    const typeSearchParams = searchParams.get('typeSearch');
+     
     let i = 0; 
     const [listMASPTranferState, setListMASPTranferState] = useState([]);
     const [statusPressUpdateProduct, setStatusPressUpdateProduct] = useState(true);
@@ -61,8 +63,8 @@ function ManageAccountStaff()
 
     
     // manageProduct
-    const [keySearch, setKeySearch] = useState('');
-    const [typeSearch, setTypeSearch] = useState('MASP');
+    const [keySearchSendRequest, setKeySearchSendRequest] = useState('');
+    const [typeSearchSendRequest, setTypeSearchSendRequest] = useState('TEN');
     const [orderStatus, setOrderStatus] = useState({
         choXacNhan:{
             nameState: 'Chờ xác nhận',
@@ -104,6 +106,95 @@ function ManageAccountStaff()
     const [orderStatusPointer, setOrderStatusPointer] = useState(
         nameStatusParam ? orderStatus[nameStatusParam]?.nameState : orderStatus.choXacNhan.nameState
     );
+    
+    const [approveDelete, setApproveDelete] = useState(false)
+    const [itemToDelete, setItemToDelete] = useState({
+        matk: null,
+        item_ofOrderStatusArray: null,
+    });
+
+    const [contentPopup, setContentPopup] = useState({
+        title: '',
+        content: '',
+    })
+    const openPopup = () => {
+        const popupOverlay = document.querySelector(".popup-overlay");
+        const popupContainer = document.querySelector(".popup-container");
+    
+        popupOverlay.style.display = "flex";
+        setTimeout(() => {
+          popupContainer.style.opacity = "1";
+          popupContainer.style.transform = "scale(1)";
+        }, 100);
+    };
+    
+    const closePopup = () => {
+        const popupContainer = document.querySelector(".popup-container");
+        popupContainer.style.opacity = "0";
+        popupContainer.style.transform = "scale(0.8)";
+        setTimeout(() => {
+            const popupOverlay = document.querySelector(".popup-overlay");
+            popupOverlay.style.display = "none";
+        }, 300);
+    };
+    const closePopup2 = () => {
+        const popupContainer = document.querySelector(".popup-container");
+        popupContainer.style.opacity = "0";
+        popupContainer.style.transform = "scale(0.8)";
+
+        let item_ofOrderStatusArray = itemToDelete.item_ofOrderStatusArray;
+        let matk = itemToDelete.matk;
+
+        setOrderStatus(prevOrderStatus => ({
+            ...prevOrderStatus, 
+            [item_ofOrderStatusArray.key] : 
+                {...prevOrderStatus[item_ofOrderStatusArray.key],  
+                orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.map(item => {
+                    if(item !== null){
+                        if(item.MATK === matk){
+                            return null;
+                        }
+                        else{
+                            return item;
+                        }
+                    }
+                    else{
+                        return item;
+                    }
+                })}
+        }))  
+        console.log(matk)
+        request.post(`api/deleteAccountStaff?matk=${matk}`)
+        .then(res => {
+            console.log(res)
+            let index = {
+                start: 0,
+                end: 0,
+            } 
+            item_ofOrderStatusArray.value.spaceGetDataFromOrderList.forEach(item => {
+                if(item_ofOrderStatusArray.value.openingPage === item.paginationNumber){ 
+                    index.start = item.startIndex;
+                    index.end = item.endIndex;
+                }
+            })
+            // index.end = item_ofOrderStatusArray.value.openingPage * numberOrderEachPage - 1;
+            console.log(index.start, ' ', index.end, 'orderlist: ', item_ofOrderStatusArray.value.orderList)
+            // nếu toàn bộ item_ofOrderStatusArray từ start đến end thì reload trang
+            let i = 0;
+            item_ofOrderStatusArray.value.orderList.slice(index.start, index.end).forEach(item => {
+                if(item === null){
+                    i++;
+                }
+            }) 
+            if(i + 1 === index.end) 
+                window.location.reload(); 
+        })
+        setTimeout(() => {
+            const popupOverlay = document.querySelector(".popup-overlay");
+            popupOverlay.style.display = "none";
+        }, 300);
+    };
+
 
     //update
     const handleInputInfoUpdateProduct = (e) => {
@@ -467,51 +558,14 @@ function ManageAccountStaff()
     }
 
     const handleDeleteAccountStaff = (matk, item_ofOrderStatusArray) => {  
-        
-        setOrderStatus(prevOrderStatus => ({
-            ...prevOrderStatus, 
-            [item_ofOrderStatusArray.key] : 
-                {...prevOrderStatus[item_ofOrderStatusArray.key],  
-                orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.map(item => {
-                    if(item !== null){
-                        if(item.MATK === matk){
-                            return null;
-                        }
-                        else{
-                            return item;
-                        }
-                    }
-                    else{
-                        return item;
-                    }
-                })}
-        }))  
-        console.log(matk)
-        request.post(`api/deleteAccountStaff?matk=${matk}`)
-        .then(res => {
-            console.log(res)
-            let index = {
-                start: 0,
-                end: 0,
-            } 
-            item_ofOrderStatusArray.value.spaceGetDataFromOrderList.forEach(item => {
-                if(item_ofOrderStatusArray.value.openingPage === item.paginationNumber){ 
-                    index.start = item.startIndex;
-                    index.end = item.endIndex;
-                }
-            })
-            // index.end = item_ofOrderStatusArray.value.openingPage * numberOrderEachPage - 1;
-            console.log(index.start, ' ', index.end, 'orderlist: ', item_ofOrderStatusArray.value.orderList)
-            // nếu toàn bộ item_ofOrderStatusArray từ start đến end thì reload trang
-            let i = 0;
-            item_ofOrderStatusArray.value.orderList.slice(index.start, index.end).forEach(item => {
-                if(item === null){
-                    i++;
-                }
-            }) 
-            if(i + 1 === index.end) 
-                window.location.reload(); 
+        setContentPopup({
+            title: 'Xoá tài khoản',
+            content: 'Bạn có chắc muốn xoá tài khoản này không'
         })
+        // setApproveDelete(true)
+        openPopup()
+        setItemToDelete({matk, item_ofOrderStatusArray})
+        
         
     }
 
@@ -520,52 +574,100 @@ function ManageAccountStaff()
             start: numberOrderEachPage * ( openingPage - 1),
             AdminVerify: itemInOrderStatus_Array.value.nameState,
             numberOrderEachPage: numberOrderEachPage,
+            keySearch: keySearchParams,
+            typeSearch: typeSearchParams
         }  
-        request.get(`/api/getInfoManageAccountStaff`, {params: queryForGetInfoOrderForUsers}) 
-        .then(res=>{  
-            console.log(res.data)
-            if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
-                window.location.reload();
-            }
-            else{
-                const startIndexOfOderListHelpDelete = itemInOrderStatus_Array.value.indexOfOderListHelpDelete;
-                setOrderStatus(prevOrderStatus => {
-                    const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
-                        item => item.paginationNumber === openingPage
-                    ); 
-                    if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
-                        setPaginationNumberRunFirst(1);
-                        console.log(res.data.data_thongtin_sanpham, 'đ', openingPage)
-                        return {
-                            ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
-                            [itemInOrderStatus_Array.key] : 
-                            {   
-                                ...prevOrderStatus[itemInOrderStatus_Array.key], 
-                                orderList:  [
-                                    ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
-                                    ...res.data.data_thongtin_sanpham.filter(item =>  item)
-                                ],  
-                                spaceGetDataFromOrderList: [
-                                    ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
-                                    {
-                                        paginationNumber: openingPage,
-                                        ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
-                                        startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                        endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
-                                    },
-                                ] 
-                            }
+        if(keySearchParams === null && typeSearchParams === null)
+            request.get(`/api/getInfoManageAccountStaff`, {params: queryForGetInfoOrderForUsers}) 
+            .then(res=>{  
+                console.log(res.data)
+                if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
+                    window.location.reload();
+                }
+                else{
+                    const startIndexOfOderListHelpDelete = itemInOrderStatus_Array.value.indexOfOderListHelpDelete;
+                    setOrderStatus(prevOrderStatus => {
+                        const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
+                            item => item.paginationNumber === openingPage
+                        ); 
+                        if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
+                            setPaginationNumberRunFirst(1);
+                            console.log(res.data.data_thongtin_sanpham, 'đ', openingPage)
+                            return {
+                                ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                [itemInOrderStatus_Array.key] : 
+                                {   
+                                    ...prevOrderStatus[itemInOrderStatus_Array.key], 
+                                    orderList:  [
+                                        ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
+                                        ...res.data.data_thongtin_sanpham.filter(item =>  item)
+                                    ],  
+                                    spaceGetDataFromOrderList: [
+                                        ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
+                                        {
+                                            paginationNumber: openingPage,
+                                            ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
+                                            startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                            endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                        },
+                                    ] 
+                                }
+                            } 
+                        }
+                        else{  
+                            return {
+                                ...prevOrderStatus, 
+                            } 
                         } 
-                    }
-                    else{  
-                        return {
-                            ...prevOrderStatus, 
+                    })   
+                }
+            })  
+        else{
+            request.get(`/api/searchAccountStaff`, {params: queryForGetInfoOrderForUsers}) 
+            .then(res=>{  
+                console.log(res.data)
+                if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
+                    window.location.reload();
+                }
+                else{
+                    const startIndexOfOderListHelpDelete = itemInOrderStatus_Array.value.indexOfOderListHelpDelete;
+                    setOrderStatus(prevOrderStatus => {
+                        const itemIndex = prevOrderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.findIndex(
+                            item => item.paginationNumber === openingPage
+                        ); 
+                        if(itemIndex === -1 || (openingPage === 1 && paginationNumberRunFirst === 0)){
+                            setPaginationNumberRunFirst(1);
+                            console.log(res.data.data_thongtin_sanpham, 'đ', openingPage)
+                            return {
+                                ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                                [itemInOrderStatus_Array.key] : 
+                                {   
+                                    ...prevOrderStatus[itemInOrderStatus_Array.key], 
+                                    orderList:  [
+                                        ...prevOrderStatus[itemInOrderStatus_Array.key].orderList.filter(item => item),
+                                        ...res.data.data_thongtin_sanpham.filter(item =>  item)
+                                    ],  
+                                    spaceGetDataFromOrderList: [
+                                        ...orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList,
+                                        {
+                                            paginationNumber: openingPage,
+                                            ordinalNumber: orderStatus[itemInOrderStatus_Array.key].spaceGetDataFromOrderList.length + 1,
+                                            startIndex: orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                            endIndex: res.data.data_thongtin_sanpham.length + orderStatus[itemInOrderStatus_Array.key].orderList.length,
+                                        },
+                                    ] 
+                                }
+                            } 
+                        }
+                        else{  
+                            return {
+                                ...prevOrderStatus, 
+                            } 
                         } 
-                    } 
-                })   
-            }
-        })  
-         
+                    })   
+                }
+            })
+        }
     }
 
     const getQuantityOrderToDevidePage = () => {
@@ -597,16 +699,61 @@ function ManageAccountStaff()
          }) 
     }  
     const handleSearchInput = (e) => {
-        setKeySearch(e.target.value)
+        setKeySearchSendRequest(e.target.value)
     }
+ 
 
-    const handleSearch = () => {
-        Navigate(`/admin/searchProductAdmin?keySearch=${keySearch}&typeSearch=${typeSearch}`)
-    }
+    const handleSearch = () => { 
+        
+        setOrderStatus({
+            choXacNhan:{
+                nameState: 'Chờ xác nhận',
+                orderList: [],
+                pageQuantity: 0,
+                paginationList: [],
+                openingPage: 1,
+                indexOfOderListHelpDelete: 0,
+                hasChangeFromPreState: 0,
+                spaceGetDataFromOrderList: [{
+                    paginationNumber: 1,
+                    ordinalNumber: 1,
+                    startIndex: 0,
+                    endIndex: numberOrderEachPage,
+                }]
+            },
+            daXacNhan: {
+                nameState: 'Đã xác nhận',
+                orderList: [],
+                pageQuantity: 0,
+                paginationList: [],
+                openingPage: 1, 
+                indexOfOderListHelpDelete: 0,
+                hasChangeFromPreState: 0,
+                spaceGetDataFromOrderList: [{
+                    paginationNumber: 1,
+                    ordinalNumber: 1,
+                    startIndex: 0,
+                    endIndex: numberOrderEachPage,
+                }]
+            }, 
+        }) 
+        Navigate(`/admin/manageAccountStaff?keySearch=${keySearchSendRequest}&typeSearch=${typeSearchSendRequest}`)
+        setPaginationNumberRunFirst(0);
+        
+        // console.log(orderStatus)
+        // orderStatus_Array.map(item => getInfoOrderForUsers(item, 1))
+    } 
+    useEffect(() => {   
+        orderStatus_Array.map(item => getInfoOrderForUsers(item, 1))
+        getQuantityOrderToDevidePage() 
+        // getInforOrderDetail(1); 
+    }, [paginationNumberRunFirst === 0 && keySearchParams !== null && typeSearchParams !== null])
+ 
+
 
     const handleInputInfoTypeSearch = (e) => {
-        setTypeSearch(e.target.value)
-        console.log(typeSearch)
+        setTypeSearchSendRequest(e.target.value)
+        console.log(typeSearchSendRequest)
     }
 
     useEffect(() => {   
@@ -985,6 +1132,18 @@ function ManageAccountStaff()
             <div class="heading text-uppercase text-center">
                 <h1>Nhân viên</h1>
             </div>
+            <div className="popup-overlay">
+                <div className="popup-container">
+                    <div className="popup-card">
+                    <h2>{contentPopup.title}</h2>
+                    <p>{contentPopup.content}</p>
+                    <div>
+                        <button id="close-popup" className="closePopup__margin" onClick={closePopup}>Huỷ</button>
+                        <button id="close-popup" className="closePopup__margin" onClick={closePopup2}>Xác nhận</button>
+                    </div>
+                    </div>
+                </div>
+            </div>
             <div className="div_search">
                 <div>
                     Tìm kiếm: 
@@ -993,21 +1152,26 @@ function ManageAccountStaff()
                     <input 
                         name="keySearch"
                         onChange={handleSearchInput}
+                        className="keySearch"
+                        placeholder="Nhập nội dung tìm kiếm"
                     ></input> 
                 </div>
-                <div class="col-2"> 
+                <div class="col-2 width_search"> 
                     <select class="form-select" required
                         onChange={handleInputInfoTypeSearch}
                         name="typeSearch"
-                        value={typeSearch} 
+                        value={typeSearchSendRequest} 
                     > 
-                    <option selected value="MASP">Mã Sản phẩm</option>
-                    <option value="TENSP">Tên Sản Phẩm</option>
+                    <option selected value="TEN">Tên nhân viên</option>
+                    <option value="EMAIL">Email</option>
+                    <option value="SDT">Số điện thoại</option>
                     {/* <option value="GIABAN">Giá bán</option>
                     <option value="GIAGOC">Giá gốc</option>  */}
                     </select>
                 </div> 
-                <button onClick={handleSearch}>Search</button>
+                <button onClick={handleSearch}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>  
+                </button>
             </div>
             {/* <!-- nav bar trạng thái đơn hàng --> */}
             <div className={`${watchProductDetail ? 'display_hidden' : ''}`}>

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
-import {  faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {  faCircleChevronLeft, faEye, faFloppyDisk, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 
 function ManageVoucher()
@@ -25,6 +25,7 @@ function ManageVoucher()
     const numberPagination = searchParams.get('numberPagination');  
     const nameStatusParam = searchParams.get('nameStatus');
 
+    const [isUpdating, setIsUpdating] = useState(false);
     let i = 0; 
     const [statusPressUpdateVoucher, setStatusPressUpdateVoucher] = useState(true);
     const Navigate = useNavigate();
@@ -52,11 +53,38 @@ function ManageVoucher()
     }); 
     const [keySearch, setKeySearch] = useState('');
     const [typeSearch, setTypeSearch] = useState('MAVOUCHER');
+    
+    const [isEmpty, setIsEmpty] = useState(false);
+    const [contentPopup, setContentPopup] = useState({
+        title: '',
+        content: '',
+    })
+    const openPopup = () => {
+        const popupOverlay = document.querySelector(".popup-overlay");
+        const popupContainer = document.querySelector(".popup-container");
+    
+        popupOverlay.style.display = "flex";
+        setTimeout(() => {
+          popupContainer.style.opacity = "1";
+          popupContainer.style.transform = "scale(1)";
+        }, 100);
+      };
+    
+      const closePopup = () => {
+        const popupContainer = document.querySelector(".popup-container");
+        popupContainer.style.opacity = "0";
+        popupContainer.style.transform = "scale(0.8)";
+        setTimeout(() => {
+          const popupOverlay = document.querySelector(".popup-overlay");
+          popupOverlay.style.display = "none";
+        }, 300);
+      };
+
     const [orderStatus, setOrderStatus] = useState({
         chuaApDung:{
             nameState: 'Chưa áp dụng',
             orderList: [],
-            pageQuantity: 0,
+            pageQuantity: null,
             paginationList: [],
             openingPage: 1,
             indexOfOderListHelpDelete: 0,
@@ -70,7 +98,7 @@ function ManageVoucher()
         dangApDung: {
             nameState: 'Đang áp dụng',
             orderList: [],
-            pageQuantity: 0,
+            pageQuantity: null,
             paginationList: [],
             openingPage: 1, 
             indexOfOderListHelpDelete: 0,
@@ -84,7 +112,7 @@ function ManageVoucher()
         daApDung: {
             nameState: 'Đã qua sử dụng',
             orderList: [],
-            pageQuantity: 0,
+            pageQuantity: null,
             paginationList: [],
             openingPage: 1, 
             indexOfOderListHelpDelete: 0,
@@ -146,28 +174,56 @@ function ManageVoucher()
 
     //xử lý lưu tt sp, hình ảnh sp xuống db khi click vào thêm sản phẩm
     const handleClickUpdateVoucher = () => {
-        const formData = new FormData();
-        // for(const img of images){
-        //     //images[] phải đặt tên như v thì laravel mới nhận ra đây là array với tên là images
-        //     //xuống laravel dùng $images = $request->file('images');
-        //     formData.append('images[]', img);//thêm image vào formdata
-        // }
-        //thêm thông tin infoAddNewVoucher vào form data, vì đây là một đối tượng nên cần stringify
-        formData.append('infoUpdateVoucher', JSON.stringify(infoUpdateVoucher)); 
-
-        // setStatusPressAddVoucher(!statusPressAddVoucher);
-        // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
-        request.post(`api/updateVoucher`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-        }) 
-        .then(res => {  
-            console.log('ok');
-        })
-        .catch(error => { 
-            console.log(error);
-        }) 
+        if(
+            infoUpdateVoucher.showNameVoucher === '' ||
+            // infoUpdateVoucher.minOrderValue === '' ||
+            // infoUpdateVoucher.maxDecreaseMoney === '' ||
+            infoUpdateVoucher.typeVoucher === '' ||
+            infoUpdateVoucher.desctiption === '' ||
+            infoUpdateVoucher.quantityUse === 0 ||
+            infoUpdateVoucher.startDate === '' ||
+            infoUpdateVoucher.endDate === '' ||
+            infoUpdateVoucher.decreasePersent === 0 
+            // infoUpdateVoucher.decreasePersent === ""
+        ){
+            setIsEmpty(true)
+            setContentPopup({
+                title: 'Thêm voucher không thành công',
+                content: 'Hãy nhập đầy đủ thông tin trước khi thêm voucher'
+            })
+            openPopup();   
+        }
+        else{
+            const formData = new FormData();
+            // for(const img of images){
+            //     //images[] phải đặt tên như v thì laravel mới nhận ra đây là array với tên là images
+            //     //xuống laravel dùng $images = $request->file('images');
+            //     formData.append('images[]', img);//thêm image vào formdata
+            // }
+            //thêm thông tin infoUpdateVoucher vào form data, vì đây là một đối tượng nên cần stringify
+            formData.append('infoUpdateVoucher', JSON.stringify(infoUpdateVoucher)); 
+             // setStatusPressAddVoucher(!statusPressAddVoucher);
+            // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
+            request.post(`api/updateVoucher`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            }) 
+            .then(res => {  
+                console.log('ok');
+                setContentPopup({
+                    title: 'Thêm voucher thành công',
+                    content: 'Trang sẽ được reload sau 3s'
+                })
+                openPopup();   
+                setTimeout(() => {
+                    window.location.reload();
+                  }, 2000); 
+            })
+            .catch(error => { 
+                console.log(error);
+            }) 
+        }
     }
 
     const getInfoForUpdateVoucher = () => {
@@ -340,6 +396,7 @@ function ManageVoucher()
 
     const handleTurnBack = () => {
         setWatchVoucherDetail(false);
+        setIsUpdating(false)
     }
 
     const handleWatchVoucherDetail = (item, mavoucher) => {
@@ -349,7 +406,7 @@ function ManageVoucher()
         // Navigate(`/admin/updateVoucher?nameStatus=${[item.key]}&numberPagination=${[item.value.openingPage]}&masp=${masp}`);
     }
 
-    const handleDeleteVoucher = (masp, item_ofOrderStatusArray) => {  
+    const handleDeleteVoucher = (mavoucher, item_ofOrderStatusArray) => {  
         
         setOrderStatus(prevOrderStatus => ({
             ...prevOrderStatus, 
@@ -357,7 +414,7 @@ function ManageVoucher()
                 {...prevOrderStatus[item_ofOrderStatusArray.key],  
                 orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.map(item => {
                     if(item !== null){
-                        if(item.MASP === masp){
+                        if(item.MAVOUCHER === mavoucher){
                             return null;
                         }
                         else{
@@ -370,7 +427,7 @@ function ManageVoucher()
                 })}
         }))  
 
-        request.post(`api/deleteVoucher?masp=${masp}`)
+        request.post(`api/deleteVoucher?mavoucher=${mavoucher}`)
         .then(res => {
             console.log(res)
             let index = {
@@ -569,10 +626,30 @@ function ManageVoucher()
 
     const handleInputInfoUpdateVoucher = (e) => {
         e.persist();
-        let {value, name} = e.target;
-        if(name === 'decreasePersent') value = parseFloat(value)
-        setInfoUpdateVoucher({...infoUpdateVoucher, [name]: value});
-        console.log(name + "fff " + typeof(value));
+        let {value, name} = e.target; 
+
+        const regex_showNameVoucher = /^[a-zA-Z0-9]*$/;
+        const regex_ChiNhapSo = /^\d*$/;
+ 
+        if(name === 'showNameVoucher' && regex_showNameVoucher.test(value)){
+            setInfoUpdateVoucher({...infoUpdateVoucher, [name]: value}); 
+        } 
+        else if((name === 'minOrderValue' || name === 'quantityUse'  || name === 'maxDecreaseMoney') && regex_ChiNhapSo.test(value)){
+            setInfoUpdateVoucher({...infoUpdateVoucher, [name]: value}); 
+        } 
+        
+        else if(name === 'typeVoucher' || name === 'decreasePersent' || name === 'startDate' || name === 'desctiption' || name === 'endDate'){
+            if(name === 'decreasePersent') value = parseFloat(value)
+            console.log(typeof(value))
+            setInfoUpdateVoucher({...infoUpdateVoucher, [name]: value}); 
+
+
+            console.log(name + "fff " + typeof(value));
+        }
+    }
+
+    const handleClickUpdate= () => {
+        setIsUpdating(true)
     }
 
     const renderInputQuantity = (i) => {  
@@ -612,10 +689,21 @@ function ManageVoucher()
     const renderUpdateVoucher = () => { 
         return(
             <div  className={`${watchVoucherDetail ? '' : 'display_hidden'}`}>
-                <div>
-                    <button onClick={handleTurnBack}>turn back</button>
-                    <div class="icon-update">
-                        <span>
+                <div> 
+                    <div className="popup-overlay">
+                        <div className="popup-container">
+                            <div className="popup-card">
+                            <h2>{contentPopup.title}</h2>
+                            <p>{contentPopup.content}</p>
+                            <button id="close-popup" onClick={closePopup}>Close</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="icon-update icon-update__margin">
+                        <span onClick={handleTurnBack}  className="faCircleChevronLeft">
+                            <FontAwesomeIcon class={`fa-solid faCircleChevronLeft ${orderStatusPointer === orderStatus.chuaApDung.nameState ? '' : ''}`} icon={faCircleChevronLeft} ></FontAwesomeIcon>
+                        </span>
+                        <span onClick={handleClickUpdate}>
                             <FontAwesomeIcon class={`fa-solid fa-pen-to-square ${orderStatusPointer === orderStatus.chuaApDung.nameState ? '' : 'display_hidden'}`} icon={faPenToSquare} ></FontAwesomeIcon>
                         </span>
                     </div>
@@ -632,7 +720,10 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher} 
                                     name="showNameVoucher" 
                                     value={infoUpdateVoucher.showNameVoucher}
+                                    disabled={isUpdating ? true : true}
                                 />
+                                <span className={`red_color ${isEmpty && infoUpdateVoucher.showNameVoucher === '' ? '' : 'display_hidden'}`}>Nhập Mã voucher trước khi lưu</span>
+
                             </div>
                         </div>
                         
@@ -643,11 +734,14 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="typeVoucher"
                                     value={infoUpdateVoucher.typeVoucher} 
+                                    disabled={isUpdating ? false : true}
                                 >
                                 <option selected value=""></option>
                                 <option value="Đơn hàng">Đơn hàng</option>
                                 <option value="Vận chuyển">Vận chuyển</option> 
                                 </select>
+                                <span className={`red_color ${isEmpty && infoUpdateVoucher.typeVoucher === '' ? '' : 'display_hidden'}`}>Chọn phân loại trước khi lưu</span>
+
                             </div> 
                             <div class="col-4">
                                 <label for="#" class="form-label">Phần trăm giảm</label>
@@ -655,11 +749,14 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="decreasePersent"
                                     value={infoUpdateVoucher.decreasePersent} 
+                                    disabled={isUpdating ? false : true}
                                 >
                                     <option selected value="0"></option>
                                     <option value="0.05">5%</option>
-                                    <option value="0.1">10%</option> 
+                                    <option value="0.10">10%</option> 
                                 </select>
+                                <span className={`red_color ${isEmpty && infoUpdateVoucher.decreasePersent === 0 ? '' : 'display_hidden'}`}>Chọn phần trăm giảm trước khi lưu</span>
+
                             </div> 
                         </div>
                         <div className="row mb-3 phanLoai_chooseGiaTriGiam">
@@ -671,7 +768,11 @@ function ManageVoucher()
                                     className="form-control widthInputDate"
                                     onChange={handleInputInfoUpdateVoucher}
                                     value={infoUpdateVoucher.startDate}  
+                                    disabled={isUpdating ? false : true}
                                 ></input>
+                                <span className={`red_color ${isEmpty && infoUpdateVoucher.startDate === '' ? '' : 'display_hidden'}`}>Chọn ngày bắt đầu trước khi lưu</span>
+                                <span className={`red_color ${infoUpdateVoucher.startDate !== '' &&  new Date(infoUpdateVoucher.startDate)  <= new Date() && isUpdating === true ? '' : 'display_hidden'}`}>Ngày bắt đầu phải sau ngày hiện tại</span>
+
                             </div>
                             <div class="col-4 inputDate">
                                 <label className="form-label">Ngày hết hạn</label>
@@ -681,7 +782,11 @@ function ManageVoucher()
                                     className="form-control widthInputDate"
                                     onChange={handleInputInfoUpdateVoucher}
                                     value={infoUpdateVoucher.endDate}
+                                    disabled={isUpdating ? false : true}
                                 ></input>
+                                <span className={`red_color ${isEmpty && infoUpdateVoucher.endDate === '' ? '' : 'display_hidden'}`}>Chọn ngày hết hạn trước khi lưu</span>
+                                <span className={`red_color ${infoUpdateVoucher.startDate !== '' && infoUpdateVoucher.startDate !== '' &&  new Date(infoUpdateVoucher.startDate)   >= new Date(infoUpdateVoucher.endDate) && isUpdating === true ? '' : 'display_hidden'}`}>Ngày hết hạn phải sau ngày bắt đầu</span>
+
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -693,7 +798,10 @@ function ManageVoucher()
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="minOrderValue"  
                                         value={infoUpdateVoucher.minOrderValue}
+                                        disabled={isUpdating ? false : true}
                                     />
+                                    <span className={`red_color ${isEmpty && infoUpdateVoucher.minOrderValue === '' ? '' : 'display_hidden'}`}>Nhập giá trị hoá đơn tối thiểu</span>
+
                                 </div>
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị giảm tối đa</label>
@@ -702,7 +810,10 @@ function ManageVoucher()
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="maxDecreaseMoney"   
                                         value={infoUpdateVoucher.maxDecreaseMoney}
+                                        disabled={isUpdating ? false : true}
                                     />
+                                    <span className={`red_color ${isEmpty && infoUpdateVoucher.maxDecreaseMoney === '' ? '' : 'display_hidden'}`}>Nhập giá trị giảm tối đa</span>
+
                                 </div>
                             </div> 
                         </div>
@@ -714,8 +825,11 @@ function ManageVoucher()
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="quantityUse"  
                                     value={infoUpdateVoucher.quantityUse}
+                                    disabled={isUpdating ? false : true}
                                 />
                             </div> 
+                            <span className={`red_color ${isEmpty && infoUpdateVoucher.quantityUse === '' ? '' : 'display_hidden'}`}>Nhập số lần sử dụng</span>
+
                         </div>
  
                         <div>
@@ -727,22 +841,38 @@ function ManageVoucher()
 
                         <textarea 
                             id="w3review" name="desctiption" rows="4" cols="80"
+                            className="w3review" placeholder="Nhập mô tả sản phẩm"
                             value={infoUpdateVoucher.desctiption} 
                             onChange={handleInputInfoUpdateVoucher}
-                        >
-                            At w3schools.com you will learn how to make a website.
-                            They offer free tutorials in all web development technologies.
+                            disabled={isUpdating ? false : true}
+
+                        > 
                         </textarea>
 
-                        
+                        <span className={`red_color ${isEmpty && infoUpdateVoucher.desctiption === '' ? '' : 'display_hidden'}`}>Nhập mô tả trước khi lưu</span>
+
                     </div> 
                         
                     </div>
                     <div class="col-auto"></div>
-                    <div class="address_update_button_contain row">
+                    <div class="address_update_button_contain">
                         <div class={`${statusPressAddVoucher ? '' : ''}`}>
-                            <button class={`address_confirm_button btn btn-dark`} onClick={handleClickUpdateVoucher}>Cập nhật voucher</button>
-                            <button class="address_cancel_button btn btn-outline-secondary">Hủy</button>
+                            <button 
+                                class={`address_confirm_button btn btn-dark bg_color_green`} 
+                                onClick={handleClickUpdateVoucher}
+                                disabled={isUpdating ? false : true}
+                            > 
+                                Lưu
+                                <FontAwesomeIcon className="faFloppyDisk" icon={faFloppyDisk}></FontAwesomeIcon>
+                            </button>
+                            <button 
+                                class="address_cancel_button btn btn-outline-secondary bg_color_red"  
+                                onClick={handleTurnBack}    
+                                disabled={isUpdating ? false : true}
+                            >
+                                Hủy
+                                <FontAwesomeIcon className="faXmark" icon={faXmark}></FontAwesomeIcon>
+                            </button>
                         </div> 
                     </div>
                 </div> 
@@ -760,6 +890,7 @@ function ManageVoucher()
             >
                 {item.value.nameState}
             </button>
+                {item.value.pageQuantity}
         </li> 
     )
     const renderEachVoucher = (item, indexOrder) => {
@@ -877,10 +1008,12 @@ function ManageVoucher()
                     <input 
                         name="keySearch"
                         onChange={handleSearchInput}
+                        className="keySearch"
+                        placeholder="Nhập nội dung tìm kiếm"
                     ></input> 
                 </div>
-                <div class="col-2"> 
-                    <select class="form-select" required
+                <div class="col-2 width_search"> 
+                    <select class="form-select " required
                         onChange={handleInputInfoTypeSearch}
                         name="typeSearch"
                         value={typeSearch} 
@@ -890,7 +1023,9 @@ function ManageVoucher()
                     <option value="GIAGOC">Giá gốc</option>  */}
                     </select>
                 </div> 
-                <button onClick={handleSearch}>Search</button>
+                <button onClick={handleSearch}>
+                    <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
+                </button>
             </div>
             {/* <!-- nav bar trạng thái đơn hàng --> */}
             <div className={`${watchVoucherDetail ? 'display_hidden' : ''}`}>

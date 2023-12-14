@@ -73,15 +73,15 @@ class PaymentController extends Controller
         $mattgh_conver = $mattgh;
         if($mattgh == ''){
             DB::insert(
-                "INSERT INTO thongtingiaohangs(MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA)
+                "INSERT INTO thongtingiaohangs(MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG)
                 VALUES( '$matk', '$name_ship', '$numberPhone_ship', '$address_ship', 
-                '$option_thanhpho', '$option_quan', '$option_phuong')"
+                '$option_thanhpho', '$option_quan', '$option_phuong', 1)"
             );
             $mattgh = DB::select(
-                "SELECT MATTGH FROM thongtingiaohangs WHERE 
-                MATK = $matk AND TEN = '$name_ship' AND SDT = '$numberPhone_ship'
+                "SELECT MATTGH FROM thongtingiaohangs 
+                WHERE MATK = $matk AND TEN = '$name_ship' AND SDT = '$numberPhone_ship'
                 AND DIACHI = '$address_ship' AND TINH_TP = '$option_thanhpho' AND QUAN_HUYEN = '$option_quan'
-                AND PHUONG_XA = 'option_phuong'"
+                AND PHUONG_XA = '$option_phuong'"
             );
             if($mattgh != null)
                 $mattgh_conver = $mattgh[0]->MATTGH;

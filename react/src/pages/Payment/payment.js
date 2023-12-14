@@ -7,12 +7,14 @@ import request from "../../utils/request";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCaretDown, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 
 function Payment(){
 
     //Khi thanh toán thì cần phải lôi thông tin sản phẩm trong đơn hàng, địa chỉ cũ của người dùng đã đặt hàng và voucher
     //nên infoForPayment sẽ lưu những dữ liệu này khi load vào trang web payment
+    const Navigate = useNavigate();
     const [infoForPayment, setInfoForPayment] = useState({
         infoProduct: [],
         infoVoucher: [],
@@ -54,6 +56,13 @@ function Payment(){
             value: value
         }
     )) 
+    const [tongSoTien, setTongSoTien] = useState('')
+    // useEffect(() => {
+    //     if(typeof(parseInt(discountVoucher) > 0)){
+    //         console.log('929292', tongtienSP + phivanchuyen - parseInt(discountVoucher))
+    //         setTongSoTien(tongtienSP + phivanchuyen - parseInt(discountVoucher))
+    //     }
+    // }, [discountVoucher])
     //valid voucher
     const handleApplyVoucher = (e) => {
         // const found = infoForPayment.infoVoucher.find(item => item.MAVOUCHER === inputvouchers);
@@ -61,6 +70,7 @@ function Payment(){
         // else setDiscountVoucher("Voucher không khả dụng");
         let i = 0;
         infoForPayment.infoVoucher.forEach(item => {
+            console.log(item.MAVOUCHER, inputvouchers)
             if(item.MAVOUCHER === inputvouchers){
                 if(item.SOLUONG_CONLAI === 0){
                     setDiscountVoucher("Voucher hết lượt sử dụng");
@@ -68,16 +78,21 @@ function Payment(){
                 }
                 else if(item.PHANLOAI_VOUCHER === 'Vận chuyển'){
                     setPhivanchuyen(item.GIATRIGIAM * phivanchuyen); 
-                    console.log('2')
+                    console.log('2') 
+                    setTongSoTien(tongtienSP + phivanchuyen - item.GIATRIGIAM * phivanchuyen)
                 }
                 else if(tongtienSP >= item.GIATRI_DH_MIN){
                     if(tongtienSP * item.GIATRIGIAM > item.GIATRI_GIAM_MAX){
                         setDiscountVoucher(item.GIATRI_GIAM_MAX / tongtienSP);
-                        console.log('3')
+                        console.log('3', item.GIATRI_GIAM_MAX / tongtienSP)
+                        setTongSoTien(tongtienSP + phivanchuyen - tongtienSP * (item.GIATRI_GIAM_MAX / tongtienSP))
+
                     }
                     else if(tongtienSP * item.GIATRIGIAM <= item.GIATRI_GIAM_MAX){
                         setDiscountVoucher(item.GIATRIGIAM);
                         console.log('4')
+                        setTongSoTien(tongtienSP + phivanchuyen - tongtienSP * item.GIATRIGIAM)
+
                     }
                 }
                 else if(tongtienSP < item.GIATRI_DH_MIN){
@@ -154,6 +169,10 @@ function Payment(){
                 infoAdress: res.data.data_adress,
             });  
             console.log(res.data.data_sanpham);
+            res.data.data_sanpham.forEach(item => {
+                tongtienSP += item.TONGGIA; 
+            }) 
+            setTongSoTien(tongtienSP + phivanchuyen)
         })
         
     }
@@ -309,12 +328,13 @@ function Payment(){
             tongtiendonhang: tongtienSP - tongtienSP * discountVoucher + phivanchuyen,
             phivanchuyen: phivanchuyen,
             hinhthucthanhtoan: phuongThucThanhToan,
-            trangthaithanhtoan: 'chuatra',
-            trangthaidonhang: 'Đã giao',
+            trangthaithanhtoan: 'Chưa thanh toán',
+            trangthaidonhang: 'Chuẩn bị hàng',
             mavoucher: typeof(discountVoucher) !== 'string' ? inputvouchers : '',
             mattgh: mattghOldAddress,
-            ghichu: 'ok',
+            ghichu: '',
         }
+        console.log(infoForOrder, '09010102')
         
         //bởi vì infoProduct là mảng nên cần chuyển đổi sang stringify để thêm vào đối tượng allDataForSaveInfoPayment
         const infoProductJSON = JSON.stringify(infoForPayment.infoProduct); 
@@ -334,7 +354,8 @@ function Payment(){
                 console.log(res.data, "ok");
                 setHienThiThanhToan(true);
                 console.log(res.data.data.data);
-                window.location.href = res.data.data.data;
+                // window.location.href = res.data.data.data;
+                Navigate('/cart')
             }) 
             .catch(error => {
                 console.log(error);
@@ -429,7 +450,7 @@ function Payment(){
                     >
                         <option selected value="">-- Chọn quận/huyện --</option>   
                         {renderDistrict}
-                        <option selected value="Quận 1">Quận 1</option> 
+                        {/* <option selected value="Quận 1">Quận 1</option>  */}
                     </select>
                 </div>
                 <div class="col-4">
@@ -565,7 +586,11 @@ function Payment(){
                     <span class="fs-4">Tổng số tiền:</span>
                 </div>
                 <div class="col-2 text-start">
-                    <span class="discount_price fs-4 fw-bold">{tongtienSP + phivanchuyen}đ</span>
+                    <span class="discount_price fs-4 fw-bold">
+                        {/* {tongtienSP + phivanchuyen - parseInt(discountVoucher)} */}
+                        {tongSoTien === '' ? '' : parseInt(tongSoTien)}
+                        đ
+                    </span>
                 </div>
             </div>
             <div class="payment_confirm justify-content-end">

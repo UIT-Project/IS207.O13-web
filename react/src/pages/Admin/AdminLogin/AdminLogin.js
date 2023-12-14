@@ -67,7 +67,7 @@ function AdminLogin(){
     const registerSubmit = async (e) => {
       e.preventDefault();
       //dữ liệu sẽ gửi xuống để lưu thông tin đăng ký
-      // setIsLoading(true)
+      setIsLoading(true)
       const data_register = {
         name: registerInput.name_register,
         email: registerInput.email_register,
@@ -75,7 +75,7 @@ function AdminLogin(){
         confirmPassword: registerInput.confirmPassword_register,
         gender: registerInput.gender_register,
         role: "Nhân viên",
-        AdminVerify: 'Đã xác nhận',
+        AdminVerify: 0,
       }
       console.log(data_register)
       //sử dụng sanctum để lưu thông tin đăng ký và check valid ở phần backend
@@ -88,7 +88,7 @@ function AdminLogin(){
             console.log(res.data.role, 'kạdkjs');
             localStorage.setItem('auth_token', res.data.token);
             localStorage.setItem('auth_email', res.data.email);
-            // setIsNotifyOpenMailToVerify(true);
+            setIsNotifyOpenMailToVerify(true);
 
             // swal("success", res.data.message, "success");
             // Navigate('/login');

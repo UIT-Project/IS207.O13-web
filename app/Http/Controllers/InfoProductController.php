@@ -26,13 +26,19 @@ class InfoProductController extends Controller
         $data_MAMAU = DB::select("SELECT DISTINCT(mausacs.MAMAU), HEX, TENMAU FROM sanpham_mausac_sizes, mausacs WHERE sanpham_mausac_sizes.MAMAU = mausacs.MAMAU AND MASP = '$id' ");
         $data_SIZE = DB::select("SELECT DISTINCT(MASIZE) FROM sanpham_mausac_sizes WHERE MASP = '$id'");
         $data_xacDinhSoLuong = DB::select("SELECT MASIZE, MAMAU, SOLUONG FROM SANPHAM_MAUSAC_SIZES WHERE MASP = $id");
-
+        $dataProductDetail_sanpham_mausac_sizes__hinhanhs = DB::select(
+            "SELECT imgURL, MAHINHANH 
+            from hinhanhsanphams 
+            WHERE MASP = $id  
+            ORDER BY MAHINHANH DESC"
+        );
         return response()->json([
             'data_sanpham' => $data_sanpham,
             'data_mausac' => $data_mausac,
             'data_mamau' => $data_MAMAU,
             'data_size' => $data_SIZE,
             'data_xacDinhSoLuong' => $data_xacDinhSoLuong,
+            'dataProductDetail_sanpham_mausac_sizes__hinhanhs' => $dataProductDetail_sanpham_mausac_sizes__hinhanhs,
         ]);
     }
     public function addToCart(Request $request){ 
@@ -72,5 +78,17 @@ class InfoProductController extends Controller
 
         DB::update("UPDATE chitiet_giohangs SET SOLUONG = SOLUONG + $soluong WHERE MATK = '$matk' 
         AND MASP = '$masp' AND MASIZE = '$masize' AND MAMAU = '$mamau'");
+    }
+    public function getInfoReviewProduct(Request $request){
+        $masp = $request->input('masp');
+        $infoReviewProduct = DB::select(
+            "SELECT MADANHGIA, NOIDUNG_DANHGIA, SOLUONG_SAO, TEN 
+            FROM danhgia_sanphams, taikhoans
+            WHERE MASP = $masp 
+            AND danhgia_sanphams.MATK = taikhoans.MATK"
+        );
+        return response()->json([
+            'infoReviewProduct' =>  $infoReviewProduct
+        ]);
     }
 }

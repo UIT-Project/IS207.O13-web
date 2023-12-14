@@ -9,16 +9,19 @@ class ReviewProduct extends Controller
 {
     public function saveReviewProduct(Request $request){
         $madh = $request->madh;
-        $maxdsp = $request->maxdsp;
+        $masp = $request->masp;
         $soluongsao = $request->soluongsao;
         $noidungdanhgia = $request->noidungdanhgia;
-        foreach($maxdsp as $item_maxdsp){
+        $matk = $request->matk;
+        foreach($masp as $item_masp){
             DB::insert(
-                "INSERT INTO danhgia_sanphams(MADH, MAXDSP, SOLUONG_SAO, NOIDUNG_DANHGIA) 
-                values($madh, $item_maxdsp, $soluongsao, '$noidungdanhgia')"
+                "INSERT INTO danhgia_sanphams(MADH, MASP, MATK, SOLUONG_SAO, NOIDUNG_DANHGIA, created_at) 
+                values($madh, $item_masp, $matk, $soluongsao, '$noidungdanhgia', DATE(NOW()))"
             );
             DB::update(
-                "UPDATE chitiet_donhangs SET DADANHGIA = 1 WHERE MADH = $madh and MAXDSP = $item_maxdsp"
+                "UPDATE chitiet_donhangs SET DADANHGIA = 1 
+                WHERE MADH = $madh 
+                and MAXDSP in (SELECT MAXDSP FROM sanpham_mausac_sizes WHERE MASP = $item_masp)"
             );
         }
     }

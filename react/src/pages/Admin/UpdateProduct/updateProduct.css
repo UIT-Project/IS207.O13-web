@@ -318,16 +318,3 @@ tr {
 .displayhidden{
     display: none;
 }
-
-.prview_image{
-    position: relative;
-}
-.delete_prview_image{
-    display: none;
-    position: absolute;
-    top: 0;
-    left: 60%;
-}
-.prview_image:hover .delete_prview_image{
-    display: block;
-}

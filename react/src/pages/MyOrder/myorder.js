@@ -29,7 +29,7 @@ function MyOrder(){
 
     const [orderStatus, setOrderStatus] = useState({
         danggiao:{
-            nameState: 'Đang giao',
+            nameState: 'Chuẩn bị hàng',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
@@ -44,7 +44,7 @@ function MyOrder(){
             }]
         },
         dagiao: {
-            nameState: 'Đã giao',
+            nameState: 'Đang giao',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
@@ -59,7 +59,7 @@ function MyOrder(){
             }]
         },
         dahuy: {
-            nameState: 'Đã huỷ',
+            nameState: 'Đã Giao',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
@@ -74,7 +74,7 @@ function MyOrder(){
             }]
         },
         trahang: {
-            nameState: 'Trả hàng',
+            nameState: 'Đã huỷ',
             orderList: [],
             pageQuantity: 0,
             paginationList: [],
@@ -211,7 +211,10 @@ function MyOrder(){
     }
 
     const getQuantityOrderToDevidePage = () => {
-        request.get('/api/getQuantityOrderToDevidePage')
+        const data = {
+            matk: localStorage.getItem('auth_matk')
+        }
+        request.get('/api/getQuantityOrderToDevidePage__myOder', {params: data})
         .then(res=> {
             res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
@@ -443,31 +446,27 @@ function MyOrder(){
                     else{
                         return(
                             <tr key={index}>
-                                <td>
+                                {/* <td>
                                     <input 
                                         type="checkbox" 
                                         name="checkboxProductInCart" id=""   
                                         checked = {listMASPTranferState.includes(product.MADH)}   
                                         onChange={() => handleClickCheckbox(product, index)}
                                     />
-                                </td>
+                                </td> */}
                                 <td data-label="Order-code">{product.MADH}</td>
                                 <td data-label="Name">{product.TEN}</td>
                                 <td data-label="Phone-number">{product.SDT}</td>
                                 <td data-label="Address">{product.DIACHI}, {product.PHUONG_XA}, {product.QUAN_HUYEN}, {product.TINH_TP}</td>
-                                <td data-label="Day">15-06-2023</td>
-                                <td><button type="button" id="btn-status-deliveried">Đã giao</button>
-                                </td>
-                                <td><button type="button" id="btn-payment-after">Trả sau</button>
-                                </td>
-                                <td data-label="Subtotal">540.000</td>
+                                <td data-label="Day">{product.NGAYORDER}</td>
+                                <td> {product.HINHTHUC_THANHTOAN}  </td>
+                                <td> {product.TRANGTHAI_THANHTOAN}  </td>
+                                <td data-label="Subtotal">{product.TONGTIENDONHANG}</td>
                                 <td data-label="update">
                                     <div class="icon-update">
-                                        <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
-                                        <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
-                                        <span onClick={()=>handleWatchOrderDetail(product.MADH)} >
-                                            <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
-                                        </span>
+                                         <span onClick={()=>handleWatchOrderDetail(product.MADH)} >
+                                            <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
+                                         </span>
                                     </div>
                                     
                                 </td>
@@ -562,32 +561,32 @@ function MyOrder(){
                         renderOrderDetail()
                     }
                     <div class={`content_list_order  ${watchOrderDetail ? "display_hidden" : ""}`}>
-                        <div className={`${orderStatus_Array.length !== index + 1 ? '' : 'display_hidden'}`}>
+                        {/* <div className={`${orderStatus_Array.length !== index + 1 ? '' : 'display_hidden'}`}>
                             Cập nhật trạng thái sang 
                             <span className="StateWillTranfer">
                                 {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''}
                             </span>
                             <button className="buttonUpdate" onClick={() => handleUpdateState(orderStatus_Array, index)}>Update</button>
-                        </div>
+                        </div> */}
                         <table class="table">
                             <thead>
                             <tr>
-                                <th scope="col">                        
+                                {/* <th scope="col">                        
                                     <input 
                                         type="checkbox" 
                                         name="checkboxProductInCart" id=""  
                                         checked = {isCheckedAll} 
                                         onChange={() => handleClickCheckboxAll(item)}
                                     />
-                                </th>
+                                </th> */}
                                 <th scope="col" >Mã đơn hàng</th>
                                 <th scope="col">Tên khách hàng</th>
                                 <th scope="col">SĐT</th>
                                 <th scope="col">Địa chỉ</th>
-                                <th scope="col" >Ngày hoá đơn</th>
-                                <th scope="col">Trạng thái</th>
-                                <th scope="col">Thanh toán</th>
-                                <th scope="col">Tổng tiền</th>
+                                <th scope="col" >Ngày đặt hàng</th>
+                                <th scope="col">Hình thức thanh toán</th>
+                                <th scope="col">Trạng thái thanh toán</th>
+                                <th scope="col">Tổng tiền đơn hàng</th>
                                 <th scope="col"></th>
 
                             </tr>

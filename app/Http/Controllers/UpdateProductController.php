@@ -62,7 +62,8 @@ class UpdateProductController extends Controller
                     WHERE MASP = $masp_query AND MAMAU = $itemColor AND MASIZE = '$itemSize'"
                 );
                 if( count($test_daco) > 0){
-                    DB::update("UPDATE sanpham_mausac_sizes SET SOLUONG = $soluong");
+                    $maxdsp = $test_daco[0]->MAXDSP;
+                    DB::update("UPDATE sanpham_mausac_sizes SET SOLUONG = $soluong WHERE MAXDSP = $maxdsp");
                 }
                 else if(count($test_daco) == 0){
                     DB::insert("INSERT into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', $soluong)");

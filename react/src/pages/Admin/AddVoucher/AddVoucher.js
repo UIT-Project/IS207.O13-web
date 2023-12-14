@@ -23,13 +23,39 @@ function AddVoucher(){
     const [listQuantity, setListQuantity] = useState([]);
     //mã hex để hiện thị màu sắc lấy thực thuộc tính hex trong bảng mausacs
     const [listHEX, setListHEX] = useState([]);
+    const [isEmpty, setIsEmpty] = useState(false);
+    const [contentPopup, setContentPopup] = useState({
+        title: '',
+        content: '',
+    })
+    const openPopup = () => {
+        const popupOverlay = document.querySelector(".popup-overlay");
+        const popupContainer = document.querySelector(".popup-container");
+    
+        popupOverlay.style.display = "flex";
+        setTimeout(() => {
+          popupContainer.style.opacity = "1";
+          popupContainer.style.transform = "scale(1)";
+        }, 100);
+      };
+    
+      const closePopup = () => {
+        const popupContainer = document.querySelector(".popup-container");
+        popupContainer.style.opacity = "0";
+        popupContainer.style.transform = "scale(0.8)";
+        setTimeout(() => {
+          const popupOverlay = document.querySelector(".popup-overlay");
+          popupOverlay.style.display = "none";
+        }, 300);
+      };
+
     const [infoAddNewVoucher, setInfoAddNewVoucher] = useState({
         showNameVoucher: '',
         minOrderValue: 0,
-        maxDecreaseMoney: 50000,
+        maxDecreaseMoney: 5000000,
         typeVoucher: '',
         desctiption: '', 
-        quantityUse: 0, 
+        quantityUse: 50, 
         startDate: '',
         endDate: '',
         decreasePersent: 0,
@@ -44,9 +70,26 @@ function AddVoucher(){
     const handleInputInfoAddNewVoucher = (e) => {
         e.persist();
         let {value, name} = e.target;
-        if(name === 'decreasePersent') value = parseFloat(value)
-        setInfoAddNewVoucher({...infoAddNewVoucher, [name]: value});
-        console.log(name + "fff " + typeof(value));
+
+        const regex_showNameVoucher = /^[a-zA-Z0-9]*$/;
+        const regex_ChiNhapSo = /^\d*$/;
+ 
+        if(name === 'showNameVoucher' && regex_showNameVoucher.test(value)){
+            setInfoAddNewVoucher({...infoAddNewVoucher, [name]: value}); 
+        } 
+        else if((name === 'minOrderValue' || name === 'quantityUse'  || name === 'maxDecreaseMoney') && regex_ChiNhapSo.test(value)){
+            setInfoAddNewVoucher({...infoAddNewVoucher, [name]: value}); 
+        } 
+        
+        else if(name === 'typeVoucher' || name === 'decreasePersent' || name === 'startDate' || name === 'desctiption' || name === 'endDate'){
+            if(name === 'decreasePersent') value = parseFloat(value)
+            console.log(typeof(value))
+            setInfoAddNewVoucher({...infoAddNewVoucher, [name]: value}); 
+
+
+            console.log(name + "fff " + typeof(value));
+        }
+
     }
 
     //xử lý nhập tt sp với các checkbox
@@ -90,29 +133,60 @@ function AddVoucher(){
 
     //xử lý lưu tt sp, hình ảnh sp xuống db khi click vào thêm sản phẩm
     const handleClickAddVoucher = () => {
+        console.log(infoAddNewVoucher.decreasePersent)
+        if(
+            infoAddNewVoucher.showNameVoucher === '' ||
+            // infoAddNewVoucher.minOrderValue === '' ||
+            // infoAddNewVoucher.maxDecreaseMoney === '' ||
+            infoAddNewVoucher.typeVoucher === '' ||
+            infoAddNewVoucher.desctiption === '' ||
+            infoAddNewVoucher.quantityUse === 0 ||
+            infoAddNewVoucher.startDate === '' ||
+            infoAddNewVoucher.endDate === '' ||
+            infoAddNewVoucher.decreasePersent === 0 
+            // infoAddNewVoucher.decreasePersent === ""
+        ){
+            setIsEmpty(true)
+            setContentPopup({
+                title: 'Thêm voucher không thành công',
+                content: 'Hãy nhập đầy đủ thông tin trước khi thêm voucher'
+            })
+            openPopup();   
+        }
+        else{
+            // sử dụng formData để nhét hình ảnh và thông tin vào một cục rồi đẩy xuống db
+            const formData = new FormData();
+            // for(const img of images){
+            //     //images[] phải đặt tên như v thì laravel mới nhận ra đây là array với tên là images
+            //     //xuống laravel dùng $images = $request->file('images');
+            //     formData.append('images[]', img);//thêm image vào formdata
+            // }
+            //thêm thông tin infoAddNewVoucher vào form data, vì đây là một đối tượng nên cần stringify
+            formData.append('infoAddNewVoucher', JSON.stringify(infoAddNewVoucher)); 
+    
+            // setStatusPressAddVoucher(!statusPressAddVoucher);
+            // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
+            request.post(`api/addVoucher`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+            }) 
+            .then(res => {  
+                setContentPopup({
+                    title: 'Thêm voucher thành công',
+                    content: 'Trang sẽ được reload sau 3s'
+                })
+                openPopup();   
+                setTimeout(() => {
+                    window.location.reload();
+                  }, 2000); 
+            })
+            .catch(error => { 
+                console.log(error);
+            })
 
-        //sử dụng formData để nhét hình ảnh và thông tin vào một cục rồi đẩy xuống db
-        const formData = new FormData();
-        // for(const img of images){
-        //     //images[] phải đặt tên như v thì laravel mới nhận ra đây là array với tên là images
-        //     //xuống laravel dùng $images = $request->file('images');
-        //     formData.append('images[]', img);//thêm image vào formdata
-        // }
-        //thêm thông tin infoAddNewVoucher vào form data, vì đây là một đối tượng nên cần stringify
-        formData.append('infoAddNewVoucher', JSON.stringify(infoAddNewVoucher)); 
-
-        // setStatusPressAddVoucher(!statusPressAddVoucher);
-        // call api để lưu thông tin, dùng để lưu 'Content-Type': 'multipart/form-data' vì có dùng thêm hình ảnh
-        request.post(`api/addVoucher`, formData, {
-            headers: {
-                'Content-Type': 'multipart/form-data',
-              },
-        }) 
-        .then(res => {  
-        })
-        .catch(error => { 
-            console.log(error);
-        })
+        }
+        
     }
 
     const getInfoForAddVoucher = () => {
@@ -206,6 +280,15 @@ function AddVoucher(){
 
     return (
         <div>
+            <div className="popup-overlay">
+                <div className="popup-container">
+                    <div className="popup-card">
+                    <h2>{contentPopup.title}</h2>
+                    <p>{contentPopup.content}</p>
+                    <button id="close-popup" onClick={closePopup}>Close</button>
+                    </div>
+                </div>
+            </div>
             <div>
                 <h2>Thêm Voucher</h2>
                 <div class="col-auto"></div>
@@ -221,6 +304,8 @@ function AddVoucher(){
                                     name="showNameVoucher" 
                                     value={infoAddNewVoucher.showNameVoucher}
                                 />
+                                <span className={`red_color ${isEmpty && infoAddNewVoucher.showNameVoucher === '' ? '' : 'display_hidden'}`}>Nhập Mã voucher </span>
+
                             </div>
                         </div>
                         
@@ -236,6 +321,8 @@ function AddVoucher(){
                                 <option value="Đơn hàng">Đơn hàng</option>
                                 <option value="Vận chuyển">Vận chuyển</option> 
                                 </select>
+                                <span className={`red_color ${isEmpty && infoAddNewVoucher.typeVoucher === '' ? '' : 'display_hidden'}`}>Chọn phân loại </span>
+
                             </div> 
                             <div class="col-4">
                                 <label for="#" class="form-label">Phần trăm giảm</label>
@@ -244,10 +331,12 @@ function AddVoucher(){
                                     name="decreasePersent"
                                     value={infoAddNewVoucher.decreasePersent} 
                                 >
-                                    <option selected value="0"></option>
+                                    <option selected value=""></option>
                                     <option value="0.05">5%</option>
                                     <option value="0.1">10%</option> 
                                 </select>
+                                <span className={`red_color ${isEmpty && infoAddNewVoucher.decreasePersent === 0 ? '' : 'display_hidden'}`}>Chọn phần trăm giảm </span>
+
                             </div> 
                         </div>
                         <div className="row mb-3 phanLoai_chooseGiaTriGiam">
@@ -260,6 +349,9 @@ function AddVoucher(){
                                     onChange={handleInputInfoAddNewVoucher}
                                     value={infoAddNewVoucher.startDate}  
                                 ></input>
+                                <span className={`red_color ${isEmpty && infoAddNewVoucher.startDate === '' ? '' : 'display_hidden'}`}>Chọn ngày bắt đầu </span>
+                                <span className={`red_color ${infoAddNewVoucher.startDate !== '' &&  new Date(infoAddNewVoucher.startDate)  <= new Date() ? '' : 'display_hidden'}`}>Ngày bắt đầu phải sau ngày hiện tại</span>
+
                             </div>
                             <div class="col-4 inputDate">
                                 <label className="form-label">Ngày hết hạn</label>
@@ -270,6 +362,9 @@ function AddVoucher(){
                                     onChange={handleInputInfoAddNewVoucher}
                                     value={infoAddNewVoucher.endDate}
                                 ></input>
+                                <span className={`red_color ${isEmpty && infoAddNewVoucher.endDate === '' ? '' : 'display_hidden'}`}>Chọn ngày hết hạn </span>
+                                <span className={`red_color ${infoAddNewVoucher.startDate !== '' && infoAddNewVoucher.startDate !== '' &&  new Date(infoAddNewVoucher.startDate)  >= new Date(infoAddNewVoucher.endDate) ? '' : 'display_hidden'}`}>Ngày hết hạn phải sau ngày bắt đầu</span>
+
                             </div>
                         </div>
                         <div class="row mb-2">
@@ -282,6 +377,8 @@ function AddVoucher(){
                                         name="minOrderValue"  
                                         value={infoAddNewVoucher.minOrderValue}
                                     />
+                                    <span className={`red_color ${isEmpty && infoAddNewVoucher.minOrderValue === '' ? '' : 'display_hidden'}`}>Nhập giá trị hoá đơn tối thiểu</span>
+
                                 </div>
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị giảm tối đa</label>
@@ -291,11 +388,13 @@ function AddVoucher(){
                                         name="maxDecreaseMoney"   
                                         value={infoAddNewVoucher.maxDecreaseMoney}
                                     />
+                                    <span className={`red_color ${isEmpty && infoAddNewVoucher.maxDecreaseMoney === '' ? '' : 'display_hidden'}`}>Nhập giá trị giảm tối đa</span>
+
                                 </div>
                             </div> 
                         </div>
                         <div className="row mb-3 phanLoai_chooseGiaTriGiam">
-                                <label className="form-label">Số lần sử dụng</label>
+                            <label className="form-label">Số lần sử dụng</label>
                             <div class="col-6 soLanSuDungDiv">
                                 <input 
                                     type="text" class="form-control" placeholder="Số lần sử dụng" 
@@ -303,7 +402,9 @@ function AddVoucher(){
                                     name="quantityUse"  
                                     value={infoAddNewVoucher.quantityUse}
                                 />
+
                             </div> 
+                                <span className={`red_color ${isEmpty && infoAddNewVoucher.quantityUse === '' ? '' : 'display_hidden'}`}>Nhập số lần sử dụng</span>
                         </div>
  
                         <div>
@@ -315,12 +416,12 @@ function AddVoucher(){
 
                         <textarea 
                             id="w3review" name="desctiption" rows="4" cols="80"
+                            className="w3review" placeholder="Nhập mô tả sản phẩm"
                             value={infoAddNewVoucher.desctiption} 
                             onChange={handleInputInfoAddNewVoucher}
-                        >
-                            At w3schools.com you will learn how to make a website.
-                            They offer free tutorials in all web development technologies.
+                        > 
                         </textarea>
+                        <span className={`red_color ${isEmpty && infoAddNewVoucher.desctiption === '' ? '' : 'display_hidden'}`}>Nhập mô tả </span>
 
                         
                     </div> 
