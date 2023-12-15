@@ -237,22 +237,22 @@ class TestController extends Controller
         ]);
     }
 
-    public function infoForPayment(Request $request){
-        $matk = $request->query('matk');
-        $data_sanpham = DB::select("SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  FROM chitiet_giohangs, sanphams, mausacs WHERE MATK = 1 AND chitiet_giohangs.MASP = sanphams.MASP AND mausacs.MAMAU = chitiet_giohangs.MAMAU");
+    // public function infoForPayment(Request $request){
+    //     $matk = $request->query('matk');
+    //     $data_sanpham = DB::select("SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  FROM chitiet_giohangs, sanphams, mausacs WHERE MATK = 1 AND chitiet_giohangs.MASP = sanphams.MASP AND mausacs.MAMAU = chitiet_giohangs.MAMAU");
 
-        $currentDate = Carbon::now()->format('Y-m-d');
-        $data_voucher = DB::select("SELECT MAVOUCHER, GIATRIGIAM FROM vouchers WHERE SOLUONG > 0 AND THOIGIANKT > '$currentDate'");
+    //     $currentDate = Carbon::now()->format('Y-m-d');
+    //     $data_voucher = DB::select("SELECT MAVOUCHER, GIATRIGIAM FROM vouchers WHERE SOLUONG > 0 AND THOIGIANKT > '$currentDate'");
 
-        $data_adress = DB::select("SELECT * FROM thongtingiaohangs ");
+    //     $data_adress = DB::select("SELECT * FROM thongtingiaohangs ");
          
 
-        return response()->json([ 
-            'data_sanpham' => $data_sanpham,
-            'data_voucher' => $data_voucher,
-            'data_adress' => $data_adress,  
-        ]);
-    }   
+    //     return response()->json([ 
+    //         'data_sanpham' => $data_sanpham,
+    //         'data_voucher' => $data_voucher,
+    //         'data_adress' => $data_adress,  
+    //     ]);
+    // }   
     public function saveInfoForPayment(Request $request){
         $matk = $request->input('matk');
         $mattgh = $request->input('mattgh');

@@ -31,5 +31,6 @@ const routes = {
     manageVoucher: "/admin/manageVoucher",
     searchVoucher: "/admin/SearchVoucher",
     reviewProduct: "/reviewProduct",
+    statistic: "/admin/Statistic",
 }
 export default routes;

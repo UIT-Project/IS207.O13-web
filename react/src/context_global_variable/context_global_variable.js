@@ -10,6 +10,8 @@ export function GlobalVariable({children}){
     const [statusPressAddToCart, setStatusPressAddToCart] = useState(false);
     const divPopupCartRef = useRef(null);
     const [infoCarts, setInfoCarts] = useState([]);
+    const [isClickedPayment, setIsClickedPayment] = useState(0);
+
     const formatPrice = (price) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
@@ -21,7 +23,8 @@ export function GlobalVariable({children}){
                     statusPressAddToCart, setStatusPressAddToCart,
                     divPopupCartRef,
                     infoCarts, setInfoCarts,
-                    formatPrice
+                    formatPrice,
+                    isClickedPayment, setIsClickedPayment
                 }}
             >
         {children}

@@ -54,7 +54,7 @@ function Header({settoggleFunctionLoginLogout}){
 
     const {setLoginOrLogout, textQuery, setTextQuery, 
         setResultQuery, statusPressAddToCart, setStatusPressAddToCart, 
-        divPopupCartRef, infoCarts, setInfoCarts} = useGlobalVariableContext(); 
+        divPopupCartRef, infoCarts, setInfoCarts, setIsClickedPayment} = useGlobalVariableContext(); 
 
     // dùng để chuyển hướng đến đường dẫn trong trang web
     const Navigate = useNavigate();  
@@ -259,6 +259,7 @@ function Header({settoggleFunctionLoginLogout}){
     }
 
     const handleThanhToan = () => {
+        setIsClickedPayment(1)
         Navigate("/payment")
     }
 

@@ -21,13 +21,28 @@ class PaymentController extends Controller
 {
     public function infoForPayment(Request $request){
         $matk = $request->query('matk');
-        $data_sanpham = DB::select(
-            "SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, 
-            chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  
-            FROM chitiet_giohangs, sanphams, mausacs 
-            WHERE MATK = $matk AND chitiet_giohangs.MASP = sanphams.MASP 
-            AND mausacs.MAMAU = chitiet_giohangs.MAMAU"
-        );
+        $clickPaymentFromCart = $request->query('clickPaymentFromCart');
+        if($clickPaymentFromCart == 1){
+            $data_sanpham = DB::select(
+                "SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, 
+                chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  
+                FROM chitiet_giohangs, sanphams, mausacs 
+                WHERE MATK = $matk AND chitiet_giohangs.MASP = sanphams.MASP 
+                -- AND SELECTED = 1
+                AND mausacs.MAMAU = chitiet_giohangs.MAMAU"
+            );
+        }
+        else{
+            $data_sanpham = DB::select(
+                "SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, 
+                chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  
+                FROM chitiet_giohangs, sanphams, mausacs 
+                WHERE MATK = $matk 
+                AND SELECTED = 1
+                AND chitiet_giohangs.MASP = sanphams.MASP 
+                AND mausacs.MAMAU = chitiet_giohangs.MAMAU"
+            );
+        }
 
         $currentDate = Carbon::now()->format('Y-m-d');
         $data_voucher = DB::select(
@@ -103,14 +118,15 @@ class PaymentController extends Controller
         else{
             DB::insert("INSERT INTO donhang_vouchers values( ? , ? )", [$mavoucher, $madh[0]->MADH]);
         }
-
+        $list_maxdsp = [];
         foreach($infoProduct as $item){
             $maxdsp = DB::select(
-                "SELECT MAXDSP from sanpham_mausac_sizes 
+                "SELECT * from sanpham_mausac_sizes 
                 where MASP = ? AND MASIZE = ? AND MAMAU = ?", 
                 [$item['MASP'], $item['MASIZE'], 
                 $item['MAMAU']]
             );
+            $list_maxdsp[] = $maxdsp[0];
             DB::insert("INSERT INTO chitiet_donhangs(MADH, MAXDSP, TONGTIEN, SOLUONG, DADANHGIA)
              VALUES(?, ?, ?, ?, ?)", 
              [$madh[0]->MADH,  $maxdsp[0]->MAXDSP, $item['TONGGIA'], $item['SOLUONG'], 0]);
@@ -198,6 +214,27 @@ class PaymentController extends Controller
                     'data' => $returnData
                 ]);
             }
+
+            
+        }
+        else{
+            $ji = 0;
+            foreach($infoProduct as $item){ 
+                DB::delete(
+                    "DELETE FROM chitiet_giohangs 
+                    where MATK = $matk AND  MASP = ? AND MASIZE = ? AND MAMAU = ? ", 
+                    [$item['MASP'], $item['MASIZE'],$item['MAMAU']]
+                );
+                DB::update(
+                    "UPDATE sanpham_mausac_sizes 
+                    SET SOLUONG = ? - ?
+                    where MAXDSP = ?", 
+                    [$list_maxdsp[$ji]->SOLUONG, $item['SOLUONG'], $list_maxdsp[$ji]->MAXDSP]
+                );
+                $ji++;
+            }
+            
+
         }
 
         return response()->json([

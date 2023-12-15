@@ -48,10 +48,10 @@ function Cart() {
         // 1 là chuyển đổi trạng thái của sản phẩm khi tick vào
         // nếu được chọn slected = 1 và ko thì = 0
         const listItemCarts = [...itemCarts];
-        console.log(itemCarts);
+        console.log(itemCarts, '2222');
         (listItemCarts[index].SELECTED === 0 ) ? listItemCarts[index].SELECTED = 1 :  listItemCarts[index].SELECTED = 0;
         setItemCart(listItemCarts);
-        setIsCheckedAll(listItemCarts.every((itemCarts) => listItemCarts[index].SELECTED)); 
+        setIsCheckedAll(listItemCarts.every((itemCarts) => itemCarts.SELECTED)); 
  
         // 2 tính lại tổng tiền để hiển thị
         let tinhtongtien = 0;

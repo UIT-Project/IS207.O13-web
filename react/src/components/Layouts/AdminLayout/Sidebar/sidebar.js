@@ -139,7 +139,7 @@ function SideBar(){
                     <li class="sidebar_nav_item">
                         <a class="sidebar_nav_item_content" href="#"> 
                             <FontAwesomeIcon icon={faChartLine}></FontAwesomeIcon>
-                            <span className="category_text_inSideBar">Thống kê</span>
+                            <span className="category_text_inSideBar" onClick={()=> {Navigation('/admin/statistic')}}>Thống kê</span>
                         </a>
                     </li>
                 </ul>
