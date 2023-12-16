@@ -86,7 +86,7 @@ function Cart() {
     const hanelInputSoLuong = (index, event) => {
 
         const ListItemCarts = [...itemCarts];
-        ListItemCarts[index].SOLUONG = parseInt(event.target.value, 10);
+        ListItemCarts[index].SOLUONG = parseInt(event.target.value === '' || event.target.value === NaN  ? 0 : event.target.value, 10);
         ListItemCarts[index].TONGGIA = ListItemCarts[index].SOLUONG * ListItemCarts[index].GIABAN;
         setItemCart(ListItemCarts); 
 
@@ -102,6 +102,7 @@ function Cart() {
             soluong: itemCarts[index].SOLUONG,
             tonggia: itemCarts[index].SOLUONG * itemCarts[index].GIABAN,
         } 
+        console.log(infoUpdateQuantityItemCart.soluong);
 
         try{
             request.post("/api/updateQuantityProperty", infoUpdateQuantityItemCart)

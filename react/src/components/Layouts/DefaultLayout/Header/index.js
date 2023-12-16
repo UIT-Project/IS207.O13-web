@@ -196,7 +196,7 @@ function Header({settoggleFunctionLoginLogout}){
         request.get(`/api/search?query=${textQuery}`)
         .then(res=>{
             setResultQuery(res.data.data); 
-            console.log(res.data.data);
+            console.log(res.data.data, 'header');
             Navigate(`/search?query=${textQuery}`);
         })
         .catch(e => {

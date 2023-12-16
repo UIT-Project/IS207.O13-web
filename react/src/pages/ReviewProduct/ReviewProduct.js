@@ -126,6 +126,7 @@ function ReviewProduct() {
     const handleClickSaveReview = (item, index) => {
         let infoSaveReview = {
             madh: madh,
+            maxdsp: 1,
             masp: 1,
             soluongsao: 5,
             noidungdanhgia: 'cảm ơn',
@@ -134,22 +135,22 @@ function ReviewProduct() {
         if(index === itemCarts.length){
             infoSaveReview = {
                 madh: madh,
-                masp: itemCarts.map(item => item.MASP),
+                maxdsp: itemCarts.map(item => item.MAXDSP),
                 soluongsao: infoReviewAll.starQuantity,
                 noidungdanhgia: infoReviewAll.contentReview,
                 matk: localStorage.getItem('auth_matk'),
-
+                masp: itemCarts[0].MASP
             }
             console.log(infoSaveReview, 'ksjdkllll')
         }
         else{
             infoSaveReview = {
                 madh: madh,
-                masp: [item.MASP],
+                maxdsp: [item.MAXDSP],
                 soluongsao: item.starQuantity,
                 noidungdanhgia: item.contentReview,
                 matk: localStorage.getItem('auth_matk'),
-
+                masp: item.MASP
             }
         } 
         console.log(infoSaveReview);
@@ -165,10 +166,7 @@ function ReviewProduct() {
             }
             const listItemCarts = [...itemCarts];
             setItemCart(listItemCarts); 
-        })  
-
-        
- 
+        })   
     }
     const getInforOrderDetail = (madh) => {
         const data = {
@@ -244,6 +242,13 @@ function ReviewProduct() {
             });  
         }   
     };
+
+    const handleDirectory = (route) => {
+        if(route === 'Trang chủ')
+            window.location.href = `/`;
+        else if(route === 'Đơn hàng')
+        window.location.href = `/myorder`;
+    }
 
     useEffect(() => {
         if(isCheckedAll){
@@ -416,7 +421,16 @@ function ReviewProduct() {
                 </div>
             </div>
         </div>
-        <div className={`${itemCarts.length === 0 ? '' : 'display_hidden'}`}>Cám ơn bạn đã thực hiện đánh giá
+        <div className={`${itemCarts.length === 0 ? '' : 'display_hidden'}`}>
+            Cám ơn bạn đã thực hiện đánh giá
+            <div>
+                <button className="btn" onClick={()=>handleDirectory('Trang chủ')}>
+                    Trang chủ
+                </button>
+                <button className="btn" onClick={()=>handleDirectory('Đơn hàng')}>
+                    Đơn hàng
+                </button>
+            </div>
         </div>
         <div class="container mt-5 content-bottom">
             <div>

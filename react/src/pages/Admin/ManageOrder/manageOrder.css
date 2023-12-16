@@ -538,3 +538,17 @@ tr {
     /* top: -1200px; */
     opacity: 0;
 }
+
+.lkljalsjd{
+    display: flex;
+}
+.lkljalsjd111{
+    width: 70%;
+}
+
+.lkljalsjd2{
+    /* display: flex; */
+    margin:  1rem 0rem;
+    align-items: center;
+    width: 30%;
+}

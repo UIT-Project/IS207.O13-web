@@ -17,7 +17,7 @@ function Payment(){
     //nên infoForPayment sẽ lưu những dữ liệu này khi load vào trang web payment
 
     const [isLoading, setIsLoading] = useState(false);
-
+    const [iserror_soluong_SP, setIsError_soluong_SP] = useState(false);
     const {isClickedPayment, setIsClickedPayment} = useGlobalVariableContext(); 
     const [contentPopup, setContentPopup] = useState({
         title: '',
@@ -87,6 +87,7 @@ function Payment(){
         const popupOverlay = document.querySelector(".popup-overlay");
         popupOverlay.style.display = "none";
         }, 300);
+        setIsError_soluong_SP(false)
     };
     const [tongSoTien, setTongSoTien] = useState('')
     // useEffect(() => {
@@ -121,8 +122,8 @@ function Payment(){
 
                     }
                     else if(tongtienSP * item.GIATRIGIAM <= item.GIATRI_GIAM_MAX){
-                        setDiscountVoucher(item.GIATRIGIAM);
-                        console.log('4')
+                        setDiscountVoucher(parseFloat(item.GIATRIGIAM));
+                        console.log('4', item.GIATRIGIAM)
                         setTongSoTien(tongtienSP + phivanchuyen - tongtienSP * item.GIATRIGIAM)
 
                     }
@@ -377,6 +378,7 @@ function Payment(){
         // Nếu có bất kỳ thông tin nào trống, hiển thị thông báo
         if (isEmpty) {
             setIsInputShipInformationValidated(true);
+            setIsLoading(false)
 
             alert('Vui lòng điền đầy đủ thông tin giao hàng');
         } else {
@@ -400,7 +402,7 @@ function Payment(){
                 phivanchuyen: phivanchuyen,
                 hinhthucthanhtoan: phuongThucThanhToan,
                 trangthaithanhtoan: 'Chưa thanh toán',
-                trangthaidonhang: 'Chuẩn bị hàng',
+                trangthaidonhang: phuongThucThanhToan === 'Thanh toán khi nhận hàng' ? 'Chuẩn bị hàng' : 'Đang thanh toán',
                 mavoucher: typeof(discountVoucher) !== 'string' ? inputvouchers : '',
                 mattgh: mattghOldAddress,
                 ghichu: '',
@@ -422,21 +424,38 @@ function Payment(){
                 // gọi api phương thức saveInfoForPayment và kèm thông tin allDataForSaveInfoPayment để lưu xuỐNG DB
                 request.post("api/saveInfoForPayment", allDataForSaveInfoPayment)
                 .then(res => {  
-                    console.log(res.data, "ok");
+                    // console.log(res.data.error_soluong_SP.length, "ok");
                     setHienThiThanhToan(true);
                     // console.log(res.data.data.data);
-                    // window.location.href = res.data.data.data;
-                    // window.location.reload(); // Tải lại trang
-                    setIsLoading(false)
-                    setContentPopup({
-                        title: 'Đơn hàng đã được tạo thành công',
-                        content: 'Chuyển đến trang quản lý đơn hàng trong 3s'
-                    })
-                    openPopup();   
-                    setTimeout(() => {
-                        window.location.href = `/myorder`;
-                    }, 2000); 
-                // Navigate('/cart')
+                    if(infoForOrder.hinhthucthanhtoan != 'Thanh toán khi nhận hàng'){
+                        window.location.href = res.data.data.data; 
+                    }
+                    else if(res.data.error_soluong_SP.length > 0){
+                        const contentString = res.data.error_soluong_SP.join('\n');
+
+                        setIsLoading(false)
+                        setContentPopup({
+                            title: 'Số lượng sản phẩm còn lại không đáp ứng đủ',
+                            content: contentString
+                        })
+                        openPopup(); 
+                        setIsError_soluong_SP(true)
+                    }
+                    else{
+                        if(infoForOrder.hinhthucthanhtoan != 'Thanh toán khi nhận hàng') window.location.href = res.data.data.data;
+                        setIsLoading(false)
+                        setContentPopup({
+                            title: 'Đơn hàng đã được tạo thành công',
+                            content: 'Chuyển đến trang quản lý đơn hàng trong 3s'
+                        })
+                        openPopup();   
+                        setTimeout(() => {
+                            window.location.href = `/myorder`;
+                        }, 1500);  
+                        setTimeout(() => {
+                            window.location.reload()
+                        }, 2001); 
+                    }
                 }) 
                 .catch(error => {
                     console.log(error);
@@ -474,7 +493,11 @@ function Payment(){
                     <div className="popup-card">
                     <h2>{contentPopup.title}</h2>
                     <p>{contentPopup.content}</p>
-                    {/* <button id="close-popup" onClick={closePopup}>Close</button> */}
+                    <button 
+                        id="close-popup" 
+                        onClick={closePopup}
+                        className={` ${iserror_soluong_SP ? '' : 'display_hidden)'}`}
+                    >Close</button>
                     </div>
                 </div>
             </div>
@@ -659,9 +682,12 @@ function Payment(){
                         <div class="col-4"></div>
                         <div class="col-2 text-start">
                             <span class="discount_price">
-                                { typeof(discountVoucher) === 'string' && discountVoucher !== '0'
-                                ? discountVoucher 
-                                : `-${parseInt(discountVoucher * tongtienSP)}đ`}</span>
+                                { 
+                                    typeof(discountVoucher) === 'string' && discountVoucher !== '0'
+                                    ? discountVoucher 
+                                    : `-${parseInt(discountVoucher * tongtienSP)}đ`
+                                }
+                            </span>
                         </div>
                     </div>
                     <div class="row justify-content-end">

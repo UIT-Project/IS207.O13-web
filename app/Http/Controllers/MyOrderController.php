@@ -44,14 +44,16 @@ class MyOrderController extends Controller
             TINH_TP, QUAN_HUYEN, PHUONG_XA, TONGTIEN, TONGTIEN_SP,
             VOUCHERGIAM, TONGTIENDONHANG, HINHTHUC_THANHTOAN, TRANGTHAI_THANHTOAN, GHICHU
             from donhangs, chitiet_donhangs, thongtingiaohangs 
-            where donhangs.MADH = '$madh'  AND donhangs.MADH = chitiet_donhangs.MADH 
+            where donhangs.MADH = $madh  AND donhangs.MADH = chitiet_donhangs.MADH 
             AND thongtingiaohangs.MATTGH = donhangs.MATTGH"
         );
         $data_sanPham_relative_CTDH = DB::select(
-            "SELECT TENSP, GIABAN, TENMAU, HEX, MASIZE, TONGTIEN, chitiet_donhangs.SOLUONG, imgURL, sanpham_mausac_sizes.MASP  
+            "SELECT TENSP, GIABAN, TENMAU, HEX, MASIZE, 
+            TONGTIEN, chitiet_donhangs.SOLUONG, imgURL, sanpham_mausac_sizes.MASP, sanpham_mausac_sizes.MAXDSP
             from mausacs, chitiet_donhangs, sanphams, sanpham_mausac_sizes, hinhanhsanphams
-            where chitiet_donhangs.MADH = '$madh' 
+            where chitiet_donhangs.MADH = $madh
             AND DADANHGIA = 0
+            AND hinhanhsanphams.MAHINHANH LIKE '%thumnail%'
             AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
             AND sanpham_mausac_sizes.MASP = sanphams.MASP 
             AND sanpham_mausac_sizes.MAMAU = mausacs.MAMAU

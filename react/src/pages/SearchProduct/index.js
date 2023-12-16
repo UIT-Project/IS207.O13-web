@@ -6,15 +6,16 @@ import { useEffect, useState } from "react";
 import { Button } from "bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-regular-svg-icons";
-import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
+// import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
-
+import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 
 function SearchProduct(){ 
 
     // trang này hiển thị thông tin sản phẩm tìm kiếm được khi search ở thanh tìm kiếm trong header
     // sau đó sử dụng các bộ lọc để lọc sản phẩm
     // sau khi đọc các trang trước thì trang này mọi người có thể soi code để hiểu
+    const {formatPrice} = useGlobalVariableContext(); 
 
     const { resultQuery, setResultQuery, textQuery, setTextQuery} = useGlobalVariableContext();
 
@@ -32,7 +33,7 @@ function SearchProduct(){
         console.log(dataForFilterSearch);
         request.get(`/api/filterSearchProduct`, {params: dataForFilterSearch} )
         .then(res => { 
-            console.log(res);
+            console.log(res, 'lk11');
             setResultQuery(res.data.data_product);
         })
         .catch(err => {
@@ -45,40 +46,73 @@ function SearchProduct(){
     
     const product = () => {
         if(Array.isArray(resultQuery)){
+            const url = `/infoProduct?id=${product.MASP}`;
             return(
                 resultQuery.map((product) => (
-                    <div key={product.MASP} class="product_item_div__out">
-                        <div class="product_item_div__in">
-                            <a href="#">
-                                <div>
-                                    <img src={images.product_1} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
-                                </div>
-                            </a>
+                    // <div key={product.MASP} class="product_item_div__out">
+                    //     <div class="product_item_div__in">
+                    //         <a href="#">
+                    //             <div>
+                    //                 <img src={images.product_1} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
+                    //             </div>
+                    //         </a>
+                    //         <div class="product_item__summary">
+                    //             <a href="#">
+                    //                 <h6 class="product_item__summary__title">{product.TENSP}</h6>
+                    //             </a>
+                    //             <div class="product_item__summary__price_and_heart">
+                    //                 <div class="product_item__summary__price">
+                    //                     <span class="product_item__summary__sale_price">{product.GIABAN}₫
+                    //                     </span>
+                    //                     <span class="product_item__summary__origin_price">
+                    //                         <del>{product.GIAGOC}₫</del>
+                    //                     </span>
+                    //                 </div> 
+                    //                 <div>
+                    //                     {/* <button  className="product_item__summary__heart">
+                    //                         <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
+                    //                     </button>  */}
+                    //                 </div>
+                    //             </div>
+                    //         </div>
+                    //         <div class="grid__column_10__product_thumbail__yeuthich">
+                    //             <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
+                    //             <span class="grid__column_10__product_thumbail__text_yeuthich">{formatPrice(parseInt(100 - (product.GIABAN / product.GIAGOC * 100)))}%</span> 
+                    //         </div> 
+                    //     </div>
+                    // </div>
+                <div key={product.MASP} class="product_item_div__out">
+                    <a href={url}>
+                        <div class="product_item_div__in"> 
+                            <div>
+                                <img src={product.imgURL} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
+                            </div>
                             <div class="product_item__summary">
                                 <a href="#">
                                     <h6 class="product_item__summary__title">{product.TENSP}</h6>
                                 </a>
                                 <div class="product_item__summary__price_and_heart">
                                     <div class="product_item__summary__price">
-                                        <span class="product_item__summary__sale_price">{product.GIABAN}₫
+                                        <span class="product_item__summary__sale_price space_item_in_a_row">{formatPrice(product.GIABAN)}₫
                                         </span>
-                                        <span class="product_item__summary__origin_price">
-                                            <del>{product.GIAGOC}₫</del>
+                                        <span class="product_item__summary__origin_price space_item_in_a_row">
+                                            <del>{formatPrice(product.GIAGOC)}₫</del>
                                         </span>
                                     </div> 
                                     <div>
-                                        <button  className="product_item__summary__heart">
+                                        {/* <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
                                             <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
-                                        </button> 
+                                        </button>  */}
                                     </div>
                                 </div>
                             </div>
                             <div class="grid__column_10__product_thumbail__yeuthich">
                                 <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
-                                <span class="grid__column_10__product_thumbail__text_yeuthich">Hot</span> 
+                                <span class="grid__column_10__product_thumbail__text_yeuthich">{formatPrice(parseInt(100 - (product.GIABAN / product.GIAGOC * 100)))}%</span> 
                             </div> 
-                        </div>
-                    </div>
+                        </div> 
+                    </a>
+                </div>
                 ))
             )
         }
@@ -89,6 +123,9 @@ function SearchProduct(){
     return ( 
         <div class="container"> 
             {/* <!-- show_product hiển thị phần "SẢN PHẨM MỚI"--> */}
+            <div class="show_product__title_div">
+                <h1 class="show_product__title">Sản phẩm tìm thấy</h1> 
+            </div>
             <div className="row">
                 <div class="grid__column_10__filter">
                     <div class="grid__column_10__filter__div_title">
@@ -117,21 +154,21 @@ function SearchProduct(){
                         <div class="grid__column_10__filter__div_result_filter_select__sort_price">
                             <span class="grid__column_10__filter__div_result_filter_select__text_sort_price">Giá
                                 <div class="grid__column_10__filter__div_result_filter_select__select_text_sort_price">
-                                    <div>
+                                    <div className={`${filter === listFilter[2]  ? "grid__column_10__filter__result_filter_button--active" : ""}`}>
                                         <span 
                                             class={
                                                 `
                                                     header__body__search_and_recommend__search__selection_scope__in 
                                                     header__body__search_and_recommend__search__selection_scope__in_shop
-                                                    ${filter === listFilter[2]  ? "grid__column_10__filter__result_filter_button--active" : ""}   
+                                                    // ${filter === listFilter[2]  ? "grid__column_10__filter__result_filter_button--active" : ""}   
                                                 `
                                             }
                                             onClick={() => handleClickFilter(`${listFilter[2]}`)}
-                                        >Giá: Thấp Đến Cao
-                                            <FontAwesomeIcon icon={faCheck} className="header__body__search_and_recommend__search__selection_scope__icon_in"></FontAwesomeIcon>
+                                        >Thấp Đến Cao
+                                            {/* <FontAwesomeIcon icon={faCheck} className="header__body__search_and_recommend__search__selection_scope__icon_in"></FontAwesomeIcon> */}
                                         </span>
                                     </div>
-                                    <div>
+                                    <div className={`${filter === listFilter[3]  ? "grid__column_10__filter__result_filter_button--active" : ""}`}>
                                         <span 
                                             class={
                                                 `
@@ -141,7 +178,7 @@ function SearchProduct(){
                                                 `
                                             }
                                             onClick={() => handleClickFilter(`${listFilter[3]}`)}
-                                        >Giá: Cao Đến Thấp</span> 
+                                        >Cao Đến Thấp</span> 
                                     </div>
                                 </div>
                             </span> 
@@ -153,7 +190,7 @@ function SearchProduct(){
                             <span class="grid__column_10__filter__result_filter_select_price_text">Giá</span>
                         </div> --> */}
                     </div>
-                    <div class="grid__column_10__filter__select_display_page">
+                    {/* <div class="grid__column_10__filter__select_display_page">
                         <div class="grid__column_10__filter__select_display_page__present_and_max_page_number">
                             <span class="grid__column_10__filter__select_display_page__present_page_number">1</span>
                             /
@@ -177,13 +214,11 @@ function SearchProduct(){
                                 </svg>                                            
                             </button>
                         </div>
-                    </div>
+                    </div> */}
                 </div>
             </div>
+                
             <div class="show_product">
-                <div class="show_product__title_div">
-                    <h1 class="show_product__title">Sản phẩm tìm thấy</h1> 
-                </div>
                 {/* <!-- product_item_container__out khối bọc ngoài cho tất cả sản phẩm để dễ padding, margin --> */}
                 <div class="product_item_container__out">
                     {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}

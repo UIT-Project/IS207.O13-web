@@ -391,8 +391,8 @@ function InfoProduct(){
                                     <FontAwesomeIcon icon={faCartShopping} class="detail_info_product_button_detail__icon_addToCart"></FontAwesomeIcon>
                                     <p className="detail_info_product_button_detail__text_addToCart">THÊM VÀO GIỎ</p>
                                 </button>
-                                <button id="mua_hang">MUA NGAY</button>
-                                <button id="fav"><i class="fa-solid fa-heart"></i></button>
+                                {/* <button id="mua_hang">MUA NGAY</button>
+                                <button id="fav"><i class="fa-solid fa-heart"></i></button> */}
                             </div>
                             <div className={`${hetHang ? '' : 'display_hidden'}`}>Hết hàng</div>
                         </div>

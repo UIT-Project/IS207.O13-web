@@ -12,14 +12,16 @@ class HomeController extends Controller
             "SELECT * FROM sanphams, hinhanhsanphams 
             WHERE hinhanhsanphams.masp = sanphams.masp 
             AND MAHINHANH LIKE '%thumnail%'  
-            ORDER BY created_at ASC LIMIT 20"
+            ORDER BY created_at ASC LIMIT 15"
         );
         $dataHotProduct = DB::select(
-            "SELECT sanphams.MASP, TENSP, GIAGOC, GIABAN, MAPL_SP 
-            FROM sanphams, chitiet_donhangs,  sanpham_mausac_sizes
+            "SELECT sanphams.MASP, TENSP, GIAGOC, GIABAN, MAPL_SP, imgURL
+            FROM sanphams, chitiet_donhangs,  sanpham_mausac_sizes, hinhanhsanphams
             WHERE sanpham_mausac_sizes.MAXDSP = chitiet_donhangs.MAXDSP 
             AND sanphams.MASP = sanpham_mausac_sizes.MASP
-            GROUP BY sanphams.MASP, TENSP, GIAGOC, GIABAN, MAPL_SP
+            AND MAHINHANH LIKE '%thumnail%'  
+            AND hinhanhsanphams.masp = sanphams.masp 
+            GROUP BY sanphams.MASP, TENSP, GIAGOC, GIABAN, MAPL_SP, imgURL
             ORDER BY SUM(chitiet_donhangs.SOLUONG)"
         ); 
         return response()->json([

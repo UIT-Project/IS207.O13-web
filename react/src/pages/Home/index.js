@@ -77,15 +77,15 @@ function Home(){
                                     </span>
                                 </div> 
                                 <div>
-                                    <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
+                                    {/* <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
                                         <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
-                                    </button> 
+                                    </button>  */}
                                 </div>
                             </div>
                         </div>
                         <div class="grid__column_10__product_thumbail__yeuthich">
                             <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
-                            <span class="grid__column_10__product_thumbail__text_yeuthich">NEW</span> 
+                            <span class="grid__column_10__product_thumbail__text_yeuthich">{formatPrice(parseInt(100 - (product.GIABAN / product.GIAGOC * 100)))}%</span> 
                         </div> 
                     </div> 
                 </a>
@@ -116,9 +116,9 @@ function Home(){
                                     </span>
                                 </div> 
                                 <div>
-                                    <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
+                                    {/* <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
                                         <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
-                                    </button> 
+                                    </button>  */}
                                 </div>
                             </div>
                         </div>

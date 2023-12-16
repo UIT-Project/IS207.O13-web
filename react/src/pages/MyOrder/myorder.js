@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
-import {  faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {  faCircleChevronLeft, faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 
 function MyOrder(){
     const numberOrderEachPage = 20;
@@ -140,6 +140,11 @@ function MyOrder(){
     }
 
     const handleWatchOrderDetail = (madh) => {
+        getInforOrderDetail(madh);
+        // setWatchOrderDetail(true); 
+        // Navigate(`/reviewProduct?madh=${madh}`)
+    }
+    const handleReviewProduct = (madh) => {
         // getInforOrderDetail(madh);
         // setWatchOrderDetail(true); 
         Navigate(`/reviewProduct?madh=${madh}`)
@@ -258,6 +263,8 @@ function MyOrder(){
             // })
             setNote(res.data.data_relative_Donhang[0].GHICHU);
             console.log(res, ' ', infoOrderDetail, ' ', madh);
+            setWatchOrderDetail(true); 
+
         })
     };
 
@@ -467,8 +474,10 @@ function MyOrder(){
                                          <span onClick={()=>handleWatchOrderDetail(product.MADH)} >
                                             <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
                                          </span>
-                                    </div>
-                                    
+                                         <span onClick={()=>handleReviewProduct(product.MADH)} className={`${orderStatusPointer === orderStatus.dahuy.nameState ? '' : 'display_hidden'}`}>
+                                            <FontAwesomeIcon class={`fa-solid fa-pen-to-square `} icon={faPenToSquare} ></FontAwesomeIcon>
+                                         </span>
+                                    </div> 
                                 </td>
                             </tr>  
                         )
@@ -485,64 +494,204 @@ function MyOrder(){
         )
     }
 
-    const renderInfoProduct = infoOrderDetail.data_sanPham_relative_CTDH.map((item, index) => 
-            <div className="div_thongtinsanpham" key={index}>
-                <span>Tên sản phẩm: {item.TENSP}</span>  
-                <span>Tên màu: {item.TENMAU}</span> 
-                <span>Size: {item.MASIZE}</span> 
-                <span>Giá bán: {item.GIABAN}</span> 
-                <span>Số lượng: {item.SOLUONG}</span>  
-                {/* <img src={item.imgURL} height={300} width={300}></img> */}
-            </div>
-        ) 
+    // const renderInfoProduct = infoOrderDetail.data_sanPham_relative_CTDH.map((item, index) => 
+    //         <div className="div_thongtinsanpham" key={index}>
+    //             <span>Tên sản phẩm: {item.TENSP}</span>  
+    //             <span>Tên màu: {item.TENMAU}</span> 
+    //             <span>Size: {item.MASIZE}</span> 
+    //             <span>Giá bán: {item.GIABAN}</span> 
+    //             <span>Số lượng: {item.SOLUONG}</span>  
+    //             {/* <img src={item.imgURL} height={300} width={300}></img> */}
+    //         </div>
+    //     ) 
 
+    // const renderOrderDetail = () => {
+    //     // console.log("ok");
+    //     // getInforOrderDetail()   
+    //     console.log(infoOrderDetail, 'render')
+    //     if(watchOrderDetail === true) {
+    //         return(  
+    //             <div>
+    //                 <h3>orderDetail</h3>
+    //                 <button onClick={handleTurnBack}>turn back</button>
+    //                 <div class="icon-update">
+    //                     <span>
+    //                         <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
+    //                     </span>
+    //                 </div>
+    //                 <div className="div_thongTinGiaoHang">
+    //                     <span className="thongTinGiaoHang">Thông tin giao hàng</span>  
+    //                     <span>Tên: {infoOrderDetail.data_relative_Donhang.TEN}</span>  
+    //                     <span>SDT: {infoOrderDetail.data_relative_Donhang.SDT}</span> 
+    //                     <span>DIACHI: {infoOrderDetail.data_relative_Donhang.DIACHI}</span> 
+    //                     <span>TINH_TP: {infoOrderDetail.data_relative_Donhang.TINH_TP}</span> 
+    //                     <span>QUAN_HUYEN: {infoOrderDetail.data_relative_Donhang.QUAN_HUYEN}</span> 
+    //                     <span>PHUONG_XA: {infoOrderDetail.data_relative_Donhang.PHUONG_XA}</span> 
+    //                     <span>Tên: {infoOrderDetail.data_relative_Donhang.TEN}</span> 
+    //                     <span>Tên: {infoOrderDetail.data_relative_Donhang.TEN}</span> 
+    //                 </div>
+    //                 <div className="div_thongTinGiaoHang">
+    //                     <span className="thongTinGiaoHang">Thông tin Đơn hàng</span>  
+    //                     <span>Tổng tiền phải trả: {infoOrderDetail.data_relative_Donhang.TONGTIEN}</span>  
+    //                     <span>Tổng tiền sản phẩm: {infoOrderDetail.data_relative_Donhang.TONGTIEN_SP}</span> 
+    //                     <span>Mã voucher giảm: {infoOrderDetail.data_relative_Donhang.VOUCHERGIAM}</span> 
+    //                     <span>Tổng tiền đơn hàng: {infoOrderDetail.data_relative_Donhang.TONGTIENDONHANG}</span> 
+    //                     <span>Hình thức thanh toán: {infoOrderDetail.data_relative_Donhang.HINHTHUC_THANHTOAN}</span> 
+    //                     <span>Trạng thái thanh toán: {infoOrderDetail.data_relative_Donhang.TRANGTHAI_THANHTOAN}</span> 
+    //                     <span>Ghi chú:</span> 
+    //                     <textarea 
+    //                         name="note"
+    //                         value={note}
+    //                         onChange={handleInputNote}
+    //                     >
+    //                     </textarea> 
+    //                     <button onClick={() => saveNote(infoOrderDetail.data_relative_Donhang.MADH, note)}>save</button>
+    //                 </div>
+    //                 <div className="div_thongTinGiaoHang">
+    //                     <span className="thongTinGiaoHang">Thông tin các sản phẩm</span>  
+    //                     {renderInfoProduct}
+                        
+    //                 </div> 
+    //             </div>  
+    //         )
+    //     }
+    // }
+    const renderInfoProduct = infoOrderDetail.data_sanPham_relative_CTDH.map((item, index) => 
+              
+    <tr  className="" key={index}> 
+        <td data-label="Order-code">{item.TENSP}</td>
+        <td data-label="Name">{item.TENMAU}</td>
+        <td data-label="Phone-number"> {item.MASIZE} </td>
+        <td data-label="Phone-number">{item.GIABAN}  </td>
+        <td data-label="Phone-number">  {item.SOLUONG}   </td> 
+            {/* <td data-label="Address">
+            {infoOrderDetail.data_relative_Donhang.TINH_TP}
+        </td>
+        <td data-label="Day">{infoOrderDetail.data_relative_Donhang.TINH_TP}</td>
+        <td><button type="button" id="btn-status-deliveried">{infoOrderDetail.data_relative_Donhang.TINH_TP}</button>
+        </td>
+        <td><button type="button" id="btn-payment-after">{infoOrderDetail.data_relative_Donhang.TINH_TP}</button>
+        </td>
+        <td data-label="Subtotal">{infoOrderDetail.data_relative_Donhang.TINH_TP}</td> */}
+            
+    </tr>  
+) 
     const renderOrderDetail = () => {
         // console.log("ok");
         // getInforOrderDetail()   
-        console.log(infoOrderDetail, 'render')
+        // console.log(infoOrderDetail, 'render')
         if(watchOrderDetail === true) {
             return(  
                 <div>
-                    <h3>orderDetail</h3>
-                    <button onClick={handleTurnBack}>turn back</button>
-                    <div class="icon-update">
+                    <div class="icon-update icon-update__margin">
+                        <span onClick={handleTurnBack}  className="faCircleChevronLeft">
+                            <FontAwesomeIcon class={`fa-solid faCircleChevronLeft`} icon={faCircleChevronLeft} ></FontAwesomeIcon>
+                        </span>  
+                    </div>
+                    <h1>Chi tiết đơn hàng</h1>
+                    {/* <button onClick={handleTurnBack}>turn back</button> */}
+                    {/* <div class="icon-update">
                         <span>
                             <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
                         </span>
+                    </div> */}
+                    <div className="div_thongTinGiaoHang">
+                        <h3 className="thongTinGiaoHang">Thông tin giao hàng</h3>   
+                        <table class="table">
+                            <thead>
+                                <tr>  
+                                    <th scope="col">Tên khách hàng</th>
+                                    <th scope="col">SĐT</th>
+                                    <th scope="col">Địa chỉ</th> 
+
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            <tr> 
+                                <td data-label="Order-code">{infoOrderDetail.data_relative_Donhang.TEN !== null ? infoOrderDetail.data_relative_Donhang.TEN : ''}</td>
+                                <td data-label="Name">{infoOrderDetail.data_relative_Donhang.SDT}</td>
+                                <td data-label="Phone-number">
+                                    {infoOrderDetail.data_relative_Donhang.DIACHI ? infoOrderDetail.data_relative_Donhang.DIACHI + ', ' : ''}
+                                    {infoOrderDetail.data_relative_Donhang.PHUONG_XA ? infoOrderDetail.data_relative_Donhang.PHUONG_XA + ', ' : ''}
+                                    {infoOrderDetail.data_relative_Donhang.QUAN_HUYEN ? infoOrderDetail.data_relative_Donhang.QUAN_HUYEN + ', ' : ''}
+                                    {infoOrderDetail.data_relative_Donhang.TINH_TP ? infoOrderDetail.data_relative_Donhang.TINH_TP : ''}
+                                </td>
+                                {/* <td data-label="Address">
+                                    {infoOrderDetail.data_relative_Donhang.TINH_TP}
+                                </td>
+                                <td data-label="Day">{infoOrderDetail.data_relative_Donhang.TINH_TP}</td>
+                                <td><button type="button" id="btn-status-deliveried">{infoOrderDetail.data_relative_Donhang.TINH_TP}</button>
+                                </td>
+                                <td><button type="button" id="btn-payment-after">{infoOrderDetail.data_relative_Donhang.TINH_TP}</button>
+                                </td>
+                                <td data-label="Subtotal">{infoOrderDetail.data_relative_Donhang.TINH_TP}</td> */}
+                                 
+                            </tr> 
+                            </tbody>
+                        </table>
                     </div>
                     <div className="div_thongTinGiaoHang">
-                        <span className="thongTinGiaoHang">Thông tin giao hàng</span>  
-                        <span>Tên: {infoOrderDetail.data_relative_Donhang.TEN}</span>  
-                        <span>SDT: {infoOrderDetail.data_relative_Donhang.SDT}</span> 
-                        <span>DIACHI: {infoOrderDetail.data_relative_Donhang.DIACHI}</span> 
-                        <span>TINH_TP: {infoOrderDetail.data_relative_Donhang.TINH_TP}</span> 
-                        <span>QUAN_HUYEN: {infoOrderDetail.data_relative_Donhang.QUAN_HUYEN}</span> 
-                        <span>PHUONG_XA: {infoOrderDetail.data_relative_Donhang.PHUONG_XA}</span> 
-                        <span>Tên: {infoOrderDetail.data_relative_Donhang.TEN}</span> 
-                        <span>Tên: {infoOrderDetail.data_relative_Donhang.TEN}</span> 
-                    </div>
-                    <div className="div_thongTinGiaoHang">
-                        <span className="thongTinGiaoHang">Thông tin Đơn hàng</span>  
-                        <span>Tổng tiền phải trả: {infoOrderDetail.data_relative_Donhang.TONGTIEN}</span>  
-                        <span>Tổng tiền sản phẩm: {infoOrderDetail.data_relative_Donhang.TONGTIEN_SP}</span> 
-                        <span>Mã voucher giảm: {infoOrderDetail.data_relative_Donhang.VOUCHERGIAM}</span> 
-                        <span>Tổng tiền đơn hàng: {infoOrderDetail.data_relative_Donhang.TONGTIENDONHANG}</span> 
-                        <span>Hình thức thanh toán: {infoOrderDetail.data_relative_Donhang.HINHTHUC_THANHTOAN}</span> 
-                        <span>Trạng thái thanh toán: {infoOrderDetail.data_relative_Donhang.TRANGTHAI_THANHTOAN}</span> 
-                        <span>Ghi chú:</span> 
-                        <textarea 
-                            name="note"
-                            value={note}
-                            onChange={handleInputNote}
-                        >
-                        </textarea> 
-                        <button onClick={() => saveNote(infoOrderDetail.data_relative_Donhang.MADH, note)}>save</button>
-                    </div>
-                    <div className="div_thongTinGiaoHang">
-                        <span className="thongTinGiaoHang">Thông tin các sản phẩm</span>  
-                        {renderInfoProduct}
+                        <h3 className="thongTinGiaoHang">Thông tin Đơn hàng</h3>   
+                        <table class="table">
+                            <thead>
+                                <tr>  
+                                    <th scope="col">Mã đơn hàng</th>
+                                    <th scope="col">Ngày đặt hàng</th>
+                                    <th scope="col">Trạng thái đơn hàng</th>
+                                    <th scope="col">Trạng thái thanh toán</th>
+                                    <th scope="col" >Hình thức thanh toán</th>
+                                    <th scope="col">Tiền sản phẩm</th>
+                                    <th scope="col">Phí vận chuyển</th>
+                                    <th scope="col">Tổng tiền hoá đơn</th>
+                                    <th scope="col">Mã hoá đơn</th>
+                                    {/* <th scope="col">Số tiền hoá đơn giảm</th> */}
+
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                            <tr> 
+                                <td data-label="Order-code">{infoOrderDetail.data_relative_Donhang.MADH}</td>
+                                <td data-label="Name">{infoOrderDetail.data_relative_Donhang.NGAYORDER}</td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TRANGTHAI_DONHANG}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TRANGTHAI_THANHTOAN}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.HINHTHUC_THANHTOAN}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TONGTIEN_SP}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.PHIVANCHUYEN}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TONGTIENDONHANG}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.MAVOUCHER}   </td>
+                                 {/* <td data-label="Address">
+                                    {infoOrderDetail.data_relative_Donhang.TINH_TP}
+                                </td>
+                                <td data-label="Day">{infoOrderDetail.data_relative_Donhang.TINH_TP}</td>
+                                <td><button type="button" id="btn-status-deliveried">{infoOrderDetail.data_relative_Donhang.TINH_TP}</button>
+                                </td>
+                                <td><button type="button" id="btn-payment-after">{infoOrderDetail.data_relative_Donhang.TINH_TP}</button>
+                                </td>
+                                <td data-label="Subtotal">{infoOrderDetail.data_relative_Donhang.TINH_TP}</td> */}
+                                 
+                            </tr> 
+                            </tbody>
+                        </table>
                         
-                    </div> 
+                    </div>
+                    <div className="div_thongTinGiaoHang">
+                        <h3 className="thongTinGiaoHang">Thông tin các sản phẩm</h3> 
+                        <table class="table">
+                            <thead>
+                                <tr>  
+                                    <th scope="col">Tên sản phẩm</th>
+                                    <th scope="col">Tên màu</th>
+                                    <th scope="col">Size</th>
+                                    <th scope="col">Giá bán</th>
+                                    <th scope="col" >Số lượng</th> 
+                                </tr>
+                            </thead>
+                            <tbody class="table-group-divider">
+                                {renderInfoProduct}
+                            </tbody>      
+                        </table>
+                    </div>  
+
                 </div>  
             )
         }

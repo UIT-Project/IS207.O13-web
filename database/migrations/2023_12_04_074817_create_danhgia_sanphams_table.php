@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('danhgia_sanphams', function (Blueprint $table) {
             $table->increments('MADANHGIA');
             $table->unsignedInteger('MADH');
+            $table->unsignedInteger('MAXDSP');
             $table->unsignedInteger('MASP');
             $table->unsignedInteger('MATK');
             $table->integer('SOLUONG_SAO');
@@ -26,6 +27,7 @@ return new class extends Migration
             $table->foreign('MADH')->references('MADH')->on('donhangs');
             $table->foreign('MASP')->references('MASP')->on('sanphams');
             $table->foreign('MATK')->references('MATK')->on('taikhoans');
+            $table->foreign('MAXDSP')->references('MAXDSP')->on('sanpham_mausac_sizes');
         });
     }
 

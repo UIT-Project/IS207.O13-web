@@ -126,15 +126,20 @@ function ManageOrder(){
                 })
                 // console.log(i + listMASPTranferState.length , ' ', indexNull.end)
 
-                if(i + listMASPTranferState.length === indexNull.end)  
+                // if(i + listMASPTranferState.length === indexNull.end)  
+                setTimeout(() => {
                     window.location.reload(); 
+                }, 1500);  
             }) 
         }
         catch(err){
             console.log(err)
         }
         setListMASPTranferState([]);
-        if(isCheckedAll) window.location.reload(); 
+        if(isCheckedAll) 
+            setTimeout(() => {
+                window.location.reload(); 
+            }, 1500);
         setIsPopupUpdate(false)
         // const interval = setInterval(() => { 
         //     if (listMASPTranferState) {
@@ -146,7 +151,7 @@ function ManageOrder(){
     }; 
 
     const [orderStatus, setOrderStatus] = useState({
-        danggiao:{
+        chuanbihang:{
             nameState: 'Chuẩn bị hàng',
             orderList: [],
             pageQuantity: null,
@@ -162,7 +167,7 @@ function ManageOrder(){
                 endIndex: numberOrderEachPage,
             }]
         },
-        dagiao: {
+        danggiao: {
             nameState: 'Đang giao',
             orderList: [],
             pageQuantity: null,
@@ -178,7 +183,7 @@ function ManageOrder(){
                 endIndex: numberOrderEachPage,
             }]
         },
-        dahuy: {
+        dagiao: {
             nameState: 'Đã giao',
             orderList: [],
             pageQuantity: null,
@@ -194,7 +199,7 @@ function ManageOrder(){
                 endIndex: numberOrderEachPage,
             }]
         },
-        trahang: {
+        dahuy: {
             nameState: 'Đã huỷ',
             orderList: [],
             pageQuantity: null,
@@ -223,7 +228,7 @@ function ManageOrder(){
         window.scrollTo({ top: 0, behavior: 'instant' });
     };
     const [orderStatusPointer, setOrderStatusPointer] = useState(
-        orderStatus.danggiao.nameState
+        orderStatus.chuanbihang.nameState
     );
     const handleSaveEditNote = (madh) => {
         saveNote(madh, note)
@@ -498,7 +503,7 @@ function ManageOrder(){
             //     data_sanPham_relative_CTDH: res.data.data_sanPham_relative_CTDH,
             // })
             setNote(res.data.data_sanPham_relative_CTDH[0].GHICHU);
-            console.log('aksjdkkkjkj ', res.data.data_sanPham_relative_CTDH, data);
+            console.log('aksjdkkkjkj ', res.data.data_sanPham_relative_CTDH, res.data.data_relative_Donhang);
             setWatchOrderDetail(true); 
         })
     };
@@ -570,12 +575,28 @@ function ManageOrder(){
     const handleSearch = () => { 
         
         setOrderStatus({
-            danggiao:{
-                nameState: 'Đang giao',
+            chuanbihang:{
+                nameState: 'Chuẩn bị hàng',
                 orderList: [],
                 pageQuantity: null,
                 paginationList: [],
                 openingPage: 1,
+                hasLoadFirtTime: 0,
+                hasChangeFromPreState: 0,
+                itemQuantity: 0,
+                spaceGetDataFromOrderList: [{
+                    paginationNumber: 1,
+                    ordinalNumber: 1,
+                    startIndex: 0,
+                    endIndex: numberOrderEachPage,
+                }]
+            },
+            danggiao: {
+                nameState: 'Đang giao',
+                orderList: [],
+                pageQuantity: null,
+                paginationList: [],
+                openingPage: 1, 
                 hasLoadFirtTime: 0,
                 hasChangeFromPreState: 0,
                 itemQuantity: 0,
@@ -604,22 +625,6 @@ function ManageOrder(){
             },
             dahuy: {
                 nameState: 'Đã huỷ',
-                orderList: [],
-                pageQuantity: null,
-                paginationList: [],
-                openingPage: 1, 
-                hasLoadFirtTime: 0,
-                hasChangeFromPreState: 0,
-                itemQuantity: 0,
-                spaceGetDataFromOrderList: [{
-                    paginationNumber: 1,
-                    ordinalNumber: 1,
-                    startIndex: 0,
-                    endIndex: numberOrderEachPage,
-                }]
-            },
-            trahang: {
-                nameState: 'Trả hàng',
                 orderList: [],
                 pageQuantity: null,
                 paginationList: [],
@@ -884,9 +889,9 @@ function ManageOrder(){
                                         <span onClick={()=>handleWatchOrderDetail(product.MADH)} >
                                             <FontAwesomeIcon icon={faEye} class="fa-solid fa-eye" ></FontAwesomeIcon>
                                         </span>
-                                        <span onClick={()=>handlePrint(product.MADH)}>
+                                        {/* <span onClick={()=>handlePrint(product.MADH)}>
                                             <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
-                                        </span>
+                                        </span> */}
                                     </div>
                                     
                                 </td>
@@ -996,7 +1001,7 @@ function ManageOrder(){
                                     <th scope="col">Tiền sản phẩm</th>
                                     <th scope="col">Phí vận chuyển</th>
                                     <th scope="col">Tổng tiền hoá đơn</th>
-                                    <th scope="col">Mã hoá đơn</th>
+                                    <th scope="col">Số tiền Voucher giảm</th>
                                     {/* <th scope="col">Số tiền hoá đơn giảm</th> */}
 
                                 </tr>
@@ -1011,7 +1016,7 @@ function ManageOrder(){
                                 <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TONGTIEN_SP}   </td>
                                 <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.PHIVANCHUYEN}   </td>
                                 <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TONGTIENDONHANG}   </td>
-                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.MAVOUCHER}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.VOUCHERGIAM === 0 ? 0 : infoOrderDetail.data_relative_Donhang.MAVOUCHER}   </td>
                                  {/* <td data-label="Address">
                                     {infoOrderDetail.data_relative_Donhang.TINH_TP}
                                 </td>
@@ -1124,13 +1129,13 @@ function ManageOrder(){
                                 <tr>  
                                     <th scope="col">Mã đơn hàng</th>
                                     <th scope="col">Ngày đặt hàng</th>
-                                    <th scope="col">Trạng thái đơn hàng</th>
+                                    {/* <th scope="col">Trạng thái đơn hàng</th>
                                     <th scope="col">Trạng thái thanh toán</th>
-                                    <th scope="col" >Hình thức thanh toán</th>
+                                    <th scope="col" >Hình thức thanh toán</th> */}
                                     <th scope="col">Tiền sản phẩm</th>
                                     <th scope="col">Phí vận chuyển</th>
                                     <th scope="col">Tổng tiền hoá đơn</th>
-                                    <th scope="col">Mã hoá đơn</th>
+                                    <th scope="col">Số tiền Voucher giảm</th>
                                     {/* <th scope="col">Số tiền hoá đơn giảm</th> */}
     
                                 </tr>
@@ -1139,13 +1144,14 @@ function ManageOrder(){
                             <tr> 
                                 <td data-label="Order-code">{item.data_relative_Donhang.MADH}</td>
                                 <td data-label="Name">{item.data_relative_Donhang.NGAYORDER}</td>
-                                <td data-label="Phone-number">  {item.data_relative_Donhang.TRANGTHAI_DONHANG}   </td>
+                                {/* <td data-label="Phone-number">  {item.data_relative_Donhang.TRANGTHAI_DONHANG}   </td>
                                 <td data-label="Phone-number">  {item.data_relative_Donhang.TRANGTHAI_THANHTOAN}   </td>
-                                <td data-label="Phone-number">  {item.data_relative_Donhang.HINHTHUC_THANHTOAN}   </td>
+                                <td data-label="Phone-number">  {item.data_relative_Donhang.HINHTHUC_THANHTOAN}   </td> */}
                                 <td data-label="Phone-number">  {item.data_relative_Donhang.TONGTIEN_SP}   </td>
                                 <td data-label="Phone-number">  {item.data_relative_Donhang.PHIVANCHUYEN}   </td>
-                                <td data-label="Phone-number">  {item.data_relative_Donhang.TONGTIENDONHANG}   </td>
-                                <td data-label="Phone-number">  {item.data_relative_Donhang.MAVOUCHER}   </td>
+                                <td data-label="Phone-number">  {item.data_relative_Donhang.TONGTIENDONHANG}   </td> 
+                                <td data-label="Phone-number">  {item.data_relative_Donhang.VOUCHERGIAM === 0 ? 0 : item.data_relative_Donhang.MAVOUCHER}   </td>
+
                                     {/* <td data-label="Address">
                                     {item.data_relative_Donhang.TINH_TP}
                                 </td>
@@ -1198,6 +1204,10 @@ function ManageOrder(){
                             </tbody>      
                         </table>
                     </div> 
+                    <div className="div_thongTinGiaoHang">
+                        <h3 className="thongTinGiaoHang">Ghi chú</h3> 
+                        <div>{item.data_relative_Donhang.GHICHU}</div>
+                    </div> 
                       
                 </div>  
             ) 
@@ -1223,16 +1233,37 @@ function ManageOrder(){
                         renderOrderDetail()
                     }
                     <div class={`content_list_order  ${watchOrderDetail ? "display_hidden" : ""}`}>
-                        <div className={`${orderStatus_Array.length !== index + 1 ? '' : 'display_hidden'}`}>
-                            Cập nhật trạng thái sang 
-                            <span className="StateWillTranfer">
-                                {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''}
-                            </span>
-                            <button className="buttonUpdate" onClick={() => handleUpdateState(orderStatus_Array, index)}>Update</button>
+                        <div className="lkljalsjd"> 
+                            <div className={`lkljalsjd111
+                                ${
+                                    orderStatus_Array.length !== index + 1  &&
+                                    ( orderStatus_Array[index].value.nameState === 'Đang giao' ||
+                                    orderStatus_Array[index].value.nameState === 'Chuẩn bị hàng' )
+                                    ? '' 
+                                    : 'display_hidden'
+                                }`}
+                            >
+                                Cập nhật trạng thái đơn hàng thành: 
+                                <span className="StateWillTranfer">
+                                    <button className="btn" onClick={() => handleUpdateState(orderStatus_Array, index)}>
+                                        {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''}
+                                    </button>
+                                </span>
+                                <span className={`StateWillTranfer ${orderStatus_Array[index].value.nameState === 'Đang giao' ? '' : 'display_hidden'}`}>
+                                    <button className="btn" onClick={() => handleUpdateState(orderStatus_Array, index + 1)}>
+                                        {orderStatus_Array.length === index + 3 ? orderStatus_Array[index + 2].value.nameState : ''}
+                                        {/* {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''} */}
+                                    </button>
+                                </span>
+                                {/* <button className="buttonUpdate" >Update</button> */}
+                            </div>
+                            <div className="lkljalsjd2">
+                                In hoá đơn
+                                <span onClick={handleGetInfoDetail_Many}>
+                                    <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>
+                                </span>
+                            </div>
                         </div>
-                            <span onClick={handleGetInfoDetail_Many}>
-                                <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>
-                            </span>
                         <table class="table">
                             <thead>
                             <tr>

@@ -60,7 +60,14 @@ class CartController extends Controller
         $soluong = $request->input('soluong');
         $tonggia = $request->input('tonggia');
 
-        DB::update("UPDATE chitiet_giohangs SET SOLUONG = '$soluong', TONGGIA = '$tonggia' WHERE MASP = '$masp' AND MATK = '$matk' AND MAMAU = '$mamau' AND MASIZE = '$masize' ");
+        DB::update(
+            "UPDATE chitiet_giohangs 
+            SET SOLUONG = '$soluong', TONGGIA = '$tonggia' 
+            WHERE MASP = '$masp' 
+            AND MATK = '$matk' 
+            AND MAMAU = '$mamau' 
+            AND MASIZE = '$masize' "
+        );
         return response()->json([
             'message' => 200,
             'matk' => $matk,

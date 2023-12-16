@@ -184,6 +184,36 @@ class AdminManageOrderController extends Controller
 
         foreach($listMASPTranferState as $item){
             DB::update("UPDATE donhangs set TRANGTHAI_DONHANG = '$nameStatusWillUpdate' where MADH = $item");
+            if($nameStatusWillUpdate === 'Đã huỷ'){
+                $data_CTDH = DB::select(
+                    "SELECT sanpham_mausac_sizes.MAXDSP, 
+                    sanpham_mausac_sizes.SOLUONG as SLSP, chitiet_donhangs.SOLUONG as SLSP_Huy, 
+                    MATK, MASP, MASIZE, MAMAU
+                    FROM chitiet_donhangs, donhangs, sanpham_mausac_sizes
+                    WHERE donhangs.MADH = $item
+                    AND chitiet_donhangs.MADH = donhangs.MADH
+                    AND sanpham_mausac_sizes.MAXDSP = chitiet_donhangs.MAXDSP"
+                ); 
+                foreach($data_CTDH as $item2){  
+                    DB::update(
+                        "UPDATE sanpham_mausac_sizes 
+                        SET SOLUONG = ?
+                        where MAXDSP = ?", 
+                        [$item2->SLSP + $item2->SLSP_Huy, $item2->MAXDSP]
+                    ); 
+                } 
+                $obj_mavoucher = DB::select("SELECT MAVOUCHER, MADH FROM donhang_vouchers WHERE MADH = ?", [$item]);
+                if($obj_mavoucher != null){
+                    $mavoucher = $obj_mavoucher[0]->MAVOUCHER;
+                    $info_voucher = DB::select("SELECT SOLUONG_CONLAI FROM vouchers WHERE MAVOUCHER = '$mavoucher'");
+                    DB::update(
+                        "UPDATE vouchers 
+                        SET SOLUONG_CONLAI = ? + 1
+                        where MAVOUCHER = ?", 
+                        [$info_voucher[0]->SOLUONG_CONLAI, $mavoucher]
+                    );
+                }
+            }
         }
         // DB::update("UPDATE donhangs set TRANGTHAI_DONHANG = '$nameStatusWillUpdate' where MADH = 55");
 

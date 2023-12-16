@@ -25,26 +25,36 @@ class SearchProductController extends Controller
         $filter = $request->input('filter'); 
         $tensp = $request->input('textQuery');
         $data_product = [];    
- 
+        $data_query =  
+            "SELECT * FROM sanphams, hinhanhsanphams 
+            WHERE hinhanhsanphams.masp = sanphams.masp 
+            AND MAHINHANH LIKE '%thumnail%'  
+            AND TENSP LIKE '%$tensp%'";
+
         if($filter == 'moinhat'){
             $data_product = DB::select("SELECT * from sanphams where TENSP LIKE '%$tensp%' ORDER BY created_at DESC");
+            $data_product = DB::select("$data_query ORDER BY created_at DESC");
             return response()->json([
                 'data_product' => $data_product, 
                 'filter'=> $filter,
             ]);
         }
         else if($filter == 'banchay'){
-            $data_product = DB::select("SELECT chitiet_donhangs.MASP, TENSP, GIAGOC, GIABAN from chitiet_donhangs, sanphams
-                                        where chitiet_donhangs.MASP = sanphams.MASP AND TENSP = '$tensp' 
-                                        group by chitiet_donhangs.MASP
-                                        order by SUM(SOLUONG) DESC
-                                        ");
+            $data_product = DB::select(
+                "SELECT chitiet_donhangs.MASP, TENSP, GIAGOC, GIABAN, imgURL
+                from chitiet_donhangs, sanphams, hinhanhsanphams
+                where chitiet_donhangs.MASP = sanphams.MASP 
+                AND hinhanhsanphams.masp = sanphams.masp
+                AND TENSP = '$tensp' 
+                group by chitiet_donhangs.MASP
+                order by SUM(SOLUONG) DESC"
+            );
         }
         else if($filter == 'thapDenCao'){
-            $data_product = DB::select("SELECT * from sanphams where TENSP = '$tensp' ORDER BY GIABAN ASC");
+            $data_product = DB::select("$data_query ORDER BY GIABAN ASC");
         }
         else if($filter == 'caoDenThap'){
-            $data_product = DB::select("SELECT * from sanphams where TENSP = '$tensp' ORDER BY GIABAN DESC");
+            $data_product = DB::select("$data_query ORDER BY GIABAN DESC");
         }
 
         return response()->json([
@@ -54,8 +64,14 @@ class SearchProductController extends Controller
     }
     public function search(Request $request){
         $searchQuery = $request->query('query');
-        $data = sanpham::where('TENSP', 'LIKE', "%$searchQuery%")->get();
-
+        // $data = sanpham::where('TENSP', 'LIKE', "%$searchQuery%")->get();
+        $data = DB::select(
+            "SELECT * FROM sanphams, hinhanhsanphams 
+            WHERE hinhanhsanphams.masp = sanphams.masp 
+            AND MAHINHANH LIKE '%thumnail%'
+            AND TENSP LIKE '%$searchQuery%' 
+            ORDER BY created_at ASC"
+        );
         return response()->json([
             'data' => $data,
         ]);
