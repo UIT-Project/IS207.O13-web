@@ -8,8 +8,10 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 
 function MyOrder(){
+    const {formatPrice} = useGlobalVariableContext(); 
     const numberOrderEachPage = 20;
     const [xoadau, setXoaDau] = useState(0);
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
@@ -468,7 +470,7 @@ function MyOrder(){
                                 <td data-label="Day">{product.NGAYORDER}</td>
                                 <td> {product.HINHTHUC_THANHTOAN}  </td>
                                 <td> {product.TRANGTHAI_THANHTOAN}  </td>
-                                <td data-label="Subtotal">{product.TONGTIENDONHANG}</td>
+                                <td data-label="Subtotal">{formatPrice(product.TONGTIENDONHANG)}</td>
                                 <td data-label="update">
                                     <div class="icon-update">
                                          <span onClick={()=>handleWatchOrderDetail(product.MADH)} >
@@ -562,7 +564,7 @@ function MyOrder(){
         <td data-label="Order-code">{item.TENSP}</td>
         <td data-label="Name">{item.TENMAU}</td>
         <td data-label="Phone-number"> {item.MASIZE} </td>
-        <td data-label="Phone-number">{item.GIABAN}  </td>
+        <td data-label="Phone-number">{formatPrice(item.GIABAN)}  </td>
         <td data-label="Phone-number">  {item.SOLUONG}   </td> 
             {/* <td data-label="Address">
             {infoOrderDetail.data_relative_Donhang.TINH_TP}
@@ -655,9 +657,9 @@ function MyOrder(){
                                 <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TRANGTHAI_DONHANG}   </td>
                                 <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TRANGTHAI_THANHTOAN}   </td>
                                 <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.HINHTHUC_THANHTOAN}   </td>
-                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TONGTIEN_SP}   </td>
-                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.PHIVANCHUYEN}   </td>
-                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.TONGTIENDONHANG}   </td>
+                                <td data-label="Phone-number">  {formatPrice(infoOrderDetail.data_relative_Donhang.TONGTIEN_SP)}   </td>
+                                <td data-label="Phone-number">  {formatPrice(infoOrderDetail.data_relative_Donhang.PHIVANCHUYEN)}   </td>
+                                <td data-label="Phone-number">  {formatPrice(infoOrderDetail.data_relative_Donhang.TONGTIENDONHANG)}   </td>
                                 <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.MAVOUCHER}   </td>
                                  {/* <td data-label="Address">
                                     {infoOrderDetail.data_relative_Donhang.TINH_TP}

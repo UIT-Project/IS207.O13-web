@@ -7,6 +7,8 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
+
  
 function Cart() {
 
@@ -18,6 +20,8 @@ function Cart() {
     // 5.Click để chuyển sang thanh toán
 
     //dùng ctrl + f để biết những hàm handle nằm ở thẻ tag nào trong phần return
+
+    const {formatPrice} = useGlobalVariableContext(); 
 
     //isCheckedAll xử lý khi tất cả sản phẩm trong giỏ hàng được chọn để thanh toán
     const [isCheckedAll, setIsCheckedAll] = useState(false); 
@@ -205,7 +209,7 @@ function Cart() {
                 </td>
                 <td>
                     <div class="box-row1-column2 box-row1">
-                        <b class="row1-item">{item.GIABAN}</b>
+                        <b class="row1-item">{formatPrice(item.GIABAN)}</b>
                     </div>
                 </td>
                 <td>
@@ -215,7 +219,7 @@ function Cart() {
                 </td>
                 <td>
                     <div class="box-row1-column4 box-row1">
-                        <b class="row1-item">{item.TONGGIA}</b>
+                        <b class="row1-item">{formatPrice(item.TONGGIA)}</b>
                     </div>
                 </td>
                 <td>
@@ -273,7 +277,7 @@ function Cart() {
                     <p><b>Tổng tiền</b></p>
                     <p class="total">
                         <b>
-                            {tongTienAllItem}
+                            {formatPrice(tongTienAllItem)}
                             đ
                         </b>
                     </p>
