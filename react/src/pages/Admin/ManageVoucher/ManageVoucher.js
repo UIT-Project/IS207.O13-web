@@ -9,10 +9,13 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faFloppyDisk, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
 
 
 function ManageVoucher()
 {
+    const {formatPrice} = useGlobalVariableContext(); 
+
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchVoucherDetail, setWatchVoucherDetail] = useState(false);
@@ -797,7 +800,7 @@ function ManageVoucher()
                                         type="text" class="form-control widthInputDate" placeholder="Giá trị đơn hàng tối thiểu" 
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="minOrderValue"  
-                                        value={infoUpdateVoucher.minOrderValue}
+                                        value={formatPrice(infoUpdateVoucher.minOrderValue)}
                                         disabled={isUpdating ? false : true}
                                     />
                                     <span className={`red_color ${isEmpty && infoUpdateVoucher.minOrderValue === '' ? '' : 'display_hidden'}`}>Nhập giá trị hoá đơn tối thiểu</span>
@@ -809,7 +812,7 @@ function ManageVoucher()
                                         type="text" class="form-control widthInputDate" placeholder="Tiền giảm tối đa" 
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="maxDecreaseMoney"   
-                                        value={infoUpdateVoucher.maxDecreaseMoney}
+                                        value={formatPrice(infoUpdateVoucher.maxDecreaseMoney)}
                                         disabled={isUpdating ? false : true}
                                     />
                                     <span className={`red_color ${isEmpty && infoUpdateVoucher.maxDecreaseMoney === '' ? '' : 'display_hidden'}`}>Nhập giá trị giảm tối đa</span>
@@ -922,8 +925,8 @@ function ManageVoucher()
                                 <td data-label="Phone-number">{voucher.THOIGIANBD}</td>
                                 <td data-label="Address">{voucher.THOIGIANKT}</td>
                                 <td data-label="Day">{voucher.SOLUONG}</td>
-                                <td data-label="Day">{voucher.GIATRI_DH_MIN}</td>
-                                <td data-label="Day">{voucher.GIATRI_GIAM_MAX}</td> 
+                                <td data-label="Day">{formatPrice(voucher.GIATRI_DH_MIN)}</td>
+                                <td data-label="Day">{formatPrice(voucher.GIATRI_GIAM_MAX)}</td> 
                                 <td data-label="update">
                                     <div class="icon-update">
                                         {/* <FontAwesomeIcon  class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon> */}

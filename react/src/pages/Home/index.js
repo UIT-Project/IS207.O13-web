@@ -105,11 +105,11 @@ function Home(){
                         </div>
                         <div class="product_item__summary">
                             <a href="#">
-                                <h6 class="product_item__summary__title">{product.TENSP}</h6>
+                                <h6 class="product_item__summary__title">{formatPrice(product.TENSP)}</h6>
                             </a>
                             <div class="product_item__summary__price_and_heart">
                                 <div class="product_item__summary__price">
-                                    <span class="product_item__summary__sale_price">{product.GIABAN}₫
+                                    <span class="product_item__summary__sale_price">{formatPrice(product.GIABAN)}₫
                                     </span>
                                     <span class="product_item__summary__origin_price">
                                         <del>{product.GIAGOC}₫</del>

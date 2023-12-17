@@ -1,18 +1,18 @@
 import "./manageProduct.css"
 import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
-
 import request from "../../../utils/request";
-  
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry, faFloppyDisk, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faL, faLeftLong, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
-
+import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
 
 function ManageProduct()
 {
+    const {formatPrice} = useGlobalVariableContext(); 
+
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchProductDetail, setWatchProductDetail] = useState(false);
@@ -1128,7 +1128,7 @@ function ManageProduct()
                                             type="text" class="form-control width_gia" placeholder="Giá niêm yết" 
                                             onChange={handleInputInfoUpdateProduct}
                                             name="originPrice"  
-                                            value={infoUpdateProduct.originPrice}
+                                            value={formatPrice(infoUpdateProduct.originPrice)}
                                             disabled={isUpdating ? false : true}
 
                                         />
@@ -1141,7 +1141,7 @@ function ManageProduct()
                                             type="text" class="form-control width_gia" placeholder="Giá bán" 
                                             onChange={handleInputInfoUpdateProduct}
                                             name="sellPrice"   
-                                            value={infoUpdateProduct.sellPrice}
+                                            value={formatPrice(infoUpdateProduct.sellPrice)}
                                             disabled={isUpdating ? false : true}
                                         />
                                         <span className={`red_color ${isEmpty && infoUpdateProduct.sellPrice === '' ? '' : 'display_hidden'}`}>Nhập giá bán trước khi lưu</span>
@@ -1335,8 +1335,8 @@ function ManageProduct()
                             <tr key={index}  id={`product_${product.MASP}`}>
                                 <td data-label="Order-code">{product.MASP}</td>
                                 <td data-label="Name">{product.TENSP}</td>
-                                <td data-label="Phone-number">{product.GIABAN}</td>
-                                <td data-label="Address">{product.GIAGOC}</td>
+                                <td data-label="Phone-number">{formatPrice(product.GIABAN)}</td>
+                                <td data-label="Address">{formatPrice(product.GIAGOC)}</td>
                                 <td data-label="Day">{product.SOLUONGCONLAI}</td>
                                 <td>{product.SOLUONGDABAN}</td>  
                                 <td>{product.TENPL2}</td>  

@@ -16,6 +16,7 @@ function Payment(){
     //Khi thanh toán thì cần phải lôi thông tin sản phẩm trong đơn hàng, địa chỉ cũ của người dùng đã đặt hàng và voucher
     //nên infoForPayment sẽ lưu những dữ liệu này khi load vào trang web payment
 
+    const {formatPrice} = useGlobalVariableContext(); 
     const [isLoading, setIsLoading] = useState(false);
     const [iserror_soluong_SP, setIsError_soluong_SP] = useState(false);
     const {isClickedPayment, setIsClickedPayment} = useGlobalVariableContext(); 
@@ -310,9 +311,9 @@ function Payment(){
                     <br/>
                     <span>{item.TENMAU}, {item.MASIZE}</span>
                 </td>
-                <td class="col-2">{item.GIABAN}</td>
+                <td class="col-2">{formatPrice(item.GIABAN)}</td>
                 <td class="col-2">{item.SOLUONG}</td>
-                <td class="col-2">{item.TONGGIA}</td>
+                <td class="col-2">{formatPrice(item.TONGGIA)}</td>
             </tr>
         )
     })
@@ -344,8 +345,6 @@ function Payment(){
         );
     })
 
-
-
     const handleFormSubmit = (event) => {
         const form = event.currentTarget;
 
@@ -356,18 +355,6 @@ function Payment(){
 
         setIsInputShipInformationValidated(true);
     };
-
-    //Test
-    const handleClickTest = () => {
-        const isEmpty = Object.values(shipInformation).some(value => value === '');
-
-        // Nếu có bất kỳ thông tin nào trống, hiển thị thông báo
-        if (isEmpty) {
-            alert('Vui lòng điền đầy đủ thôn<g tin');
-        } else {
-            // Thực hiện những câu lệnh khác nếu không có thành phần nào trống
-        }
-    }
     
     //lưu thông tin thanh toán
     const handleSaveInfoForPayment = () => {
@@ -685,7 +672,7 @@ function Payment(){
                                 { 
                                     typeof(discountVoucher) === 'string' && discountVoucher !== '0'
                                     ? discountVoucher 
-                                    : `-${parseInt(discountVoucher * tongtienSP)}đ`
+                                    : `-${formatPrice(parseInt(discountVoucher * tongtienSP))}đ`
                                 }
                             </span>
                         </div>
@@ -696,7 +683,7 @@ function Payment(){
                         </div>
                         <div class="col-4"></div>
                         <div class="col-2 text-start">
-                            <span class="discount_price">{tongtienSP}</span>
+                            <span class="discount_price">{formatPrice(tongtienSP)}</span>
                         </div>
                     </div>
                     <div class="row justify-content-end">
@@ -710,7 +697,7 @@ function Payment(){
                             </select> */}
                         </div>
                         <div class="vertical_align_center col-2 text-start">
-                            <span>{phivanchuyen}đ</span>
+                            <span>{formatPrice(phivanchuyen)}đ</span>
                         </div>
                     </div>
                     <div class="row justify-content-end">
@@ -736,7 +723,7 @@ function Payment(){
                         <div class="col-2 text-start">
                             <span class="discount_price fs-4 fw-bold">
                         {/* {tongtienSP + phivanchuyen - parseInt(discountVoucher)} */}
-                        {tongSoTien === '' ? '' : parseInt(tongSoTien)}
+                        {tongSoTien === '' ? '' : formatPrice(parseInt(tongSoTien))}
                         đ
                     </span>
                         </div>
