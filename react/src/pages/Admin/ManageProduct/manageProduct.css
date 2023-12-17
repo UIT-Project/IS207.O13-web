@@ -269,7 +269,8 @@ tr {
     width: 50%;
 }
 .checkbox_sizes{
-    margin: 0px 3px 0px 15px;
+    margin: 0px !important;
+    opacity: 0;
 }
 
 .choose_size{
@@ -483,6 +484,12 @@ tr {
 
 .input_gia_div{
     width: 50%;
+}
+.input_gia_div2{
+    
+    display: flex !important;
+    justify-content: center !important;
+    margin-left: 3rem; 
 }
 
 
@@ -752,6 +759,8 @@ tr {
 
 .prview_image__img{
     border-radius: 5%;
+    height: 14rem;
+    width: 12rem;
 }
 
 .prview_imag{
@@ -922,4 +931,21 @@ tr {
     width: 1rem !important;
     height: 1rem !important;
     margin: auto 0.8rem !important;
+}
+
+.size_icon1{ 
+    /* height: 1.875rem;
+    width: 2.3rem; */
+    border-radius: 1.2rem;
+    border: 1px solid rgb(194, 194, 194);
+    padding: 0.1rem 0.5rem;
+    font-size: 1rem;
+}
+
+.size_icon_color{
+    padding: 0.1rem 0.3rem; 
+}
+
+.border_size_color{
+    border: 3px solid red;
 }

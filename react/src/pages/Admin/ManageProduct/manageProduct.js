@@ -17,6 +17,9 @@ function ManageProduct()
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchProductDetail, setWatchProductDetail] = useState(false);
     var quantityDeleteProductInOnePage = 0;
+
+    const [listDetailCategory2, setListDetailCategory2] = useState([])
+
     //update
     const searchParams  = new URLSearchParams(window.location.search);
     
@@ -50,6 +53,7 @@ function ManageProduct()
         originPrice: '',
         sellPrice: '',
         typeProduct: '',
+        typeProduct2: '',
         desctiption: '',
         checkboxColor: [],
         checkboxSize: [],
@@ -140,6 +144,7 @@ function ManageProduct()
         else if(
             name === 'nameProduct' || 
             name === 'typeProduct' || 
+            name === 'typeProduct2' || 
             name === 'desctiption' || 
             name === 'checkboxColor' ||
             name === 'checkboxSize' ||
@@ -158,52 +163,29 @@ function ManageProduct()
         e.persist();
         var name = e.target.name;
         var value = e.target.value;
-        const lenght_listquantity = listQuantity.length;
-        const lenght_checkboxSize = infoUpdateProduct.checkboxSize.length;
-        const lenght_checkboxColor = infoUpdateProduct.checkboxColor.length;
-        const sum_Size_Quantity = lenght_checkboxSize + lenght_listquantity;
-        const sum_Color_Quantity = lenght_checkboxColor + lenght_listquantity;
+        
+        let update = [...listQuantity] 
         if(name === 'checkboxColor'){
             value = parseInt(value)
-            let update = [...listQuantity]
-            let newdata = []
-            // for(let j = 0; j < lenght_checkboxSize; j++){
-            //     update = [
-            //         ...update,
-            //         { id: j, soluong: 0}
-            //     ] 
-            // }
-
-            for(let j = lenght_checkboxColor + 1; j <= sum_Size_Quantity; j +=   lenght_checkboxColor + 1){
-                newdata.push({ id: j, soluong: 0} )    
-            }
-
-            newdata.forEach((newItem) => {
-                const indexToInsert = newItem.id - 1; // Vị trí cần chèn dữ liệu mới
-                update.splice(indexToInsert, 0, newItem);
-            });
-
-            update = update.map((item, index) => {
-                return {
-                  ...item,
-                  id: index + 1
-                };
-            });
-
-            setListQuantity(update)
+            infoUpdateProduct.checkboxSize.forEach(itemSize => {
+                update = [
+                    ...update,
+                    { mamau: value, maSize: itemSize, soluong: 0}
+                ]  
+            })   
         }
-        else if(name === 'checkboxSize'){
-            value = parseInt(value)
-            let update = []
-            for(let j = lenght_listquantity + 1; j <= sum_Color_Quantity; j++){
-                 
-                update.push({ id: j, soluong: 0} )    
-            }
-            setListQuantity(update)
+        else if(name === 'checkboxSize'){ 
+            infoUpdateProduct.checkboxColor.forEach(itemColor => {
+                update = [
+                    ...update,
+                    { mamau: itemColor, maSize: value, soluong: 0}
+                ]  
+            })  
         }
+        setListQuantity(update)
+        console.log(update, 'update2222222222', name)
         if(infoUpdateProduct[name].includes(value)){
-            setInfoUpdateProduct({...infoUpdateProduct, [name]: infoUpdateProduct[name].filter(item => item !== value)});
-            console.log(infoUpdateProduct, 'ákdksdk222'); 
+            setInfoUpdateProduct({...infoUpdateProduct, [name]: infoUpdateProduct[name].filter(item => item !== value)}); 
         }
         else{
             setInfoUpdateProduct({...infoUpdateProduct, [name]: [...infoUpdateProduct[name], value]})
@@ -326,7 +308,7 @@ function ManageProduct()
         request.get(`/api/getInfoForAddProduct`)
         .then(res => {
             setListColor(res.data.listColor);
-            // console.log(res.data.listColor, 'color      lll');
+            console.log(res.data.listColor, 'color      lll');
         })
         .catch(error =>{
             console.log(error)
@@ -447,6 +429,7 @@ function ManageProduct()
                 originPrice: res.data.dataProductDetail_sanphams[0].GIAGOC,
                 sellPrice: res.data.dataProductDetail_sanphams[0].GIABAN,
                 typeProduct: res.data.dataProductDetail_sanphams[0].MAPL_SP,
+                typeProduct2: res.data.dataProductDetail_sanphams[0].MAPL_SP2,
                 desctiption: res.data.dataProductDetail_sanphams[0].MOTA, 
                 checkboxSize:  res.data.dataProductDetail_sanpham_mausac_sizes__sizes.map(item => item.MASIZE),
                 imgurl:  res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs.map(item => item.imgURL),
@@ -460,14 +443,7 @@ function ManageProduct()
             }) 
  
             
-            console.log(parseInt(res.data.indexthumnail), 'test 00000');
-            // res.data.dataProductDetail_sanphams.map(item => 
-            //     setInfoUpdateProduct({
-            //         ...infoUpdateProduct,
-            //         nameProduct: item.TENSP
-            //     })
-            // )
-            // console.log(res);
+            console.log(parseInt(res.data.indexthumnail), 'test 00000'); 
             setInfoProductDetail({
                 dataProductDetail_sanphams: res.data.dataProductDetail_sanphams,
                 dataProductDetail_sanpham_mausac_sizes__sizes: res.data.dataProductDetail_sanpham_mausac_sizes__sizes,
@@ -476,33 +452,26 @@ function ManageProduct()
             })
             
 
-            var updatedList = []
-            // for(let j = 0; 
-            //     j < res.data.dataProductDetail_sanpham_mausac_sizes__sizes.length * res.data.dataProductDetail_sanpham_mausac_sizes__colors.length; 
-            //     j++
-            // ){ 
-            //     updatedList = [
-            //         ...updatedList,
-            //         { id: j, soluong: '' }
-            //     ] 
-            // }
-            let j = 1
+            var updatedList = []  
             res.data.dataProductDetail_sanpham_mausac_sizes__sizes.forEach(itemSize => {
                 res.data.dataProductDetail_sanpham_mausac_sizes__colors.forEach(itemColor => {
                     res.data.dataProductDetail_sanpham_mausac_sizes__soluongs.forEach(itemSoluong => {
                         if(itemSoluong.HEX === itemColor.HEX && itemSoluong.MASIZE === itemSize.MASIZE){
                             updatedList = [
                                 ...updatedList,
-                                { id: j, soluong: itemSoluong.SOLUONG }
-                            ] 
-                            j++;
+                                { 
+                                    mamau: itemColor.MAMAU,
+                                    maSize: itemSize.MASIZE,
+                                    soluong: itemSoluong.SOLUONG 
+                                }
+                            ]  
                         }
-                        console.log(itemSoluong.HEX, itemColor.HEX, itemSoluong.MASIZE, itemSize, '090909', j)
+                        console.log(itemSoluong.HEX, itemColor.HEX, itemSoluong.MASIZE, itemSize, '090909')
                     })
                 })
             })
  
-            console.log(updatedList, "nhập số lượng", res.data.dataProductDetail_sanpham_mausac_sizes__soluongs)
+            console.log(updatedList, res.data.dataProductDetail_sanpham_mausac_sizes__colors, "nhập số lượng", res.data.dataProductDetail_sanpham_mausac_sizes__soluongs, res.data.dataProductDetail_sanpham_mausac_sizes__colors)
             setListQuantity(updatedList)  
         })
     };
@@ -865,54 +834,70 @@ function ManageProduct()
         console.log(orderStatus.nam.orderList, 'okokokokokok')
     }, [])  
 
+    const getDetailCategory2 = () => {
+        // const data = {
+        //     typeProduct_mapl: infoUpdateProduct.typeProduct
+        // }
+        request.get(`api/getDetailCategory2`, {params: {typeProduct_mapl: infoUpdateProduct.typeProduct}})
+        .then(res => {
+            console.log(res.data.listDetailCategory2)
+            setListDetailCategory2(res.data.listDetailCategory2)
+        })                                                                                      
+        .catch(err => {
+            console.log(infoUpdateProduct.typeProduct, err)
+        })
+    } 
+    
+    useEffect(() => {
+        if(infoUpdateProduct.typeProduct !== 0 && infoUpdateProduct.typeProduct !== ''){
+            console.log(infoUpdateProduct.typeProduct, 'phanloai2')
+            getDetailCategory2();
+        }
+    }, [infoUpdateProduct.typeProduct])
+
     //update
 
     const handleClickUpdate= () => {
         setIsUpdating(true)
     }
-    const handleInputQuantity = (e, i) => {  
+    const handleInputQuantity = (e, foundIndex) => {  
 
         let value  = parseInt( e.target.value)
-        const updatedList = listQuantity.map(item => {
-            if (item.id === i) {
+        const updatedList = listQuantity.map((item, index) => {
+            if (index === foundIndex) {
                 return { ...item, soluong: value }; // Cập nhật giá trị soluong cho phần tử cần chỉnh sửa
             }
             return item;
         });
-        console.log(updatedList, "nhập số lượng")
+        console.log(updatedList, "nhập số lượng", foundIndex, value)
         setListQuantity(updatedList)  
     }
 
     const returnManageProduct = () => { 
         window.location.href = `/admin/manageProduct`; 
     }
+    const renderListDetailCategory2 = listDetailCategory2.map(item => 
+        <option value={item.MAPL2}>{item.TENPL2}</option> 
+    )
 
-    const renderInputQuantity = (i) => {  
+    const renderInputQuantity = (itemColor, itemSize) => {  
         console.log(listQuantity, 'llllkksdk8', i)
-
-        // if(listQuantity.length > 0){
-            // let updatedList_ok = listQuantity.map(item => { 
-            //     if (item.id === i) {
-            //         return { ...item, soluong: slbandau }; // Cập nhật giá trị soluong cho phần tử cần chỉnh sửa
-            //     }
-            //     return item;
-            // });
-            // console.log(updatedList_ok, "nhập số lượng")
-            // setListQuantity(updatedList_ok)  
-        // }
-
-        return(
-            <input 
-                type="text" 
-                class="form-control" 
-                placeholder="Nhập số lượng"
-                name="listQuantity" 
-                value={listQuantity.length > 0 ? listQuantity[i-1].soluong : ''} // Đảm bảo giá trị null hoặc undefined không gây lỗi
-                onChange={(e) => handleInputQuantity(e, i)}
-                disabled={isUpdating ? false : true}
-
-            />
-        )
+ 
+        const foundIndex = listQuantity.findIndex(item => item.mamau === itemColor && item.maSize === itemSize);
+        console.log(foundIndex, listQuantity[foundIndex], 'foundindex')
+        if(foundIndex !== -1){
+            return(
+                <input 
+                    type="text" 
+                    class="form-control" 
+                    placeholder="Nhập số lượng"
+                    name="listQuantity" 
+                    value={listQuantity.length > 0 ? listQuantity[foundIndex].soluong : ''} // Đảm bảo giá trị null hoặc undefined không gây lỗi
+                    onChange={(e) => handleInputQuantity(e, foundIndex)}
+                    disabled={isUpdating ? false : true} 
+                />
+            )
+        }
     }
 
     const renderListColor = listColor.map((item) => {
@@ -924,8 +909,21 @@ function ManageProduct()
                     value={item.MAMAU}
                     checked={infoUpdateProduct.checkboxColor.includes(item.MAMAU)}
                     onChange={handleInputInfoUpdateProduct_checkbox}
+                    disabled={isUpdating ? false : true}
+
                 ></input>
-                <label for={item.MAMAU}>
+                <label 
+                    for={item.MAMAU}
+                    className={
+                        ` 
+                            size_icon1 size_icon_color
+                            ${infoUpdateProduct.checkboxColor.find(itemChecked => itemChecked === item.MAMAU) 
+                                ? 'border_size_color' 
+                                : ''
+                            }
+                        `
+                    }
+                >
                     <div className="checkbox_color" style={{backgroundColor: `${item.HEX}`}}></div>
                 </label>
             </div>
@@ -936,15 +934,7 @@ function ManageProduct()
         const foundItem_size = infoUpdateProduct.quantity.some(item => item.MASIZE === itemSize);
         const foundItem_color = infoUpdateProduct.quantity.some(item => item.HEX === `${listColor[itemColor - 1].HEX}`);
         console.log(foundItem_size, foundItem_color, 'AKSJDKJSDSK')
-        if(foundItem_size === false || foundItem_color === false){
-            // setListQuantity([
-            //     ...listQuantity,
-            //     {
-            //         id: ++i,
-            //         soluong: 0
-            //     }
-            // ])
-            // console.log('okokletgo', i, listQuantity)
+        if(foundItem_size === false || foundItem_color === false){ 
             return ( 
                 <div className="display_flex_ee">
                     <div>
@@ -953,7 +943,7 @@ function ManageProduct()
 
                     <div>
                             {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
-                        {renderInputQuantity(++i)}                                                                
+                        {renderInputQuantity(itemColor, itemSize)}                                                                
                     </div>
                 </div> 
             )
@@ -970,13 +960,13 @@ function ManageProduct()
                         // console.log(itemColor, 'item')
                         return(
                             <div className="input_quantity__quantity" key={indexColor}>
-                                <div className="input_quantity__product_color" style={{backgroundColor: `${listColor[itemColor - 1].HEX}`}}></div>
+                                <div className="input_quantity__product_color" style={{backgroundColor: `${listColor[indexColor].HEX}`}}></div>
                                 <div> 
                                     {/* {renderInputQuantity_0(itemColor, itemSize) }  */}
                                     {
 
                                         infoUpdateProduct.quantity.map((item, indexQuantity) => { 
-                                            if(item.HEX === `${listColor[itemColor - 1].HEX}` && item.MASIZE === itemSize){
+                                            if(item.HEX === `${listColor[indexColor].HEX}` && item.MASIZE === itemSize){
                                                 // handleInputQuantity(item.SOLUONG, i)
                                                 return(
                                                     <div className="display_flex_ee">
@@ -986,7 +976,7 @@ function ManageProduct()
 
                                                         <div>
                                                                 {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
-                                                            {renderInputQuantity(++i)}                                                                
+                                                            {renderInputQuantity(itemColor, itemSize)}                                                                
                                                         </div>
                                                     </div>
                                                 ) 
@@ -1015,7 +1005,8 @@ function ManageProduct()
         return ( 
             <div className="prview_image" key={image.id}>
                 <div>
-                    <img src={image.src} key={image.id} width={150} height={250} className="prview_image__img"></img> 
+                {/* width={150} height={250} */}
+                    <img src={image.src} key={image.id}  className="prview_image__img"></img> 
                 </div>
                 <input 
                     type="radio" name="indexThumnail" 
@@ -1046,7 +1037,11 @@ function ManageProduct()
                     checked={(infoUpdateProduct.indexThumnail) === index}
                 ></input>
                 <div className="delete_prview_image">
-                    <button  className="delete_prview_image__css"  onClick={() => handleDeletePreviewImage('imageFromServe', index)}>
+                    <button  
+                        className="delete_prview_image__css" 
+                        onClick={() => handleDeletePreviewImage('imageFromServe', index)}
+                        disabled={isUpdating ? false : true}
+                    >
                         <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
                     </button>
                 </div>
@@ -1056,13 +1051,30 @@ function ManageProduct()
 
     const renderCheckBoxSize = checkBoxSizeDefault.map((item, index) =>
         <div key={index} className="choose_size__div__item">
-            <input type="checkbox" id={`${item}`} className="checkbox_sizes"  
+            <input 
+                type="checkbox" id={`${item}`} 
+                className="checkbox_sizes"  
                 name="checkboxSize"
                 value={`${item}`}
                 checked={infoUpdateProduct.checkboxSize.includes(`${item}`)}
                 onChange={handleInputInfoUpdateProduct_checkbox}
+                disabled={isUpdating ? false : true}
+
             ></input>
-            <label for={`${item}`}>{item}</label> 
+            <label 
+                for={`${item}`} 
+                className={
+                    `
+                        size_icon1 
+                        ${infoUpdateProduct.checkboxSize.find(itemChecked => itemChecked === item) 
+                            ? 'border_size_color' 
+                            : ''
+                        }
+                    `
+                }
+            >
+                {item}
+            </label> 
         </div> 
     )
  
@@ -1088,7 +1100,7 @@ function ManageProduct()
                             <FontAwesomeIcon class={`fa-solid fa-pen-to-square `} icon={faPenToSquare} ></FontAwesomeIcon>
                         </span>
                     </div>
-                    <h2>Cập nhật sản phẩm</h2>
+                    <h2>CẬP NHẬT SẢN PHẨM</h2>
                     <div class="col-auto"></div>
                     <div class="body_box container col-lg-7">
                         
@@ -1139,7 +1151,7 @@ function ManageProduct()
                                 </div> 
                                     <span className={`red_color ${parseInt(infoUpdateProduct.originPrice) < parseInt(infoUpdateProduct.sellPrice) ? '' : 'display_hidden'}`}>Giá bán phải nhỏ hơn hoặc = giá niêm yết</span>
                             </div>
-                            <div class="row mb-3">
+                            <div class="row mb-3 ">
                                 <div class="col-4">
                                     <label for="#" class="form-label">Phân loại</label>
                                     <select class="form-select" required
@@ -1155,6 +1167,20 @@ function ManageProduct()
                                     <span className={`red_color ${isEmpty && infoUpdateProduct.typeProduct === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại</span>
 
                                 </div> 
+                                <div class="col-4">
+                                <label for="#" class="form-label">Phân loại chi tiết</label>
+                                <select class="form-select" required
+                                    onChange={handleInputInfoUpdateProduct}
+                                    name="typeProduct2"
+                                    value={infoUpdateProduct.typeProduct2} 
+                                    disabled={isUpdating ? false : true}
+                                >
+                                    <option selected value="0">-- Chọn phân loại chi tiết --</option>
+                                    {renderListDetailCategory2}
+                                </select>
+                                <span className={`red_color ${isEmpty && infoUpdateProduct.typeProduct2 === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại sản phẩm chi tiết</span>
+
+                            </div> 
                             </div>
 
                             <div className="row">
@@ -1230,7 +1256,7 @@ function ManageProduct()
                     <div class="col-auto"></div>
                 </div>
                 <div>
-                    <h2>Nhập số lượng</h2>
+                    <h2>NHẬP SỐ LƯỢNG</h2>
  
                     <div class="col-auto"></div>
                     <div class="body_box container col-lg-7">
@@ -1313,6 +1339,7 @@ function ManageProduct()
                                 <td data-label="Address">{product.GIAGOC}</td>
                                 <td data-label="Day">{product.SOLUONGCONLAI}</td>
                                 <td>{product.SOLUONGDABAN}</td>  
+                                <td>{product.TENPL2}</td>  
                                 <td data-label="update">
                                     <div class="icon-update">
                                         <span onClick={()=>handleWatchProductDetail(item, product.MASP, product)}>
@@ -1337,7 +1364,7 @@ function ManageProduct()
 
     const renderPagination = (item_status) => {
         return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
  
@@ -1361,6 +1388,7 @@ function ManageProduct()
                                 <th scope="col">Giá gốc</th>
                                 <th scope="col" >Số lượng còn lại</th> 
                                 <th scope="col" >Số lượng đã bán</th> 
+                                <th scope="col" >Danh mục</th> 
                                 <th scope="col"></th>
 
                             </tr>
@@ -1370,7 +1398,9 @@ function ManageProduct()
                             </tbody>
                         </table>
                     </div>
-                    { renderPagination(item) }
+                    <div>
+                        { renderPagination(item) }
+                    </div>
                     </div> 
                 ) 
             }

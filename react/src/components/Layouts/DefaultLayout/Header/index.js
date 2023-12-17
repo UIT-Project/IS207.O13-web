@@ -191,7 +191,7 @@ function Header({settoggleFunctionLoginLogout}){
 
     // xử lý searchProduct
     const handleSearchProduct = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         //gửi request tìm kiểm thông tin sản phẩm tơi serve với chuỗi nhập vào là infoCarts
         request.get(`/api/search?query=${textQuery}`)
         .then(res=>{
@@ -284,7 +284,18 @@ function Header({settoggleFunctionLoginLogout}){
                     <div class="header_body__search__div_css">
 
                         {/* ở đây có onChange */}
-                        <input type="text" placeholder="Tìm kiếm sản phẩm" class="header_body__search__input" name='searchProduct' onChange={(e) => setTextQuery(e.target.value)}/> 
+                        <input 
+                            type="text" 
+                            placeholder="Tìm kiếm sản phẩm" 
+                            class="header_body__search__input" 
+                            name='searchProduct' 
+                            onChange={(e) => setTextQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSearchProduct();
+                                }
+                            }}
+                        /> 
                         
                         {/* ở đây có  onClick*/}
                         <button class="header_body__search__button" onClick={handleSearchProduct}>

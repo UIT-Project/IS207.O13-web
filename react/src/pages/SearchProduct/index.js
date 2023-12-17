@@ -46,74 +46,44 @@ function SearchProduct(){
     
     const product = () => {
         if(Array.isArray(resultQuery)){
-            const url = `/infoProduct?id=${product.MASP}`;
             return(
-                resultQuery.map((product) => (
-                    // <div key={product.MASP} class="product_item_div__out">
-                    //     <div class="product_item_div__in">
-                    //         <a href="#">
-                    //             <div>
-                    //                 <img src={images.product_1} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
-                    //             </div>
-                    //         </a>
-                    //         <div class="product_item__summary">
-                    //             <a href="#">
-                    //                 <h6 class="product_item__summary__title">{product.TENSP}</h6>
-                    //             </a>
-                    //             <div class="product_item__summary__price_and_heart">
-                    //                 <div class="product_item__summary__price">
-                    //                     <span class="product_item__summary__sale_price">{product.GIABAN}₫
-                    //                     </span>
-                    //                     <span class="product_item__summary__origin_price">
-                    //                         <del>{product.GIAGOC}₫</del>
-                    //                     </span>
-                    //                 </div> 
-                    //                 <div>
-                    //                     {/* <button  className="product_item__summary__heart">
-                    //                         <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
-                    //                     </button>  */}
-                    //                 </div>
-                    //             </div>
-                    //         </div>
-                    //         <div class="grid__column_10__product_thumbail__yeuthich">
-                    //             <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
-                    //             <span class="grid__column_10__product_thumbail__text_yeuthich">{formatPrice(parseInt(100 - (product.GIABAN / product.GIAGOC * 100)))}%</span> 
-                    //         </div> 
-                    //     </div>
-                    // </div>
-                <div key={product.MASP} class="product_item_div__out">
-                    <a href={url}>
-                        <div class="product_item_div__in"> 
-                            <div>
-                                <img src={product.imgURL} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
-                            </div>
-                            <div class="product_item__summary">
-                                <a href="#">
-                                    <h6 class="product_item__summary__title">{product.TENSP}</h6>
-                                </a>
-                                <div class="product_item__summary__price_and_heart">
-                                    <div class="product_item__summary__price">
-                                        <span class="product_item__summary__sale_price space_item_in_a_row">{formatPrice(product.GIABAN)}₫
-                                        </span>
-                                        <span class="product_item__summary__origin_price space_item_in_a_row">
-                                            <del>{formatPrice(product.GIAGOC)}₫</del>
-                                        </span>
-                                    </div> 
-                                    <div>
-                                        {/* <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
-                                            <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
-                                        </button>  */}
+                resultQuery.map((product) => {
+                    const url = `/infoProduct?id=${product.MASP}`;
+                    return ( 
+                    <div key={product.MASP} class="product_item_div__out">
+                        <a href={url}>
+                            <div class="product_item_div__in"> 
+                                <div>
+                                    <img src={product.imgURL} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
+                                </div>
+                                <div class="product_item__summary">
+                                    <a href="#">
+                                        <h6 class="product_item__summary__title">{product.TENSP}</h6>
+                                    </a>
+                                    <div class="product_item__summary__price_and_heart">
+                                        <div class="product_item__summary__price">
+                                            <span class="product_item__summary__sale_price space_item_in_a_row">{formatPrice(product.GIABAN)}₫
+                                            </span>
+                                            <span class="product_item__summary__origin_price space_item_in_a_row">
+                                                <del>{formatPrice(product.GIAGOC)}₫</del>
+                                            </span>
+                                        </div> 
+                                        <div>
+                                            {/* <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
+                                                <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
+                                            </button>  */}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="grid__column_10__product_thumbail__yeuthich">
-                                <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
-                                <span class="grid__column_10__product_thumbail__text_yeuthich">{formatPrice(parseInt(100 - (product.GIABAN / product.GIAGOC * 100)))}%</span> 
+                                <div class="grid__column_10__product_thumbail__yeuthich">
+                                    <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
+                                    <span class="grid__column_10__product_thumbail__text_yeuthich">{formatPrice(parseInt(100 - (product.GIABAN / product.GIAGOC * 100)))}%</span> 
+                                </div> 
                             </div> 
-                        </div> 
-                    </a>
-                </div>
-                ))
+                        </a>
+                    </div>
+                    )
+                })
             )
         }
     }

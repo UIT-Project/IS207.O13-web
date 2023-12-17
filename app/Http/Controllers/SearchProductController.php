@@ -32,7 +32,7 @@ class SearchProductController extends Controller
             AND TENSP LIKE '%$tensp%'";
 
         if($filter == 'moinhat'){
-            $data_product = DB::select("SELECT * from sanphams where TENSP LIKE '%$tensp%' ORDER BY created_at DESC");
+            // $data_product = DB::select("SELECT * from sanphams where TENSP LIKE '%$tensp%' ORDER BY created_at DESC");
             $data_product = DB::select("$data_query ORDER BY created_at DESC");
             return response()->json([
                 'data_product' => $data_product, 
@@ -41,13 +41,15 @@ class SearchProductController extends Controller
         }
         else if($filter == 'banchay'){
             $data_product = DB::select(
-                "SELECT chitiet_donhangs.MASP, TENSP, GIAGOC, GIABAN, imgURL
-                from chitiet_donhangs, sanphams, hinhanhsanphams
-                where chitiet_donhangs.MASP = sanphams.MASP 
+                "SELECT sanphams.MASP, TENSP, GIAGOC, GIABAN, imgURL
+                from chitiet_donhangs, sanphams, hinhanhsanphams, sanpham_mausac_sizes
+                where chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
                 AND hinhanhsanphams.masp = sanphams.masp
-                AND TENSP = '$tensp' 
-                group by chitiet_donhangs.MASP
-                order by SUM(SOLUONG) DESC"
+                AND sanpham_mausac_sizes.masp = sanphams.masp
+                AND MAHINHANH LIKE '%thumnail%'  
+                AND TENSP LIKE '%$tensp%' 
+                group by sanphams.MASP, TENSP, GIAGOC, GIABAN, imgURL
+                order by SUM(chitiet_donhangs.SOLUONG) DESC"
             );
         }
         else if($filter == 'thapDenCao'){

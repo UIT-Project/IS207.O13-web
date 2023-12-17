@@ -19,8 +19,10 @@ return new class extends Migration
             $table->integer('GIAGOC');
             $table->integer('GIABAN');
             $table->unsignedInteger('MAPL_SP');
+            $table->unsignedInteger('MAPL_SP2');
             $table->longText('MOTA');     
             $table->foreign('MAPL_SP')->references('MAPL')->on('phanloai_sanphams');
+            $table->foreign('MAPL_SP2')->references('MAPL2')->on('phanloai_sanpham2s');
             $table->timestamps();
 
         });

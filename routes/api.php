@@ -9,6 +9,7 @@ use App\Http\Controllers\AddProductController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\AdminManageOrderController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CollectionController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\InfoProductController;
 use App\Http\Controllers\PaymentController;
@@ -95,12 +96,17 @@ Route::post('changePassword', [InfoAccountController::class, 'changePassword']);
 //ReviewProduct
 Route::post('saveReviewProduct', [ReviewProduct::class, 'saveReviewProduct']);
 
+//Collection
+Route::get('getQuantityCollectionToDevidePage', [CollectionController::class, 'getQuantityCollectionToDevidePage']);
+Route::get('getInfoCollection', [CollectionController::class, 'getInfoCollection']);
+
 
 //Admin - AddProduct
 Route::post('addProduct', [AddProductController::class, 'addProduct']);
 Route::get('getInfoForAddProduct', [AddProductController::class, 'getInfoForAddProduct']);
 Route::get('linkImageProduct', [AddProductController::class, 'linkImageProduct']);
 Route::get('updateQuantity', [AddProductController::class, 'updateQuantity']);
+Route::get('getDetailCategory2', [AddProductController::class, 'getDetailCategory2']);
 
 
 

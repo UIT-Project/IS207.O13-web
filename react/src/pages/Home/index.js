@@ -168,7 +168,7 @@ function Home(){
         {/* <!-- show_product hiển thị phần "SẢN PHẨM MỚI"--> */}
         <div class="show_product">
             <div class="show_product__title_div">
-                <h1 class="show_product__title">Sản phẩm mới</h1> 
+                <h1 class="show_product__title test">SẢN PHẨM MỚI</h1> 
             </div>
             {/* <!-- product_item_container__out khối bọc ngoài cho tất cả sản phẩm để dễ padding, margin --> */}
             <div class="product_item_container__out">
