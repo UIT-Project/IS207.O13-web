@@ -22,6 +22,7 @@ use App\Http\Controllers\ManageAccountCustomerController;
 use App\Http\Controllers\ManageAccountStaff;
 use App\Http\Controllers\MyOrderController;
 use App\Http\Controllers\ReviewProduct;
+use App\Http\Controllers\StatisticController;
 use App\Http\Controllers\VoucherController;
 
 /*
@@ -161,3 +162,8 @@ Route::get('infoVoucherDetail', [VoucherController::class, 'infoVoucherDetail'])
 Route::post('updateVoucher', [VoucherController::class, 'updateVoucher']);
 Route::get('getInfoSearchVoucher', [VoucherController::class, 'getInfoSearchVoucher']);
 Route::post('deleteVoucher', [VoucherController::class, 'deleteVoucher']);
+
+//Admin - Statistic
+Route::get('statisticRevenue', [StatisticController::class, 'statisticRevenue']);
+Route::get('performModifyDataset', [StatisticController::class, 'performModifyDataset']);
+Route::get('statisticOrderAndPayMethod', [StatisticController::class, 'statisticOrderAndPayMethod']);

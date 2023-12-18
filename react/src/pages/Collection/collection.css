@@ -121,7 +121,7 @@ a, button{
     border-radius: 10px;
 }
 .show_product{
-    margin-top: 4rem;
+    margin-top: 2rem;
 }
 .show_product__title{
     text-align: center;
@@ -472,4 +472,7 @@ a {
     border-radius: 0.3rem;
     color: white;
     font-weight: 550;
+}
+.productHaveFound{
+    margin-top: 1rem;
 }

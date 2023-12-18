@@ -908,7 +908,7 @@ function ManageOrder(){
     const renderPagination = (item_status) => {
         console.log(item_status, 'item_status')
         return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
 

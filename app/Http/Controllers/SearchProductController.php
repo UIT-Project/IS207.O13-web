@@ -61,7 +61,7 @@ class SearchProductController extends Controller
 
         return response()->json([
             'data_product' => $data_product, 
-            'filter'=> $filter,
+            'filter'=> $filter, 
         ]);
     }
     public function search(Request $request){

@@ -53,3 +53,78 @@ button {
     cursor: pointer;
     color: black;
 }
+.dropdowns {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+  }
+  
+  .dropdowns select {
+    margin-right: 10px;
+    padding: 5px;
+  }
+  
+  .week-dropdowns {
+    display: flex;
+  }
+  
+  .week-dropdowns select {
+    margin-right: 10px;
+  }
+
+  .faChartColumn{ 
+    font-size: 2rem;
+  }
+
+  .static_div{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Thêm dòng này */
+
+  }
+  .dateInputs_TTDH {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: yellow;
+    border-radius: 8px;
+    padding: 15px;
+  }
+  
+  .dateInputs_TTDH input[type="date"] {
+    border-radius: 10px;
+    padding: 8px;
+    font-size: 16px;
+    margin: 0 10px;
+    flex-grow: 1;
+  }
+
+  .pieChartContainer {
+    display: flex;
+    justify-content: center;
+  }
+
+  .labelContainer_tttt {
+    margin-left: 20px; /* Khoảng cách giữa PieChart và label */
+  }
+  
+  .label_tttt {
+    display: flex;
+    margin-bottom: 10px;
+  }
+  
+  .label_tttt span {
+    margin-right: 5px;
+  }
+
+  .chartCircle{
+    display: flex;
+    justify-content: space-around;
+    width: 80%;
+  }
+
+  .kjkjkshjdh{
+    margin-top: 100px;
+  }

@@ -5,6 +5,8 @@ import images from '../../../../assets/images'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { faCaretDown, faCartShopping, faMagnifyingGlass, faUser } from '@fortawesome/free-solid-svg-icons'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 
 //file css
 import './index.css'
@@ -197,7 +199,7 @@ function Header({settoggleFunctionLoginLogout}){
         .then(res=>{
             setResultQuery(res.data.data); 
             console.log(res.data.data, 'header');
-            Navigate(`/search?query=${textQuery}`);
+            Navigate(`/collection?query=${textQuery}`);
         })
         .catch(e => {
             console.log(e);
