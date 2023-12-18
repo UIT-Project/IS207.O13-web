@@ -28,14 +28,15 @@ class AddProductController extends Controller
         $GIAGOC = $objectInfoAddNewProduct->originPrice;
         $GIABAN = $objectInfoAddNewProduct->sellPrice;
         $MAPL_SP = $objectInfoAddNewProduct->typeProduct;
+        $MAPL_SP2 = $objectInfoAddNewProduct->typeProduct2;
         $MOTA = $objectInfoAddNewProduct->desctiption;
         $checkboxColor = $objectInfoAddNewProduct->checkboxColor;
         $checkboxSize = $objectInfoAddNewProduct->checkboxSize;
         $indexThumnail = $objectInfoAddNewProduct->indexThumnail;
 
         DB::insert(
-            "INSERT into sanphams(TENSP, GIAGOC, GIABAN, MAPL_SP, MOTA, created_at, updated_at) 
-            values('$TENSP', $GIAGOC, $GIABAN, $MAPL_SP, '$MOTA', NOW(), NOW())"
+            "INSERT into sanphams(TENSP, GIAGOC, GIABAN, MAPL_SP, MAPL_SP2, MOTA, created_at, updated_at) 
+            values('$TENSP', $GIAGOC, $GIABAN, $MAPL_SP, $MAPL_SP2, '$MOTA', NOW(), NOW())"
         );
         $masp = DB::select("SELECT MASP FROM sanphams ORDER BY created_at DESC LIMIT 1");
         $masp_query = $masp[0]->MASP;
@@ -116,5 +117,15 @@ class AddProductController extends Controller
             $soluong = $item['Quantity'];
             DB::insert("UPDATE hinhanhsanphams");
         }
+    }
+    public function getDetailCategory2(Request $request){
+        $typeProduct_mapl = $request->typeProduct_mapl;
+        $listDetailCategory2 = DB::select(
+            "SELECT * from phanloai_sanpham2s 
+            WHERE MAPL1 = $typeProduct_mapl"
+        );
+        return response()->json([
+            'listDetailCategory2' => $listDetailCategory2,
+        ]);
     }
 }

@@ -20,6 +20,7 @@ use stdClass;
 class AdminManageOrderController extends Controller
 {
     public function getQuantityOrderToDevidePage(Request $request){ 
+         
         $quantity = DB::select(
             "SELECT COUNT(MADH)AS SL_MADH , TRANGTHAI_DONHANG 
             FROM donhangs GROUP BY TRANGTHAI_DONHANG "

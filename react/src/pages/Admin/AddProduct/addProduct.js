@@ -17,6 +17,7 @@ function AddProduct(){
     const {formatPrice} = useGlobalVariableContext(); 
 
     // statusPressAddProduct = true thì hiện nút thêm sản phẩm
+    const [listDetailCategory2, setListDetailCategory2] = useState([])
     const [statusPressAddProduct, setStatusPressAddProduct] = useState(true);
     let i = 0;
     const [isEmpty, setIsEmpty] = useState(false);
@@ -36,6 +37,7 @@ function AddProduct(){
         originPrice: '',
         sellPrice: '',
         typeProduct: '',
+        typeProduct2: '',
         desctiption: '',
         checkboxColor: [],
         checkboxSize: [], 
@@ -55,7 +57,7 @@ function AddProduct(){
         if((name === 'originPrice' || name === 'sellPrice') && regex_ChiNhapSo.test(value)){
             setInfoAddNewProduct({...infoAddNewProduct, [e.target.name]: e.target.value});
         } 
-        else if( name === 'typeProduct'  ){
+        else if( name === 'typeProduct' || name === 'typeProduct2' ){
             setInfoAddNewProduct({...infoAddNewProduct, [e.target.name]: parseInt( e.target.value)}); 
         }
         else if(
@@ -118,6 +120,7 @@ function AddProduct(){
             infoAddNewProduct.originPrice === '' ||
             infoAddNewProduct.sellPrice === '' ||
             infoAddNewProduct.typeProduct === '' ||
+            infoAddNewProduct.typeProduct2 === '' ||
             infoAddNewProduct.desctiption === '' ||
             infoAddNewProduct.checkboxColor.length === 0 ||
             infoAddNewProduct.checkboxSize.length === 0 ||
@@ -200,7 +203,27 @@ function AddProduct(){
     useEffect(() => {
         getInfoForAddProduct(); 
     }, [])
+
+    const getDetailCategory2 = () => {
+        // const data = {
+        //     typeProduct_mapl: infoAddNewProduct.typeProduct
+        // }
+        request.get(`api/getDetailCategory2`, {params: {typeProduct_mapl: infoAddNewProduct.typeProduct}})
+        .then(res => {
+            console.log(res.data.listDetailCategory2)
+            setListDetailCategory2(res.data.listDetailCategory2)
+        })                                                                                      
+        .catch(err => {
+            console.log(infoAddNewProduct.typeProduct, err)
+        })
+    } 
     
+    useEffect(() => {
+        if(infoAddNewProduct.typeProduct !== 0 && infoAddNewProduct.typeProduct !== ''){
+            console.log(infoAddNewProduct.typeProduct, 'phanloai2')
+            getDetailCategory2();
+        }
+    }, [infoAddNewProduct.typeProduct])
 
     const renderListColor = listColor.map((item) => {
         return (
@@ -305,6 +328,10 @@ function AddProduct(){
         )
     })
 
+    const renderListDetailCategory2 = listDetailCategory2.map(item => 
+        <option value={item.MAPL2}>{item.TENPL2}</option> 
+    )
+
     const renderCheckBoxSize = checkBoxSizeDefault.map((item, index) =>
         <div key={index} className="choose_size__div__item">
             <input type="checkbox" id={`${item}`} className="checkbox_sizes"  
@@ -382,12 +409,24 @@ function AddProduct(){
                                     name="typeProduct"
                                     value={infoAddNewProduct.typeProduct} 
                                 >
-                                <option selected value="0"></option>
+                                <option selected value="0">-- Chọn phân loại --</option>
                                 <option value="1">Nam</option>
                                 <option value="2">Nữ</option>
                                 <option value="3">Trẻ em</option>
                                 </select>
                                 <span className={`red_color ${isEmpty && infoAddNewProduct.typeProduct === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại</span>
+                            </div> 
+                            <div class="col-4">
+                                <label for="#" class="form-label">Phân loại chi tiết</label>
+                                <select class="form-select" required
+                                    onChange={handleInputInfoAddNewProduct}
+                                    name="typeProduct2"
+                                    value={infoAddNewProduct.typeProduct2} 
+                                >
+                                    <option selected value="0">-- Chọn phân loại chi tiết --</option>
+                                    {renderListDetailCategory2}
+                                </select>
+                                <span className={`red_color ${isEmpty && infoAddNewProduct.typeProduct2 === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại sản phẩm chi tiết</span>
 
                             </div> 
                         </div>

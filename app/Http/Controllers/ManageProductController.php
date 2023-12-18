@@ -22,7 +22,7 @@ class ManageProductController extends Controller
     public function getQuantityProductToDevidePage(Request $request){ 
         $quantity = DB::select(
             "SELECT COUNT(MASP)AS SL_MASP , TENPL 
-            FROM sanphams, phanloai_sanphams 
+            FROM sanphams, phanloai_sanphams
             WHERE sanphams.MAPL_SP = phanloai_sanphams.MAPL
             GROUP BY MAPL, TENPL "
         ); 
@@ -37,16 +37,18 @@ class ManageProductController extends Controller
         $numberOrderEachPage = $request->input('numberOrderEachPage');
 
         $data_thongtin_sanpham = DB::select(
-            "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, 
+            "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, TENPL2,
             -- SUM(chitiet_donhangs.SOLUONG) AS SOLUONGDABAN
             SUM(sanpham_mausac_sizes.SOLUONG) AS SOLUONGCONLAI
-            FROM sanphams, sanpham_mausac_sizes, phanloai_sanphams 
+            FROM sanphams, sanpham_mausac_sizes, phanloai_sanphams, phanloai_sanpham2s
             -- chitiet_donhangs, 
             WHERE TENPL = '$tenDanhMuc'
             AND sanphams.MASP = sanpham_mausac_sizes.MASP 
             -- AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP
             AND phanloai_sanphams.MAPL = sanphams.MAPL_SP
-            GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC
+            AND sanphams.MAPL_SP2 = phanloai_sanpham2s.MAPL2 
+            AND phanloai_sanphams.MAPL = phanloai_sanpham2s.MAPL1 
+            GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC, TENPL2
             ORDER BY sanphams.MASP DESC
             LIMIT $start, $numberOrderEachPage" 
         ); 
@@ -58,7 +60,9 @@ class ManageProductController extends Controller
 
     public function infoProductDetail(Request $request){
         $masp = $request->input('masp');
-        $dataProductDetail_sanphams = DB::select("SELECT TENSP, GIAGOC, GIABAN, MAPL_SP, MOTA from sanphams where MASP = $masp");
+        $dataProductDetail_sanphams = DB::select(
+            "SELECT TENSP, GIAGOC, GIABAN, MAPL_SP, MAPL_SP2, MOTA from sanphams where MASP = $masp"
+        );
         $dataProductDetail_sanpham_mausac_sizes__sizes = DB::select("SELECT DISTINCT(MASIZE) FROM sanpham_mausac_sizes where MASP = $masp");
         $dataProductDetail_sanpham_mausac_sizes__colors = DB::select(
             "SELECT mausacs.MAMAU, HEX, TENMAU

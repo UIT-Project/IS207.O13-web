@@ -28,6 +28,7 @@ import Statistic from "../pages/Admin/Statistic/Statistic";
 
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
+import Collection from "../pages/Collection/collection";
 
 const publicRoutes = [
 
@@ -36,8 +37,7 @@ const publicRoutes = [
     //component: chứa giao diện để hiển thị ra.
     //layout: nếu thêm một trang cho người dùng thì dùng DefaultLayout, và admin thì dùng DefaultLayout
 
-    {path: config.routes.home, component: Home, layout: DefaultLayout},
-    {path: config.routes.nam, component: Home, layout: DefaultLayout},
+    {path: config.routes.home, component: Home, layout: DefaultLayout}, 
     {path: config.routes.login, component: Login, layout: null},  
     {path: config.routes.test, component: Test, layout: null},
     {path: config.routes.infoProduct, component: InfoProduct, layout: DefaultLayout},
@@ -63,6 +63,10 @@ const publicRoutes = [
     {path: config.routes.searchVoucher, component: SearchVoucher, layout: AdminLayout},
     {path: config.routes.reviewProduct, component: ReviewProduct, layout: DefaultLayout},
     {path: config.routes.statistic, component: Statistic, layout: AdminLayout},
+    {path: config.routes.collection, component: Collection, layout: DefaultLayout},
+    {path: config.routes.collection1, component: Collection, layout: DefaultLayout},
+    {path: config.routes.collection2, component: Collection, layout: DefaultLayout},
+    {path: config.routes.collection3, component: Collection, layout: DefaultLayout},
 ];
 
 const privateRoutes = [];

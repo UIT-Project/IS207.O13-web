@@ -11,6 +11,7 @@ export function GlobalVariable({children}){
     const divPopupCartRef = useRef(null);
     const [infoCarts, setInfoCarts] = useState([]);
     const [isClickedPayment, setIsClickedPayment] = useState(0);
+    const [category1, setCategory1] = useState(1)
 
     const formatPrice = (price) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -24,7 +25,8 @@ export function GlobalVariable({children}){
                     divPopupCartRef,
                     infoCarts, setInfoCarts,
                     formatPrice,
-                    isClickedPayment, setIsClickedPayment
+                    isClickedPayment, setIsClickedPayment,
+                    category1, setCategory1,
                 }}
             >
         {children}

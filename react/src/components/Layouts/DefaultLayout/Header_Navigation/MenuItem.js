@@ -7,21 +7,9 @@ function MenuItem({title, to, icon}){
             <div>
                 <NavLink to={to} className="header_navigation__text">
                     {icon}
-                            {title}
+                    {title}
                 </NavLink>
-            </div>
-            <ul className="header_navigation__popup">
-                <li>
-                    <button>
-                        Áo
-                    </button>
-                </li>
-                <li>
-                    <button>
-                        Quần
-                    </button>
-                </li> 
-            </ul>
+            </div> 
         </div>
     )
 }

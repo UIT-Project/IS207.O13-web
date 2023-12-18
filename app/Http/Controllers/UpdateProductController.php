@@ -27,6 +27,7 @@ class UpdateProductController extends Controller
         $GIAGOC = $objectInfoUpdateProduct->originPrice;
         $GIABAN = $objectInfoUpdateProduct->sellPrice;
         $MAPL_SP = $objectInfoUpdateProduct->typeProduct;
+        $MAPL_SP2 = $objectInfoUpdateProduct->typeProduct2;
         $MOTA = $objectInfoUpdateProduct->desctiption;
         $checkboxColor = $objectInfoUpdateProduct->checkboxColor;
         $checkboxSize = $objectInfoUpdateProduct->checkboxSize;
@@ -42,21 +43,20 @@ class UpdateProductController extends Controller
         DB::update(
             "UPDATE sanphams 
             SET TENSP = '$TENSP', GIAGOC = $GIAGOC, GIABAN = $GIABAN, 
-            MAPL_SP = $MAPL_SP, MOTA = '$MOTA', updated_at = NOW()
+            MAPL_SP = $MAPL_SP, MAPL_SP2 = $MAPL_SP2, MOTA = '$MOTA', updated_at = NOW()
             WHERE MASP = $masp_query"
         ); 
-
-        $i = 1;
+ 
         $soluong = 0;
         foreach ($checkboxSize as $itemSize){
             foreach($checkboxColor as $itemColor){
                 foreach($listQuantity as $itemQuantity){
-                    if($itemQuantity->id == $i){
+                    if($itemQuantity->maSize == $itemSize && $itemQuantity->mamau == $itemColor){
                         $soluong = $itemQuantity->soluong;
                         break; 
                     }
                 }
-
+                
                 $test_daco = DB::select(
                     "SELECT MAXDSP FROM sanpham_mausac_sizes 
                     WHERE MASP = $masp_query AND MAMAU = $itemColor AND MASIZE = '$itemSize'"
@@ -67,8 +67,7 @@ class UpdateProductController extends Controller
                 }
                 else if(count($test_daco) == 0){
                     DB::insert("INSERT into sanpham_mausac_sizes(MASP, MAMAU, MASIZE, SOLUONG) values($masp_query, $itemColor, '$itemSize', $soluong)");
-                }
-                ++$i;
+                } 
             }
         }
 

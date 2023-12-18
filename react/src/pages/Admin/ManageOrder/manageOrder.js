@@ -906,8 +906,9 @@ function ManageOrder(){
     }
 
     const renderPagination = (item_status) => {
+        console.log(item_status, 'item_status')
         return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
 
@@ -1230,75 +1231,75 @@ function ManageOrder(){
                         class={`row justify-content-center ${orderStatusPointer === item.value.nameState ? "" : 'hiddenEachState'}`}
                         key={index} 
                     > 
-                    {
-                        renderOrderDetail()
-                    }
-                    <div class={`content_list_order  ${watchOrderDetail ? "display_hidden" : ""}`}>
-                        <div className="lkljalsjd"> 
-                            <div className={`lkljalsjd111
-                                ${
-                                    orderStatus_Array.length !== index + 1  &&
-                                    ( orderStatus_Array[index].value.nameState === 'Đang giao' ||
-                                    orderStatus_Array[index].value.nameState === 'Chuẩn bị hàng' )
-                                    ? '' 
-                                    : 'display_hidden'
-                                }`}
-                            >
-                                Cập nhật trạng thái đơn hàng thành: 
-                                <span className="StateWillTranfer">
-                                    <button className="btn" onClick={() => handleUpdateState(orderStatus_Array, index)}>
-                                        {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''}
-                                    </button>
-                                </span>
-                                <span className={`StateWillTranfer ${orderStatus_Array[index].value.nameState === 'Đang giao' ? '' : 'display_hidden'}`}>
-                                    <button className="btn" onClick={() => handleUpdateState(orderStatus_Array, index + 1)}>
-                                        {orderStatus_Array.length === index + 3 ? orderStatus_Array[index + 2].value.nameState : ''}
-                                        {/* {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''} */}
-                                    </button>
-                                </span>
-                                {/* <button className="buttonUpdate" >Update</button> */}
+                        {
+                            renderOrderDetail()
+                        }
+                        <div class={`content_list_order  ${watchOrderDetail ? "display_hidden" : ""}`}>
+                            <div className="lkljalsjd"> 
+                                <div className={`lkljalsjd111
+                                    ${
+                                        orderStatus_Array.length !== index + 1  &&
+                                        ( orderStatus_Array[index].value.nameState === 'Đang giao' ||
+                                        orderStatus_Array[index].value.nameState === 'Chuẩn bị hàng' )
+                                        ? '' 
+                                        : 'display_hidden'
+                                    }`}
+                                >
+                                    Cập nhật trạng thái đơn hàng thành: 
+                                    <span className="StateWillTranfer">
+                                        <button className="btn" onClick={() => handleUpdateState(orderStatus_Array, index)}>
+                                            {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''}
+                                        </button>
+                                    </span>
+                                    <span className={`StateWillTranfer ${orderStatus_Array[index].value.nameState === 'Đang giao' ? '' : 'display_hidden'}`}>
+                                        <button className="btn" onClick={() => handleUpdateState(orderStatus_Array, index + 1)}>
+                                            {orderStatus_Array.length === index + 3 ? orderStatus_Array[index + 2].value.nameState : ''}
+                                            {/* {orderStatus_Array.length !== index + 1 ? orderStatus_Array[index + 1].value.nameState : ''} */}
+                                        </button>
+                                    </span>
+                                    {/* <button className="buttonUpdate" >Update</button> */}
+                                </div>
+                                <div className="lkljalsjd2">
+                                    In hoá đơn
+                                    <span onClick={handleGetInfoDetail_Many}>
+                                        <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>
+                                    </span>
+                                </div>
                             </div>
-                            <div className="lkljalsjd2">
-                                In hoá đơn
-                                <span onClick={handleGetInfoDetail_Many}>
-                                    <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>
-                                </span>
-                            </div>
-                        </div>
-                        <table class="table">
-                            <thead>
-                            <tr>
-                                <th scope="col">                        
-                                    <input 
-                                        type="checkbox" 
-                                        name="checkboxProductInCart" id=""  
-                                        checked = {isCheckedAll} 
-                                        onChange={() => handleClickCheckboxAll(item)}
-                                    />
-                                </th>
-                                <th scope="col" >Mã đơn hàng</th>
-                                <th scope="col">Tên khách hàng</th>
-                                <th scope="col">SĐT</th>
-                                <th scope="col">Địa chỉ</th>
-                                <th scope="col" >Ngày hoá đơn</th> 
-                                <th scope="col ">Hình thức Thanh toán</th>
-                                <th scope="col">Tổng tiền</th>
-                                <th scope="col"></th>
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th scope="col">                        
+                                        <input 
+                                            type="checkbox" 
+                                            name="checkboxProductInCart" id=""  
+                                            checked = {isCheckedAll} 
+                                            onChange={() => handleClickCheckboxAll(item)}
+                                        />
+                                    </th>
+                                    <th scope="col" >Mã đơn hàng</th>
+                                    <th scope="col">Tên khách hàng</th>
+                                    <th scope="col">SĐT</th>
+                                    <th scope="col">Địa chỉ</th>
+                                    <th scope="col" >Ngày hoá đơn</th> 
+                                    <th scope="col ">Hình thức Thanh toán</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col"></th>
 
-                            </tr>
-                            </thead>
-                            <tbody class="table-group-divider">
-                                { renderEachProduct(item, index) } 
-                            </tbody>
-                        </table>
-                    </div>
-                    <div className={`${watchOrderDetail ? 'display_hidden' : ''}`}>
-                        { renderPagination(item) }
-                    </div>
-                    {/* <span onClick={handlePrint_A4}>
-                        <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>
-                    </span> */}
-                    
+                                </tr>
+                                </thead>
+                                <tbody class="table-group-divider">
+                                    { renderEachProduct(item, index) } 
+                                </tbody>
+                            </table>
+                        </div>
+                        <div className={`${watchOrderDetail ? 'display_hidden' : ''}`}>
+                            { renderPagination(item) }
+                        </div>
+                        {/* <span onClick={handlePrint_A4}>
+                            <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>
+                        </span> */}
+                        
                     </div> 
                 ) 
             }

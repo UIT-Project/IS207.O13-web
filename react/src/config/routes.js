@@ -3,9 +3,9 @@ const admin = 'admin';
 
 const routes = {
     home: "/",
-    nam: "/nam",
-    nu: "/nu",
-    treem: "/treem", 
+    nam: "/collection1?mapl_sp=1",
+    nu: "/collection2?mapl_sp=2",
+    treem: "/collection3?mapl_sp=3", 
     login: "/login",
     test: "/test",
     searchProduct: `/search`,
@@ -32,5 +32,9 @@ const routes = {
     searchVoucher: "/admin/SearchVoucher",
     reviewProduct: "/reviewProduct",
     statistic: "/admin/Statistic",
+    collection: "/collection",
+    collection1: "/collection1",
+    collection2: "/collection2",
+    collection3: "/collection3",
 }
 export default routes;

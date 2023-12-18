@@ -4,9 +4,6 @@
     --color_search_bg: #ededed;
     --color_search_border_div_css: #cccccc;
 }
-.test{
-    font-family: 'Roboto', sans-serif;
-}
 .header_body__search{
     display: flex;
     justify-content: center;  
@@ -124,7 +121,7 @@ a, button{
     border-radius: 10px;
 }
 .show_product{
-    margin-top: 30px;
+    margin-top: 2rem;
 }
 .show_product__title{
     text-align: center;
@@ -338,4 +335,144 @@ p{
 a {
     text-decoration: none; 
     color: black;
+}
+
+
+.grid__column_10__filter{
+    padding: 13px 20px 13px;
+    background-color: #ededed;
+    display: flex;
+    height: 60px;
+    border-radius: 3px;
+    margin-bottom: 7px;
+}
+.grid__column_10__filter__div_title{
+    display: flex;
+    align-items: center;
+
+}
+.grid__column_10__filter__text_title{
+    font-size: 1.4rem;
+    color: var(--text-color);
+}
+.grid__column_10__filter__div_result_filter_select{
+    display: flex;
+    flex-grow: 1;
+}
+.grid__column_10__filter__result_filter_button{
+    border: none;
+    background-color: white;
+    font-size: 1.4rem;
+    padding: 0px 15px;
+    margin-left: 10px;
+    border-radius: 3px;
+}
+.grid__column_10__filter__result_filter_button--active{
+    background-color: rgb(238, 77, 45); 
+    color: white;
+    padding: 0.07rem 0.3rem;
+    border-radius: 0.3rem;
+}
+.grid__column_10__filter__div_result_filter_select__sort_price{
+    display: flex; 
+    height: 34px;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0px 10px;
+    cursor: pointer;
+    padding: 0px 13px; 
+    background-color: white;
+    border-radius: 3px;
+    width: 163px;
+}
+.grid__column_10__filter__div_result_filter_select__text_sort_price{
+    margin-right: 15px;
+    font-size: 1.4rem;
+    color: var(--text-color); 
+}
+.grid__column_10__filter__div_result_filter_select__sort_price:hover .grid__column_10__filter__div_result_filter_select__select_text_sort_price{
+    display: block;   
+}
+.grid__column_10__filter__div_result_filter_select__select_text_sort_price{
+    position: absolute;
+    background-color: white;
+    display: flex;
+    flex-direction: column; 
+    border-radius: 2px; 
+    margin-top: 12px;
+    display: none; 
+    justify-content: flex-end; 
+    margin-left: -13px;
+    padding: 0.3rem;
+}
+.grid__column_10__filter__div_result_filter_select__select_text_sort_price::before{
+    content: "";
+    position: absolute;
+    background-color: transparent;
+    height: 1rem;  
+    width: 100%;
+    top: -1rem;
+    left: -10px;
+}
+
+.grid__column_10__filter__select_display_page{
+    display: flex;
+    align-items: center;
+    width: 112px;
+    justify-content: space-between;
+}
+.grid__column_10__filter__select_display_page__present_and_max_page_number{  
+    font-size: 1.4rem; 
+    display: flex;
+}
+.grid__column_10__filter__select_display_page__present_page_number{
+    font-size: 1.4rem;
+    color: rgb(238, 77, 45);
 } 
+.grid__column_10__filter__select_display_page__max_page_number{
+    font-size: 1.4rem;
+}
+.grid__column_10__filter__select_display_page__button_div{
+    display: flex;
+}
+.grid__column_10__filter__select_display_page__button{
+    border:  1px solid rgba(0, 0, 0, 0.1);
+    opacity: 1;
+    border-radius: 2px;
+    padding: 9px 12px;
+    background-color: white;
+    cursor: pointer;
+}
+.grid__column_10__filter__select_display_page__button--disable{ 
+    border:  1px solid rgba(0, 0, 0, 0.1);
+    opacity: 0.8;
+    background-color: #ededed; 
+    cursor: default;
+}
+.grid__column_10__filter__select_display_page__button_icon{
+    width: 10px;
+    height: 10px;
+    fill: rgba(0, 0, 0, 0.6);
+    margin-top: 3px;
+}
+
+.header__body__search_and_recommend__search__icon_scope{
+    width: 1rem;
+    height: 1rem;
+}
+
+/* .header__body__search_and_recommend__search__selection_scope__in_shop{
+    padding: 0.3rem 0.3rem;
+} */
+
+.btn_pagination{
+    padding: 0.2rem 0.5rem;
+    background-color: #7375ff;
+    margin: 0 0.1rem;
+    border-radius: 0.3rem;
+    color: white;
+    font-weight: 550;
+}
+.productHaveFound{
+    margin-top: 1rem;
+}

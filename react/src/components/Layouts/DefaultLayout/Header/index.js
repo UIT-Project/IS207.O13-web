@@ -5,6 +5,8 @@ import images from '../../../../assets/images'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
 import { faCaretDown, faCartShopping, faMagnifyingGlass, faUser } from '@fortawesome/free-solid-svg-icons'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
+
 
 //file css
 import './index.css'
@@ -191,13 +193,13 @@ function Header({settoggleFunctionLoginLogout}){
 
     // xử lý searchProduct
     const handleSearchProduct = (e) => {
-        e.preventDefault();
+        // e.preventDefault();
         //gửi request tìm kiểm thông tin sản phẩm tơi serve với chuỗi nhập vào là infoCarts
         request.get(`/api/search?query=${textQuery}`)
         .then(res=>{
             setResultQuery(res.data.data); 
             console.log(res.data.data, 'header');
-            Navigate(`/search?query=${textQuery}`);
+            Navigate(`/collection?query=${textQuery}`);
         })
         .catch(e => {
             console.log(e);
@@ -295,7 +297,18 @@ function Header({settoggleFunctionLoginLogout}){
                     <div class="header_body__search__div_css">
 
                         {/* ở đây có onChange */}
-                        <input type="text" placeholder="Tìm kiếm sản phẩm" class="header_body__search__input" name='searchProduct' onChange={(e) => setTextQuery(e.target.value)}/> 
+                        <input 
+                            type="text" 
+                            placeholder="Tìm kiếm sản phẩm" 
+                            class="header_body__search__input" 
+                            name='searchProduct' 
+                            onChange={(e) => setTextQuery(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                    handleSearchProduct();
+                                }
+                            }}
+                        /> 
                         
                         {/* ở đây có  onClick*/}
                         <button class="header_body__search__button" onClick={handleSearchProduct}>
