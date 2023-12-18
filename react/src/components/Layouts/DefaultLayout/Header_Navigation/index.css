@@ -94,7 +94,7 @@ a, button{
     padding: 10px 0px;
 }
 .header_navigation__text{
-    padding: 0px 15px !important;
+    padding: 0px 15px;
     font-weight: 550;
 }
 .header_navigation__text:hover{

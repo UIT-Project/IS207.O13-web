@@ -266,7 +266,18 @@ function Header({settoggleFunctionLoginLogout}){
     const handleClickLogo = () => {
         Navigate("/")
     }
+
+    const handleClickNam = () => {
+        Navigate("/nam")
+    }
     
+    const handleClickNu = () => {
+        Navigate("/nu")
+    }
+
+    const handleClickTreEm = () => {
+        Navigate("/treem")
+    }
     // ở dưới đây là phần hiển thị thông tin giống html 
     // những sẽ có một số thẻ chứa thuộc tính là onChange, onClick để bắt sự kiện
     return (
@@ -362,6 +373,49 @@ function Header({settoggleFunctionLoginLogout}){
                     <li class="header_navigation__text">Trẻ Em</li>
                 </ul>
             </div>  */}
+            {/* <div class="header_navigation">
+                <ul class="header_navigation__popup_text">
+                    <li class="header_navigation__text" onClick={handleClickNam}>Nam</li>
+                    <ul className="header_navigation__popup">
+                        <li>
+                            <button>
+                                Áo
+                            </button>
+                        </li>
+                        <li>
+                            <button>
+                                Quần
+                            </button>
+                        </li> 
+                    </ul>
+                    <li class="header_navigation__text" onClick={handleClickNu}>Nữ</li>
+                    <ul className="header_navigation__popup">
+                        <li>
+                            <button>
+                                Áo
+                            </button>
+                        </li>
+                        <li>
+                            <button>
+                                Quần
+                            </button>
+                        </li> 
+                    </ul>
+                    <li class="header_navigation__text" onClick={handleClickTreEm}>Trẻ em</li>
+                    <ul className="header_navigation__popup">
+                        <li>
+                            <button>
+                                Áo
+                            </button>
+                        </li>
+                        <li>
+                            <button>
+                                Quần
+                            </button>
+                        </li> 
+                    </ul>
+                </ul>
+            </div> */}
         </div>
     </header>
     )
