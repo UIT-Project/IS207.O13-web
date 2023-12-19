@@ -958,3 +958,14 @@ tr {
     width: 6rem;
     align-items: center;
 }
+
+.div_kjkjk{
+    display: flex;
+    justify-content: space-around;
+}
+#concent {
+    justify-content: center;
+}
+.div_tuychinh {
+    justify-content: center;
+}

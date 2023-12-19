@@ -1118,7 +1118,8 @@ function ManageProduct()
                         <div class="address_update" id="address_update">
                             <div class="row mb-2">
                                 <div class="col-12">
-                                    {/* <label for="#" class="form-label">Tên sản phẩm</label> */}
+                                   
+                                    <label for="#" class="form-label">Tên sản phẩm</label>
                                     <input 
                                         type="text" class="form-control" placeholder="Nhập tên sản phẩm" 
                                         onChange={handleInputInfoUpdateProduct} 
@@ -1132,37 +1133,41 @@ function ManageProduct()
                                 </div>
                             </div>
                             <div class="row mb-2">
-                                <div class="col-12 input_gia">
-                                    <div class="input_gia_div">
-                                        {/* <label for="#" class="form-label">Giá niêm yết</label> */}
-                                        <input 
-                                            type="text" class="form-control width_gia" placeholder="Giá niêm yết" 
-                                            onChange={handleInputInfoUpdateProduct}
-                                            name="originPrice"  
-                                            value={formatPrice(infoUpdateProduct.originPrice)}
-                                            disabled={isUpdating ? false : true}
+                                <div class="col-12 div_kjkjk">
+                                    <div className="col-4">
+                                        <div class="">
+                                         <label for="#" class="form-label">Giá niêm yết</label> 
+                                            <input 
+                                                type="text" class="form-control  " placeholder="Giá niêm yết" 
+                                                onChange={handleInputInfoUpdateProduct}
+                                                name="originPrice"  
+                                                value={formatPrice(infoUpdateProduct.originPrice)}
+                                                disabled={isUpdating ? false : true}
 
-                                        />
-                                        <span className={`red_color ${isEmpty && infoUpdateProduct.originPrice === '' ? '' : 'display_hidden'}`}>Nhập giá niêm yết trước khi lưu</span>
+                                            />
+                                            <span className={`red_color ${isEmpty && infoUpdateProduct.originPrice === '' ? '' : 'display_hidden'}`}>Nhập giá niêm yết trước khi lưu</span>
 
+                                        </div>
                                     </div>
-                                    <div class="input_gia_div">
-                                        {/* <label for="#" class="form-label">Giá bán</label> */}
-                                        <input 
-                                            type="text" class="form-control width_gia" placeholder="Giá bán" 
-                                            onChange={handleInputInfoUpdateProduct}
-                                            name="sellPrice"   
-                                            value={formatPrice(infoUpdateProduct.sellPrice)}
-                                            disabled={isUpdating ? false : true}
-                                        />
-                                        <span className={`red_color ${isEmpty && infoUpdateProduct.sellPrice === '' ? '' : 'display_hidden'}`}>Nhập giá bán trước khi lưu</span>
+                                    <div className="col-4">
+                                        <div class="">
+                                            <label for="#" class="form-label">Giá bán</label>
+                                            <input 
+                                                type="text" class="form-control  " placeholder="Giá bán" 
+                                                onChange={handleInputInfoUpdateProduct}
+                                                name="sellPrice"   
+                                                value={formatPrice(infoUpdateProduct.sellPrice)}
+                                                disabled={isUpdating ? false : true}
+                                            />
+                                            <span className={`red_color ${isEmpty && infoUpdateProduct.sellPrice === '' ? '' : 'display_hidden'}`}>Nhập giá bán trước khi lưu</span>
 
+                                        </div>
                                     </div>
 
                                 </div> 
                                     <span className={`red_color ${parseInt(infoUpdateProduct.originPrice) < parseInt(infoUpdateProduct.sellPrice) ? '' : 'display_hidden'}`}>Giá bán phải nhỏ hơn hoặc = giá niêm yết</span>
                             </div>
-                            <div class="row mb-3 ">
+                            <div class="row mb-3 div_kjkjk">
                                 <div class="col-4">
                                     <label for="#" class="form-label">Phân loại</label>
                                     <select class="form-select" required
@@ -1194,9 +1199,9 @@ function ManageProduct()
                             </div> 
                             </div>
 
-                            <div className="row">
+                            <div className="row" id="concent">
                                 <div className="col-5 choose_size">
-                                    <div>
+                                    <div >
                                         <label>Chọn các loại size</label>
                                     </div>
                                     <div className="choose_size__div">
@@ -1206,7 +1211,7 @@ function ManageProduct()
                             </div>
                             <span className={`red_color ${isEmpty && infoUpdateProduct.checkboxSize.length === 0 ? '' : 'display_hidden'}`}>Hãy chọn size</span>
 
-                            <div className="row">
+                            <div className="row" id="concent">
                                 <div className="col-5 choose_size">
                                     <div>
                                         <label>Chọn các loại màu</label>
@@ -1270,7 +1275,7 @@ function ManageProduct()
                     <h2>NHẬP SỐ LƯỢNG</h2>
  
                     <div class="col-auto"></div>
-                    <div class="body_box container col-lg-7">
+                    <div class="body_box container col-lg-7 tuychinh">
                         {renderInputSoLuong} 
                     </div>
                     <div class="address_update_button_contain row">
