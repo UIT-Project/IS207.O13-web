@@ -164,7 +164,7 @@ class SetDataController extends Controller
         // $sourceFolder = 'C:\Users\dosid\Downloads\Temp\createManyFolderPictureProduct\2';
         // $destinationFolder = 'C:\Users\dosid\Downloads\Temp\createManyFolderPictureProduct';
         
-        // for ($i = 3; $i <= 365; $i++) {
+        // for ($i = 2; $i <= 365; $i++) {
         //     $newFolder = $destinationFolder . '\\' . $i;
         //     File::makeDirectory($newFolder);
 
@@ -175,10 +175,10 @@ class SetDataController extends Controller
         //         $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
 
         //         // Tạo tên file mới theo mẫu
-        //         if ($key === 1) {
-        //             $newFileName = "{$i}_" . "2_" . str_replace('2_', '', $fileName) . ".{$fileExtension}";
+        //         if ($key === 0) {
+        //             $newFileName = "{$i}_" . "1_" . str_replace('1_', '', $fileName) . ".{$fileExtension}";
         //         } else {
-        //             $newFileName = "{$i}_" . str_replace('2_', '', $fileName) . ".{$fileExtension}";
+        //             $newFileName = "{$i}_" . str_replace('1_', '', $fileName) . ".{$fileExtension}";
         //         }
 
         //         // Đường dẫn mới cho file trong thư mục mới
