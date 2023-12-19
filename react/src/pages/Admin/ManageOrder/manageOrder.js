@@ -9,9 +9,84 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faFloppyDisk, faL, faLeftLong, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
+import Pagination from "./pagination";
+import SelectLimit from "./selectLimit";
 
 function ManageOrder(){
+    function handlePageChange(value, item_state){
+        if(value === "&laquo;" || value==="..."){
+            setOrderStatus(prevOrderStatus => { 
+                return {
+                    ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                    [item_state.key] : 
+                    {   
+                        ...prevOrderStatus[item_state.key],  
+                        openingPage: 1
+                    }
+                }  
+            })
+            getInfoOrderForUsers(item_state, 1);
 
+            handleScrollToTop();
+        } else if(value === "&lsaquo;"){
+            if(item_state.value.openingPage!==1){
+                setOrderStatus(prevOrderStatus => { 
+                    return {
+                        ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                        [item_state.key] : 
+                        {   
+                            ...prevOrderStatus[item_state.key],  
+                            openingPage: item_state.value.openingPage-1
+                        }
+                    }  
+                })
+            }
+            getInfoOrderForUsers(item_state, item_state.value.openingPage-1);
+            handleScrollToTop();
+        } else if(value === "&rsaquo;"){
+            if(item_state.value.openingPage!==item_state.value.paginationList.length){
+                setOrderStatus(prevOrderStatus => { 
+                    return {
+                        ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                        [item_state.key] : 
+                        {   
+                            ...prevOrderStatus[item_state.key],  
+                            openingPage: item_state.value.openingPage+1
+                        }
+                    }  
+                })
+                
+            }
+            getInfoOrderForUsers(item_state, item_state.value.openingPage+1);
+            handleScrollToTop();
+        } else if(value === "&raquo;" ){
+            setOrderStatus(prevOrderStatus => { 
+                return {
+                    ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                    [item_state.key] : 
+                    {   
+                        ...prevOrderStatus[item_state.key],  
+                        openingPage: item_state.value.paginationList.length
+                    }
+                }  
+            })
+            getInfoOrderForUsers(item_state, item_state.value.paginationList.length);
+            handleScrollToTop();
+        } else{
+            setOrderStatus(prevOrderStatus => { 
+                return {
+                    ...prevOrderStatus,                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                             
+                    [item_state.key] : 
+                    {   
+                        ...prevOrderStatus[item_state.key],  
+                        openingPage: value
+                    }
+                }  
+            })
+            getInfoOrderForUsers(item_state, value);
+            handleScrollToTop();
+        }
+    }
     const {formatPrice} = useGlobalVariableContext(); 
     const componentRef = useRef();
     const handlePrint_A4 = useReactToPrint({
@@ -23,8 +98,8 @@ function ManageOrder(){
             alert('Print success')
         }
     });
-
-    const numberOrderEachPage = 20;
+    
+    const [numberOrderEachPage,setLimit] = useState(10);
     const [xoadau, setXoaDau] = useState(0);
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchOrderDetail, setWatchOrderDetail] = useState(false);
@@ -1293,8 +1368,10 @@ function ManageOrder(){
                                 </tbody>
                             </table>
                         </div>
-                        <div className={`${watchOrderDetail ? 'display_hidden' : ''}`}>
-                            { renderPagination(item) }
+                        <div className={`${watchOrderDetail ? 'display_hidden' : ''} pagination-container`}>
+                            {/* { renderPagination(item) } */}
+                            {/* <SelectLimit onLimitChange={setLimit}/> */}
+                            <Pagination totalPage={item.value.paginationList.length} page={item.value.openingPage} limit={numberOrderEachPage} siblings={1} onPageChange={handlePageChange} item_status={item}/>
                         </div>
                         {/* <span onClick={handlePrint_A4}>
                             <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>
@@ -1368,6 +1445,8 @@ function ManageOrder(){
         </div>
     </div>
     )
+
+          
 }
 
 export default ManageOrder;
