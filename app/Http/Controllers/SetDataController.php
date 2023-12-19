@@ -104,6 +104,91 @@ class SetDataController extends Controller
     
     public function setdata(){
 
+        // $baseDirectory = public_path('images/products/');
+
+        // // Duyệt qua từng thư mục sản phẩm
+        //     for ($i = 1; $i <= 364; $i++) {
+        //         $directory = $baseDirectory . $i . '/';
+
+        //         // Lấy danh sách các tệp trong thư mục
+        //         $files = File::glob($directory . '*');
+
+        //         $thumbnailCount = 0;
+        //         $thumbnailFile = null;
+
+        //         // Kiểm tra và đổi tên các tệp trong thư mục
+        //         foreach ($files as $file) {
+        //             $fileName = pathinfo($file, PATHINFO_FILENAME);
+
+        //             if (strpos($fileName, 'thumnail') !== false) {
+        //                 $thumbnailCount++;
+        //                 $thumbnailFile = $file;
+
+        //                 // Nếu có nhiều hơn một tệp có chứa "thumnail", đổi tên các tệp còn lại
+        //                 if ($thumbnailCount > 1) {
+        //                     $newFileName = '1702717402'; // Tên mới của file
+
+        //                     // Đường dẫn mới của tệp tin
+        //                     $newFilePath = $directory . $newFileName . '.' . pathinfo($file, PATHINFO_EXTENSION);
+
+        //                     // Đổi tên tệp tin
+        //                     File::move($file, $newFilePath);
+
+        //                     // Update thông tin trong cơ sở dữ liệu nếu cần
+        //                     // ...
+        //                 }
+        //             }
+        //         }
+
+        //         // Đổi tên tệp còn lại thành '1702717402'
+        //         if ($thumbnailFile && $thumbnailCount === 1) {
+        //             $newFilePath = $directory . '1702717402.' . pathinfo($thumbnailFile, PATHINFO_EXTENSION);
+
+        //             File::move($thumbnailFile, $newFilePath);
+
+        //             // Update thông tin trong cơ sở dữ liệu nếu cần
+        //             // ...
+        //         }
+        //     }
+
+        // for ($i = 1; $i <= 364; $i++) {
+        //     $filePath = public_path("images/products/{$i}/1702717402.png");
+        
+        //     // Kiểm tra nếu tệp tin tồn tại thì xoá
+        //     if (File::exists($filePath)) {
+        //         File::delete($filePath);
+        //     }
+        // }
+
+        
+        // $sourceFolder = 'C:\Users\dosid\Downloads\Temp\createManyFolderPictureProduct\2';
+        // $destinationFolder = 'C:\Users\dosid\Downloads\Temp\createManyFolderPictureProduct';
+        
+        // for ($i = 3; $i <= 365; $i++) {
+        //     $newFolder = $destinationFolder . '\\' . $i;
+        //     File::makeDirectory($newFolder);
+
+        //     $files = File::files($sourceFolder);
+
+        //     foreach ($files as $key => $file) {
+        //         $fileName = pathinfo($file, PATHINFO_FILENAME);
+        //         $fileExtension = pathinfo($file, PATHINFO_EXTENSION);
+
+        //         // Tạo tên file mới theo mẫu
+        //         if ($key === 1) {
+        //             $newFileName = "{$i}_" . "2_" . str_replace('2_', '', $fileName) . ".{$fileExtension}";
+        //         } else {
+        //             $newFileName = "{$i}_" . str_replace('2_', '', $fileName) . ".{$fileExtension}";
+        //         }
+
+        //         // Đường dẫn mới cho file trong thư mục mới
+        //         $newFilePath = $newFolder . '\\' . $newFileName;
+
+        //         // Sao chép và đổi tên file
+        //         File::copy($file, $newFilePath);
+        //     }
+        // }
+
         //1. phanloai_sanphams
         {
             $categories = [
@@ -176,9 +261,11 @@ class SetDataController extends Controller
                 ['MAPL' => 2, 'TENPL' => 'Nữ'],
                 ['MAPL' => 3, 'TENPL' => 'Trẻ em'],
             ];
-
-            while ($currentDate <= $endDate) {
-                foreach ($categories as $category) { 
+            
+            while ($currentDate <= $endDate) { 
+                    
+                    $randomIndex = rand(0, count($categories) - 1);
+                    $category = $categories[$randomIndex];
                     $TENSP = $this->getRandomProductName(); // Generate product name
 
                     $GIAGOC = rand(230000, 500000);
@@ -214,8 +301,7 @@ class SetDataController extends Controller
                         'MOTA' => $MOTA,
                         'created_at' => $currentDate,
                         'updated_at' => $currentDate,
-                    ]);
-                }
+                    ]); 
     
                 $currentDate->addDay();
             }
@@ -490,18 +576,18 @@ class SetDataController extends Controller
             }
         }
 
-        //9. donhang_voucher
-        {
-            // for ($i = 1; $i <= 50; $i++) {
-            //     $randomVoucher = DB::table('vouchers')->inRandomOrder()->first();
-            //     $randomOrder = DB::table('donhangs')->inRandomOrder()->first();
+        // //9. donhang_voucher
+        // {
+        //     // for ($i = 1; $i <= 50; $i++) {
+        //     //     $randomVoucher = DB::table('vouchers')->inRandomOrder()->first();
+        //     //     $randomOrder = DB::table('donhangs')->inRandomOrder()->first();
             
-            //     DB::table('donhang_vouchers')->insert([
-            //         'MAVOUCHER' => $randomVoucher->MAVOUCHER,
-            //         'MADH' => $randomOrder->MADH,
-            //     ]);
-            // }
-        }
+        //     //     DB::table('donhang_vouchers')->insert([
+        //     //         'MAVOUCHER' => $randomVoucher->MAVOUCHER,
+        //     //         'MADH' => $randomOrder->MADH,
+        //     //     ]);
+        //     // }
+        // }
         
         // 10. size
         {
