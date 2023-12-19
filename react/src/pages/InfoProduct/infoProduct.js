@@ -284,7 +284,7 @@ function InfoProduct(){
                                 {/* <span class="detail_info_product__price__info_price__sell space_item_in_a_row">{(infoProduct.data_sanpham.GIABAN)}₫</span>
                                 <span class="detail_info_product__price__info_price__origin space_item_in_a_row">{(infoProduct.data_sanpham.GIAGOC)}₫</span> */}
 
-                                <span class="detail_info_product__price__info_price__decrease_percent space_item_in_a_row">{parseInt((infoProduct.data_sanpham.GIABAN / infoProduct.data_sanpham.GIAGOC) * 100)}%</span> 
+                                <span class="detail_info_product__price__info_price__decrease_percent space_item_in_a_row">{100 - (parseInt((infoProduct.data_sanpham.GIABAN / infoProduct.data_sanpham.GIAGOC) * 100))}%</span> 
                             </div>
                             <div class="detail_info_product__price__review_quanlity">
                                 <div class="product-content-right-product-rating">

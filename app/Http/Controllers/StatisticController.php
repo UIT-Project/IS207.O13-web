@@ -173,4 +173,66 @@ class StatisticController extends Controller
             'data_statisticOrderAndPayMethod' => $data_statisticOrderAndPayMethod,  
         ]);
     }
+    public function getTopProducts(Request $request)
+    {
+
+        // $startDate = $request->input('startDate');
+        // $endDate = $request->input('endDate');
+
+        $selectedMonthTop10Product = $request->input('selectedMonthTop10Product'); 
+        $selectedYearTop10Product = $request->input('selectedYearTop10Product'); 
+
+        $startDate = date('Y-m-01', strtotime("$selectedYearTop10Product-$selectedMonthTop10Product-01"));
+        $endDate = date('Y-m-t', strtotime("$selectedYearTop10Product-$selectedMonthTop10Product-01"));
+    
+        $result = DB::select(
+            "SELECT 
+                sanphams.MASP,
+                sanphams.TENSP, 
+                SUM(chitiet_donhangs.SOLUONG) AS SoLuongDaBan,
+                SUM(chitiet_donhangs.TONGTIEN) AS TongTienMangVe
+            FROM chitiet_donhangs
+            JOIN sanpham_mausac_sizes ON chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP
+            JOIN sanphams ON sanpham_mausac_sizes.MASP = sanphams.MASP
+            JOIN donhangs ON donhangs.MADH = chitiet_donhangs.MADH
+            WHERE donhangs.TRANGTHAI_DONHANG = 'Đã giao' 
+            AND donhangs.NGAYORDER BETWEEN ? AND ?
+            GROUP BY sanphams.TENSP, sanphams.MASP
+            ORDER BY SUM(chitiet_donhangs.SOLUONG) DESC
+            LIMIT 10
+        ", [$startDate, $endDate]);
+
+        return response()->json([
+            'result' => $result,  
+        ]);
+    }
+    public function getTopKHACHHANG(Request $request){
+        $selectedMonthTop10KHACHHANG = $request->input('selectedMonthTop10KHACHHANG'); 
+        $selectedYearTop10KHACHHANG = $request->input('selectedYearTop10KHACHHANG'); 
+
+        $startDate = date('Y-m-01', strtotime("$selectedYearTop10KHACHHANG-$selectedMonthTop10KHACHHANG-01"));
+        $endDate = date('Y-m-t', strtotime("$selectedYearTop10KHACHHANG-$selectedMonthTop10KHACHHANG-01"));
+    
+        $result = DB::select(
+            "SELECT
+                tk.TEN AS TenKhachHang,
+                tk.EMAIL AS Email,
+                tk.SDT AS SoDienThoai,
+                tk.GIOITINH AS GioiTinh,
+                COUNT(DISTINCT dh.MADH) AS SoLuongDonHang,
+                SUM(ct.TONGTIEN) AS TongSoTienMuaHang
+            FROM taikhoans tk
+            JOIN donhangs dh ON tk.MATK = dh.MATK
+            JOIN chitiet_donhangs ct ON dh.MADH = ct.MADH
+            WHERE dh.TRANGTHAI_DONHANG = 'Đã giao'
+            AND dh.NGAYORDER BETWEEN ? AND ? 
+            GROUP BY tk.TEN, tk.EMAIL, tk.SDT, tk.GIOITINH
+            ORDER BY TongSoTienMuaHang DESC
+            LIMIT 10;
+        ", [$startDate, $endDate]);
+
+        return response()->json([
+            'result' => $result,  
+        ]);
+    }
 }

@@ -29,6 +29,7 @@ import Statistic from "../pages/Admin/Statistic/Statistic";
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
 import Collection from "../pages/Collection/collection";
+import SetData from "../pages/Admin/SetData/SetData";
 
 const publicRoutes = [
 
@@ -67,6 +68,7 @@ const publicRoutes = [
     {path: config.routes.collection1, component: Collection, layout: DefaultLayout},
     {path: config.routes.collection2, component: Collection, layout: DefaultLayout},
     {path: config.routes.collection3, component: Collection, layout: DefaultLayout},
+    {path: config.routes.setData, component: SetData, layout: DefaultLayout},
 ];
 
 const privateRoutes = [];

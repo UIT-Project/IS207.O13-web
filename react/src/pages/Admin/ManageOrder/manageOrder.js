@@ -490,7 +490,7 @@ function ManageOrder(){
         const data = {
             madh: madh
         }
-
+        console.log(typeof(data.madh))
         request.get(`/api/infoOrderDetail`, {params: data})
         .then(res => {  
             // if(typeof res.data.data_relative_Donhang !== 'object')
@@ -503,8 +503,8 @@ function ManageOrder(){
             //     data_relative_Donhang: res.data.data_relative_Donhang,
             //     data_sanPham_relative_CTDH: res.data.data_sanPham_relative_CTDH,
             // })
-            setNote(res.data.data_sanPham_relative_CTDH[0].GHICHU);
-            console.log('aksjdkkkjkj ', res.data.data_sanPham_relative_CTDH, res.data.data_relative_Donhang);
+            console.log('aksjdkkkjkj ', res.data.data_sanPham_relative_CTDH, '09090', res.data.data_relative_Donhang);
+            setNote(res.data.data_relative_Donhang[0].GHICHU === null ? '' : res.data.data_relative_Donhang[0].GHICHU);
             setWatchOrderDetail(true); 
         })
     };

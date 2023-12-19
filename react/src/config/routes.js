@@ -36,5 +36,6 @@ const routes = {
     collection1: "/collection1",
     collection2: "/collection2",
     collection3: "/collection3",
+    setData: "/SetData",
 }
 export default routes;

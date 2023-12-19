@@ -128,3 +128,7 @@ button {
   .kjkjkshjdh{
     margin-top: 100px;
   }
+  .top10Product{
+    display: flex;
+    justify-content: center;
+  }
