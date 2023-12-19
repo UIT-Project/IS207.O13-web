@@ -161,11 +161,11 @@ class SetDataController extends Controller
         // }
 
         
-        // $sourceFolder = 'C:\Users\dosid\Downloads\Temp\createManyFolderPictureProduct\2';
-        // $destinationFolder = 'C:\Users\dosid\Downloads\Temp\createManyFolderPictureProduct';
-        
+        // $sourceFolder = public_path('images/products/1'); // Thư mục nguồn trong Laravel
+        // $destinationFolder = public_path('images/products'); // Thư mục đích trong Laravel
+
         // for ($i = 2; $i <= 365; $i++) {
-        //     $newFolder = $destinationFolder . '\\' . $i;
+        //     $newFolder = $destinationFolder . '/' . $i;
         //     File::makeDirectory($newFolder);
 
         //     $files = File::files($sourceFolder);
@@ -176,13 +176,13 @@ class SetDataController extends Controller
 
         //         // Tạo tên file mới theo mẫu
         //         if ($key === 0) {
-        //             $newFileName = "{$i}_" . "1_" . str_replace('1_', '', $fileName) . ".{$fileExtension}";
+        //             $newFileName = "{$i}_1_" . str_replace('1_', '', $fileName) . ".{$fileExtension}";
         //         } else {
         //             $newFileName = "{$i}_" . str_replace('1_', '', $fileName) . ".{$fileExtension}";
         //         }
 
         //         // Đường dẫn mới cho file trong thư mục mới
-        //         $newFilePath = $newFolder . '\\' . $newFileName;
+        //         $newFilePath = $newFolder . '/' . $newFileName;
 
         //         // Sao chép và đổi tên file
         //         File::copy($file, $newFilePath);
