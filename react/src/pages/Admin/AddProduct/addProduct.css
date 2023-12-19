@@ -674,3 +674,6 @@ tr {
 .add_product_save{
     margin: 0 0.4rem;
 }
+.border_size_color{
+    border: 3px solid red;
+}

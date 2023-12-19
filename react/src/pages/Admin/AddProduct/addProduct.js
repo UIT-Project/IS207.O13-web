@@ -79,9 +79,11 @@ function AddProduct(){
         var value = e.target.value;
         if(infoAddNewProduct[name].includes(value)){
             setInfoAddNewProduct({...infoAddNewProduct, [name]: infoAddNewProduct[name].filter(item => item !== value)});
-            console.log(infoAddNewProduct); 
+            console.log(name, 'name'); 
         }
-        else{
+        else{ 
+            if(name === 'checkboxColor')
+                value = parseInt(value)
             setInfoAddNewProduct({...infoAddNewProduct, [name]: [...infoAddNewProduct[name], value]})
         }   
     }
@@ -226,20 +228,32 @@ function AddProduct(){
     }, [infoAddNewProduct.typeProduct])
 
     const renderListColor = listColor.map((item) => {
+        console.log(item.MAMAU, 'lklkl', infoAddNewProduct.checkboxColor.includes(item.MAMAU), infoAddNewProduct.checkboxColor)
         return (
             <div className="list_checbox_color_item">
                 <input 
                     type="checkbox" id={item.MAMAU} className="checkbox_sizes" 
                     name="checkboxColor"
                     value={item.MAMAU}
-                    checked={infoAddNewProduct.checkboxColor.includes(`${item.MAMAU}`)}
-                    onChange={handleInputInfoAddNewProduct_checkbox}
+                    checked={infoAddNewProduct.checkboxColor.includes(item.MAMAU)}
+                    onChange={handleInputInfoAddNewProduct_checkbox} 
                 ></input>
-                <label for={item.MAMAU}>
+                <label 
+                    for={item.MAMAU}
+                    className={
+                        ` 
+                            size_icon1 size_icon_color
+                            ${infoAddNewProduct.checkboxColor.includes(item.MAMAU)
+                                ? 'border_size_color' 
+                                : ''
+                            }
+                        `
+                    }
+                >
                     <div className="checkbox_color" style={{backgroundColor: `${item.HEX}`}}></div>
                 </label>
             </div>
-        )   
+        )
     })
 
 
@@ -334,13 +348,28 @@ function AddProduct(){
 
     const renderCheckBoxSize = checkBoxSizeDefault.map((item, index) =>
         <div key={index} className="choose_size__div__item">
-            <input type="checkbox" id={`${item}`} className="checkbox_sizes"  
+            <input 
+                type="checkbox" id={`${item}`} 
+                className="checkbox_sizes"  
                 name="checkboxSize"
                 value={`${item}`}
                 checked={infoAddNewProduct.checkboxSize.includes(`${item}`)}
-                onChange={handleInputInfoAddNewProduct_checkbox}
+                onChange={handleInputInfoAddNewProduct_checkbox} 
             ></input>
-            <label for={`${item}`}>{item}</label> 
+            <label 
+                for={`${item}`} 
+                className={
+                    `
+                        size_icon1 
+                        ${infoAddNewProduct.checkboxSize.find(itemChecked => itemChecked === item) 
+                            ? 'border_size_color' 
+                            : ''
+                        }
+                    `
+                }
+            >
+                {item}
+            </label> 
         </div> 
     )
 

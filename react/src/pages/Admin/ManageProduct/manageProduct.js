@@ -471,7 +471,13 @@ function ManageProduct()
                 })
             })
  
-            console.log(updatedList, res.data.dataProductDetail_sanpham_mausac_sizes__colors, "nhập số lượng", res.data.dataProductDetail_sanpham_mausac_sizes__soluongs, res.data.dataProductDetail_sanpham_mausac_sizes__colors)
+            console.log(
+                updatedList, 
+                res.data.dataProductDetail_sanpham_mausac_sizes__colors, 
+                "nhập số lượng", 
+                res.data.dataProductDetail_sanpham_mausac_sizes__soluongs, 
+                res.data.dataProductDetail_sanpham_mausac_sizes__colors
+            )
             setListQuantity(updatedList)  
         })
     };
@@ -957,23 +963,28 @@ function ManageProduct()
                 <h6 className="input_quantity__size_name" key={indexSize}>Size {itemSize}</h6> 
                 {
                     infoUpdateProduct.checkboxColor.map((itemColor, indexColor) => {
-                        // console.log(itemColor, 'item')
+                        console.log(itemColor, 'item')
                         return(
                             <div className="input_quantity__quantity" key={indexColor}>
-                                <div className="input_quantity__product_color" style={{backgroundColor: `${listColor[indexColor].HEX}`}}></div>
+                                <div 
+                                    className="input_quantity__product_color" 
+                                    style={{
+                                        backgroundColor: `${listColor.find(item => item.MAMAU === itemColor).HEX}`
+                                    }}
+                                ></div>
                                 <div> 
                                     {/* {renderInputQuantity_0(itemColor, itemSize) }  */}
                                     {
 
                                         infoUpdateProduct.quantity.map((item, indexQuantity) => { 
-                                            if(item.HEX === `${listColor[indexColor].HEX}` && item.MASIZE === itemSize){
+                                            // console.log(item.HEX, item.MASIZE, 'lk12', listColor[indexQuantity].HEX, indexQuantity,  itemSize, 'oio', listColor, '0909')
+                                            if(item.MAMAU === itemColor && item.MASIZE === itemSize){
                                                 // handleInputQuantity(item.SOLUONG, i)
                                                 return(
                                                     <div className="display_flex_ee">
-                                                        <div>
-                                                            <span className="input_quantity__quantity_haved" key={indexQuantity}>{item.SOLUONG}</span> 
+                                                        <div className="input_quantity__quantity_haved_div_width">
+                                                            <span className="input_quantity__quantity_haved1" key={indexQuantity}>{item.SOLUONG}</span> 
                                                         </div>
-
                                                         <div>
                                                                 {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
                                                             {renderInputQuantity(itemColor, itemSize)}                                                                
