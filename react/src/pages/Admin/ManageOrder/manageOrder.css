@@ -1,4 +1,14 @@
-
+.pagination-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.select{
+    width: 50px;
+    height: 40px;
+    margin-bottom: 15px;
+    margin-right: 20px;
+}
 :root {
     --value_radius__header_search: 15px;
     --value_radius__product_item: 4px;
