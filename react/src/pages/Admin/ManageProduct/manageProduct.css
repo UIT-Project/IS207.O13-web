@@ -297,13 +297,17 @@ tr {
 .input_quantity__quantity{
     display: flex;
     align-content: center;
+    align-items: center;
+    margin: 0.3rem 0px;
 }
 
-.input_quantity__quantity_haved{
-    padding: 3px 10px;
-    border: 1px solid red;
+.input_quantity__quantity_haved1{
+    padding: 0.05rem 0.5rem;
+    border: 1px solid white; 
     border-radius: 0.5em;
     margin: 0px 1em;
+    background-color: #cde5ff;
+    font-weight: 450;
 }
 .display_hidden{
     display: none;
@@ -948,4 +952,9 @@ tr {
 
 .border_size_color{
     border: 3px solid red;
+}
+.input_quantity__quantity_haved_div_width{
+    display: flex;
+    width: 6rem;
+    align-items: center;
 }
