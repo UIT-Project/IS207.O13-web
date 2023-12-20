@@ -193,7 +193,7 @@ function Home(){
             </div>
         </div>
         {/* <!-- Hiển thị "TOP DANH MỤC" --> */}
-        <div class="top_category">
+        {/* <div class="top_category">
             <div class="show_product__title_div">
                 <h1 class="show_product__title">Top Danh Mục</h1>
             </div>
@@ -249,7 +249,7 @@ function Home(){
                     </div>
                 </div>
             </div>
-        </div>
+        </div> */}
     </div>
     )
 }

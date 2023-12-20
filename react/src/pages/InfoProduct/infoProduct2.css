@@ -52,8 +52,9 @@
   border-radius: 1.5rem;
 }
 .detail_info_product__color__choose{
-  margin-top: 8px;
+  margin-top: 0.6rem;
   display: flex;
+  justify-content: center;
 } 
 .detail_info_product__color__item{
   margin-right: 8px;
@@ -104,7 +105,7 @@
   display: flex; 
   align-items: center; 
   margin-right: 10px; 
-  padding: 18px 18px;
+  padding: 0.9rem 0.9rem;
   border-top-left-radius: 20px;
   border-bottom-right-radius: 20px;
   background-color: black;
@@ -138,6 +139,7 @@
   margin-bottom: 10px;
   border-bottom: 1px solid rgb(219, 219, 219);
   display: flex;
+  justify-content: center;
 }
 .nav-item a{
   font-size: 14px;
@@ -378,17 +380,25 @@ user-select: none;
   display: flex;
   justify-content: center;
   align-items: center;
+  
   /* flex-direction: column;  */
+}
+#review {
+  display: flex;
+  justify-content: center;
+  align-items: center; 
+  flex-direction: column; 
 }
 .review-heading {
   letter-spacing: 1px;
-  /* margin: 30px 0px;
-  padding: 10px 20px; */
+  margin-top: 5rem;
+  /* padding: 10px 20px; */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   font-family: 'Times New Roman', Times, serif;
+  
 }
 .review-heading h1{
   font-size: 2.2rem;
@@ -404,7 +414,7 @@ user-select: none;
 }
 .review-box{
   height: 140px;
-  width: 50%;
+  width: 80%;
   box-shadow: 2px 2px 30px rgba(0,0,0,0.1);
   background-color: #fff;
   padding: 20px;
@@ -485,12 +495,42 @@ user-select: none;
   /* height: auto; */
   
 }
+.motasanpham2{
+  text-decoration: none;
+  border: none; 
+  background-color: #f9f9f9;
+  outline: none;
+  resize: none; /* Ngăn không cho textarea thay đổi kích thước bằng cách kéo cạnh */
+  overflow: hidden; /* Ẩn thanh cuộn nếu nội dung vượt quá */
+  min-height: 40px; /* Đặt chiều cao tối thiểu */
+  height: auto; /* Cho phép textarea tự điều chỉnh chiều cao dựa trên nội dung */ 
+  font-size: 1rem; /* Kích thước font */
+  font-weight: bold; /* Độ đậm của font */
+}
 .user {
   text-align: left;
 }
 .review-container {
-  max-height: 300px; /* Đặt chiều cao tối đa cho container */
+  max-height: 600px;
   overflow-y: auto; /* Bật thanh cuộn theo chiều dọc */
   border: 1px solid #ddd; /* Tùy chọn: Thêm đường viền để trang trí */
-  padding: 10px; /* Tùy chọn: Thêm padding để tạo khoảng cách */
+  padding: 2rem 0; 
+  width: 80%;
+  border-radius: 0.3rem;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+}
+
+.detail_info_product__price__css_chung_mskt{
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+}
+.detail_info_product__color__text{
+  font-weight: 450;
+}
+.detail_info_product__quantity__div-small{
+  margin-top: 0.7rem;
 }

@@ -3,7 +3,7 @@ import './infoProduct2.css';
 
 const slideStyles = {
   paddingLeft: "20px",
-  width: "24.875em",
+  width: "26.875em",
   height: "26.875em",
   borderRadius: "10px",
   backgroundSize: "cover",
@@ -11,7 +11,7 @@ const slideStyles = {
 
 };
 const containerStyles = {
-  width: "500px",
+  width: "530px",
   height: "280px",
   margin: "0 auto",
 };
@@ -63,7 +63,7 @@ const dotStyle = {
   fontSize: "20px",
 };
 
-const ImageSlider = ({ slides }) => {
+const ImageSlider = ({ slides }, {renderReview}) => {
   const [slide, setSlide] = useState(null);
   const [currentIndex, setCurrentIndex] = useState(0);
   const goToPrevious = () => {
@@ -85,46 +85,46 @@ const ImageSlider = ({ slides }) => {
   };
 
   return (
-
-    <div class="product_image col-sm-7">
-      <div class="product_image__list_mini_image" id="style-7">
-        {
-          slides.map((slide, slideIndex) => (
-          <div class="product_image__list_mini_image__item" >
-            <img src={slide.imgURL} alt="" class="product_image__list_mini_image__item__img" onClick={() => goToSlide(slideIndex)}/>
-          </div>
-          ))
-        }
-      </div>
-      <div class="product_image__main_image" style={containerStyles}>
-        <div style={sliderStyles} >
-          <div>
-            <div onClick={goToPrevious} style={leftArrowStyles}>
-              ❰
+ 
+      <div className="product_image">
+        <div class="product_image__list_mini_image" id="style-7">
+          {
+            slides.map((slide, slideIndex) => (
+            <div class="product_image__list_mini_image__item" >
+              <img src={slide.imgURL} alt="" class="product_image__list_mini_image__item__img" onClick={() => goToSlide(slideIndex)}/>
             </div>
-            <div onClick={goToNext} style={rightArrowStyles}>
-              ❱
-            </div>
-          </div>
-          <div style={slideStylesWidthBackground} onClick={() => setSlide(slides[currentIndex])}></div>
-          <div style={dotsContainerStyles}>
-            {slides.map((slide, slideIndex) => (
-              <div
-                style={dotStyle}
-                key={slideIndex}
-                onClick={() => goToSlide(slideIndex)}
-              >
-                ●
-              </div>
-            ))}
-          </div>
-          <div className="popup-media" style={{ display: slide ? 'block' : 'none' }}>
-            <span onClick={() => setSlide(null)}>&times;</span>
-            <img src={slide?.imgURL} />
-          </div>
+            ))
+          }
         </div>
-      </div>
-    </div>
+        <div class="product_image__main_image" style={containerStyles}>
+          <div style={sliderStyles} >
+            <div>
+              <div onClick={goToPrevious} style={leftArrowStyles}>
+                ❰
+              </div>
+              <div onClick={goToNext} style={rightArrowStyles}>
+                ❱
+              </div>
+            </div>
+            <div style={slideStylesWidthBackground} onClick={() => setSlide(slides[currentIndex])}></div>
+            <div style={dotsContainerStyles}>
+              {slides.map((slide, slideIndex) => (
+                <div
+                  style={dotStyle}
+                  key={slideIndex}
+                  onClick={() => goToSlide(slideIndex)}
+                >
+                  ●
+                </div>
+              ))}
+            </div>
+            <div className="popup-media" style={{ display: slide ? 'block' : 'none' }}>
+              <span onClick={() => setSlide(null)}>&times;</span>
+              <img src={slide?.imgURL} />
+            </div>
+          </div>
+        </div> 
+      </div> 
 
   );
 };

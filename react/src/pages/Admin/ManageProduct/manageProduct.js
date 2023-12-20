@@ -963,12 +963,12 @@ function ManageProduct()
         if(foundItem_size === false || foundItem_color === false){ 
             return ( 
                 <div className="display_flex_ee">
-                    <div>
-                        <span className="input_quantity__quantity_haved">0</span> 
+                    <div className="input_quantity__quantity_haved_div_width">
+                        <span className="input_quantity__quantity_haved1">0</span> 
                     </div>
 
                     <div>
-                            {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
+                        {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
                         {renderInputQuantity(itemColor, itemSize)}                                                                
                     </div>
                 </div> 

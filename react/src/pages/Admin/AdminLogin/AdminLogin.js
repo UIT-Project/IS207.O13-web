@@ -75,7 +75,7 @@ function AdminLogin(){
         confirmPassword: registerInput.confirmPassword_register,
         gender: registerInput.gender_register,
         role: "Nhân viên",
-        AdminVerify: 0,
+        AdminVerify: "Chờ xác nhận",
       }
       console.log(data_register)
       //sử dụng sanctum để lưu thông tin đăng ký và check valid ở phần backend

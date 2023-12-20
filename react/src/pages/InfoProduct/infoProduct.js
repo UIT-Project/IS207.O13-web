@@ -23,10 +23,13 @@ function InfoProduct(){
     //các biến cách nhau bởi dấu ?
     const id = urlParams.get('id'); 
 
+
     //biến global
     const { divPopupCartRef, infoCarts, setInfoCarts, 
         setStatusPressAddToCart, statusPressAddToCart, formatPrice } = useGlobalVariableContext(); 
     const [hetHang, setHetHang] = useState(false);
+    const textareaRef = useRef(null);
+
     //
     const buttonAddToCartRef = useRef(null);  
     const [infoReviewProduct, setInfoReviewProduct] = useState([]);
@@ -205,6 +208,17 @@ function InfoProduct(){
             }, 3000); // Thay đổi giá trị thời gian theo nhu cầu của bạn 
         }
     }
+    useEffect(() => {
+        if (textareaRef.current && infoProduct && infoProduct.data_sanpham && infoProduct.data_sanpham.MOTA) {
+            const textarea = textareaRef.current;
+            const content = infoProduct.data_sanpham.MOTA;
+        
+            textarea.value = content;
+        
+            textarea.style.height = 'auto'; // Đặt chiều cao về auto trước khi tính toán chiều cao mới
+            textarea.style.height = `${textarea.scrollHeight}px`; // Sử dụng scrollHeight để điều chỉnh chiều cao
+          }
+      }, [infoProduct]);
     
     //phần code trong này sẽ liên quan đến việc ẩn và hiện popup cart
     useEffect(() => {
@@ -273,7 +287,19 @@ function InfoProduct(){
         <div class="container col-sm-12 ">
             <div class="container-fluid">
                 <div class="container_info_product"> 
-                    <ImageSlider slides={infoProduct.imgURL.length > 0 ? infoProduct.imgURL : slides}/>
+                    <div class=" col-sm-7">
+                        <ImageSlider 
+                            slides={infoProduct.imgURL.length > 0 ? infoProduct.imgURL : slides} 
+                            renderReview={renderReview} 
+                        />
+                        <section id="review">
+                            <div class="review-heading">
+                                <h1>Đánh giá</h1>
+                            </div>
+                            <div class="review-container">{renderReview}</div>
+                            
+                        </section>
+                    </div>
                     <div class="detail_info_product col-sm-5">
                         <div class="detail_info_product__title">
                             <h4>{infoProduct.data_sanpham.TENSP}</h4>
@@ -299,9 +325,15 @@ function InfoProduct(){
                                 </div>
                             </div>
                         </div>
-                        <div class="detail_info_product__color detail_info_product__price__css_chung">
+                        <div class="
+                            detail_info_product__color 
+                            detail_info_product__price__css_chung 
+                            detail_info_product__price__css_chung_mskt"
+                        >
                             <div class="detail_info_product__color__text">
-                                Màu sắc
+                                <span>
+                                    Màu sắc
+                                </span>
                             </div>
                             <div class="detail_info_product__color__choose">  
                                 {infoProduct.data_mamau.map((item, index) => { 
@@ -329,10 +361,10 @@ function InfoProduct(){
                             </div>
                         </div>
                         <div class="detail_info_product__size detail_info_product__price__css_chung">
-                            <div class="detail_info_product__size__text">
+                            <div class="detail_info_product__color__text">
                                 Kích thước
                             </div>
-                            <div class="detail_info_product__size__choose">  
+                            <div class="detail_info_product__color__choose">  
                                 {infoProduct.data_size.map((item, index) => { 
                                     return(
                                         <div class="detail_info_product__size__item" key={index}>
@@ -357,6 +389,9 @@ function InfoProduct(){
                             </div>
                         </div>
                         <div class="detail_info_product__quantity detail_info_product__price__css_chung">
+                            <div class="detail_info_product__color__text">
+                                Số lượng
+                            </div>
                             <div class="detail_info_product__quantity__div-small">
                                 <input 
                                     type="button" 
@@ -384,7 +419,7 @@ function InfoProduct(){
                                                 selectPropertyProduct.mamau === item.MAMAU 
                                                 && selectPropertyProduct.masize === item.MASIZE
                                             ) ? '' : 'display_hidden'}`}
-                                    >số lượng còn lại: {item.SOLUONG}</div>
+                                    >Số lượng còn lại: {item.SOLUONG}</div>
                                 )
                             } 
                             <div class="detail_info_product_button_detail " >
@@ -403,12 +438,12 @@ function InfoProduct(){
                                 <li class="nav-item">
                                 <a class="nav-link active detail_info_product_tab_header__style1" aria-current="page" href="#"> Giới thiệu</a>
                                 </li>
-                                <li class="nav-item">
+                                {/* <li class="nav-item">
                                 <a class="nav-link" href="#" >Chi tiết sản phẩm</a>
                                 </li>
                                 <li class="nav-item">
                                 <a class="nav-link" href="#" >Hướng dẫn bảo quản</a>
-                                </li>
+                                </li> */}
                             </ul>
                         </div>
                         <div class="detail_info_product_tab_body ">
@@ -437,19 +472,26 @@ function InfoProduct(){
                                 <p>Mẫu mặc size M</p>
                                 <p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do
                                     điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p> */}
-                                    <textarea value={infoProduct.data_sanpham.MOTA} className="motasanpham" cols="60" rows={40} disabled></textarea>
+                                    <textarea       
+                                        ref={textareaRef}
+                                        value={infoProduct.data_sanpham.MOTA} 
+                                        className="motasanpham2" 
+                                        cols="60" 
+                                        rows="1"
+                                        disabled
+                                    ></textarea>
                                 
                             </div>
                         </div>
                     </div>
                 </div> 
-                <section id="review">
+                {/* <section id="review">
                     <div class="review-heading">
                         <h1>Đánh giá</h1>
                     </div>
                     <div class="review-container">{renderReview}</div>
                     
-                </section>
+                </section> */}
             </div>
  
         </div>

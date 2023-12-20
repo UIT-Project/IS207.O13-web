@@ -62,7 +62,9 @@ function AddProduct(){
             setInfoAddNewProduct({...infoAddNewProduct, [e.target.name]: e.target.value});
         } 
         else if( name === 'typeProduct' || name === 'typeProduct2' ){
-            setInfoAddNewProduct({...infoAddNewProduct, [e.target.name]: parseInt( e.target.value)}); 
+            console.log(e.target.name + " " + e.target.value, 'okojjj');
+            setInfoAddNewProduct({...infoAddNewProduct, [e.target.name]: value !== "" ? parseInt( e.target.value) : ''}); 
+
         }
         else if(
             name === 'nameProduct' || 
@@ -72,7 +74,6 @@ function AddProduct(){
             name === 'indexThumnail'
         ){
             setInfoAddNewProduct({...infoAddNewProduct, [e.target.name]: e.target.value});
-            console.log(e.target.name + " " + e.target.value);
         }
     }
 
@@ -121,6 +122,7 @@ function AddProduct(){
     const handleClickAddProduct = () => {
         console.log(infoAddNewProduct.checkboxColor.length * infoAddNewProduct.checkboxSize.length, '828282', listQuantity.length + 1)
         //sử dụng formData để nhét hình ảnh và thông tin vào một cục rồi đẩy xuống db
+        console.log(infoAddNewProduct.typeProduct2, infoAddNewProduct.typeProduct,'infoAddNewProduct.typeProduct2')
         if(
             infoAddNewProduct.nameProduct === '' ||
             infoAddNewProduct.originPrice === '' ||
@@ -442,7 +444,7 @@ function AddProduct(){
                                     name="typeProduct"
                                     value={infoAddNewProduct.typeProduct} 
                                 >
-                                <option selected value="0">-- Chọn phân loại --</option>
+                                <option selected value="">-- Chọn phân loại --</option>
                                 <option value="1">Nam</option>
                                 <option value="2">Nữ</option>
                                 <option value="3">Trẻ em</option>
@@ -450,13 +452,13 @@ function AddProduct(){
                                 <span className={`red_color ${isEmpty && infoAddNewProduct.typeProduct === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại</span>
                             </div> 
                             <div class="col-4">
-                                <label for="#" class="form-label">Phân loại chi tiết</label>
+                                <label for="#" class="form-label">Danh mục</label>
                                 <select class="form-select" required
                                     onChange={handleInputInfoAddNewProduct}
                                     name="typeProduct2"
                                     value={infoAddNewProduct.typeProduct2} 
                                 >
-                                    <option selected value="0">-- Chọn phân loại chi tiết --</option>
+                                    <option selected value="">-- Chọn danh mục --</option>
                                     {renderListDetailCategory2}
                                 </select>
                                 <span className={`red_color ${isEmpty && infoAddNewProduct.typeProduct2 === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại sản phẩm chi tiết</span>
