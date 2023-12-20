@@ -12,7 +12,8 @@ class HomeController extends Controller
             "SELECT * FROM sanphams, hinhanhsanphams 
             WHERE hinhanhsanphams.masp = sanphams.masp 
             AND MAHINHANH LIKE '%thumnail%'  
-            ORDER BY created_at ASC LIMIT 15"
+            ORDER BY created_at ASC 
+            LIMIT 15"
         );
         $dataHotProduct = DB::select(
             "SELECT sanphams.MASP, TENSP, GIAGOC, GIABAN, MAPL_SP, imgURL
@@ -22,7 +23,8 @@ class HomeController extends Controller
             AND MAHINHANH LIKE '%thumnail%'  
             AND hinhanhsanphams.masp = sanphams.masp 
             GROUP BY sanphams.MASP, TENSP, GIAGOC, GIABAN, MAPL_SP, imgURL
-            ORDER BY SUM(chitiet_donhangs.SOLUONG)"
+            ORDER BY SUM(chitiet_donhangs.SOLUONG)
+            LIMIT 15"
         ); 
         return response()->json([
             'dataNewProduct' => $dataNewProduct,

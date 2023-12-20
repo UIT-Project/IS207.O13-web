@@ -249,6 +249,14 @@ class SetDataController extends Controller
 
         }
 
+        // 10. size
+        {
+            $sizes = ['S', 'M', 'L', 'XL', 'XXL', '3XL'];
+            foreach ($sizes as $size) {
+                DB::insert('INSERT INTO sizes (MASIZE) VALUES (?)', [$size]);
+            }
+        }
+
         //3. sanphams
         {
             $startDate = Carbon::create(2023, 1, 1);
@@ -307,7 +315,7 @@ class SetDataController extends Controller
             }
         }
 
-        //4. hinhanhs và hinhanhsanphams
+        // //4. hinhanhs và hinhanhsanphams
         {
             $imageDirectories = glob(public_path('images/products/*'), GLOB_ONLYDIR);
 
@@ -336,7 +344,7 @@ class SetDataController extends Controller
                 }
             }
         }
-        //5. taikhoans
+        // //5. taikhoans
         {
             DB::insert('INSERT INTO taikhoans (TEN, EMAIL, PASSWORD, GIOITINH, ROLE, AdminVerify, email_verified_at, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
                 'Đạt',
@@ -357,7 +365,7 @@ class SetDataController extends Controller
                 '$2y$10$nJgPXErZJOzbHhFf/oL88O79JF.KQFByZcM9yVUz3O8x.hN.02Ida',
                 'Nam',
                 'Nhân viên',
-                '1',
+                'Chờ xác nhận',
                 '2023-12-14 10:17:51',
                 '2023-12-14 10:17:42',
                 '2023-12-14 10:17:51',
@@ -370,7 +378,8 @@ class SetDataController extends Controller
                 $gender = rand(0, 1) ? 'Nam' : 'Nữ';
                 $address = $this->getRandomAddress();
                 $phoneNumber = '0' . str_pad(rand(1, 999999999), 9, '0', STR_PAD_LEFT); // Số điện thoại bắt đầu bằng 0
-
+                $role = rand(0, 1) ? 'Nhân viên' : 'Khách hàng';
+                $AdminVerify = rand(0, 1) ? 'Chờ xác nhận' : 'Đã xác nhận';
 
                 DB::insert(
                     "INSERT INTO taikhoans 
@@ -384,8 +393,8 @@ class SetDataController extends Controller
                         $gender,
                         $phoneNumber,
                         $address,
-                        'Khách hàng',
-                        '0',
+                        $role,
+                        $AdminVerify,
                         '2023-12-14',
                         '2023-12-14',
                         '2023-12-14',
@@ -393,7 +402,7 @@ class SetDataController extends Controller
                 );
             }
         }
-        //6. thongtingiaohangs
+        // //6. thongtingiaohangs
         {
             // Câu truy vấn insert cho dòng dữ liệu thứ nhất
             DB::insert('INSERT INTO thongtingiaohangs (MATTGH, MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
@@ -436,7 +445,7 @@ class SetDataController extends Controller
 
         }
 
-        //7.voucher 
+        // //7.voucher 
         {
             for ($i = 0; $i < 5; $i++) {
                 $randomDateStart = Carbon::now()->addDays(5)->toDateString(); // THOIGIANBD > thời gian hiện tại và cách thời gian hiện tại 5 ngày
@@ -541,7 +550,7 @@ class SetDataController extends Controller
                 ]);
             }
         }
-        //8. THỰC HIỆN INSERT DỮ LIỆU VÀO BẢNG HOÁ ĐƠN ĐỂ THỐNG KÊ
+        // //8. THỰC HIỆN INSERT DỮ LIỆU VÀO BẢNG HOÁ ĐƠN ĐỂ THỐNG KÊ
         {
             $startDate = '2023-01-01';
             $endDate = '2023-12-31';
@@ -576,28 +585,22 @@ class SetDataController extends Controller
             }
         }
 
-        // //9. donhang_voucher
-        // {
-        //     // for ($i = 1; $i <= 50; $i++) {
-        //     //     $randomVoucher = DB::table('vouchers')->inRandomOrder()->first();
-        //     //     $randomOrder = DB::table('donhangs')->inRandomOrder()->first();
+        // // //9. donhang_voucher
+        // // {
+        // //     // for ($i = 1; $i <= 50; $i++) {
+        // //     //     $randomVoucher = DB::table('vouchers')->inRandomOrder()->first();
+        // //     //     $randomOrder = DB::table('donhangs')->inRandomOrder()->first();
             
-        //     //     DB::table('donhang_vouchers')->insert([
-        //     //         'MAVOUCHER' => $randomVoucher->MAVOUCHER,
-        //     //         'MADH' => $randomOrder->MADH,
-        //     //     ]);
-        //     // }
-        // }
+        // //     //     DB::table('donhang_vouchers')->insert([
+        // //     //         'MAVOUCHER' => $randomVoucher->MAVOUCHER,
+        // //     //         'MADH' => $randomOrder->MADH,
+        // //     //     ]);
+        // //     // }
+        // // }
         
-        // 10. size
-        {
-            $sizes = ['S', 'M', 'L', 'XL', 'XXL', '3XL'];
-            foreach ($sizes as $size) {
-                DB::insert('INSERT INTO sizes (MASIZE) VALUES (?)', [$size]);
-            }
-        }
         
-        //12. sanpham_mausac_sizes
+        
+        // //12. sanpham_mausac_sizes
         {
             $sanPhams = DB::table('sanphams')->get();
             $mauSacs = DB::table('mausacs')->get();
@@ -620,7 +623,7 @@ class SetDataController extends Controller
                 }
             }
         }
-        // 13. chitiet_donhangs
+        // // 13. chitiet_donhangs
         {
             
             // Lấy danh sách MADH
@@ -653,7 +656,7 @@ class SetDataController extends Controller
                 }
             }
         }
-        // 14. danhgia_sanphams
+        // // 14. danhgia_sanphams
         {
             // Lấy danh sách đơn hàng và MASP tương ứng của tất cả các đơn hàng
             $donhangs = DB::table('donhangs')->select('MADH', 'MATK')->get();

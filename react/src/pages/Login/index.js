@@ -280,11 +280,10 @@ function Login(){
                   }
                 >Khôi phục mật khẩu</span>
                 {renderLoading()}
-                <p class="social-text">Or Sign in with social platforms</p>
+                {/* <p class="social-text">Or Sign in with social platforms</p>
                 <div class="social-media">
                   <a href="#" class="social-icon">
-                      <FontAwesomeIcon icon={faFaceAngry}></FontAwesomeIcon>
-                    {/* <i class="fab fa-facebook-f"></i> */}
+                      <FontAwesomeIcon icon={faFaceAngry}></FontAwesomeIcon> 
                   </a>
                   <a href="#" class="social-icon">
                       
@@ -296,7 +295,7 @@ function Login(){
                   <a href="#" class="social-icon">
                     <i class="fab fa-linkedin-in"></i>
                   </a>
-                </div>
+                </div> */}
               </form>
               <form action="#" class="sign-up-form" onSubmit={registerSubmit}>
                 <h2 class="title">Đăng Ký</h2>
@@ -328,6 +327,7 @@ function Login(){
                   <input type="password" name="confirmPassword_register" onChange={handleInputRegister} value={registerInput.confirmPassword_register} placeholder="Confirm Password" />
                 </div>
                 <span>{registerInput.error_list_register.confirmPassword}</span>
+                <h5>Giới tính</h5>
                 <div class="gender-input">
                   <div id=" male-input">
                     
@@ -354,6 +354,7 @@ function Login(){
                     <label for="female" className='gender_css'>Nữ</label>
                   </div>
                 </div>
+                {/* <span>Chọn giới tính</span> */}
 
                 {/* <div class="input-field">
                   <i class="fas fa-cake"></i>
@@ -363,7 +364,7 @@ function Login(){
                 <input type="submit" class={`btn btn_sign_up ${isLoading ? 'display_hidden' : ''}`} value="Đăng ký" />
                 {renderLoading()}
 
-                <p class="social-text">Or Sign up with social platforms</p>
+                {/* <p class="social-text">Or Sign up with social platforms</p>
                 <div class="social-media">
                   <a href="#" class="social-icon">
                     <i class="fab fa-facebook-f"></i>
@@ -377,7 +378,7 @@ function Login(){
                   <a href="#" class="social-icon">
                     <i class="fab fa-linkedin-in"></i>
                   </a>
-                </div>
+                </div> */}
               </form>
             </div>
           </div>

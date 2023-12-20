@@ -141,7 +141,7 @@ class ManageProductController extends Controller
         
         $keySearch = $request->query('keySearch');
         $typeSearch = $request->query('typeSearch');
-
+        $data_thongtin_sanpham = [];
         if(is_numeric($keySearch) && $typeSearch == 'MASP'){
             $data_thongtin_sanpham = DB::select(
                 "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, 

@@ -455,8 +455,9 @@ a {
 }
  
 .header__body__cart__orders__item__image{
-    width: 53px;
-    height: 43px;
+    width: 120%;
+    height: 4rem;
+    padding-right: 0.7rem;
 }
 .header__body__cart__orders__item__info{
     flex-grow: 1;
@@ -590,4 +591,8 @@ header_navigation__popup_text>li {
 ul{
     list-style-type: none;
     padding: 0;
+}
+
+.display_hidden{
+    display: none !important;
 }

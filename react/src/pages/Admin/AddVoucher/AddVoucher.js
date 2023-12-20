@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faL, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
 function AddVoucher(){
     //NHỮNG THỨ CẦN XỬ LÝ TRONG TRANG addVoucher - thêm sản phẩm của admin
@@ -14,6 +15,7 @@ function AddVoucher(){
     // 2.Xử lý hiển thị ảnh preview, xoá, chọn thêm ảnh
     // 3.xử lý lưu thông tin sản phẩm và hình ảnh xuống db
 
+    useAuthCheck()
 
     // statusPressAddVoucher = true thì hiện nút thêm sản phẩm
     const [statusPressAddVoucher, setStatusPressAddVoucher] = useState(true);

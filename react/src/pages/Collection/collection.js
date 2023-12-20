@@ -9,6 +9,7 @@ import { faHeart } from "@fortawesome/free-regular-svg-icons";
 // import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
+import { useLocation } from 'react-router-dom';
 
 function Collection(){ 
 
@@ -23,8 +24,16 @@ function Collection(){
 
 
     const [loadNewList, setLoadNewList] = useState(0);
-    const [filter, setFilter] = useState('moinhat');
+    
+    const [listProductCategory2, setListProductCategory2] = useState([])
+    const searchParams  = new URLSearchParams(window.location.search); 
+    // const mapl_sp = searchParams.get('mapl_sp') ? searchParams.get('mapl_sp') : 1;
+    // const [query, setQuery] = useState(searchParams.get('query'));
+
+    const [state_mapl_sp, setState_mapl_sp] = useState(parseInt(searchParams.get('mapl_sp'))); 
     const [mapl_sp2, setMapl_sp2] = useState(1);
+    const [state_query, setState_query] = useState(searchParams.get('query')); 
+    const [filter, setFilter] = useState('moinhat');
     const [listFilter, setListFilter] = useState([
         {
             name_filter: 'moinhat',
@@ -43,18 +52,11 @@ function Collection(){
             name_show: 'Cao xuống thấp'
         },
     ])
-    const [listProductCategory2, setListProductCategory2] = useState([])
-    const searchParams  = new URLSearchParams(window.location.search); 
-    const mapl_sp = searchParams.get('mapl_sp') ? searchParams.get('mapl_sp') : 1;
-    const [query, setQuery] = useState(searchParams.get('query'));
-
-    const [state_mapl_sp, setState_mapl_sp] = useState(parseInt(searchParams.get('mapl_sp')));
-    const [state_query, setState_query] = useState(searchParams.get('query'));
 
 
     const [orderStatus, setOrderStatus] = useState({
         collection:{
-            nameState: parseInt(mapl_sp),
+            nameState: parseInt(state_mapl_sp),
             orderList: [],
             pageQuantity: null,
             paginationList: [],
@@ -76,17 +78,10 @@ function Collection(){
             value: value
         }
     )) 
-    const handleClickFilter = (type_mapl_sp2, type_filter) => {
-        const item_status = orderStatus_Array[0]
-        const updateOpeningPage = prevOrderStatus => (
-            {
-                ...prevOrderStatus, 
-                [item_status.key] : {...prevOrderStatus[item_status.key],  openingPage:  1}
-            }
-        );
+    const handleClickFilter = (type_mapl_sp2, type_filter) => { 
         setOrderStatus({
             collection:{
-                nameState: parseInt(mapl_sp),
+                nameState: parseInt(state_mapl_sp),
                 orderList: [],
                 pageQuantity: null,
                 paginationList: [],
@@ -106,8 +101,8 @@ function Collection(){
         setMapl_sp2(type_mapl_sp2); 
         setPaginationNumberRunFirst(0);
         // getQuantityCollectionToDevidePage(type_mapl_sp2)
-        getInfoCollection(1, type_mapl_sp2, type_filter)
-        console.log(type_mapl_sp2, type_filter, 'type')
+        // getInfoCollection(1, type_mapl_sp2, type_filter)
+        console.log(type_mapl_sp2, type_filter, state_mapl_sp, 'type', 'thay đổi 2')
     }
     // const handleClickCategory2 = (type) => {
     //     setMapl_sp2(type); 
@@ -119,15 +114,42 @@ function Collection(){
         if(paginationNumberRunFirst === 0 ){
             orderStatus_Array.map(item => getInfoCollection(1, mapl_sp2, filter))
             // getQuantityCollectionToDevidePage(mapl_sp2) 
-        }
-        // getInforOrderDetail(1);  
+            console.log('thay đổi 1')
+        } 
     }, [paginationNumberRunFirst === 0])
 
-    const getDetailCategory2 = () => {
+    useEffect(() => {   
+        if(paginationNumberRunFirst === 0 ){
+            orderStatus_Array.map(item => getInfoCollection(1, mapl_sp2, filter)) 
+            console.log('thay đổi 2')
+
+        }
+        let mapl_sp = searchParams.get('mapl_sp');
+        let query = searchParams.get('query');
+        console.log(mapl_sp, query, 'query')
+        if(mapl_sp !== null){  
+            mapl_sp = parseInt(mapl_sp)
+            setState_mapl_sp(mapl_sp) 
+            handleClickFilter(1, filter)
+            // getInfoCollection(1, 1, filter)  
+            setState_query(null) 
+
+            getDetailCategory2(mapl_sp);
+        }
+        else{
+            setState_query(query) 
+
+            handleClickFilter(1, filter)
+            getInfoCollection(1, 1, filter)  
+        }
+ 
+    }, [useLocation().search])
+
+    const getDetailCategory2 = (state_mapl_sp_thamso) => {
         // const data = {
         //     typeProduct_mapl: infoAddNewProduct.typeProduct
         // }
-        request.get(`api/getDetailCategory2`, {params: {typeProduct_mapl: mapl_sp}})
+        request.get(`api/getDetailCategory2`, {params: {typeProduct_mapl: state_mapl_sp_thamso}})
         .then(res => {
             console.log(res.data.listDetailCategory2)
             setListProductCategory2(res.data.listDetailCategory2)
@@ -139,9 +161,9 @@ function Collection(){
 
     const getQuantityCollectionToDevidePage = (mapl_sp2) => { 
         const data = {
-            mapl_sp: parseInt(mapl_sp), 
+            mapl_sp: parseInt(state_mapl_sp), 
             mapl_sp2: parseInt(mapl_sp2),
-            query_data: query,
+            query_data: state_query,
         }
         console.log('SL_MASP', data)
         request.get('/api/getQuantityCollectionToDevidePage',  {params: data})
@@ -194,13 +216,12 @@ function Collection(){
             start: numberOrderEachPage * ( openingPage - 1),
             collection: orderStatus_Array[0].value.nameState,
             numberOrderEachPage: numberOrderEachPage,
-            mapl_sp: parseInt(mapl_sp), 
+            mapl_sp: parseInt(state_mapl_sp), 
             mapl_sp2: ma_category2,
             filter: filter2,
-            query_data: query
+            query_data: state_query
         }   
-        console.log(queryForGetInfoCollection, 'queryForGetInfoCollection')
-
+        console.log(queryForGetInfoCollection, 'queryForGetInfoCollection', 'thay đổi') 
         try{
             request.get(`/api/getInfoCollection`, {params: queryForGetInfoCollection}) 
             .then(res=>{      
@@ -286,7 +307,7 @@ function Collection(){
         // if(query !== null){
             // getQuantityCollectionToDevidePage(1)
             getInfoCollection(1, 1, filter);
-            getDetailCategory2();
+            getDetailCategory2(state_mapl_sp);
             // handleClickFilter(mapl_sp, mapl_sp2)
         // }
         // else{
@@ -427,7 +448,7 @@ function Collection(){
                 <h1 class={`${state_query === null && state_mapl_sp === 2 ? '' : 'display_hidden'}`}>THỜI TRANG NỮ</h1>
                 <h1 class={`${state_query === null && state_mapl_sp === 3 ? '' : 'display_hidden'}`}>THỜI TRANG TRẺ EM</h1>
             </div>
-            <div className={`row ${query === null ? '' : 'display_hidden'}`}>
+            <div className={`row ${state_query === null ? '' : 'display_hidden'}`}>
                 <div class="grid__column_10__filter">
                     <div class="grid__column_10__filter__div_title">
                         <span class="grid__column_10__filter__text_title">Danh mục: </span>
@@ -438,7 +459,7 @@ function Collection(){
                     </div> 
                 </div>
             </div>
-            <div className={`row ${query !== null && orderStatus_Array[0].value.pageQuantity === 0 ? 'display_hidden' : ''}`}>
+            <div className={`row ${state_query !== null && orderStatus_Array[0].value.pageQuantity === 0 ? 'display_hidden' : ''}`}>
                 <div class="grid__column_10__filter">
                     <div class="grid__column_10__filter__div_title">
                         <span class="grid__column_10__filter__text_title">Sắp xếp theo</span>
@@ -473,10 +494,10 @@ function Collection(){
             </div>
             <div className="row productHaveFound">
                 <span 
-                    className={`${query !== null ? '' : 'display_hidden'}`}
+                    className={`${state_query !== null ? '' : 'display_hidden'}`}
                 >Tìm thấy {orderStatus_Array[0].value.pageQuantity} sản phẩm</span>
                 <span 
-                    className={`${query === null ? '' : 'display_hidden'}`}
+                    className={`${state_query === null ? '' : 'display_hidden'}`}
                 >Có {orderStatus_Array[0].value.pageQuantity} sản phẩm</span>
             </div>
             <div class="show_product">

@@ -131,3 +131,34 @@ button:disabled {
 .display_hidden{
     display: none;
 }
+
+.donut_InfoAccount2 {
+    width: 2rem;
+    height: 2rem;
+    margin-top: 2rem;
+    margin-left: 23rem;
+    border-radius: 50%;
+    border: 0.3rem solid white;
+    border-top-color: #979fd0;
+    animation: 1.5s spin infinite linear;
+  
+    &.multi_InfoAccount {
+      border-bottom-color: #979fd0;
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .luuthanhcong_mauxanh{
+    color: green;
+    font-weight: 450;
+  }
+
+  .saidinhdang_mau_do{
+    color: red;
+  }

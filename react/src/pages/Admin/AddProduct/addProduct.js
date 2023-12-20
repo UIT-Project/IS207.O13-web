@@ -8,7 +8,11 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faFloppyDisk, faL, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
+
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
+
 function AddProduct(){
+    useAuthCheck()
     //NHỮNG THỨ CẦN XỬ LÝ TRONG TRANG addProduct - thêm sản phẩm của admin
     // 1.hiển thị giao diện các ô input nhập thông tin sản phẩm, input chọn size, chọn màu, nhập số lượng sp, chọn ảnh
     // 2.Xử lý hiển thị ảnh preview, xoá, chọn thêm ảnh

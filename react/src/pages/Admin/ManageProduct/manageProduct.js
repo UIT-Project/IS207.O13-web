@@ -8,10 +8,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry, faFloppyDisk, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faL, faLeftLong, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
 function ManageProduct()
 {
     const {formatPrice} = useGlobalVariableContext(); 
+    useAuthCheck()
 
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
@@ -227,7 +229,7 @@ function ManageProduct()
           popupContainer.style.opacity = "1";
           popupContainer.style.transform = "scale(1)";
         }, 100);
-      };
+    };
     
       const closePopup = () => {
         const popupContainer = document.querySelector(".popup-container");
@@ -250,11 +252,11 @@ function ManageProduct()
             infoUpdateProduct.sellPrice === '' ||
             infoUpdateProduct.typeProduct === '' ||
             infoUpdateProduct.desctiption === '' 
-            // ||
-            // infoUpdateProduct.checkboxColor.length === 0 ||
-            // infoUpdateProduct.checkboxSize.length === 0 ||
+            ||
+            infoUpdateProduct.checkboxColor.length === 0 ||
+            infoUpdateProduct.checkboxSize.length === 0 ||
             // listQuantity.length !== infoUpdateProduct.checkboxColor.length * infoUpdateProduct.checkboxSize.length ||
-            // (previewImages.length === 0 && infoUpdateProduct.imgurl.length === 0)
+            (previewImages.length === 0 && infoUpdateProduct.imgurl.length === 0)
         ){
             setIsEmpty(true)
             setContentPopup({
@@ -530,49 +532,67 @@ function ManageProduct()
 
     const handleDeleteProduct = (masp, item_ofOrderStatusArray) => {  
         
-        setOrderStatus(prevOrderStatus => ({
-            ...prevOrderStatus, 
-            [item_ofOrderStatusArray.key] : 
-                {...prevOrderStatus[item_ofOrderStatusArray.key],  
-                orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.map(item => {
-                    if(item !== null){
-                        if(item.MASP === masp){
-                            return null;
-                        }
-                        else{
-                            return item;
-                        }
-                    }
-                    else{
-                        return item;
-                    }
-                })}
-        }))  
+          
 
         request.post(`api/deleteProduct?masp=${masp}`)
         .then(res => {
-            console.log(res)
-            let index = {
-                start: 0,
-                end: 0,
-            } 
-            item_ofOrderStatusArray.value.spaceGetDataFromOrderList.forEach(item => {
-                if(item_ofOrderStatusArray.value.openingPage === item.paginationNumber){ 
-                    index.start = item.startIndex;
-                    index.end = item.endIndex;
-                }
-            })
-            // index.end = item_ofOrderStatusArray.value.openingPage * numberOrderEachPage - 1;
-            console.log(index.start, ' ', index.end, 'orderlist: ', item_ofOrderStatusArray.value.orderList)
-            // nếu toàn bộ item_ofOrderStatusArray từ start đến end thì reload trang
-            let i = 0;
-            item_ofOrderStatusArray.value.orderList.slice(index.start, index.end).forEach(item => {
-                if(item === null){
-                    i++;
-                }
-            }) 
-            if(i + 1 === index.end) 
-                window.location.reload(); 
+            if(res.data.massage === "xoa khong thanh cong"){
+                console.log(res.data.massage)
+                setContentPopup({
+                    title: 'XOÁ SẢN PHẨM',
+                    content: 'Không thể xoá sản phẩm này'
+                })
+                openPopup();
+            }
+            else{
+                setOrderStatus(prevOrderStatus => ({
+                    ...prevOrderStatus, 
+                    [item_ofOrderStatusArray.key] : 
+                        {...prevOrderStatus[item_ofOrderStatusArray.key],  
+                        orderList: prevOrderStatus[item_ofOrderStatusArray.key].orderList.map(item => {
+                            if(item !== null){
+                                if(item.MASP === masp){
+                                    return null;
+                                }
+                                else{
+                                    return item;
+                                }
+                            }
+                            else{
+                                return item;
+                            }
+                        })}
+                }))
+
+                setContentPopup({
+                    title: 'XOÁ SẢN PHẨM',
+                    content: 'Xoá thành công'
+                })
+                openPopup();
+
+                console.log(res)
+                let index = {
+                    start: 0,
+                    end: 0,
+                } 
+                item_ofOrderStatusArray.value.spaceGetDataFromOrderList.forEach(item => {
+                    if(item_ofOrderStatusArray.value.openingPage === item.paginationNumber){ 
+                        index.start = item.startIndex;
+                        index.end = item.endIndex;
+                    }
+                })
+                // index.end = item_ofOrderStatusArray.value.openingPage * numberOrderEachPage - 1;
+                console.log(index.start, ' ', index.end, 'orderlist: ', item_ofOrderStatusArray.value.orderList)
+                // nếu toàn bộ item_ofOrderStatusArray từ start đến end thì reload trang
+                let i = 0;
+                item_ofOrderStatusArray.value.orderList.slice(index.start, index.end).forEach(item => {
+                    if(item === null){
+                        i++;
+                    }
+                }) 
+                if(i + 1 === index.end) 
+                    window.location.reload(); 
+            }
         })
         
     }
@@ -1094,15 +1114,6 @@ function ManageProduct()
         return(
             <div  className={`${watchProductDetail ? '' : 'display_hidden'}`}>
                 <div> 
-                    <div className="popup-overlay">
-                        <div className="popup-container">
-                            <div className="popup-card">
-                            <h2>{contentPopup.title}</h2>
-                            <p>{contentPopup.content}</p>
-                            <button id="close-popup" onClick={closePopup}>Close</button>
-                            </div>
-                        </div>
-                    </div>
                     <div class="icon-update icon-update__margin">
                         <span onClick={handleTurnBack}  className="faCircleChevronLeft">
                             <FontAwesomeIcon class={`fa-solid faCircleChevronLeft`} icon={faCircleChevronLeft} ></FontAwesomeIcon>
@@ -1420,6 +1431,16 @@ function ManageProduct()
 
     return(
         <div class="order_info_body container">
+            
+            <div className="popup-overlay">
+                <div className="popup-container">
+                    <div className="popup-card">
+                    <h2>{contentPopup.title}</h2>
+                    <p>{contentPopup.content}</p>
+                    <button id="close-popup" onClick={closePopup}>Close</button>
+                    </div>
+                </div>
+            </div>
             <div class="heading text-uppercase text-center">
                 <h1>Sản phẩm</h1>
             </div>

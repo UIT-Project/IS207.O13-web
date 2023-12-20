@@ -301,7 +301,7 @@ function ReviewProduct() {
                 <td>
                     <div class="box-row1-column1">
                         <div class="row1-column1-item">
-                            <img class="img-row1" src={images.cart_1} alt=""/>
+                            <img class="img-row1" src={item.imgURL} alt=""/>
                         </div>
                         <div class="row1-column1-item">
                             <p>
@@ -372,7 +372,7 @@ function ReviewProduct() {
                             <th class="header-column2">Đánh Giá</th>
                             <th class="header-column3">Nội dung đánh giá</th> 
                             <th class="header-column5">  
-                                <button><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></button>
+                                {/* <button><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></button> */}
                             </th> 
                         </tr>
                     </thead>
@@ -434,13 +434,13 @@ function ReviewProduct() {
         </div>
         <div class="container mt-5 content-bottom">
             <div>
-                <button class="btn-continue" onClick={handleContinuelyBuy}>Tiếp tục mua sắm</button>
+                <button class="btn-continue" onClick={handleContinuelyBuy}>Trở lại</button>
             </div>
-            <div class="box-thanh-toan">
-                {/* <div class="box-thanh-toan-discount">
+            {/* <div class="box-thanh-toan">
+                <div class="box-thanh-toan-discount">
                     <p><b>Mã giảm giá</b></p>
                     <p>Chọn hoặc nhập mã</p>
-                </div> */}
+                </div>
                 <hr class="line-thanh-toan"/>
                 <div class="box-thanh-toan-tongtien">
                     <p><b>Tổng tiền</b></p>
@@ -454,7 +454,7 @@ function ReviewProduct() {
                 <div class="box-thanh-toan-button">
                     <button class="btn-thanh-toan" onClick={handleClickPayment}>THANH TOÁN</button>
                 </div>
-            </div>
+            </div> */}
         </div>
         </div>
     )

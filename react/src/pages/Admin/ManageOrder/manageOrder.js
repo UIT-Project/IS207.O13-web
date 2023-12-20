@@ -11,6 +11,8 @@ import {  faCircleChevronLeft, faEye, faFloppyDisk, faL, faLeftLong, faMagnifyin
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
 import Pagination from "./pagination";
 import SelectLimit from "./selectLimit";
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
+
 
 function ManageOrder(){
     // function handlePageChange(value, item_state){
@@ -87,6 +89,8 @@ function ManageOrder(){
     //         handleScrollToTop();
     //     }
     // }
+    useAuthCheck()
+
     const {formatPrice} = useGlobalVariableContext(); 
     const componentRef = useRef();
     const handlePrint_A4 = useReactToPrint({

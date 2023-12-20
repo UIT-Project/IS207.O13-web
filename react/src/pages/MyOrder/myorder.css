@@ -503,3 +503,9 @@ tr {
     border: 1px solid rebeccapurple;
     border-radius: 3px;
 }
+
+.pagination-container_myorder{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}

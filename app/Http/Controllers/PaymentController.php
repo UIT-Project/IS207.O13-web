@@ -25,22 +25,25 @@ class PaymentController extends Controller
         if($clickPaymentFromCart == 1){
             $data_sanpham = DB::select(
                 "SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, 
-                chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  
-                FROM chitiet_giohangs, sanphams, mausacs 
+                chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU, imgURL
+                FROM chitiet_giohangs, sanphams, mausacs, hinhanhsanphams
                 WHERE MATK = $matk AND chitiet_giohangs.MASP = sanphams.MASP 
                 -- AND SELECTED = 1
-                AND mausacs.MAMAU = chitiet_giohangs.MAMAU"
+                AND MAHINHANH LIKE '%thumnail%'
+                AND mausacs.MAMAU = chitiet_giohangs.MAMAU
+                AND hinhanhsanphams.MASP = sanphams.MASP"
             );
         }
         else{
             $data_sanpham = DB::select(
                 "SELECT sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, 
-                chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  
-                FROM chitiet_giohangs, sanphams, mausacs 
-                WHERE MATK = $matk 
+                chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU, imgURL
+                FROM chitiet_giohangs, sanphams, mausacs, hinhanhsanphams
+                WHERE MATK = $matk AND chitiet_giohangs.MASP = sanphams.MASP 
                 AND SELECTED = 1
-                AND chitiet_giohangs.MASP = sanphams.MASP 
-                AND mausacs.MAMAU = chitiet_giohangs.MAMAU"
+                AND MAHINHANH LIKE '%thumnail%'
+                AND mausacs.MAMAU = chitiet_giohangs.MAMAU
+                AND hinhanhsanphams.MASP = sanphams.MASP"
             );
         }
 

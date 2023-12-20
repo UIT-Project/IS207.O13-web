@@ -11,10 +11,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faChartColumn, faChartPie, faClose, faEye, faL, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
 
 function Statistic()
 { 
+   useAuthCheck()
+
     const [data_doanhthu, setData_doanhthu] = useState(null);
     const [data_TrangThaiDonHang, setData_TrangThaiDonHang] = useState([
       { name: 'Đã giao', value: 50, soluong: 1 }, // Giả sử đã giao là 60%

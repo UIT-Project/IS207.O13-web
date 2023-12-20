@@ -9,10 +9,13 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faCircleXmark, faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import {  faCheck, faEye, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
 
 function ManageAccountStaff()
 {
+    useAuthCheck()
+
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchProductDetail, setWatchProductDetail] = useState(false);

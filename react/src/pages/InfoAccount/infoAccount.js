@@ -8,6 +8,7 @@ import useGlobalVariableContext from "../../context_global_variable/context_glob
 
 function InfoAccount() {
     const [notifySaveInfoAccount, setNotifySaveInfoAccount] = useState('');
+    const [errorDinhDangSDT, setErrorDinhDangSDT] = useState(false);
     const [notifySaveInfoChangePassword, setNotifySaveInfoChangePassword] = useState('');
     const [infoAccount, setInfoAccount] = useState({
         name: '',
@@ -23,6 +24,7 @@ function InfoAccount() {
         matk: localStorage.getItem('auth_matk'),
     })
     const [isLoading, setIsLoading] = useState(false);
+    const [isLoading_Luuthaydoi, setIsLoading_Luuthaydoi] = useState(false);
     const getInfoAccount = () => {
         request.get('/api/getInfoAccount', {params : {matk: localStorage.getItem('auth_matk')}})
         .then(res => {
@@ -46,10 +48,23 @@ function InfoAccount() {
             address: infoAccount.address,
             matk: localStorage.getItem('auth_matk')
         }
+        setIsLoading_Luuthaydoi(true)
+
+        const phoneRegex = /^0\d{9}$/; // Biểu thức chính quy để kiểm tra định dạng số điện thoại
+
+        if (infoAccount.numberPhone !== '') {
+            if (!phoneRegex.test(infoAccount.numberPhone)) {
+                setErrorDinhDangSDT(true);
+                setIsLoading_Luuthaydoi(false);
+                return; // Không gửi request nếu số điện thoại không đúng định dạng
+            }
+        }
+
         request.post('/api/saveInfoAccount', data)
         .then(res => {
-            if(res.data.status === 200)
-                setNotifySaveInfoAccount('Lưu thành công');
+            setIsLoading_Luuthaydoi(false)
+            setErrorDinhDangSDT(false); 
+            setNotifySaveInfoAccount('Lưu thành công');
             console.log('lưu')
             
         })
@@ -130,6 +145,12 @@ function InfoAccount() {
         )
     }
 
+    const renderLoading_Luuthaydoi = () => {
+        return (
+            <div class={`donut_InfoAccount2 multi_InfoAccount ${isLoading_Luuthaydoi ? '' : 'display_hidden'}`}></div> 
+        )
+    }
+
     return (
         <div>
             <div class="order_info_body container">
@@ -200,6 +221,7 @@ function InfoAccount() {
                                 value={infoAccount.numberPhone}  
                             />
                         </div>
+                        <span className={`${errorDinhDangSDT ? "" : "display_hidden"} saidinhdang_mau_do`}>Sai định dạng SĐT</span>
                         <div class="name_row address row">
                             <p class="text-end col-3">Địa chỉ</p>
                             <input class="col-7 round_corner_input" type="text"
@@ -236,7 +258,7 @@ function InfoAccount() {
                             />
                         </div>
                         <div className="notifySaveInfoChangePassword">
-                            <span className="notifySaveInfoChangePassword">{notifySaveInfoChangePassword}</span>
+                            <span className="notifySaveInfoChangePassword luuthanhcong_mauxanh">{notifySaveInfoChangePassword}</span>
                         </div>
                         <input 
                             class={`changePassword-button ${isLoading ? 'display_hidden' : ''}`}
@@ -246,10 +268,20 @@ function InfoAccount() {
                         />
                         {renderLoading()}
                     </div>
-                    <div class="w-100"></div>
-                    <input class="last-button" type="button" value="Lưu thay đổi" onClick={handleSaveInfoAccount}/>
+                    <div class="">
+                    </div>
+                        <input 
+                            class={`last-button ${isLoading_Luuthaydoi ? 'display_hidden' : ''}`}
+                            type="button" 
+                            value="Lưu thay đổi" 
+                            onClick={handleSaveInfoAccount}
+                        />
+                        {renderLoading_Luuthaydoi()}
                     {/* <div> */}
-                        <span className="notifySaveInfoAccount">{notifySaveInfoAccount}</span>
+                        <span className="notifySaveInfoAccount luuthanhcong_mauxanh">{notifySaveInfoAccount}</span>
+                        {/* <div className="notifySaveInfoChangePassword">
+                            <span className="notifySaveInfoChangePassword">{notifySaveInfoAccount}</span>
+                        </div> */}
                     {/* </div> */}
                 </div>
                         

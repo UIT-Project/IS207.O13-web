@@ -22,7 +22,16 @@ class CartController extends Controller
 {
     public function infoCart(Request $request){
         $matk = $request->input('matk');
-        $data_sanpham = DB::select("SELECT MATK, sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU  FROM chitiet_giohangs, sanphams, mausacs WHERE MATK = '$matk' AND chitiet_giohangs.MASP = sanphams.MASP AND mausacs.MAMAU = chitiet_giohangs.MAMAU");
+        $data_sanpham = DB::select(
+            "SELECT MATK, sanphams.MASP, TENSP, TONGGIA, SOLUONG, TENMAU, 
+            chitiet_giohangs.MASIZE, GIABAN, SELECTED, mausacs.MAMAU, imgURL
+            FROM chitiet_giohangs, sanphams, mausacs, hinhanhsanphams 
+            WHERE MATK = '$matk' 
+            AND MAHINHANH LIKE '%thumnail%'
+            AND chitiet_giohangs.MASP = sanphams.MASP 
+            AND mausacs.MAMAU = chitiet_giohangs.MAMAU
+            AND hinhanhsanphams.MASP = sanphams.MASP"
+        );
         return response()->json([ 
             'data' => $data_sanpham, 
         ]);

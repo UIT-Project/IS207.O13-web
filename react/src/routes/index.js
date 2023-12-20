@@ -11,12 +11,9 @@ import AddProduct from "../pages/Admin/AddProduct/addProduct";
 import PaymentResult from "../pages/PaymentResult/paymentResult";
 import MyOrder from "../pages/MyOrder/myorder"
 import ManageOrder from "../pages/Admin/ManageOrder/manageOrder"; 
-import ManageProduct from "../pages/Admin/ManageProduct/manageProduct";
-import UpdateProduct from "../pages/Admin/UpdateProduct/updateProduct"; 
+import ManageProduct from "../pages/Admin/ManageProduct/manageProduct"; 
 import InfoAccount from "../pages/InfoAccount/infoAccount";
-import PrintOrder from "../pages/Admin/PrintOrder/printOrder";
-import SearchOrder from "../pages/Admin/SearchOrder/searchOrder";
-import SearchProductAdmin from "../pages/Admin/SearchProductAdmin/searchProductAdmin";
+import PrintOrder from "../pages/Admin/PrintOrder/printOrder";  
 import AdminLogin from "../pages/Admin/AdminLogin/AdminLogin";
 import ManageAccountStaff from "../pages/Admin/ManageAccountStaff/ManageAccountStaff";
 import ManageAccountCustomer from "../pages/Admin/ManageAccountCustomer/ManageAccountCustomer";
@@ -50,12 +47,9 @@ const publicRoutes = [
     {path: config.routes.paymentResult, component: PaymentResult, layout: DefaultLayout},
     {path: config.routes.myOrder, component: MyOrder, layout: DefaultLayout},
     {path: config.routes.manageOrder, component: ManageOrder, layout: AdminLayout},
-    {path: config.routes.manageProduct, component: ManageProduct, layout: AdminLayout},
-    {path: config.routes.updateProduct, component: UpdateProduct, layout: AdminLayout}, 
+    {path: config.routes.manageProduct, component: ManageProduct, layout: AdminLayout}, 
     {path: config.routes.infoAccount, component: InfoAccount, layout: DefaultLayout},
-    {path: config.routes.printOrder, component: PrintOrder, layout: AdminLayout},
-    {path: config.routes.searchOrder, component: SearchOrder, layout: AdminLayout},
-    {path: config.routes.searchProductAdmin, component: SearchProductAdmin, layout: AdminLayout},
+    {path: config.routes.printOrder, component: PrintOrder, layout: AdminLayout},  
     {path: config.routes.adminLogin, component: AdminLogin, layout: null},
     {path: config.routes.manageAccountStaff, component: ManageAccountStaff, layout: AdminLayout},
     {path: config.routes.manageAccountCustomer, component: ManageAccountCustomer, layout: AdminLayout},

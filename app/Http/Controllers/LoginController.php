@@ -134,6 +134,7 @@ class LoginController extends Controller
                         'status' =>200,
                         'email' =>$taikhoan->EMAIL,
                         'matk' => $taikhoan->MATK,
+                        'role' => $taikhoan->ROLE,
                         'token' => $token,
                         'message' =>'Logged In Successfully',
                         // 'role'=>$role,

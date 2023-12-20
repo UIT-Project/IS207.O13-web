@@ -515,9 +515,10 @@ form.sign-in-form {
 }
 
 .gender-input {
-  width: 100%;
+  width: 60% !important;
   display: flex; /* Sử dụng display: flex để căn chỉnh các phần tử con */
   justify-content: space-evenly; /* Tạo khoảng cách giữa các phần tử con */ 
+  margin-bottom: 0.5rem;
 }
 
 #male-input {

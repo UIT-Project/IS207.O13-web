@@ -304,7 +304,7 @@ function Payment(){
         return (
             <tr key={index}>
                 <td class="col-2">
-                    <img class="payment_product rounded mx-auto d-block" src={images.paymen_1} alt=""/>
+                    <img class="payment_product rounded mx-auto d-block" src={item.imgURL} alt=""/>
                 </td>
                 <td class="col-4">
                     <span class="fw-bold">{item.TENSP}</span>

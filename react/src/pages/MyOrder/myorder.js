@@ -106,7 +106,7 @@ function MyOrder(){
 
     const handleClickNavState = (item_status, item_pagina) => {
         // console.log(e.target.value) 
-        
+        setWatchOrderDetail(false)
         setOrderStatusPointer(item_status.value.nameState) 
         if(item_status.value.hasLoadFirtTime === 0 || item_status.value.hasChangeFromPreState === 1){
             const updateOpeningPage = prevOrderStatus => (
@@ -420,7 +420,7 @@ function MyOrder(){
 
  
     const renderNavState = orderStatus_Array.map((item, index) =>  
-        <li class="nav-item col-auto p-2" key={index}>
+        <li class={`nav-item col-auto p-2`} key={index}>
             <button 
                 class={`nav-link ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
                 aria-current="page"  
@@ -492,7 +492,7 @@ function MyOrder(){
 
     const renderPagination = (item_status) => {
         return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
 
@@ -747,7 +747,11 @@ function MyOrder(){
                             </tbody>
                         </table>
                     </div>
-                    { renderPagination(item) }
+                    <div className={`${watchOrderDetail ? 'display_hidden' : ''} pagination-container_myorder`}>
+                            { renderPagination(item) }
+                            {/* <SelectLimit onLimitChange={setLimit}/> */}
+                            {/* <Pagination totalPage={item.value.paginationList.length} page={item.value.openingPage} limit={numberOrderEachPage} siblings={1} onPageChange={handlePageChange} item_status={item}/> */}
+                        </div> 
                     </div> 
                 ) 
             }

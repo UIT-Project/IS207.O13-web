@@ -142,6 +142,7 @@ function AdminLogin(){
             localStorage.setItem('auth_token', res.data.token);
             localStorage.setItem('auth_email', res.data.email);
             localStorage.setItem('auth_matk', res.data.matk);
+            localStorage.setItem('auth_role', res.data.role);
             setIsLoading(false)
 
             // swal("success", res.data.message, "success");

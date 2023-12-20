@@ -65,7 +65,7 @@ class CollectionController extends Controller
             $orderList_DB = DB::select("$data_query ORDER BY created_at DESC $data_query2"); 
         }
         else if($filter == 'banchay'){ 
-            $orderList_DB = DB::select( 
+            $orderList_DB_GetQuantity = DB::select( 
                 "SELECT sanphams.MASP, TENSP, GIAGOC, GIABAN, imgURL
                 from chitiet_donhangs, sanphams, hinhanhsanphams, sanpham_mausac_sizes
                 where chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
@@ -76,9 +76,21 @@ class CollectionController extends Controller
                 group by sanphams.MASP, TENSP, GIAGOC, GIABAN, imgURL
                 order by SUM(chitiet_donhangs.SOLUONG) DESC"
             ); 
+            $orderList_DB = DB::select( 
+                "SELECT sanphams.MASP, TENSP, GIAGOC, GIABAN, imgURL
+                from chitiet_donhangs, sanphams, hinhanhsanphams, sanpham_mausac_sizes
+                where chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
+                AND hinhanhsanphams.masp = sanphams.masp
+                AND sanpham_mausac_sizes.masp = sanphams.masp
+                AND MAHINHANH LIKE '%thumnail%'  
+                $data_queryOrMAPL
+                group by sanphams.MASP, TENSP, GIAGOC, GIABAN, imgURL
+                order by SUM(chitiet_donhangs.SOLUONG) DESC
+                $data_query2"
+            ); 
             $quantity = [
                 [
-                    'SL_MASP' => count($orderList_DB),
+                    'SL_MASP' => count($orderList_DB_GetQuantity),
                     'MAPL_SP' => $mapl_sp
                 ]
             ];

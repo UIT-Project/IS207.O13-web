@@ -34,7 +34,9 @@
 .img-row1 {
     height: 160px;
     width: auto;
+    border-radius: 0.3rem;
 }
+
 
 .img-row2 {
     height: 160px;

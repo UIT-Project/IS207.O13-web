@@ -1,13 +1,14 @@
 import "../Assets/adminLayout.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
-import {  faCaretDown, faChartLine, faClipboardList, faHouse, faShirt, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {  faCaretDown, faChartLine, faClipboardList, faHouse, faRightFromBracket, faShirt, faTicket, faUser, faUsers, faXmark } from '@fortawesome/free-solid-svg-icons';
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 // import "../Assets/vendor/jquery/jquery.min.js"
 // import "../Assets/vendor/bootstrap/js/bootstrap.bundle.min.js"
 // import "../Assets/vendor/jquery-easing/jquery.easing.min.js"
 // import "../Assets/js/sb-admin-2.min.js"
+import axios from 'axios';
 
 function SideBar(){
     const Navigation = useNavigate();
@@ -21,6 +22,30 @@ function SideBar(){
         const stateClickInSideBar_copy = {...stateClickInSideBar, [name] : !stateClickInSideBar[name]}
         setStateClickInSideBar(stateClickInSideBar_copy) 
     }
+
+    const clickLogout = (event) => {
+        event.preventDefault();
+        console.log('OK1')
+        // axios.post('http://localhost:8000/api/logout', {}, {
+        //         headers: {
+        //             'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+        //         }})
+        // .then(res => {
+        //     if(res.data.status === 200)
+        //     {
+                localStorage.removeItem('auth_token');
+                localStorage.removeItem('auth_email');
+                localStorage.removeItem('auth_matk');
+                // swal("Success",res.data.message,"success"); 
+                // console.log(res.data.message);
+                Navigation('/admin/AdminLogin')
+            // }
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // }) 
+    }
+
     return ( 
         <div class="col-sm-2 sidebarTest">
             <div class="sidebar">
@@ -30,19 +55,25 @@ function SideBar(){
                 <ul class="sidebar_nav">
                     {/* <!-- nav item: home --> */}
                     <li class="sidebar_nav_item">
-                        <a class="sidebar_nav_item_content" href="trang_chu.html"> 
-                            <FontAwesomeIcon icon={faHouse}></FontAwesomeIcon>
-                            <span>Trang chủ</span>
+                        <a class="sidebar_nav_item_content" href="/infoAccount"> 
+                            <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+                            <span className="category_text_inSideBar">Thông tin tài khoản</span>
                         </a>
                     </li>
 
                     {/* <!-- nav item: account --> */}
                     <li 
-                        class={`sidebar_nav_item accordion ${stateClickInSideBar.taikhoan ? "active" : ""}`} 
+                        class={
+                            `
+                                sidebar_nav_item accordion 
+                                ${stateClickInSideBar.taikhoan ? "active" : ""}
+                                ${localStorage.getItem('auth_role') === 'Admin' ? '' : 'display_hidden'}
+                            `
+                        } 
                         onClick={() => handleClickInSideBar('taikhoan')}
                     >
                         <a class="sidebar_nav_item_content" href="#"> 
-                            <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faUsers}></FontAwesomeIcon>
                             <span className="category_text_inSideBar">Tài khoản</span> 
                             <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>
                         </a> 
@@ -73,13 +104,11 @@ function SideBar(){
                     <div class={`panel ${stateClickInSideBar.sanpham ? "block_category" : "block_category_none"}`}>
                         <ul class="sidebar_subnav">
                             <li class="sidebar_nav_item">
-                                <a class="sidebar_nav_item_content medium_font" href="#">Danh mục sản phẩm</a>
+                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/addProduct')}}>Thêm sản phẩm</span>
                             </li>
+                            
                             <li class="sidebar_nav_item">
                                 <span class="sidebar_nav_item_content medium_font" onClick={()=> { window.location.href = `/admin/manageProduct`}}>Danh sách sản phẩm</span>
-                            </li>
-                            <li class="sidebar_nav_item">
-                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/addProduct')}}>Thêm sản phẩm</span>
                             </li>
                         </ul>
                     </div>
@@ -121,7 +150,7 @@ function SideBar(){
                     >
                         <a class="sidebar_nav_item_content" href="#">
                             <i class="fa-solid fa-shirt"></i> 
-                            <FontAwesomeIcon icon={faShirt}></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faTicket}></FontAwesomeIcon>
                             <span className="category_text_inSideBar">Voucher</span> 
                             <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>
                         </a> 
@@ -129,10 +158,10 @@ function SideBar(){
                     <div class={`panel ${stateClickInSideBar.voucher ? "block_category" : "block_category_none"}`}>
                         <ul class="sidebar_subnav"> 
                             <li class="sidebar_nav_item">
-                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/manageVoucher')}}>Danh sách Voucher</span>
+                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/AddVoucher')}}>Thêm Voucher</span>
                             </li>
                             <li class="sidebar_nav_item">
-                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/AddVoucher')}}>Thêm Voucher</span>
+                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation('/admin/manageVoucher')}}>Danh sách Voucher</span>
                             </li>
                         </ul>
                     </div>
@@ -140,6 +169,12 @@ function SideBar(){
                         <a class="sidebar_nav_item_content" href="#"> 
                             <FontAwesomeIcon icon={faChartLine}></FontAwesomeIcon>
                             <span className="category_text_inSideBar" onClick={()=> {Navigation('/admin/statistic')}}>Thống kê</span>
+                        </a>
+                    </li>
+                    <li class="sidebar_nav_item">
+                        <a class="sidebar_nav_item_content" href="#"> 
+                            <FontAwesomeIcon icon={faRightFromBracket}></FontAwesomeIcon>
+                            <span className="category_text_inSideBar" onClick={clickLogout}>Đăng xuất</span>
                         </a>
                     </li>
                 </ul>

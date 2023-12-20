@@ -148,21 +148,24 @@ function Header({settoggleFunctionLoginLogout}){
     // khi logout thì sẽ xoá dữ liệu được lưu trong localsorage
     const clickLogout = (event) => {
         event.preventDefault();
-        axios.post('http://localhost:8000/api/logout', {}, {
-                headers: {
-                'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
-                }}  
-            ).then(res => {
-            if(res.data.status === 200)
-            {
+        // axios.post('http://localhost:8000/api/logout', {}, {
+        //         headers: {
+        //         'Authorization': `Bearer ${localStorage.getItem('auth_token')}`
+        //         }})
+        // .then(res => {
+        //     if(res.data.status === 200)
+        //     {
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_email');
                 localStorage.removeItem('auth_matk');
                 // swal("Success",res.data.message,"success"); 
-                console.log(res.data.message);
+                // console.log(res.data.message);
                 Navigate('/login')
-            }
-        });
+        //     }
+        // })
+        // .catch(err => {
+        //     console.log(err)
+        // })
         setHasLogin(false); 
         
     }
@@ -217,7 +220,7 @@ function Header({settoggleFunctionLoginLogout}){
                    return (
                        <li class="header__body__cart__orders__item_body" key={index}>
                            <a href={url}> 
-                               <img src={images.header_notification_img_item_1} alt="" class="header__body__cart__orders__item__image"/>
+                               <img src={item.imgURL} alt="" class="header__body__cart__orders__item__image"/>
                            </a>
                                <div class="header__body__cart__orders__item__info">
                                    <div>
@@ -368,7 +371,7 @@ function Header({settoggleFunctionLoginLogout}){
                             <div class="header_body__option_and_info__user__select_login_or_logout">
                                 {/* có onclick */}
                                 <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickInfoAccount : clickSignIn}>{(hasLogin) ? "Thông tin tài khoản" : "Đăng nhập" }</button>
-                                <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickMyOrder : ''}>{(hasLogin) ? "Đơn hàng của tôi" : "" }</button>
+                                <button class={`header_body__option_and_info__user__select_login_or_logout__in ${(hasLogin) ? "" : 'display_hidden' }`} onClick={(hasLogin) ? clickMyOrder : ''}>{(hasLogin) ? "Đơn hàng của tôi" : "" }</button>
                                 <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickLogout : clickSignUp}>{(hasLogin) ? "Đăng Xuất" : "Đăng ký" }</button>
 
                             </div>

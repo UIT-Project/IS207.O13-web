@@ -196,7 +196,7 @@ function Cart() {
                 <td>
                     <div class="box-row1-column1">
                         <div class="row1-column1-item">
-                            <img class="img-row1" src={images.cart_1} alt=""/>
+                            <img class="img-row1" src={item.imgURL} alt=""/>
                         </div>
                         <div class="row1-column1-item">
                             <p>

@@ -10,11 +10,13 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faFloppyDisk, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
 
 function ManageVoucher()
 {
     const {formatPrice} = useGlobalVariableContext(); 
+    useAuthCheck()
 
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 

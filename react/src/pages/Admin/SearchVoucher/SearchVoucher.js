@@ -10,10 +10,13 @@ import { Navigate, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry, faFloppyDisk, faTrashAlt } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faL, faLeftLong, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
 
 function SearchVoucher()
 {
+    useAuthCheck()
+
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchVoucherDetail, setWatchVoucherDetail] = useState(false);
