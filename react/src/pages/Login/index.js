@@ -77,6 +77,8 @@ function Login(){
         role: "Khách hàng",
         AdminVerify: 0,
       }
+      
+
       console.log(data_register)
       //sử dụng sanctum để lưu thông tin đăng ký và check valid ở phần backend
       Request.get('/sanctum/csrf-cookie')
@@ -131,7 +133,8 @@ function Login(){
         password: loginInput.password_login,
       }
       console.log('loginSubmit')
-
+      localStorage.setItem('auth_email', 'dosidat15031712@gmail.com');
+      localStorage.setItem('auth_matk', 1);
       Request.get('/sanctum/csrf-cookie')
         .then(async () => {
           Request.post('/api/login', data_login) 

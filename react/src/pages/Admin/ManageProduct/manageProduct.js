@@ -959,8 +959,8 @@ function ManageProduct()
     const renderInputSoLuong =  infoUpdateProduct.checkboxSize.map((itemSize, indexSize) => {
         return (
             
-            <div> 
-                <h6 className="input_quantity__size_name" key={indexSize}>Size {itemSize}</h6> 
+            <div class = "info"> 
+                <h6 className="input_quantity__size_name" key={indexSize}><span className="input_quantity__size_name_text">Size {itemSize}</span></h6> 
                 {
                     infoUpdateProduct.checkboxColor.map((itemColor, indexColor) => {
                         console.log(itemColor, 'item')
@@ -1119,7 +1119,7 @@ function ManageProduct()
                             <div class="row mb-2">
                                 <div class="col-12">
                                    
-                                    <label for="#" class="form-label">Tên sản phẩm</label>
+                                    <label for="#" class="form-label" id="item" >Tên sản phẩm</label>
                                     <input 
                                         type="text" class="form-control" placeholder="Nhập tên sản phẩm" 
                                         onChange={handleInputInfoUpdateProduct} 
@@ -1276,7 +1276,10 @@ function ManageProduct()
  
                     <div class="col-auto"></div>
                     <div class="body_box container col-lg-7 tuychinh">
-                        {renderInputSoLuong} 
+                        
+                        {renderInputSoLuong}
+                        
+                        
                     </div>
                     <div class="address_update_button_contain row">
                         <div class={`${statusPressUpdateProduct ? '' : 'display_hidden'}`}>
