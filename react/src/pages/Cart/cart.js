@@ -224,7 +224,7 @@ function Cart() {
                 </td>
                 <td>
                     <div class="box-row1-column5 box-row1">
-                        <button class="btn-delete" onClick={() => handleClickDelete(index)}>
+                        <button class="btn-deletee" onClick={() => handleClickDelete(index)}>
                             <FontAwesomeIcon icon={faXmark}></FontAwesomeIcon>
                         </button> 
                     </div>
@@ -253,7 +253,7 @@ function Cart() {
                         <th class="header-column3">Số lượng</th>
                         <th class="header-column4">Thành tiền</th>
                         <th class="header-column5">  
-                            <button><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></button>
+                            <button class ="btn-deletee"><FontAwesomeIcon icon={faXmark}></FontAwesomeIcon></button>
                         </th> 
                     </tr>
                 </thead>
@@ -283,7 +283,7 @@ function Cart() {
                     </p>
                 </div>
                 <div class="box-thanh-toan-button">
-                    <button class="btn-thanh-toan" onClick={handleClickPayment}>THANH TOÁN</button>
+                    <button class="btn-thanh-toan__cart" onClick={handleClickPayment}>THANH TOÁN</button>
                 </div>
             </div>
         </div>

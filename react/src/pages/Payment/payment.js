@@ -321,7 +321,7 @@ function Payment(){
     //hiển thị thông tin giao hàng người dùng đã nhập ở những lần mua hàng trước
     const renderInfoAdsressShip = infoForPayment.infoAdress.map((item, index) => {
         return (
-            <div class="address_box" key={index}>
+            <div class="address_box_payment" key={index}>
                     <div class="address_info row">
                         <div class="col-1">
                             <input 
@@ -333,7 +333,7 @@ function Payment(){
                                 // checked 
                             />
                         </div>
-                        <div class="col-5 fw-bold">
+                        <div class="col-5 fw-bold" id="itemmm">
                             <span>{item.TEN}</span>
                             <span>{item.SDT}</span>
                         </div>
@@ -490,7 +490,7 @@ function Payment(){
             </div>
             <div className={`body_box container col-lg-7 needs-validation ${isInputShipInformationValidated ? 'was-validated' : ''} ${hienThiThanhToan ? '' : ''}`} >
                 
-                <div class={`address_box `} >
+                <div class={` address_box_payment `} >
                     <div class="address_title row">
                         <div>
                             <i class="fa-solid fa-location-dot"></i>

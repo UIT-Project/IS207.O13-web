@@ -29,6 +29,7 @@
 .table-header-row .header-column5 {
     width: 40px;
     text-align: center;
+    
 }
 
 .img-row1 {
@@ -97,11 +98,12 @@
 }
 
 .btn-continue {
+    
     padding: 12px 20px;
     border: 0;
     font-weight: 700;
     opacity: 0.5;
-    background-color: #D9D9D9;
+    background-color: #f07979;
 }
 
 .box-thanh-toan {
@@ -135,12 +137,13 @@
     text-align: center;
 }
 
-.btn-thanh-toan {
-    width: 80%;
-    padding-top: 2px;
-    padding-bottom: 2px;
+.btn-thanh-toan__cart {
+    width: 30%;
+    padding-top: 5px;
+    padding-bottom: 5px;
     background-color: black;
     color: white;
+    border-radius: 10px;
 }
 
 .row1-column1-item {
@@ -425,4 +428,15 @@ a, button{
 .tbody_table_cart{
     height: 60vh;
     overflow: auto;
+}
+.box-row1-column5 box-row1 {
+    border-radius: 45%;
+    border: 1px solid black;
+    background-color: #f07979;
+}
+.btn-deletee {
+
+    border: 2px solid red;
+    background-color: red  ;
+    border-radius: 90%;
 }

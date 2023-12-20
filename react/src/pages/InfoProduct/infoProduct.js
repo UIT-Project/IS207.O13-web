@@ -252,13 +252,15 @@ function InfoProduct(){
                     <div class="profile-image">
                         <img src="https://nhacchuonghinhnen.com/wp-content/uploads/2020/03/hinh-nen-gai-xinh-full-hd-cho-dien-thoai-2-scaled.jpg" alt=""/>
                     </div>
-                    <div class="user-name">
+                   <div class="user">
+                   <div class="user-name">
                         <strong>{item.TEN}</strong>
                         {/* <span>@mlmlml03</span> */}
                     </div>
                 <div class="reviews">
                     {renderStarAtReviewProduct(item.SOLUONG_SAO)}
                 </div>
+                   </div>
                 </div>
             </div>
             <div class="clients-comment">
@@ -435,7 +437,7 @@ function InfoProduct(){
                                 <p>Mẫu mặc size M</p>
                                 <p>Lưu ý: Màu sắc sản phẩm thực tế sẽ có sự chênh lệch nhỏ so với ảnh do
                                     điều kiện ánh sáng khi chụp và màu sắc hiển thị qua màn hình máy tính/ điện thoại.</p> */}
-                                    <textarea value={infoProduct.data_sanpham.MOTA} className="motasanpham" cols="65" rows={40} disabled></textarea>
+                                    <textarea value={infoProduct.data_sanpham.MOTA} className="motasanpham" cols="60" rows={40} disabled></textarea>
                                 
                             </div>
                         </div>
@@ -445,7 +447,8 @@ function InfoProduct(){
                     <div class="review-heading">
                         <h1>Đánh giá</h1>
                     </div>
-                    {renderReview}
+                    <div class="review-container">{renderReview}</div>
+                    
                 </section>
             </div>
  
