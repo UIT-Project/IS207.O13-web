@@ -1152,7 +1152,7 @@ function ManageProduct()
                                                 type="text" class="form-control  " placeholder="Giá niêm yết" 
                                                 onChange={handleInputInfoUpdateProduct}
                                                 name="originPrice"  
-                                                value={formatPrice(infoUpdateProduct.originPrice)}
+                                                value={infoUpdateProduct.originPrice}
                                                 disabled={isUpdating ? false : true}
 
                                             />
@@ -1167,7 +1167,7 @@ function ManageProduct()
                                                 type="text" class="form-control  " placeholder="Giá bán" 
                                                 onChange={handleInputInfoUpdateProduct}
                                                 name="sellPrice"   
-                                                value={formatPrice(infoUpdateProduct.sellPrice)}
+                                                value={infoUpdateProduct.sellPrice}
                                                 disabled={isUpdating ? false : true}
                                             />
                                             <span className={`red_color ${isEmpty && infoUpdateProduct.sellPrice === '' ? '' : 'display_hidden'}`}>Nhập giá bán trước khi lưu</span>

@@ -81,7 +81,7 @@ function AdminLogin(){
       //sử dụng sanctum để lưu thông tin đăng ký và check valid ở phần backend
       request.get('/sanctum/csrf-cookie')
         .then(async () => {
-          request.post('/api/register', data_register) //request post để lưu thông tin
+          request.post('/api/adminRegister', data_register) //request post để lưu thông tin
         .then(res => {
           console.log(res.data.status)
           if(res.data.status === 200){// nếu lưu thông tin thành công thì status trả về từ server là 200 
@@ -134,7 +134,7 @@ function AdminLogin(){
 
       request.get('/sanctum/csrf-cookie')
         .then(async () => {
-          request.post('/api/login', data_login) 
+          request.post('/api/Adminlogin', data_login) 
         .then(res => {
           console.log(res.data.status, 'a')
           if(res.data.status === 200){
@@ -281,12 +281,11 @@ function AdminLogin(){
                   }
                 >Khôi phục mật khẩu</span>
                 {renderLoading()}
-                <p class="social-text">Or Sign in with social platforms</p>
+                {/* <p class="social-text">Or Sign in with social platforms</p>
                 <div class="social-media">
                   <a href="#" class="social-icon">
                       <FontAwesomeIcon icon={faFaceAngry}></FontAwesomeIcon>
-                    {/* <i class="fab fa-facebook-f"></i> */}
-                  </a>
+                   </a>
                   <a href="#" class="social-icon">
                       
                     <i class="fab fa-twitter"></i>
@@ -297,7 +296,7 @@ function AdminLogin(){
                   <a href="#" class="social-icon">
                     <i class="fab fa-linkedin-in"></i>
                   </a>
-                </div>
+                </div> */}
               </form>
               <form action="#" class="sign-up-form" onSubmit={registerSubmit}>
                 <h2 class="title">Đăng Ký</h2>
@@ -364,7 +363,7 @@ function AdminLogin(){
                 <input type="submit" class={`btn btn_sign_up ${isLoading ? 'display_hidden' : ''}`} value="Đăng ký" />
                 {renderLoading()}
 
-                <p class="social-text">Or Sign up with social platforms</p>
+                {/* <p class="social-text">Or Sign up with social platforms</p>
                 <div class="social-media">
                   <a href="#" class="social-icon">
                     <i class="fab fa-facebook-f"></i>
@@ -378,7 +377,7 @@ function AdminLogin(){
                   <a href="#" class="social-icon">
                     <i class="fab fa-linkedin-in"></i>
                   </a>
-                </div>
+                </div> */}
               </form>
             </div>
           </div>

@@ -90,7 +90,7 @@ class AdminLoginController extends Controller
             else { 
                 if (is_null($taikhoan->email_verified_at)) { 
                     $data = new stdClass();
-                    $data->password = "tài khoản chưa được xác nhận";
+                    $data->password = "Tài khoản chưa được xác nhận";
                     return response()->json([
                         'status'=>401,
                         'validation_errors' =>$data,
@@ -98,7 +98,15 @@ class AdminLoginController extends Controller
                 } 
                 if ($taikhoan->AdminVerify == 0 && $taikhoan->ROLE == "Nhân viên") { 
                     $data = new stdClass();
-                    $data->password = "tài khoản chưa được Admin xác nhận";
+                    $data->password = "Tài khoản chưa được Admin xác nhận";
+                    return response()->json([
+                        'status'=>401,
+                        'validation_errors' =>$data,
+                    ]);
+                } 
+                if ($taikhoan->AdminVerify == 0 && $taikhoan->ROLE == "Khách hàng") { 
+                    $data = new stdClass();
+                    $data->password = "Đây là tài khoản khách hàng";
                     return response()->json([
                         'status'=>401,
                         'validation_errors' =>$data,

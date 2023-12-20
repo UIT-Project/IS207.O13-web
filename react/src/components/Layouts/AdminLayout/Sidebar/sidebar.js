@@ -36,6 +36,7 @@ function SideBar(){
                 localStorage.removeItem('auth_token');
                 localStorage.removeItem('auth_email');
                 localStorage.removeItem('auth_matk');
+                localStorage.removeItem('auth_role');
                 // swal("Success",res.data.message,"success"); 
                 // console.log(res.data.message);
                 Navigation('/admin/AdminLogin')
