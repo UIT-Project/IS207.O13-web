@@ -518,7 +518,7 @@ user-select: none;
   width: 80%;
   border-radius: 0.3rem;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   flex-direction: column;
 
 }

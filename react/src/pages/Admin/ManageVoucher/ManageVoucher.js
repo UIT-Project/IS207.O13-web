@@ -958,7 +958,7 @@ function ManageVoucher()
 
     const renderPagination = (item_status) => {
         return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+            <button className="btn_pagination" key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
  
@@ -993,7 +993,9 @@ function ManageVoucher()
                             </tbody>
                         </table>
                     </div>
-                    { renderPagination(item) }
+                    <div class="box-panigation-list">
+                        { renderPagination(item) }
+                    </div>
                     </div> 
                 ) 
             }

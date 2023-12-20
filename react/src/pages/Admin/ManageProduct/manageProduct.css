@@ -396,6 +396,14 @@ tr {
     margin-top: 10px;
 }
 
+select.form-select option {
+    line-height: 6;
+}
+
+.box-panigation-list{
+    margin-bottom: 15px;
+}
+
 .content_chart_heading {
     text-align: center;
     margin-top: 50px;
@@ -993,4 +1001,8 @@ tr {
 
 .info {
     margin: 10px 0px 35px 0px;
+}
+
+.searchOption{
+    padding: 1rem 0rem !important;
 }

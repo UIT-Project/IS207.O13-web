@@ -623,7 +623,7 @@ function Payment(){
                     </table>
                 </div>
                 <div class="payment_info">
-                <div class="row justify-content-end">
+                <div class="row justify-content-end justify-content-end-voucher">
                         <div class="vertical_align_center col-3">
                             <span>Mã Voucher:</span>
                         </div>
@@ -639,6 +639,7 @@ function Payment(){
                         <div class="vertical_align_center col-2">
                             {/* áp dụng voucher */}
                             <button 
+                                class="btn-ApplyVoucher"
                                 onClick={handleApplyVoucher} 
                                 className={
                                     `${
