@@ -334,11 +334,12 @@ function Payment(){
                                 // checked 
                             />
                         </div>
-                        <div class="col-5 fw-bold" id="itemmm">
+                        <div class="col-4 fw-bold" id="itemmm">
                             <span>{item.TEN}</span>
+                            <span>&nbsp;&nbsp;</span>
                             <span>{item.SDT}</span>
                         </div>
-                        <div class="col-6">
+                        <div class="col-7">
                             <span>{item.DIACHI}, {item.PHUONG_XA}, {item.QUAN_HUYEN}, {item.TINH_TP}</span>
                         </div>
                     </div>
