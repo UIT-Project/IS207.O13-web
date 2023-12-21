@@ -1006,3 +1006,6 @@ select.form-select option {
 .searchOption{
     padding: 1rem 0rem !important;
 }
+.row {
+    margin: 20px 0px 40px 0px;
+}
