@@ -12,6 +12,10 @@ import {  faCircleChevronLeft, faEye, faFloppyDisk, faL, faMagnifyingGlass, faPe
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
 import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+import CurrencyInput from 'react-currency-input-field';
+
 
 function ManageVoucher()
 {
@@ -358,9 +362,9 @@ function ManageVoucher()
                 quantityUse: res.data.dataVoucherDetail_sanphams[0].SOLUONG, 
                 startDate: res.data.dataVoucherDetail_sanphams[0].THOIGIANBD,
                 endDate: res.data.dataVoucherDetail_sanphams[0].THOIGIANKT,
-                decreasePersent: res.data.dataVoucherDetail_sanphams[0].GIATRIGIAM,
+                decreasePersent: parseFloat(res.data.dataVoucherDetail_sanphams[0].GIATRIGIAM),
             })
-            console.log(res.data)
+            console.log(parseFloat(res.data.dataVoucherDetail_sanphams[0].GIATRIGIAM), 'data')
             setWatchVoucherDetail(true); 
 
         })
@@ -689,8 +693,31 @@ function ManageVoucher()
             </div>
         )
     })
- 
-    
+    const handleInputInfoAddNewVoucher_vnd = (value, name) => {
+        const regex_showNameVoucher = /^[a-zA-Z0-9]*$/;
+        const regex_ChiNhapSo = /^\d*$/;
+        if (value === undefined ) {
+            value = 0; // Gán giá trị là '0' khi không còn giá trị nào trong trường input
+        } 
+        else if ((name === 'minOrderValue' || name === 'maxDecreaseMoney') && regex_ChiNhapSo.test(value)) {
+            setInfoUpdateVoucher({ ...infoUpdateVoucher, [name]: value }); 
+        }
+    };
+    const renderDecreasePercent = () => {
+        const options = [];
+
+        for (let i = 5; i <= 100; i += 5) {
+            console.log(`${i / 100}${i % 10 === 0 ? "0" : ""}`, 'ok11')
+
+            options.push(
+            <option key={i} value={`${i / 100}`}>
+                {i}%
+            </option>
+            );
+        }
+
+        return options;
+    }
     const renderUpdateVoucher = () => { 
         return(
             <div  className={`${watchVoucherDetail ? '' : 'display_hidden'}`}>
@@ -757,8 +784,10 @@ function ManageVoucher()
                                     disabled={isUpdating ? false : true}
                                 >
                                     <option selected value="0"></option>
-                                    <option value="0.05">5%</option>
-                                    <option value="0.10">10%</option> 
+                                    {/* <option value="0.05">5%</option>
+                                    <option value="0.1">10%</option> 
+                                    <option value="0.15">15%</option>  */}
+                                    {renderDecreasePercent()}
                                 </select>
                                 <span className={`red_color ${isEmpty && infoUpdateVoucher.decreasePersent === 0 ? '' : 'display_hidden'}`}>Chọn phần trăm giảm trước khi lưu</span>
 
@@ -798,24 +827,50 @@ function ManageVoucher()
                             <div class="col-12 input_gia">
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị đơn hàng tối thiểu</label>
-                                    <input 
+                                    {/* <input 
                                         type="text" class="form-control widthInputDate" placeholder="Giá trị đơn hàng tối thiểu" 
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="minOrderValue"  
                                         value={formatPrice(infoUpdateVoucher.minOrderValue)}
                                         disabled={isUpdating ? false : true}
+                                    /> */}
+                                    <CurrencyInput
+                                        className="form-control widthInputDate"
+                                        placeholder="Giá trị đơn hàng tối thiểu"
+                                        onValueChange={(value, name) => handleInputInfoAddNewVoucher_vnd(value, name)}
+                                        name="minOrderValue"
+                                        value={infoUpdateVoucher.minOrderValue}
+                                        allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                        decimalSeparator="," // Phân cách phần thập phân
+                                        groupSeparator="." // Phân cách hàng nghìn
+                                        suffix=" VND" // Đơn vị tiền tệ
+                                        disabled={isUpdating ? false : true}
+
                                     />
                                     <span className={`red_color ${isEmpty && infoUpdateVoucher.minOrderValue === '' ? '' : 'display_hidden'}`}>Nhập giá trị hoá đơn tối thiểu</span>
 
                                 </div>
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị giảm tối đa</label>
-                                    <input 
+                                    {/* <input 
                                         type="text" class="form-control widthInputDate" placeholder="Tiền giảm tối đa" 
                                         onChange={handleInputInfoUpdateVoucher}
                                         name="maxDecreaseMoney"   
                                         value={formatPrice(infoUpdateVoucher.maxDecreaseMoney)}
                                         disabled={isUpdating ? false : true}
+                                    /> */}
+                                    <CurrencyInput
+                                        className="form-control widthInputDate"
+                                        placeholder="Giá trị đơn hàng tối thiểu"
+                                        onValueChange={(value, name) => handleInputInfoAddNewVoucher_vnd(value, name)}
+                                        name="maxDecreaseMoney"
+                                        value={infoUpdateVoucher.maxDecreaseMoney}
+                                        allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                        decimalSeparator="," // Phân cách phần thập phân
+                                        groupSeparator="." // Phân cách hàng nghìn
+                                        suffix=" VND" // Đơn vị tiền tệ
+                                        disabled={isUpdating ? false : true}
+
                                     />
                                     <span className={`red_color ${isEmpty && infoUpdateVoucher.maxDecreaseMoney === '' ? '' : 'display_hidden'}`}>Nhập giá trị giảm tối đa</span>
 
@@ -836,23 +891,28 @@ function ManageVoucher()
                             <span className={`red_color ${isEmpty && infoUpdateVoucher.quantityUse === '' ? '' : 'display_hidden'}`}>Nhập số lần sử dụng</span>
 
                         </div>
- 
+{/*  
                         <div>
                             <input type="file" multiple name="image" accept="image/*" onChange={handleClickUploadImage}></input>
                             <div>
                                 { renderPreViewImage }
                             </div>
+                        </div> */}
+                        <div className="row mb-3 phanLoai_chooseGiaTriGiam">
+                            <label className="form-label">Mô tả</label>
+                            <textarea 
+                                id="w3review" name="desctiption" rows="4" cols="80"
+                                className="w3review" placeholder="Nhập mô tả sản phẩm"
+                                value={infoUpdateVoucher.desctiption} 
+                                onChange={handleInputInfoUpdateVoucher}
+                                disabled={isUpdating ? false : true}
+
+                            > 
+                            </textarea>
+                            <span className={`red_color ${isEmpty && infoUpdateVoucher.quantityUse === '' ? '' : 'display_hidden'}`}>Mô tả</span>
+
                         </div>
-
-                        <textarea 
-                            id="w3review" name="desctiption" rows="4" cols="80"
-                            className="w3review" placeholder="Nhập mô tả sản phẩm"
-                            value={infoUpdateVoucher.desctiption} 
-                            onChange={handleInputInfoUpdateVoucher}
-                            disabled={isUpdating ? false : true}
-
-                        > 
-                        </textarea>
+                        
 
                         <span className={`red_color ${isEmpty && infoUpdateVoucher.desctiption === '' ? '' : 'display_hidden'}`}>Nhập mô tả trước khi lưu</span>
 
@@ -884,18 +944,26 @@ function ManageVoucher()
             </div>
         ) 
     }
-    
+    const renderLoading = (item) => {
+        return (
+          <div class={`donut multi size__donut ${item.value.pageQuantity === null ? '' : 'display_hidden'}`}></div> 
+        )
+      }
     //manageVoucher
     const renderNavState = orderStatus_Array.map((item, index) =>  
         <li class="nav-item col-auto p-2" key={index}>
             <button 
-                class={`nav-link ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
+                class={`nav-link button_nav ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
                 aria-current="page"  
                 onClick={()=>handleClickNavState(item, 1)}
             >
                 {item.value.nameState}
+                <span className={`itemQuantityFound ${item.value.pageQuantity === null ? 'display_hidden' : ''}`}>
+                    {item.value.pageQuantity}
+                </span>
+                {renderLoading(item)}
             </button>
-                {item.value.pageQuantity}
+            {/* <span>{item.value.pageQuantity}</span> */}
         </li> 
     )
     const renderEachVoucher = (item, indexOrder) => {
@@ -961,7 +1029,9 @@ function ManageVoucher()
             <button className="btn_pagination" key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
- 
+    const handlePageChange = (item_status, event, page) => {
+        handleClickItemPagination(item_status, page);
+    };
     const renderShowVoucherEveryState = orderStatus_Array.map((item, index) =>   
         {  
             // console.log(item)
@@ -993,9 +1063,18 @@ function ManageVoucher()
                             </tbody>
                         </table>
                     </div>
-                    <div class="box-panigation-list">
+                    {/* <div class="box-panigation-list">
                         { renderPagination(item) }
-                    </div>
+                    </div> */}
+                    <div className={` pagination-container margin__bottom`}>
+                        <Stack spacing={2}>
+                            <Pagination 
+                                count={item.value.paginationList.length} 
+                                onChange={(event, page) => handlePageChange(item, event, page)}  
+                                color="primary"
+                            /> 
+                        </Stack> 
+                    </div> 
                     </div> 
                 ) 
             }

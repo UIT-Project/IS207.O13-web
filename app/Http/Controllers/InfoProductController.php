@@ -24,7 +24,7 @@ class InfoProductController extends Controller
         $data_sanpham = sanpham::where('MASP', 'LIKE', "%$id%")->get();
         $data_mausac = DB::select("SELECT * FROM sanpham_mausac_sizes WHERE MASP = '$id' ");
         $data_MAMAU = DB::select("SELECT DISTINCT(mausacs.MAMAU), HEX, TENMAU FROM sanpham_mausac_sizes, mausacs WHERE sanpham_mausac_sizes.MAMAU = mausacs.MAMAU AND MASP = '$id' ");
-        $data_SIZE = DB::select("SELECT DISTINCT(MASIZE) FROM sanpham_mausac_sizes WHERE MASP = '$id'");
+        $data_SIZE = DB::select("SELECT DISTINCT(MASIZE) FROM sanpham_mausac_sizes WHERE MASP = '$id ORDER BY MASIZE DESC'");
         $data_xacDinhSoLuong = DB::select("SELECT MASIZE, MAMAU, SOLUONG FROM SANPHAM_MAUSAC_SIZES WHERE MASP = $id");
         $dataProductDetail_sanpham_mausac_sizes__hinhanhs = DB::select(
             "SELECT imgURL, MAHINHANH 

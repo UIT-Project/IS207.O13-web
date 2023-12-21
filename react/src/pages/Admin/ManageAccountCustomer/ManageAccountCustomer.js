@@ -3,6 +3,8 @@ import 'bootstrap/dist/css/bootstrap.css';
 import React, { useRef } from 'react';
 
 import request from "../../../utils/request";
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
   
 import { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
@@ -611,7 +613,7 @@ function ManageAccountCustomer()
             console.log(res.data.quantity, 'jnsjdjsbjn')
             res.data.quantity.forEach(itemStatusFromDB => {
                 orderStatus_Array.forEach(itemStatus => {
-                    if(itemStatusFromDB.AdminVerify === itemStatus.value.nameState)
+                    if(itemStatusFromDB.ROLE === itemStatus.value.nameState)
                     {
                         const pageQuantityShow = Math.ceil(itemStatusFromDB.SL_MATK / numberOrderEachPage)  
                         console.log(itemStatusFromDB.SL_MATK, 'eee')
@@ -942,15 +944,25 @@ function ManageAccountCustomer()
     }
     
     //manageProduct
+    const renderLoading = (item) => {
+        return (
+          <div class={`donut multi size__donut ${item.value.pageQuantity === null ? '' : 'display_hidden'}`}></div> 
+        )
+      }
     const renderNavState = orderStatus_Array.map((item, index) =>  
         <li class="nav-item col-auto p-2" key={index}>
             <button 
-                class={`nav-link ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
+                class={`nav-link button_nav ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
                 aria-current="page"  
                 onClick={()=>handleClickNavState(item, 1)}
             >
                 {item.value.nameState}
+                <span className={`itemQuantityFound ${item.value.pageQuantity === null ? 'display_hidden' : ''}`}>
+                    {item.value.pageQuantity}
+                </span>
+                {renderLoading(item)}
             </button>
+            {/* <span>{item.value.pageQuantity}</span> */}
         </li> 
     )
     const renderEachProduct = (orderStatus_Array, item, indexOrder) => {
@@ -1005,12 +1017,17 @@ function ManageAccountCustomer()
             )  
         )
     }
-
     const renderPagination = (item_status) => {
         return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
+    const handlePageChange = (item_status, event, page) => {
+        return item_status.value.paginationList.map((item_pagina) => 
+            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+        )
+    }
+
  
     const renderShowProductEveryState = orderStatus_Array.map((item, index) =>   
         {  
@@ -1040,8 +1057,19 @@ function ManageAccountCustomer()
                                 { renderEachProduct(orderStatus_Array, item, index) } 
                             </tbody>
                         </table>
+                    </div >
+                    {/* <div className={` pagination-container`}>
+                        { renderPagination(item) }
+                    </div> */}
+                    <div className={` pagination-container margin__bottom`}>
+                        <Stack spacing={2}>
+                            <Pagination 
+                                count={item.value.paginationList.length} 
+                                onChange={(event, page) => handlePageChange(item, event, page)}  
+                                color="primary"
+                            /> 
+                        </Stack> 
                     </div>
-                    { renderPagination(item) }
                     </div> 
                 ) 
             }
