@@ -325,8 +325,8 @@ function Payment(){
     const renderInfoAdsressShip = infoForPayment.infoAdress.map((item, index) => {
         return (
             <div class="address_box_payment" key={index}>
-                    <div class="address_info row">
-                        <div class="col-1">
+                    <div class="address_info row text-start align-items-center">
+                        <div class="col-auto text-center">
                             <input 
                                 type="radio" 
                                 name="address_radio" 
@@ -336,12 +336,13 @@ function Payment(){
                                 // checked 
                             />
                         </div>
-                        <div class="col-4 fw-bold" id="itemmm">
+                        <div class="col-2" id="itemmm">
                             <span>{item.TEN}</span>
-                            <span>&nbsp;&nbsp;</span>
+                        </div>
+                        <div class="col-2">
                             <span>{item.SDT}</span>
                         </div>
-                        <div class="col-7">
+                        <div class="col">
                             <span>{item.DIACHI}, {item.PHUONG_XA}, {item.QUAN_HUYEN}, {item.TINH_TP}</span>
                         </div>
                     </div>
@@ -515,19 +516,25 @@ function Payment(){
                             </a>
                         </div>
                     </div>
-                    <div class="address_info row justify-content-between">
-                        {/* <div class="col-auto fw-bold">
-                            <span>Nguyễn Văn A</span>
-                            <span>(+84)123456789</span>
-                        </div>
-                        <div class="col-auto">
-                            <span>1 đường A, phường B, Quận 1, Tp.HCM</span>
-                        </div> */}
-                        
-                    </div>
                 </div>
                 <div class="address_change collapse" id="address_change">
                     <div class="address_box_container"> 
+                        <div class="address_box_payment">
+                            <div class="row text-center">
+                                <div class="col-auto">
+                                    <span>&nbsp;</span>
+                                </div>
+                                <div class="col-2">
+                                    <span>Tên người nhận</span>
+                                </div>
+                                <div class="col-2">
+                                    <span>SĐT</span>
+                                </div>
+                                <div class="col">
+                                    <span>Địa chỉ</span>
+                                </div>
+                            </div>
+                        </div>
                         {/* ở đây có chèn nội dung phần render  */}
                         {renderInfoAdsressShip}
                         {/* ở đây có xử lý onlcick addnewaddress khi thêm địa chỉ mới  */}
