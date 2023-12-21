@@ -329,383 +329,383 @@ class SetDataController extends Controller
             }
         }
 
-        //3. sanphams
-        {
-            $startDate = Carbon::create(2023, 1, 1);
-            $endDate = Carbon::create(2023, 12, 31);
+        // //3. sanphams
+        // {
+        //     $startDate = Carbon::create(2023, 1, 1);
+        //     $endDate = Carbon::create(2023, 12, 31);
 
-            $currentDate = $startDate;
+        //     $currentDate = $startDate;
 
-            $categories = [
-                ['MAPL' => 1, 'TENPL' => 'Nam'],
-                ['MAPL' => 2, 'TENPL' => 'Nữ'],
-                ['MAPL' => 3, 'TENPL' => 'Trẻ em'],
-            ];
+        //     $categories = [
+        //         ['MAPL' => 1, 'TENPL' => 'Nam'],
+        //         ['MAPL' => 2, 'TENPL' => 'Nữ'],
+        //         ['MAPL' => 3, 'TENPL' => 'Trẻ em'],
+        //     ];
             
-            while ($currentDate <= $endDate) { 
+        //     while ($currentDate <= $endDate) { 
                     
-                    $randomIndex = rand(0, count($categories) - 1);
-                    $category = $categories[$randomIndex];
-                    $TENSP = $this->getRandomProductName(); // Generate product name
+        //             $randomIndex = rand(0, count($categories) - 1);
+        //             $category = $categories[$randomIndex];
+        //             $TENSP = $this->getRandomProductName(); // Generate product name
 
-                    $GIAGOC = rand(230000, 500000);
-                    $minDiscount = 5; // Phần trăm giảm giá tối thiểu
-                    $maxDiscount = 40; // Phần trăm giảm giá tối đa
+        //             $GIAGOC = rand(230000, 500000);
+        //             $minDiscount = 5; // Phần trăm giảm giá tối thiểu
+        //             $maxDiscount = 40; // Phần trăm giảm giá tối đa
 
-                    // Tính toán GIABAN từ GIAGOC
-                    $discountPercentage = rand($minDiscount, $maxDiscount);
-                    $GIABAN = $GIAGOC * (100 - $discountPercentage) / 100;
-                    $GIABAN = round($GIABAN / 1000) * 1000; // Làm cho GIABAN có 3 số cuối là số 0
+        //             // Tính toán GIABAN từ GIAGOC
+        //             $discountPercentage = rand($minDiscount, $maxDiscount);
+        //             $GIABAN = $GIAGOC * (100 - $discountPercentage) / 100;
+        //             $GIABAN = round($GIABAN / 1000) * 1000; // Làm cho GIABAN có 3 số cuối là số 0
 
-                    // Đảm bảo GIAGOC có 3 số cuối là số 0
-                    $GIAGOC = round($GIAGOC / 1000) * 1000;
+        //             // Đảm bảo GIAGOC có 3 số cuối là số 0
+        //             $GIAGOC = round($GIAGOC / 1000) * 1000;
 
-                    // Kiểm tra nếu GIABAN lớn hơn hoặc bằng GIAGOC, hoán đổi giá trị để đảm bảo GIABAN luôn nhỏ hơn GIAGOC
-                    if ($GIABAN >= $GIAGOC) {
-                        $temp = $GIAGOC;
-                        $GIAGOC = $GIABAN;
-                        $GIABAN = $temp;
-                    }
+        //             // Kiểm tra nếu GIABAN lớn hơn hoặc bằng GIAGOC, hoán đổi giá trị để đảm bảo GIABAN luôn nhỏ hơn GIAGOC
+        //             if ($GIABAN >= $GIAGOC) {
+        //                 $temp = $GIAGOC;
+        //                 $GIAGOC = $GIABAN;
+        //                 $GIABAN = $temp;
+        //             }
 
-                    $MAPL_SP = $category['MAPL'];
-                    $MAPL_SP2 = $this->findMatchingMAPL2();
-                    $MOTA = $this->mota();
+        //             $MAPL_SP = $category['MAPL'];
+        //             $MAPL_SP2 = $this->findMatchingMAPL2();
+        //             $MOTA = $this->mota();
     
-                    // Thêm sản phẩm vào bảng sanphams 
-                    DB::table('sanphams')->insert([
-                        'TENSP' => $TENSP,
-                        'GIAGOC' => $GIAGOC,
-                        'GIABAN' => $GIABAN,
-                        'MAPL_SP' => $MAPL_SP,
-                        'MAPL_SP2' => $MAPL_SP2,
-                        'MOTA' => $MOTA,
-                        'created_at' => $currentDate,
-                        'updated_at' => $currentDate,
-                    ]); 
+        //             // Thêm sản phẩm vào bảng sanphams 
+        //             DB::table('sanphams')->insert([
+        //                 'TENSP' => $TENSP,
+        //                 'GIAGOC' => $GIAGOC,
+        //                 'GIABAN' => $GIABAN,
+        //                 'MAPL_SP' => $MAPL_SP,
+        //                 'MAPL_SP2' => $MAPL_SP2,
+        //                 'MOTA' => $MOTA,
+        //                 'created_at' => $currentDate,
+        //                 'updated_at' => $currentDate,
+        //             ]); 
     
-                $currentDate->addDay();
-            }
-        }
+        //         $currentDate->addDay();
+        //     }
+        // }
 
-        // //4. hinhanhs và hinhanhsanphams
-        {
-            $imageDirectories = glob(public_path('images/products/*'), GLOB_ONLYDIR);
+        // // //4. hinhanhs và hinhanhsanphams
+        // {
+        //     $imageDirectories = glob(public_path('images/products/*'), GLOB_ONLYDIR);
 
-            foreach ($imageDirectories as $imageDir) {
-                $masp = basename($imageDir);
+        //     foreach ($imageDirectories as $imageDir) {
+        //         $masp = basename($imageDir);
 
-                // Lấy danh sách các tập tin trong thư mục sản phẩm
-                $imageFiles = File::files($imageDir);
+        //         // Lấy danh sách các tập tin trong thư mục sản phẩm
+        //         $imageFiles = File::files($imageDir);
 
-                foreach ($imageFiles as $imageFile) {
-                    $fileName = pathinfo($imageFile, PATHINFO_FILENAME);
-                    $fileExtension = pathinfo($imageFile, PATHINFO_EXTENSION);
+        //         foreach ($imageFiles as $imageFile) {
+        //             $fileName = pathinfo($imageFile, PATHINFO_FILENAME);
+        //             $fileExtension = pathinfo($imageFile, PATHINFO_EXTENSION);
 
-                    // Xây dựng URL hình ảnh
-                    $imgUrl = url("/images/products/{$masp}/{$fileName}.{$fileExtension}");
+        //             // Xây dựng URL hình ảnh
+        //             $imgUrl = url("/images/products/{$masp}/{$fileName}.{$fileExtension}");
 
-                    // Thêm vào bảng hinhanhsanphams
-                    DB::table('hinhanhs')->insert([
-                        'MAHINHANH' => $fileName
-                    ]);
-                    DB::table('hinhanhsanphams')->insert([
-                        'MAHINHANH' => $fileName,
-                        'MASP' => $masp,
-                        'imgURL' => $imgUrl,
-                    ]);
-                }
-            }
-        }
+        //             // Thêm vào bảng hinhanhsanphams
+        //             DB::table('hinhanhs')->insert([
+        //                 'MAHINHANH' => $fileName
+        //             ]);
+        //             DB::table('hinhanhsanphams')->insert([
+        //                 'MAHINHANH' => $fileName,
+        //                 'MASP' => $masp,
+        //                 'imgURL' => $imgUrl,
+        //             ]);
+        //         }
+        //     }
+        // }
         
-        // //6. thongtingiaohangs
-        {
-            // Câu truy vấn insert cho dòng dữ liệu thứ nhất
-            DB::insert('INSERT INTO thongtingiaohangs (MATTGH, MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-                1,
-                2,
-                'đỗ sĩ đạt',
-                '0968795749',
-                'triệu phong',
-                'Tỉnh Nam Định',
-                'Huyện Trực Ninh',
-                'Xã Trực Thanh',
-                1,
-            ]);
+        // // //6. thongtingiaohangs
+        // {
+        //     // Câu truy vấn insert cho dòng dữ liệu thứ nhất
+        //     DB::insert('INSERT INTO thongtingiaohangs (MATTGH, MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+        //         1,
+        //         2,
+        //         'đỗ sĩ đạt',
+        //         '0968795749',
+        //         'triệu phong',
+        //         'Tỉnh Nam Định',
+        //         'Huyện Trực Ninh',
+        //         'Xã Trực Thanh',
+        //         1,
+        //     ]);
 
-            // Câu truy vấn insert cho dòng dữ liệu thứ hai
-            DB::insert('INSERT INTO thongtingiaohangs (MATTGH, MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-                2,
-                2,
-                'nguyễn văn a',
-                '0123456789',
-                'triệu phong',
-                'Thành phố Hải Phòng',
-                'Quận Hải An',
-                'Phường Đằng Lâm',
-                1,
-            ]);
+        //     // Câu truy vấn insert cho dòng dữ liệu thứ hai
+        //     DB::insert('INSERT INTO thongtingiaohangs (MATTGH, MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+        //         2,
+        //         2,
+        //         'nguyễn văn a',
+        //         '0123456789',
+        //         'triệu phong',
+        //         'Thành phố Hải Phòng',
+        //         'Quận Hải An',
+        //         'Phường Đằng Lâm',
+        //         1,
+        //     ]);
 
-            // Câu truy vấn insert cho dòng dữ liệu thứ ba
-            DB::insert('INSERT INTO thongtingiaohangs (MATTGH, MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-                3,
-                2,
-                'đỗ sĩ đạt',
-                '0968795749',
-                'triệu phong',
-                'Tỉnh Bắc Kạn',
-                'Huyện Ba Bể',
-                'Xã Khang Ninh',
-                1,
-            ]);
+        //     // Câu truy vấn insert cho dòng dữ liệu thứ ba
+        //     DB::insert('INSERT INTO thongtingiaohangs (MATTGH, MATK, TEN, SDT, DIACHI, TINH_TP, QUAN_HUYEN, PHUONG_XA, DANGSUDUNG) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+        //         3,
+        //         2,
+        //         'đỗ sĩ đạt',
+        //         '0968795749',
+        //         'triệu phong',
+        //         'Tỉnh Bắc Kạn',
+        //         'Huyện Ba Bể',
+        //         'Xã Khang Ninh',
+        //         1,
+        //     ]);
 
-        }
+        // }
 
-        // //7.voucher 
-        {
-            for ($i = 0; $i < 5; $i++) {
-                $randomDateStart = Carbon::now()->addDays(5)->toDateString(); // THOIGIANBD > thời gian hiện tại và cách thời gian hiện tại 5 ngày
-                $randomDateEnd = Carbon::now()->addDays(10)->toDateString(); // THOIGIANKT > thời gian hiện tại và cách thời gian hiện tại 10 ngày
+        // // //7.voucher 
+        // {
+        //     for ($i = 0; $i < 5; $i++) {
+        //         $randomDateStart = Carbon::now()->addDays(5)->toDateString(); // THOIGIANBD > thời gian hiện tại và cách thời gian hiện tại 5 ngày
+        //         $randomDateEnd = Carbon::now()->addDays(10)->toDateString(); // THOIGIANKT > thời gian hiện tại và cách thời gian hiện tại 10 ngày
             
-                $MAVOUCHER = $this->generateRandomString(10);
-                $SOLUONG = rand(1, 999);
-                $SOLUONG_CONLAI = $SOLUONG;
-                $GIATRI_DH_MIN = rand(100000, 500000); // 700000 < GIATRI_DH_MIN <= 1000000
-                $GIATRI_GIAM_MAX = rand(1, 20) * 10000; // GIATRI_GIAM_MAX là bội của số 10000 và < 200000
-                $THOIGIANBD = $randomDateStart;
-                $THOIGIANKT = $randomDateEnd;
-                $PHANLOAI_VOUCHER = rand(0, 1) ? 'Vận chuyển' : 'Đơn hàng'; // Chọn ngẫu nhiên 'Vận chuyển' hoặc 'Đơn hàng'
-                $GIATRIGIAM = rand(1, 20) / 100; // GIATRIGIAM là bội của 0.05 và <= 1
-                $MOTA = "Số lượng voucher: $SOLUONG, 
-                    Giá trị đơn hàng tối thiểu: $GIATRI_DH_MIN,
-                    Giá trị giảm tối đa: $GIATRI_GIAM_MAX, 
-                    Thời gian bắt đầu: $THOIGIANBD, 
-                    Thời gian kết thúc: $THOIGIANKT,
-                    Loại voucher: $PHANLOAI_VOUCHER, 
-                    Giá trị giảm: $GIATRIGIAM.";
+        //         $MAVOUCHER = $this->generateRandomString(10);
+        //         $SOLUONG = rand(1, 999);
+        //         $SOLUONG_CONLAI = $SOLUONG;
+        //         $GIATRI_DH_MIN = rand(100000, 500000); // 700000 < GIATRI_DH_MIN <= 1000000
+        //         $GIATRI_GIAM_MAX = rand(1, 20) * 10000; // GIATRI_GIAM_MAX là bội của số 10000 và < 200000
+        //         $THOIGIANBD = $randomDateStart;
+        //         $THOIGIANKT = $randomDateEnd;
+        //         $PHANLOAI_VOUCHER = rand(0, 1) ? 'Vận chuyển' : 'Đơn hàng'; // Chọn ngẫu nhiên 'Vận chuyển' hoặc 'Đơn hàng'
+        //         $GIATRIGIAM = rand(1, 20) / 100; // GIATRIGIAM là bội của 0.05 và <= 1
+        //         $MOTA = "Số lượng voucher: $SOLUONG, 
+        //             Giá trị đơn hàng tối thiểu: $GIATRI_DH_MIN,
+        //             Giá trị giảm tối đa: $GIATRI_GIAM_MAX, 
+        //             Thời gian bắt đầu: $THOIGIANBD, 
+        //             Thời gian kết thúc: $THOIGIANKT,
+        //             Loại voucher: $PHANLOAI_VOUCHER, 
+        //             Giá trị giảm: $GIATRIGIAM.";
             
-                DB::insert('INSERT INTO vouchers (MAVOUCHER, SOLUONG, SOLUONG_CONLAI, GIATRI_DH_MIN, GIATRI_GIAM_MAX, THOIGIANBD, THOIGIANKT, MOTA, PHANLOAI_VOUCHER, GIATRIGIAM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-                    $MAVOUCHER,
-                    $SOLUONG,
-                    $SOLUONG_CONLAI,
-                    $GIATRI_DH_MIN,
-                    $GIATRI_GIAM_MAX,
-                    $THOIGIANBD,
-                    $THOIGIANKT,
-                    $MOTA,
-                    $PHANLOAI_VOUCHER,
-                    $GIATRIGIAM,
-                ]);
-            }
-            for ($i = 0; $i < 5; $i++) {
-                $randomDateStart = Carbon::now()->subDays(5)->addDays($i)->toDateString(); // THOIGIANBD từ 5 ngày trước đến ngày hiện tại
-                $randomDateEnd = Carbon::now()->addDays(10)->toDateString(); // THOIGIANKT từ ngày hiện tại đến 10 ngày sau
+        //         DB::insert('INSERT INTO vouchers (MAVOUCHER, SOLUONG, SOLUONG_CONLAI, GIATRI_DH_MIN, GIATRI_GIAM_MAX, THOIGIANBD, THOIGIANKT, MOTA, PHANLOAI_VOUCHER, GIATRIGIAM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+        //             $MAVOUCHER,
+        //             $SOLUONG,
+        //             $SOLUONG_CONLAI,
+        //             $GIATRI_DH_MIN,
+        //             $GIATRI_GIAM_MAX,
+        //             $THOIGIANBD,
+        //             $THOIGIANKT,
+        //             $MOTA,
+        //             $PHANLOAI_VOUCHER,
+        //             $GIATRIGIAM,
+        //         ]);
+        //     }
+        //     for ($i = 0; $i < 5; $i++) {
+        //         $randomDateStart = Carbon::now()->subDays(5)->addDays($i)->toDateString(); // THOIGIANBD từ 5 ngày trước đến ngày hiện tại
+        //         $randomDateEnd = Carbon::now()->addDays(10)->toDateString(); // THOIGIANKT từ ngày hiện tại đến 10 ngày sau
                 
-                $MAVOUCHER = $this->generateRandomString(30);
-                $SOLUONG = rand(1, 999);
-                $SOLUONG_CONLAI = $SOLUONG;
-                $GIATRI_DH_MIN = rand(100000, 500000); // 700000 < GIATRI_DH_MIN <= 1000000
-                $GIATRI_GIAM_MAX = rand(1, 20) * 10000; // GIATRI_GIAM_MAX là bội của số 10000 và < 200000
-                $THOIGIANBD = $randomDateStart;
-                $THOIGIANKT = $randomDateEnd;
-                $PHANLOAI_VOUCHER = rand(0, 1) ? 'Vận chuyển' : 'Đơn hàng'; // Chọn ngẫu nhiên 'Vận chuyển' hoặc 'Đơn hàng'
-                $GIATRIGIAM = rand(1, 20) / 100; // GIATRIGIAM là bội của 0.05 và <= 1
-                $MOTA = "Số lượng voucher: $SOLUONG, 
-                    Giá trị đơn hàng tối thiểu: $GIATRI_DH_MIN,
-                    Giá trị giảm tối đa: $GIATRI_GIAM_MAX, 
-                    Thời gian bắt đầu: $THOIGIANBD, 
-                    Thời gian kết thúc: $THOIGIANKT,
-                    Loại voucher: $PHANLOAI_VOUCHER, 
-                    Giá trị giảm: $GIATRIGIAM.";
+        //         $MAVOUCHER = $this->generateRandomString(30);
+        //         $SOLUONG = rand(1, 999);
+        //         $SOLUONG_CONLAI = $SOLUONG;
+        //         $GIATRI_DH_MIN = rand(100000, 500000); // 700000 < GIATRI_DH_MIN <= 1000000
+        //         $GIATRI_GIAM_MAX = rand(1, 20) * 10000; // GIATRI_GIAM_MAX là bội của số 10000 và < 200000
+        //         $THOIGIANBD = $randomDateStart;
+        //         $THOIGIANKT = $randomDateEnd;
+        //         $PHANLOAI_VOUCHER = rand(0, 1) ? 'Vận chuyển' : 'Đơn hàng'; // Chọn ngẫu nhiên 'Vận chuyển' hoặc 'Đơn hàng'
+        //         $GIATRIGIAM = rand(1, 20) / 100; // GIATRIGIAM là bội của 0.05 và <= 1
+        //         $MOTA = "Số lượng voucher: $SOLUONG, 
+        //             Giá trị đơn hàng tối thiểu: $GIATRI_DH_MIN,
+        //             Giá trị giảm tối đa: $GIATRI_GIAM_MAX, 
+        //             Thời gian bắt đầu: $THOIGIANBD, 
+        //             Thời gian kết thúc: $THOIGIANKT,
+        //             Loại voucher: $PHANLOAI_VOUCHER, 
+        //             Giá trị giảm: $GIATRIGIAM.";
             
-                DB::insert('INSERT INTO vouchers (MAVOUCHER, SOLUONG, SOLUONG_CONLAI, GIATRI_DH_MIN, GIATRI_GIAM_MAX, THOIGIANBD, THOIGIANKT, MOTA, PHANLOAI_VOUCHER, GIATRIGIAM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-                    $MAVOUCHER,
-                    $SOLUONG,
-                    $SOLUONG_CONLAI,
-                    $GIATRI_DH_MIN,
-                    $GIATRI_GIAM_MAX,
-                    $THOIGIANBD,
-                    $THOIGIANKT,
-                    $MOTA,
-                    $PHANLOAI_VOUCHER,
-                    $GIATRIGIAM,
-                ]);
-            }
-            for ($i = 0; $i < 5; $i++) {
-                $randomDateStart = Carbon::now()->subDays(5 + $i)->toDateString(); // THOIGIANBD từ 5 ngày trước đến ngày hiện tại
-                $randomDateEnd = Carbon::now()->addDays(10)->toDateString(); // THOIGIANKT từ ngày hiện tại đến 10 ngày sau
+        //         DB::insert('INSERT INTO vouchers (MAVOUCHER, SOLUONG, SOLUONG_CONLAI, GIATRI_DH_MIN, GIATRI_GIAM_MAX, THOIGIANBD, THOIGIANKT, MOTA, PHANLOAI_VOUCHER, GIATRIGIAM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+        //             $MAVOUCHER,
+        //             $SOLUONG,
+        //             $SOLUONG_CONLAI,
+        //             $GIATRI_DH_MIN,
+        //             $GIATRI_GIAM_MAX,
+        //             $THOIGIANBD,
+        //             $THOIGIANKT,
+        //             $MOTA,
+        //             $PHANLOAI_VOUCHER,
+        //             $GIATRIGIAM,
+        //         ]);
+        //     }
+        //     for ($i = 0; $i < 5; $i++) {
+        //         $randomDateStart = Carbon::now()->subDays(5 + $i)->toDateString(); // THOIGIANBD từ 5 ngày trước đến ngày hiện tại
+        //         $randomDateEnd = Carbon::now()->addDays(10)->toDateString(); // THOIGIANKT từ ngày hiện tại đến 10 ngày sau
                
-                $MAVOUCHER = $this->generateRandomString(30);
-                $SOLUONG = rand(1, 999);
-                $SOLUONG_CONLAI = $SOLUONG;
-                $GIATRI_DH_MIN = rand(100000, 500000); // 700000 < GIATRI_DH_MIN <= 1000000
-                $GIATRI_GIAM_MAX = rand(1, 20) * 10000; // GIATRI_GIAM_MAX là bội của số 10000 và < 200000
-                $THOIGIANBD = $randomDateStart;
-                $THOIGIANKT = $randomDateEnd;
-                $PHANLOAI_VOUCHER = rand(0, 1) ? 'Vận chuyển' : 'Đơn hàng'; // Chọn ngẫu nhiên 'Vận chuyển' hoặc 'Đơn hàng'
-                $GIATRIGIAM = rand(1, 20) / 100; // GIATRIGIAM là bội của 0.05 và <= 1
-                $MOTA = "Số lượng voucher: $SOLUONG, 
-                    Giá trị đơn hàng tối thiểu: $GIATRI_DH_MIN,
-                    Giá trị giảm tối đa: $GIATRI_GIAM_MAX, 
-                    Thời gian bắt đầu: $THOIGIANBD, 
-                    Thời gian kết thúc: $THOIGIANKT,
-                    Loại voucher: $PHANLOAI_VOUCHER, 
-                    Giá trị giảm: $GIATRIGIAM.";
+        //         $MAVOUCHER = $this->generateRandomString(30);
+        //         $SOLUONG = rand(1, 999);
+        //         $SOLUONG_CONLAI = $SOLUONG;
+        //         $GIATRI_DH_MIN = rand(100000, 500000); // 700000 < GIATRI_DH_MIN <= 1000000
+        //         $GIATRI_GIAM_MAX = rand(1, 20) * 10000; // GIATRI_GIAM_MAX là bội của số 10000 và < 200000
+        //         $THOIGIANBD = $randomDateStart;
+        //         $THOIGIANKT = $randomDateEnd;
+        //         $PHANLOAI_VOUCHER = rand(0, 1) ? 'Vận chuyển' : 'Đơn hàng'; // Chọn ngẫu nhiên 'Vận chuyển' hoặc 'Đơn hàng'
+        //         $GIATRIGIAM = rand(1, 20) / 100; // GIATRIGIAM là bội của 0.05 và <= 1
+        //         $MOTA = "Số lượng voucher: $SOLUONG, 
+        //             Giá trị đơn hàng tối thiểu: $GIATRI_DH_MIN,
+        //             Giá trị giảm tối đa: $GIATRI_GIAM_MAX, 
+        //             Thời gian bắt đầu: $THOIGIANBD, 
+        //             Thời gian kết thúc: $THOIGIANKT,
+        //             Loại voucher: $PHANLOAI_VOUCHER, 
+        //             Giá trị giảm: $GIATRIGIAM.";
             
-                DB::insert('INSERT INTO vouchers (MAVOUCHER, SOLUONG, SOLUONG_CONLAI, GIATRI_DH_MIN, GIATRI_GIAM_MAX, THOIGIANBD, THOIGIANKT, MOTA, PHANLOAI_VOUCHER, GIATRIGIAM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
-                    $MAVOUCHER,
-                    $SOLUONG,
-                    $SOLUONG_CONLAI,
-                    $GIATRI_DH_MIN,
-                    $GIATRI_GIAM_MAX,
-                    $THOIGIANBD,
-                    $THOIGIANKT,
-                    $MOTA,
-                    $PHANLOAI_VOUCHER,
-                    $GIATRIGIAM,
-                ]);
-            }
-        }
-        // //8. THỰC HIỆN INSERT DỮ LIỆU VÀO BẢNG HOÁ ĐƠN ĐỂ THỐNG KÊ
-        {
-            $startDate = '2023-01-01';
-            $endDate = '2023-12-31';
+        //         DB::insert('INSERT INTO vouchers (MAVOUCHER, SOLUONG, SOLUONG_CONLAI, GIATRI_DH_MIN, GIATRI_GIAM_MAX, THOIGIANBD, THOIGIANKT, MOTA, PHANLOAI_VOUCHER, GIATRIGIAM) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)', [
+        //             $MAVOUCHER,
+        //             $SOLUONG,
+        //             $SOLUONG_CONLAI,
+        //             $GIATRI_DH_MIN,
+        //             $GIATRI_GIAM_MAX,
+        //             $THOIGIANBD,
+        //             $THOIGIANKT,
+        //             $MOTA,
+        //             $PHANLOAI_VOUCHER,
+        //             $GIATRIGIAM,
+        //         ]);
+        //     }
+        // }
+        // // //8. THỰC HIỆN INSERT DỮ LIỆU VÀO BẢNG HOÁ ĐƠN ĐỂ THỐNG KÊ
+        // {
+        //     $startDate = '2023-01-01';
+        //     $endDate = '2023-12-31';
     
-            $currentDate = $startDate;
-            $statuses = ['Đã giao', 'Chuẩn bị hàng', 'Đang giao', 'Đã huỷ'];
-            $shippingFee = rand(0, 1) > 0.5 ? rand(25000, 30000) : rand(25000, 30000);
-            $paymentStatus = rand(0, 1) ? 'Đã thanh toán' : 'Chưa thanh toán';
+        //     $currentDate = $startDate;
+        //     $statuses = ['Đã giao', 'Chuẩn bị hàng', 'Đang giao', 'Đã huỷ'];
+        //     $shippingFee = rand(0, 1) > 0.5 ? rand(25000, 30000) : rand(25000, 30000);
+        //     $paymentStatus = rand(0, 1) ? 'Đã thanh toán' : 'Chưa thanh toán';
     
-            while ($currentDate <= $endDate) {
-                $totalProductPrice = rand(250, 1000) * 1000;
-                $voucherDiscount = rand(10, 200) * 1000;
-                $totalOrderPrice = $totalProductPrice + $shippingFee - $voucherDiscount;
+        //     while ($currentDate <= $endDate) {
+        //         $totalProductPrice = rand(250, 1000) * 1000;
+        //         $voucherDiscount = rand(10, 200) * 1000;
+        //         $totalOrderPrice = $totalProductPrice + $shippingFee - $voucherDiscount;
             
-                DB::table('donhangs')->insert([
-                    'MATK' => rand(1, 30),
-                    'NGAYORDER' => $currentDate,
-                    'NGAYGIAOHANG' => $currentDate, // Có thể là null hoặc giống ngày đặt hàng
-                    'TONGTIEN_SP' => $totalProductPrice,
-                    'VOUCHERGIAM' => $voucherDiscount,
-                    'TONGTIENDONHANG' => $totalOrderPrice,
-                    'PHIVANCHUYEN' => $shippingFee,
-                    'HINHTHUC_THANHTOAN' => rand(0, 1) > 0.5 ? 'Chuyển khoản' : 'Thanh toán khi nhận hàng',
-                    'TRANGTHAI_THANHTOAN' => $paymentStatus,
-                    'TRANGTHAI_DONHANG' => $statuses[array_rand($statuses)],
-                    'MATTGH' => rand(1, 3),
-                    'GHICHU' => 'Ghi chú'
-                ]);
+        //         DB::table('donhangs')->insert([
+        //             'MATK' => rand(1, 30),
+        //             'NGAYORDER' => $currentDate,
+        //             'NGAYGIAOHANG' => $currentDate, // Có thể là null hoặc giống ngày đặt hàng
+        //             'TONGTIEN_SP' => $totalProductPrice,
+        //             'VOUCHERGIAM' => $voucherDiscount,
+        //             'TONGTIENDONHANG' => $totalOrderPrice,
+        //             'PHIVANCHUYEN' => $shippingFee,
+        //             'HINHTHUC_THANHTOAN' => rand(0, 1) > 0.5 ? 'Chuyển khoản' : 'Thanh toán khi nhận hàng',
+        //             'TRANGTHAI_THANHTOAN' => $paymentStatus,
+        //             'TRANGTHAI_DONHANG' => $statuses[array_rand($statuses)],
+        //             'MATTGH' => rand(1, 3),
+        //             'GHICHU' => 'Ghi chú'
+        //         ]);
     
-                // Tăng ngày thêm 1
-                $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
-            }
-        }
+        //         // Tăng ngày thêm 1
+        //         $currentDate = date('Y-m-d', strtotime($currentDate . ' +1 day'));
+        //     }
+        // }
 
-        // // //9. donhang_voucher
-        // // {
-        // //     // for ($i = 1; $i <= 50; $i++) {
-        // //     //     $randomVoucher = DB::table('vouchers')->inRandomOrder()->first();
-        // //     //     $randomOrder = DB::table('donhangs')->inRandomOrder()->first();
+        // // // //9. donhang_voucher
+        // // // {
+        // // //     // for ($i = 1; $i <= 50; $i++) {
+        // // //     //     $randomVoucher = DB::table('vouchers')->inRandomOrder()->first();
+        // // //     //     $randomOrder = DB::table('donhangs')->inRandomOrder()->first();
             
-        // //     //     DB::table('donhang_vouchers')->insert([
-        // //     //         'MAVOUCHER' => $randomVoucher->MAVOUCHER,
-        // //     //         'MADH' => $randomOrder->MADH,
-        // //     //     ]);
-        // //     // }
-        // // }
+        // // //     //     DB::table('donhang_vouchers')->insert([
+        // // //     //         'MAVOUCHER' => $randomVoucher->MAVOUCHER,
+        // // //     //         'MADH' => $randomOrder->MADH,
+        // // //     //     ]);
+        // // //     // }
+        // // // }
         
         
         
-        // //12. sanpham_mausac_sizes
-        {
-            $sanPhams = DB::table('sanphams')->get();
-            $mauSacs = DB::table('mausacs')->get();
-            $sizes = DB::table('sizes')->get();
+        // // //12. sanpham_mausac_sizes
+        // {
+        //     $sanPhams = DB::table('sanphams')->get();
+        //     $mauSacs = DB::table('mausacs')->get();
+        //     $sizes = DB::table('sizes')->get();
 
-            foreach ($sanPhams as $sanPham) {
-                $listSize = $sizes->random(rand(3, 5)); // Lấy ngẫu nhiên 1-3 kích thước
-                $listColor = $mauSacs->random(rand(1, 4)); // Lấy ngẫu nhiên 1-3 màu sắc
+        //     foreach ($sanPhams as $sanPham) {
+        //         $listSize = $sizes->random(rand(3, 5)); // Lấy ngẫu nhiên 1-3 kích thước
+        //         $listColor = $mauSacs->random(rand(1, 4)); // Lấy ngẫu nhiên 1-3 màu sắc
 
-                foreach ($listSize as $size) {
-                    foreach ($listColor as $color) {
-                        $maxdsp = DB::table('sanpham_mausac_sizes')->insertGetId([
-                            'MASP' => $sanPham->MASP,
-                            'MAMAU' => $color->MAMAU,
-                            'MASIZE' => $size->MASIZE,
-                            'SOLUONG' => rand(0, 1000),
-                        ]);
-                        // Xử lý sau khi thêm dữ liệu, nếu cần
-                    }
-                }
-            }
-        }
-        // // 13. chitiet_donhangs
-        {
+        //         foreach ($listSize as $size) {
+        //             foreach ($listColor as $color) {
+        //                 $maxdsp = DB::table('sanpham_mausac_sizes')->insertGetId([
+        //                     'MASP' => $sanPham->MASP,
+        //                     'MAMAU' => $color->MAMAU,
+        //                     'MASIZE' => $size->MASIZE,
+        //                     'SOLUONG' => rand(0, 1000),
+        //                 ]);
+        //                 // Xử lý sau khi thêm dữ liệu, nếu cần
+        //             }
+        //         }
+        //     }
+        // }
+        // // // 13. chitiet_donhangs
+        // {
             
-            // Lấy danh sách MADH
-            $donHangs = DB::table('donhangs')->select('MADH')->get()->pluck('MADH')->toArray();
+        //     // Lấy danh sách MADH
+        //     $donHangs = DB::table('donhangs')->select('MADH')->get()->pluck('MADH')->toArray();
 
-            foreach ($donHangs as $madh) {
-                // Lấy ngẫu nhiên từ 1 đến 5 MAXDSP cho mỗi MADH
-                $maxdspCount = rand(1, 5);
-                $maxdspList = DB::table('sanpham_mausac_sizes')->inRandomOrder()->limit($maxdspCount)->pluck('MAXDSP')->toArray();
+        //     foreach ($donHangs as $madh) {
+        //         // Lấy ngẫu nhiên từ 1 đến 5 MAXDSP cho mỗi MADH
+        //         $maxdspCount = rand(1, 5);
+        //         $maxdspList = DB::table('sanpham_mausac_sizes')->inRandomOrder()->limit($maxdspCount)->pluck('MAXDSP')->toArray();
 
-                foreach ($maxdspList as $maxdsp) {
-                    // Lấy thông tin sản phẩm từ MAXDSP
-                    $sanpham = DB::table('sanpham_mausac_sizes')
-                        ->select('MASP', 'SOLUONG')
-                        ->where('MAXDSP', $maxdsp)
-                        ->first();
+        //         foreach ($maxdspList as $maxdsp) {
+        //             // Lấy thông tin sản phẩm từ MAXDSP
+        //             $sanpham = DB::table('sanpham_mausac_sizes')
+        //                 ->select('MASP', 'SOLUONG')
+        //                 ->where('MAXDSP', $maxdsp)
+        //                 ->first();
 
-                    // Tính TONGTIEN
-                    $soluong = rand(1, 5);
-                    $tongtien = $soluong * DB::table('sanphams')->where('MASP', $sanpham->MASP)->value('GIABAN');
+        //             // Tính TONGTIEN
+        //             $soluong = rand(1, 5);
+        //             $tongtien = $soluong * DB::table('sanphams')->where('MASP', $sanpham->MASP)->value('GIABAN');
 
-                    // Insert vào bảng chitiet_donhangs
-                    DB::table('chitiet_donhangs')->insert([
-                        'MADH' => $madh,
-                        'MAXDSP' => $maxdsp,
-                        'TONGTIEN' => $tongtien,
-                        'SOLUONG' => $soluong,
-                        'DADANHGIA' => 0,
-                    ]);
-                }
-            }
-        }
-        // // 14. danhgia_sanphams
-        {
-            // Lấy danh sách đơn hàng và MASP tương ứng của tất cả các đơn hàng
-            $donhangs = DB::table('donhangs')->select('MADH', 'MATK')->get();
+        //             // Insert vào bảng chitiet_donhangs
+        //             DB::table('chitiet_donhangs')->insert([
+        //                 'MADH' => $madh,
+        //                 'MAXDSP' => $maxdsp,
+        //                 'TONGTIEN' => $tongtien,
+        //                 'SOLUONG' => $soluong,
+        //                 'DADANHGIA' => 0,
+        //             ]);
+        //         }
+        //     }
+        // }
+        // // // 14. danhgia_sanphams
+        // {
+        //     // Lấy danh sách đơn hàng và MASP tương ứng của tất cả các đơn hàng
+        //     $donhangs = DB::table('donhangs')->select('MADH', 'MATK')->get();
 
-            foreach ($donhangs as $donhang) {
-                // Lấy danh sách MAXDSP của đơn hàng này
-                $maxdsps = DB::table('chitiet_donhangs')
-                    ->where('MADH', $donhang->MADH)
-                    ->pluck('MAXDSP')
-                    ->toArray();
+        //     foreach ($donhangs as $donhang) {
+        //         // Lấy danh sách MAXDSP của đơn hàng này
+        //         $maxdsps = DB::table('chitiet_donhangs')
+        //             ->where('MADH', $donhang->MADH)
+        //             ->pluck('MAXDSP')
+        //             ->toArray();
 
-                foreach ($maxdsps as $maxdsp) {
-                    // Lấy thông tin sản phẩm từ MAXDSP
-                    $sanpham = DB::table('sanpham_mausac_sizes')
-                        ->select('MASP')
-                        ->where('MAXDSP', $maxdsp)
-                        ->first();
+        //         foreach ($maxdsps as $maxdsp) {
+        //             // Lấy thông tin sản phẩm từ MAXDSP
+        //             $sanpham = DB::table('sanpham_mausac_sizes')
+        //                 ->select('MASP')
+        //                 ->where('MAXDSP', $maxdsp)
+        //                 ->first();
 
-                    // Tạo đánh giá ngẫu nhiên
-                    $sosao = rand(1, 5);
-                    $noidung = 'Đánh giá cho sản phẩm này là ' . $sosao . ' sao.';
+        //             // Tạo đánh giá ngẫu nhiên
+        //             $sosao = rand(1, 5);
+        //             $noidung = 'Đánh giá cho sản phẩm này là ' . $sosao . ' sao.';
 
-                    // Insert đánh giá vào danhgia_sanphams
-                    DB::table('danhgia_sanphams')->insert([
-                        'MADH' => $donhang->MADH,
-                        'MASP' => $sanpham->MASP,
-                        'MATK' => $donhang->MATK,
-                        'MAXDSP' => $maxdsp,
-                        'SOLUONG_SAO' => $sosao,
-                        'NOIDUNG_DANHGIA' => $noidung,
-                    ]);
-                }
-            }
-        }
+        //             // Insert đánh giá vào danhgia_sanphams
+        //             DB::table('danhgia_sanphams')->insert([
+        //                 'MADH' => $donhang->MADH,
+        //                 'MASP' => $sanpham->MASP,
+        //                 'MATK' => $donhang->MATK,
+        //                 'MAXDSP' => $maxdsp,
+        //                 'SOLUONG_SAO' => $sosao,
+        //                 'NOIDUNG_DANHGIA' => $noidung,
+        //             ]);
+        //         }
+        //     }
+        // }
         
         // DB::update("update donhangs set TRANGTHAI_DONHANG = 'Đã giao'");
     }

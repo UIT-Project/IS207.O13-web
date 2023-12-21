@@ -10,10 +10,10 @@ class ManageAccountCustomerController extends Controller
 {
     public function getQuantityAccountCustomerToDevidePage(Request $request){
         $quantity = DB::select(
-            "SELECT COUNT(MATK) AS SL_MATK, AdminVerify
+            "SELECT COUNT(MATK) AS SL_MATK, ROLE
             FROM taikhoans 
-            WHERE taikhoans.ROLE = 'Khách hàng'
-            Group by taikhoans.AdminVerify"
+            WHERE taikhoans.ROLE = 'Khách hàng' 
+            GROUP BY ROLE"
         ); 
 
         return response()->json([

@@ -200,7 +200,7 @@ button {
     border-radius: 0.3rem;
 }
 
-.address_add_button {
+.address_add_button_payment {
     padding: 12px 25px;
     border: 1px solid #000;
     background-color: #F3F1F1 !important;
@@ -337,3 +337,7 @@ tr {
     line-height: 35px;
   }
   
+  .fa-location-dot{
+    width: 2rem;
+    height: 1.7rem;
+  }

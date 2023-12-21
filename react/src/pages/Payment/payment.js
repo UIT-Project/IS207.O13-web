@@ -5,7 +5,7 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useEffect, useState } from "react";
 import request from "../../utils/request";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCheckCircle, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
@@ -506,7 +506,7 @@ function Payment(){
                 <div class={` address_box_payment `} >
                     <div class="address_title row">
                         <div>
-                            <i class="fa-solid fa-location-dot"></i>
+                            <FontAwesomeIcon class="fa-location-dot" icon={faLocationDot}></FontAwesomeIcon>
                             <span>Thông tin giao hàng đã đặt hàng những lần trước</span>
                         </div>
                         <div>
@@ -533,8 +533,9 @@ function Payment(){
                         {/* ở đây có xử lý onlcick addnewaddress khi thêm địa chỉ mới  */}
                         <button 
                             type="button" 
-                            class="address_add_button link-dark"  
-                            data-bs-toggle="collapse" href="#address_change"  
+                            className="address_add_button_payment link-dark"  
+                            data-bs-toggle="collapse" 
+                            href="#address_change"  
                             onClick={handleClickAddNewAddress}
                         >+ Thêm địa chỉ mới</button>
                     </div>
@@ -654,14 +655,18 @@ function Payment(){
                         <div class="vertical_align_center col-2">
                             {/* áp dụng voucher */}
                             <button 
-                                class="btn-ApplyVoucher"
+                                class=""
                                 onClick={handleApplyVoucher} 
                                 className={
-                                    `${
-                                        (typeof(discountVoucher) !== 'string')
-                                        ? 'display_hidden'
-                                        : ''
-                                    }`
+                                    `
+                                        btn-ApplyVoucher
+                                        ${
+                                            
+                                            (typeof(discountVoucher) !== 'string')
+                                            ? 'display_hidden'
+                                            : ''
+                                        }
+                                    `
                                 }
                             >Áp dụng</button>
                             <FontAwesomeIcon 

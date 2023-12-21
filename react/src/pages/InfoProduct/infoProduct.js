@@ -300,7 +300,7 @@ function InfoProduct(){
         </div>
     )
     return ( 
-        <div class={`container col-sm-12 ${isLoading === true ? 'display_hidden' : ''}`}>
+        <div class={`container col-sm-12 ${isLoading === true ? '' : ''}`}>
             <div class={`loadingInfoProductTrue ${isLoading === false ? 'display_hidden' : ''}`}>
             </div>
             <div class={`container-fluid ${isLoading === true ? 'display_hidden' : ''}`}>
