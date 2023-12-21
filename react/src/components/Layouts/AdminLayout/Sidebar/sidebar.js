@@ -19,8 +19,22 @@ function SideBar(){
     })
 
     const handleClickInSideBar = (name) => {  
-        const stateClickInSideBar_copy = {...stateClickInSideBar, [name] : !stateClickInSideBar[name]}
-        setStateClickInSideBar(stateClickInSideBar_copy) 
+        const stateClickInSideBar_copy = {
+            taikhoan: false,
+            sanpham: false,
+            voucher: false,
+            [name]: !stateClickInSideBar[name]
+        };
+        setStateClickInSideBar(stateClickInSideBar_copy);
+        const allNavItems = document.querySelectorAll('.sidebar_nav_item');
+            allNavItems.forEach(item => {
+            item.classList.remove('selected');
+        });
+
+        const selectedNavItem = document.querySelector(`.sidebar_nav_item.${name}`);
+        if (selectedNavItem) {
+            selectedNavItem.classList.add('selected');
+        }
     }
 
     const clickLogout = (event) => {
