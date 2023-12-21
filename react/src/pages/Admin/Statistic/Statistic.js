@@ -201,7 +201,7 @@ function Statistic()
          {/* //doanh thu */}
          <div>
          <h2>DOANH THU</h2>
-            <div className="dropdowns">
+            <div className="dropdowns" id="thong_ke">
                <select value={selectedOption} onChange={handleOptionChange}>
                   <option value="Tuần">Tuần</option>
                   <option value="Tháng">Tháng</option>
@@ -250,7 +250,7 @@ function Statistic()
          </BarChart>
          </div>
          {/* trạng thái đơn hàng */}
-         <div className="chartCircle">
+         <div className="chartCircle" id="thong_ke">
             <div>
                <h2>TRẠNG THÁI ĐƠN HÀNG</h2>
                   <div className="dateInputs_TTDH" style={{ backgroundColor: 'yellow', borderRadius: '8px', padding: '10px' }}>
@@ -349,7 +349,7 @@ function Statistic()
          </div>
          <div>
             
-            <div>
+            <div id="thong_ke">
             <h2>TOP 10 SẢN PHẨM BÁN CHẠY</h2>
                <div className="dropdowns">
                   <div className="week-dropdowns">
@@ -392,7 +392,7 @@ function Statistic()
                }
                </div>
             </div>
-            <div>
+            <div id="thong_ke"> 
                <h2>TOP 10 KHÁCH HÀNG MUA HÀNG NHIỀU NHẤT</h2>
                <div className="dropdowns">
                   <div className="week-dropdowns">

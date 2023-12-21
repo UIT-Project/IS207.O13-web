@@ -1042,7 +1042,7 @@ function ManageOrder(){
                             <FontAwesomeIcon class="fa-solid fa-pen-to-square" icon={faPenToSquare} ></FontAwesomeIcon>
                         </span>
                     </div> */}
-                    <div className="div_thongTinGiaoHang">
+                    <div className="div_thongTinGiaoHang" id="thongtin_giao_hang_1">
                         <h3 className="thongTinGiaoHang">Thông tin giao hàng</h3>   
                         <table class="table">
                             <thead>
@@ -1077,7 +1077,7 @@ function ManageOrder(){
                             </tbody>
                         </table>
                     </div>
-                    <div className="div_thongTinGiaoHang">
+                    <div className="div_thongTinGiaoHang" id="thongtin_giao_hang_1">
                         <h3 className="thongTinGiaoHang">Thông tin Đơn hàng</h3>   
                         <table class="table">
                             <thead>
@@ -1121,7 +1121,7 @@ function ManageOrder(){
                         </table>
                         
                     </div>
-                    <div className="div_thongTinGiaoHang">
+                    <div className="div_thongTinGiaoHang" id="thongtin_giao_hang_1">
                         <h3 className="thongTinGiaoHang">Thông tin các sản phẩm</h3> 
                         <table class="table">
                             <thead>

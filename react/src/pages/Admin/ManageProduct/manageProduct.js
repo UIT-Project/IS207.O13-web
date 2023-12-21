@@ -1137,7 +1137,7 @@ function ManageProduct()
                     <div class="body_box container col-lg-7">
                         
                         <div class="address_update" id="address_update">
-                            <div class="row_xoan_manage mb-2">
+                            <div class="row_xoan_manage mb-2" id="roww">
                                 <div class="col-12">
                                    
                                     <label for="#" class="form-label" id="item" >Tên sản phẩm</label>
@@ -1153,7 +1153,8 @@ function ManageProduct()
 
                                 </div>
                             </div>
-                            <div class="row_xoan_manage mb-2">
+                             
+                            <div class="row_xoan_manage mb-2" id="roww">
                                 <div class="col-12 div_kjkjk">
                                     <div className="col-4">
                                         <div class="">
@@ -1214,7 +1215,7 @@ function ManageProduct()
                                 </div> 
                                     <span className={`red_color ${parseInt(infoUpdateProduct.originPrice) < parseInt(infoUpdateProduct.sellPrice) ? '' : 'display_hidden'}`}>Giá bán phải nhỏ hơn hoặc = giá niêm yết</span>
                             </div>
-                            <div class="row_xoan_manage mb-3 div_kjkjk">
+                            <div class="row_xoan_manage mb-3 div_kjkjk" id="roww">
                                 <div class="col-4">
                                     <label for="#" class="form-label">Phân loại</label>
                                     <select class="form-select" required
@@ -1246,7 +1247,7 @@ function ManageProduct()
                             </div> 
                             </div>
 
-                            <div className="row row_xoan_manage" id="concent">
+                            <div className="row row_xoan_manage" id="roww concent">
                                 <div className="col-5 choose_size">
                                     <div >
                                         <label>Chọn các loại size</label>
@@ -1258,7 +1259,7 @@ function ManageProduct()
                             </div>
                             <span className={`red_color ${isEmpty && infoUpdateProduct.checkboxSize.length === 0 ? '' : 'display_hidden'}`}>Hãy chọn size</span>
 
-                            <div className="row row_xoan_manage" id="concent">
+                            <div className="row row_xoan_manage" id="concent roww">
                                 <div className="col-5 choose_size">
                                     <div>
                                         <label>Chọn các loại màu</label>

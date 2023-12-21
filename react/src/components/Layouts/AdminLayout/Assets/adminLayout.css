@@ -44,6 +44,7 @@ body {
 .sidebar_nav_item {
     padding: 10px;
     margin-bottom: 10px;
+    cursor: pointer;
 }
 
 .sidebar_nav_item:hover {
@@ -150,6 +151,7 @@ body {
 }
 .category_text_inSideBar{
     margin: 0px 10px;
+    font-weight: bold;
 }
 .block_category{
     display: block;
@@ -161,4 +163,9 @@ body {
 
 .kjkjkuu{
     margin-top: 10rem;
+}
+
+.sidebar_nav_item.selected {
+    background-color: #000 !important; /* Màu nền nổi bật, có thể thay đổi tùy thuộc vào ý của bạn */
+    color: #fff; /* Màu chữ cho trạng thái được chọn */
 }
