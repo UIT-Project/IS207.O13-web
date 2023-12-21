@@ -555,3 +555,9 @@ user-select: none;
 .chuaCoDanhGia{
   margin-left: 0.3rem;
 }
+
+.show_product_SPLIENQUAN{
+  background-color: #ffffff;
+  border-radius: 0.3rem;
+  padding: 3rem 0.2rem;
+}

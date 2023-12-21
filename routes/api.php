@@ -70,7 +70,7 @@ Route::get('infoProduct', [InfoProductController::class, 'infoProduct']);
 Route::post('addToCart', [InfoProductController::class, 'addToCart']);
 Route::get('getInfoReviewProduct', [InfoProductController::class, 'getInfoReviewProduct']);
 Route::post('updateQuantityProductInCart', [InfoProductController::class, 'updateQuantityProductInCart']);
-
+Route::get('getRelativeProduct', [InfoProductController::class, 'getRelativeProduct']);
 //Cart
 Route::get('infoCart', [CartController::class, 'infoCart']);
 Route::post('updateSelectedProperty', [CartController::class, 'updateSelectedProperty']);

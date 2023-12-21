@@ -345,3 +345,22 @@ tr {
   .hiden_radio {
     display: none;
   }
+
+  .bold_title_address{
+    font-weight: 500;
+    display: flex;
+    justify-content: center;
+  }
+
+  .bold_text_info_address{
+    font-weight: 400;
+  }
+  .bold_title_address_info{
+    /* text-align: left; */
+  }
+  .form-select{
+
+  }
+  .phuongThucThanhToan_dropDown{
+    width: 90% !important;
+  }

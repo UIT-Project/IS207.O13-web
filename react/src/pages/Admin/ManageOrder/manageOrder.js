@@ -1001,6 +1001,7 @@ function ManageOrder(){
     const renderInfoProduct = infoOrderDetail.data_sanPham_relative_CTDH.map((item, index) => 
               
             <tr  className="" key={index}> 
+                <td data-label="Phone-number">{item.MASP}</td>
                 <td data-label="Order-code">{item.TENSP}</td>
                 <td data-label="Name">{item.TENMAU}</td>
                 <td data-label="Phone-number"> {item.MASIZE} </td>
@@ -1030,9 +1031,9 @@ function ManageOrder(){
                         <span onClick={handleTurnBack}  className="faCircleChevronLeft">
                             <FontAwesomeIcon class={`fa-solid faCircleChevronLeft`} icon={faCircleChevronLeft} ></FontAwesomeIcon>
                         </span> 
-                        <span onClick={()=>getInforOrderDetail__many()}>
+                        {/* <span onClick={()=>getInforOrderDetail__many()}>
                             <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
-                        </span>
+                        </span> */}
                     </div>
                     <h1>Chi tiết đơn hàng</h1>
                     {/* <button onClick={handleTurnBack}>turn back</button> */}
@@ -1124,7 +1125,8 @@ function ManageOrder(){
                         <h3 className="thongTinGiaoHang">Thông tin các sản phẩm</h3> 
                         <table class="table">
                             <thead>
-                                <tr>  
+                                <tr>
+                                    <th scope="col">Mã sản phẩm</th>  
                                     <th scope="col">Tên sản phẩm</th>
                                     <th scope="col">Tên màu</th>
                                     <th scope="col">Size</th>

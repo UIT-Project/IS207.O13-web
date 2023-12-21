@@ -18,7 +18,10 @@ function InfoProduct(){
     // Trong file này cần xử lý
     // 1. lấy dữ liệu và hiển thị
     // 2. xử lý thêm nhấn vào thêm sản phẩm vào giỏ hàng và xử lý khi thêm sp vào giỏ trùng với sản phẩm đã có trong giỏ thì upadte số lượng
+    const [relativeProduct, setRelativeProduct] = useState([]);
+
     
+
     useEffect(() => {
         document.title = "DosiIn | Thông tin sản phẩm"
     }, []);
@@ -48,7 +51,15 @@ function InfoProduct(){
     })  
     const [isLoading, setIsLoading] = useState(false);
 
-
+    useEffect(() => {
+        if(isLoading){
+            request.get('/api/getRelativeProduct', {params: {masp : id}})
+            .then(res => {
+                console.log(res.data.data_relativeProduct)
+                setRelativeProduct(res.data.data_relativeProduct)
+            })
+        }
+    }, [isLoading]);
     // khi load vào trang thông tin sản phẩm thì sẽ dùng infoProduct để lưu dữ liệu từ server gửi lên để hiển thị tt sản phẩm
     const [infoProduct, setInfoProduct] = useState({
         data_sanpham: [],
@@ -361,6 +372,45 @@ function InfoProduct(){
             )
         return concatArray = [...arrSolidStar, ...arrRegularStar]
     }
+
+    const renderRelativeProduct = relativeProduct.map( (product) => {
+        const url = `/infoProduct?id=${product.MASP}`;
+        return (
+            <div key={product.MASP} class="product_item_div__out">
+                <a href={url}>
+                    <div class="product_item_div__in"> 
+                        <div>
+                            <img src={product.imgURL} alt="sản phẩm test" width="247.5" height="250" class="product_item__img"/> 
+                        </div>
+                        <div class="product_item__summary">
+                            <a href="#">
+                                <h6 class="product_item__summary__title">{formatPrice(product.TENSP)}</h6>
+                            </a>
+                            <div class="product_item__summary__price_and_heart">
+                                <div class="product_item__summary__price">
+                                    <span class="product_item__summary__sale_price">{formatPrice(product.GIABAN)}₫
+                                    </span>
+                                    <span class="product_item__summary__origin_price">
+                                        <del>{product.GIAGOC}₫</del>
+                                    </span>
+                                </div> 
+                                <div>
+                                    {/* <button  onClick={() => addProductToCart(product) } className="product_item__summary__heart">
+                                        <FontAwesomeIcon icon={faHeart} ></FontAwesomeIcon>
+                                    </button>  */}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="grid__column_10__product_thumbail__yeuthich">
+                            <i class="fa-solid fa-check grid__column_10__product_thumbail__yeuthich__check_icon"></i>
+                            <span class="grid__column_10__product_thumbail__text_yeuthich">HOT</span> 
+                        </div> 
+                    </div> 
+                </a>
+            </div>
+        )
+    })
+
     return ( 
         <div class={`container col-sm-12 ${isLoading === true ? '' : ''}`}>
             <div class={`loadingInfoProductTrue ${isLoading === false ? 'display_hidden' : ''}`}>
@@ -567,13 +617,19 @@ function InfoProduct(){
                         </div>
                     </div>
                 </div> 
-                {/* <section id="review">
-                    <div class="review-heading">
-                        <h1>Đánh giá</h1>
+                    <div class="show_product_SPLIENQUAN show_product">
+                        <div class="show_product__title_div">
+                            <h1 class="show_product__title">SẢN PHẨM LIÊN QUAN</h1> 
+                        </div>
+                        {/* <!-- product_item_container__out khối bọc ngoài cho tất cả sản phẩm để dễ padding, margin --> */}
+                        <div class="product_item_container__out">
+                            {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}
+                            <div class="product_item_container__in">
+                                {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
+                                {renderRelativeProduct}
+                            </div>
+                        </div>
                     </div>
-                    <div class="review-container">{renderReview}</div>
-                    
-                </section> */}
             </div>
  
         </div>

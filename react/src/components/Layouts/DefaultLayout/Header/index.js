@@ -56,7 +56,7 @@ function Header({settoggleFunctionLoginLogout}){
 
     const {setLoginOrLogout, textQuery, setTextQuery, 
         setResultQuery, statusPressAddToCart, setStatusPressAddToCart, 
-        divPopupCartRef, infoCarts, setInfoCarts, setIsClickedPayment} = useGlobalVariableContext(); 
+        divPopupCartRef, infoCarts, setInfoCarts, setIsClickedPayment, formatPrice} = useGlobalVariableContext(); 
 
     // dùng để chuyển hướng đến đường dẫn trong trang web
     const Navigate = useNavigate();  
@@ -239,7 +239,7 @@ function Header({settoggleFunctionLoginLogout}){
                                </div>
                                <div class="header__body__cart__orders__item__price_total">
                                    <div class="header__body__cart__orders__item_price_x_quantiry">
-                                       <span class="header__body__cart__orders__item__price_x_quantiry__price">{item.TONGGIA}</span>
+                                       <span class="header__body__cart__orders__item__price_x_quantiry__price">{formatPrice(item.TONGGIA)}</span>
                                        <span class="header__body__cart__orders__item__price_x_quantiry__price">đ</span>
                                        <div class="header__body__cart__orders__item__price_x_quantiry__x1"> 
                                            <span class="header__body__cart__orders__item__price_x_quantiry__price__multiply">x</span>

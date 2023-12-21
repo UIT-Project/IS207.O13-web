@@ -336,13 +336,13 @@ function Payment(){
                                 // checked 
                             />
                         </div>
-                        <div class="col-2" id="itemmm">
+                        <div class="col-2 bold_text_info_address" id="itemmm">
                             <span>{item.TEN}</span>
                         </div>
-                        <div class="col-2">
+                        <div class="col-2 bold_text_info_address">
                             <span>{item.SDT}</span>
                         </div>
-                        <div class="col">
+                        <div class="col bold_text_info_address">
                             <span>{item.DIACHI}, {item.PHUONG_XA}, {item.QUAN_HUYEN}, {item.TINH_TP}</span>
                         </div>
                     </div>
@@ -524,14 +524,20 @@ function Payment(){
                                 <div class="col-auto">
                                     <span>&nbsp;</span>
                                 </div>
-                                <div class="col-2">
-                                    <span>Tên người nhận</span>
+                                <div class="col-2 bold_title_address">
+                                    <div>
+                                        <span className="bold_title_address_info">Tên người nhận</span>
+                                    </div>
                                 </div>
-                                <div class="col-2">
-                                    <span>SĐT</span>
+                                <div class="col-2 bold_title_address">
+                                    <div>
+                                        <span className="bold_title_address_info">SĐT</span>
+                                    </div>
                                 </div>
-                                <div class="col">
-                                    <span>Địa chỉ</span>
+                                <div class="col bold_title_address">
+                                    <div>
+                                        <span className="bold_title_address_info">Địa chỉ</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -580,7 +586,7 @@ function Payment(){
                         <div class="col-4">
                             <label for="#" class="form-label">Tỉnh/Thành phố</label>
                             {/* xử lý chọn thông tin */}
-                            <select class="form-select" required 
+                            <select class="form-select phuongThucThanhToan_dropDown" required 
                                 value={shipInformation.option_thanhpho}
                                 onChange={handleInputShipInformation}
                                 name="option_thanhpho"
@@ -591,7 +597,7 @@ function Payment(){
                         </div>
                         <div class="col-4">
                             <label for="#" class="form-label">Quận/Huyện</label>
-                            <select class="form-select" required
+                            <select class="form-select phuongThucThanhToan_dropDown" required
                                 value={shipInformation.option_quan}
                                 onChange={handleInputShipInformation}
                                 name="option_quan"
@@ -603,7 +609,7 @@ function Payment(){
                         </div>
                         <div class="col-4">
                             <label for="#" class="form-label">Phường/Xã</label>
-                            <select class="form-select" required
+                            <select class="form-select phuongThucThanhToan_dropDown" required
                                 value={shipInformation.option_phuong}
                                 onChange={handleInputShipInformation}
                                 name="option_phuong"
@@ -733,7 +739,7 @@ function Payment(){
                             <span>Phương thức thanh toán</span>
                         </div>
                         <div class="col-4">
-                            <select class="form-select" required
+                            <select class="form-select phuongThucThanhToan_dropDown" required
                                 name="phuongThucThanhToan"
                                 onChange={handleChooseMethodPayment}
                                 value={phuongThucThanhToan}
