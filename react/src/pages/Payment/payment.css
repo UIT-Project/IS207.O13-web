@@ -169,6 +169,18 @@ button {
     left: -10px;
 }
 
+.show {
+    box-shadow: none;
+}
+
+.justify-content-end-voucher{
+    margin-top: 15px;
+}
+
+.justify-content-end {
+    font-weight: 500;
+}
+
 .header_body__option_and_info__user__select_login_or_logout__in {
     padding: 6px 13px;
     display: flex;
@@ -261,6 +273,16 @@ tr {
     border-style: none;
     border-radius: 5px;
     padding: 15px 30px;
+}
+
+.btn-ApplyVoucher{
+    font-size: large;
+    font-weight: bold;
+    color: white;
+    background-color: #000;
+    border-style: none;
+    border-radius: 5px;
+    padding: 0 8px;
 }
 
 .button_confirm:hover {

@@ -1430,8 +1430,8 @@ function ManageProduct()
                             </tbody>
                         </table>
                     </div>
-                    <div>
-                        { renderPagination(item) } 
+                    <div class="box-panigation-list">
+                        { renderPagination(item) }
                     </div>
                     </div> 
                 ) 
@@ -1472,8 +1472,8 @@ function ManageProduct()
                         name="typeSearch"
                         // value={typeSearchParams} 
                     > 
-                    <option selected value="MASP">Mã Sản phẩm</option>
-                    <option value="TENSP">Tên Sản Phẩm</option>
+                    <option class="searchOption" selected value="MASP">Mã Sản phẩm</option>
+                    <option class="searchOption" value="TENSP">Tên Sản Phẩm</option>
                     {/* <option value="GIABAN">Giá bán</option>
                     <option value="GIAGOC">Giá gốc</option>  */}
                     </select>
