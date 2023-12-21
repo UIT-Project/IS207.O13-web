@@ -203,8 +203,15 @@ button {
 .address_add_button_payment {
     padding: 12px 25px;
     border: 1px solid #000;
-    background-color: #fff;
+    background-color: #F3F1F1 !important;
     margin-top: 20px;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.address_add_button:hover {
+    border: 2px solid #000;
 }
 
 .address_update {
