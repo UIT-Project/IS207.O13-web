@@ -344,9 +344,12 @@ p{
     align-items: center;
     border-radius: 7px;
     width: 100%;
+    background-color: black;
+    color: white;
+    font-weight: 500;
 }
 .header_body__option_and_info__user__select_login_or_logout__in:hover{
-    background-color: rgba(0, 0, 0, 0.1);
+    background-color: #41098f !important;
 }
 a {
     text-decoration: none; 

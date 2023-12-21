@@ -12,6 +12,7 @@ export function GlobalVariable({children}){
     const [infoCarts, setInfoCarts] = useState([]);
     const [isClickedPayment, setIsClickedPayment] = useState(0);
     const [category1, setCategory1] = useState(1)
+    const listSizeToCheck = ["S", "M", "L", "XL", "XXL", "3XL"]
 
     const formatPrice = (price) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -27,6 +28,8 @@ export function GlobalVariable({children}){
                     formatPrice,
                     isClickedPayment, setIsClickedPayment,
                     category1, setCategory1,
+                    listSizeToCheck,
+                    
                 }}
             >
         {children}

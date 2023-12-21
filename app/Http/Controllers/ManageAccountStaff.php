@@ -60,7 +60,7 @@ class ManageAccountStaff extends Controller
         if(count($haveIntaikhoans) == 1){
             // DB::delete("DELETE FROM sanpham_mausac_sizes WHERE MASP = $masp");
             // DB::delete("DELETE FROM hinhanhsanphams WHERE MASP = $masp");
-            DB::delete("DELETE FROM taikhoans WHERE MATK = $matk");
+            DB::delete("UPDATE taikhoans SET ROLE = 'Khách hàng' WHERE MATK = $matk");
             return response()->json([
                 'massage' => 'xoa thanh cong',
             ]);

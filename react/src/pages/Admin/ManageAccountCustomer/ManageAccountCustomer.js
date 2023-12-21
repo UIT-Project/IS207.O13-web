@@ -1026,10 +1026,8 @@ function ManageAccountCustomer()
         )
     }
     const handlePageChange = (item_status, event, page) => {
-        return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
-        )
-    }
+        handleClickItemPagination(item_status, page);
+    }; 
 
  
     const renderShowProductEveryState = orderStatus_Array.map((item, index) =>   
