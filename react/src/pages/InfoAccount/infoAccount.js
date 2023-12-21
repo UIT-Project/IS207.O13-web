@@ -7,6 +7,9 @@ import request from "../../utils/request";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 
 function InfoAccount() {
+    useEffect(() => {
+        document.title = "DosiIn | Thông tin tài khoản"
+    }, []);
     const [notifySaveInfoAccount, setNotifySaveInfoAccount] = useState('');
     const [errorDinhDangSDT, setErrorDinhDangSDT] = useState(false);
     const [notifySaveInfoChangePassword, setNotifySaveInfoChangePassword] = useState('');

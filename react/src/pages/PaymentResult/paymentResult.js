@@ -15,8 +15,10 @@ function PaymentResult(){
     //  http://localhost:3000/paymentResult?vnp_Amount=500000?vnp_BankCode=VCB đây là ví dụ
     //sau đó sử dụng URLSearchParams để lấy những thông số này và hiển thị ra màn hình cũng như cập nhật trạng thái 
     //thanh toán của đơn hàng online này
-
     //trang này chỉ đọc qua tổng quan để biết nó làm gì, khỏi cần đọc phần xử lý
+    useEffect(() => {
+        document.title = "DosiIn | Thanh toán thành công"
+    }, []);
     const urlParams = new URLSearchParams(window.location.search);
     const [infoPaymentResult, setInfoPaymentResult] = useState({
         vnp_Amount: urlParams.get('vnp_Amount'),

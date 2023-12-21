@@ -12,7 +12,9 @@ import useGlobalVariableContext from "../../context_global_variable/context_glob
 
 
 function Payment(){
-
+    useEffect(() => {
+        document.title = "DosiIn | Thanh toán"
+    }, []);
     //Khi thanh toán thì cần phải lôi thông tin sản phẩm trong đơn hàng, địa chỉ cũ của người dùng đã đặt hàng và voucher
     //nên infoForPayment sẽ lưu những dữ liệu này khi load vào trang web payment
     const [errorDinhDangSDT, setErrorDinhDangSDT] = useState(false);

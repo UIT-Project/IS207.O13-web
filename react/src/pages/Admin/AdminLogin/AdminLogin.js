@@ -15,6 +15,9 @@ function AdminLogin(){
     // 2. nếu nhấn đăng ký thì http://localhost:3000/login hiển thị phần đăng ký và ngược lại
     // 3.nếu đăng ký thì xử lý lưu thông tin tài khoản, đăng nhập thì kiểm tra xem trùng khớp với db không rồi login
 
+    useEffect(() => {
+      document.title = "Admin | Đăng nhập"
+    }, []);
     // đoạn code này để chuyển slide sign in or sign up
     //nếu isSignUpActive = true thì có nghĩa là người dùng đã chọn đăng ký
     //bởi vì http://localhost:3000/login dùng cho cả đăng ký và đăng nhập nên và phải sử dụng  isSignUpActive để biết là đang nhấn đăng nhập hay đăng ký

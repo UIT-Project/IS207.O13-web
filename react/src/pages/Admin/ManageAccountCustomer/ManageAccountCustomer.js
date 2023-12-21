@@ -13,6 +13,9 @@ import {  faCheck, faEye, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser
 
 function ManageAccountCustomer()
 {
+    useEffect(() => {
+        document.title = "Admin | Quản lý tài khoản khách hàng"
+    }, []);
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchProductDetail, setWatchProductDetail] = useState(false);

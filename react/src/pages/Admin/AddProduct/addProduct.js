@@ -18,6 +18,10 @@ function AddProduct(){
     // 2.Xử lý hiển thị ảnh preview, xoá, chọn thêm ảnh
     // 3.xử lý lưu thông tin sản phẩm và hình ảnh xuống db
 
+    useEffect(() => {
+        document.title = "Admin | Thêm sản phẩm"
+     }, []);
+
     const {formatPrice} = useGlobalVariableContext(); 
 
     // statusPressAddProduct = true thì hiện nút thêm sản phẩm

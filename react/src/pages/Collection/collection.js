@@ -16,6 +16,9 @@ function Collection(){
     // trang này hiển thị thông tin sản phẩm tìm kiếm được khi search ở thanh tìm kiếm trong header
     // sau đó sử dụng các bộ lọc để lọc sản phẩm
     // sau khi đọc các trang trước thì trang này mọi người có thể soi code để hiểu
+    useEffect(() => {
+        document.title = "DosiIn | Tìm kiếm"
+    }, []);
     const {formatPrice, setCategory1, category1} = useGlobalVariableContext(); 
     console.log(category1, 'newCategory')
     const numberOrderEachPage = 20;

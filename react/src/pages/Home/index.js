@@ -15,7 +15,9 @@ function Home(){
     // NHỮNG THỨ CẦN XỬ LÝ
     // 1.Lấy thông tin sản phẩm từ DB và hiển thị
     // 2.Xử dụng các hàm hỗ trợ lấy dữ liệu và dùng biến renderNewProduct để render dữ liệu ra màn hình
-
+    useEffect(() => {
+        document.title = "DosiIn | Trang chủ"
+    }, []);
     const {formatPrice} = useGlobalVariableContext(); 
     // chứa thông tin sản phẩm mới
     const [productsInNewProduct, setProductsInNewProduct] = useState([]);

@@ -11,6 +11,9 @@ import {  faCircleChevronLeft, faEye, faL, faPenToSquare, faPrint, faUser, faXma
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 
 function MyOrder(){
+    useEffect(() => {
+        document.title = "DosiIn | Đơn hàng"
+    }, []);
     const {formatPrice} = useGlobalVariableContext(); 
     const numberOrderEachPage = 20;
     const [xoadau, setXoaDau] = useState(0);

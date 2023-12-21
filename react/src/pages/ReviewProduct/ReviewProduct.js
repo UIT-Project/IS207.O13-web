@@ -18,7 +18,9 @@ function ReviewProduct() {
     // 5.Click để chuyển sang thanh toán
 
     //dùng ctrl + f để biết những hàm handle nằm ở thẻ tag nào trong phần return
-
+    useEffect(() => {
+        document.title = "DosiIn | Đánh giá sản phẩm"
+    }, []);
     //isCheckedAll xử lý khi tất cả sản phẩm trong giỏ hàng được chọn để thanh toán
     const [isCheckedAll, setIsCheckedAll] = useState(false); 
     //itemCarts chứa thông tin từng sản phẩm trong giỏ hàng để hiển thị ra màn hình và thao tác
