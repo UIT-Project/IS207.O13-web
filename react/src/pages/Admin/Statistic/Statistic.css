@@ -132,3 +132,6 @@ button {
     display: flex;
     justify-content: center;
   }
+  #thong_ke {
+    margin: 20px 0px 20px 0px;
+  }

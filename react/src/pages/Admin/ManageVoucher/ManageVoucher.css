@@ -530,3 +530,15 @@ tr {
 .width_search{
     width: 30%;
 }
+#input_gia_1 {
+    justify-content: space-around;
+}
+#phan_loai_1 {
+    width: 100%;
+}
+#ten_san_pham_1 {
+    display: flex;
+}
+#text_1 {
+    width: 80%;
+}

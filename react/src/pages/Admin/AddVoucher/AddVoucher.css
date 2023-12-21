@@ -415,3 +415,9 @@ tr {
     padding: 0.4rem;
     padding: 15px 15px;
 }
+#input_gia_1 {
+    justify-content: space-around;
+}
+#phan_loai_2 {
+    width: 100%;
+}

@@ -351,7 +351,7 @@ function AddVoucher(){
                         <div class="row mb-3 phanLoai_chooseGiaTriGiam">
                             <div class="col-4">
                                 <label for="#" class="form-label">Phân loại</label>
-                                <select class="form-select" required
+                                <select class="form-select" id="phan_loai_2" required
                                     onChange={handleInputInfoAddNewVoucher}
                                     name="typeVoucher"
                                     value={infoAddNewVoucher.typeVoucher} 
@@ -365,7 +365,7 @@ function AddVoucher(){
                             </div> 
                             <div class="col-4">
                                 <label for="#" class="form-label">Phần trăm giảm</label>
-                                <select class="form-select" required
+                                <select class="form-select" id="phan_loai_2" required
                                     onChange={handleInputInfoAddNewVoucher}
                                     name="decreasePersent"
                                     value={infoAddNewVoucher.decreasePersent} 
@@ -406,7 +406,7 @@ function AddVoucher(){
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-12 input_gia">
+                            <div class="col-12 input_gia" id="input_gia_1">
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị đơn hàng tối thiểu</label>
                                     {/* <input 

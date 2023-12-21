@@ -745,8 +745,8 @@ function ManageVoucher()
                         
                     <div class="address_update" id="address_update">
                         <div class="row mb-2">
-                            <div class="input_ten_div">
-                                {/* <label for="#" class="form-label">Tên sản phẩm</label> */}
+                            <div class="input_ten_div" id="ten_san_pham_1">
+                                <label for="#" class="form-label">Tên sản phẩm</label>
                                 <input 
                                     type="text" class="form-control " placeholder="Mã voucher" 
                                     onChange={handleInputInfoUpdateVoucher} 
@@ -762,7 +762,7 @@ function ManageVoucher()
                         <div class="row mb-3 phanLoai_chooseGiaTriGiam">
                             <div class="col-4">
                                 <label for="#" class="form-label">Phân loại</label>
-                                <select class="form-select" required
+                                <select class="form-select" id="phan_loai_1" required
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="typeVoucher"
                                     value={infoUpdateVoucher.typeVoucher} 
@@ -777,7 +777,7 @@ function ManageVoucher()
                             </div> 
                             <div class="col-4">
                                 <label for="#" class="form-label">Phần trăm giảm</label>
-                                <select class="form-select" required
+                                <select class="form-select" id="phan_loai_1" required
                                     onChange={handleInputInfoUpdateVoucher}
                                     name="decreasePersent"
                                     value={infoUpdateVoucher.decreasePersent} 
@@ -824,7 +824,7 @@ function ManageVoucher()
                             </div>
                         </div>
                         <div class="row mb-2">
-                            <div class="col-12 input_gia">
+                            <div class="col-12 input_gia" id="input_gia_1">
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị đơn hàng tối thiểu</label>
                                     {/* <input 
