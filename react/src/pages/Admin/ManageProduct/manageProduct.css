@@ -867,6 +867,7 @@ select.form-select option {
   
   .choose_size__div{
     display: flex;
+    margin-top: 0.5rem;
   }
 
   .choose_size__div__item{
@@ -1006,6 +1007,6 @@ select.form-select option {
 .searchOption{
     padding: 1rem 0rem !important;
 }
-.row {
+.row_xoan_manage {
     margin: 20px 0px 40px 0px;
 }

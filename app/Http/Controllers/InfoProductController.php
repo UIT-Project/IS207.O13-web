@@ -91,4 +91,28 @@ class InfoProductController extends Controller
             'infoReviewProduct' =>  $infoReviewProduct
         ]);
     }
+    public function getRelativeProduct(Request $request){
+        $masp = $request->input('masp');
+
+        $dataProduct_masp = DB::select(
+            "SELECT MAPL_SP, MAPL_SP2 FROM sanphams WHERE MASP = $masp"
+        );
+
+        $MAPL = $dataProduct_masp[0]->MAPL_SP;
+        $MADM = $dataProduct_masp[0]->MAPL_SP2;
+
+        $data_relativeProduct = DB::select(
+            "SELECT sanphams.MASP, TENSP, GIAGOC, GIABAN, MAPL_SP, imgURL
+            FROM sanphams, hinhanhsanphams
+            WHERE hinhanhsanphams.masp = sanphams.masp 
+            AND MAPL_SP = $MAPL
+            AND MAPL_SP2 = $MADM
+            AND MAHINHANH LIKE '%thumnail%'  
+            ORDER BY created_at ASC 
+            LIMIT 10"
+        );
+        return response()->json([
+            'data_relativeProduct' =>  $data_relativeProduct
+        ]);
+    }
 }

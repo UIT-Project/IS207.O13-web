@@ -68,7 +68,7 @@ class AdminManageOrderController extends Controller
             AND thongtingiaohangs.MATTGH = donhangs.MATTGH"
         );
         $data_sanPham_relative_CTDH = DB::select(
-            "SELECT TENSP, GIABAN, TENMAU, HEX, MASIZE, TONGTIEN, chitiet_donhangs.SOLUONG, imgURL, sanpham_mausac_sizes.MAXDSP  
+            "SELECT sanphams.MASP, TENSP, GIABAN, TENMAU, HEX, MASIZE, TONGTIEN, chitiet_donhangs.SOLUONG, imgURL, sanpham_mausac_sizes.MAXDSP  
             from mausacs, chitiet_donhangs, sanphams, sanpham_mausac_sizes, hinhanhsanphams
             where chitiet_donhangs.MADH = $madh AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
             AND sanpham_mausac_sizes.MASP = sanphams.MASP AND sanpham_mausac_sizes.MAMAU = mausacs.MAMAU
