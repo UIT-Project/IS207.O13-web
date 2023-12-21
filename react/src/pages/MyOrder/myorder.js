@@ -426,7 +426,7 @@ function MyOrder(){
                 aria-current="page"  
                 onClick={()=>handleClickNavState(item, 1)}
             >
-                {item.value.nameState}
+                {item.value.nameState === 'Đã Giao' ? 'Đã nhận' : item.value.nameState}
             </button>
         </li> 
     )
@@ -564,7 +564,7 @@ function MyOrder(){
         <td data-label="Order-code">{item.TENSP}</td>
         <td data-label="Name">{item.TENMAU}</td>
         <td data-label="Phone-number"> {item.MASIZE} </td>
-        <td data-label="Phone-number">{formatPrice(item.GIABAN)}  </td>
+        <td data-label="Phone-number">{formatPrice(item.TONGTIEN / item.SOLUONG)}  </td>
         <td data-label="Phone-number">  {item.SOLUONG}   </td> 
             {/* <td data-label="Address">
             {infoOrderDetail.data_relative_Donhang.TINH_TP}
@@ -645,7 +645,7 @@ function MyOrder(){
                                     <th scope="col">Tiền sản phẩm</th>
                                     <th scope="col">Phí vận chuyển</th>
                                     <th scope="col">Tổng tiền hoá đơn</th>
-                                    <th scope="col">Mã hoá đơn</th>
+                                    <th scope="col">Giá trị Voucher giảm</th>
                                     {/* <th scope="col">Số tiền hoá đơn giảm</th> */}
 
                                 </tr>
@@ -660,7 +660,7 @@ function MyOrder(){
                                 <td data-label="Phone-number">  {formatPrice(infoOrderDetail.data_relative_Donhang.TONGTIEN_SP)}   </td>
                                 <td data-label="Phone-number">  {formatPrice(infoOrderDetail.data_relative_Donhang.PHIVANCHUYEN)}   </td>
                                 <td data-label="Phone-number">  {formatPrice(infoOrderDetail.data_relative_Donhang.TONGTIENDONHANG)}   </td>
-                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.MAVOUCHER}   </td>
+                                <td data-label="Phone-number">  {infoOrderDetail.data_relative_Donhang.VOUCHERGIAM === 0 ? 0 : formatPrice(infoOrderDetail.data_relative_Donhang.VOUCHERGIAM)}    </td>
                                  {/* <td data-label="Address">
                                     {infoOrderDetail.data_relative_Donhang.TINH_TP}
                                 </td>

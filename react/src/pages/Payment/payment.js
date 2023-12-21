@@ -15,6 +15,7 @@ function Payment(){
 
     //Khi thanh toán thì cần phải lôi thông tin sản phẩm trong đơn hàng, địa chỉ cũ của người dùng đã đặt hàng và voucher
     //nên infoForPayment sẽ lưu những dữ liệu này khi load vào trang web payment
+    const [errorDinhDangSDT, setErrorDinhDangSDT] = useState(false);
 
     const {formatPrice} = useGlobalVariableContext(); 
     const [isLoading, setIsLoading] = useState(false);
@@ -360,6 +361,15 @@ function Payment(){
     const handleSaveInfoForPayment = () => {
         // Kiểm tra xem có bất kỳ thông tin nào trống hay không
         setIsLoading(true)
+        const phoneRegex = /^0\d{9}$/; // Biểu thức chính quy để kiểm tra định dạng số điện thoại
+
+        if (shipInformation.numberPhone_ship !== '') {
+            if (!phoneRegex.test(shipInformation.numberPhone_ship)) {
+                setErrorDinhDangSDT(true);
+                setIsLoading(false)
+                return; // Không gửi request nếu số điện thoại không đúng định dạng
+            }
+        }
         const isEmpty = Object.values(shipInformation).some(value => value === '');
 
         // Nếu có bất kỳ thông tin nào trống, hiển thị thông báo
@@ -552,7 +562,9 @@ function Payment(){
                             />
                         </div>
                     </div>
-                    
+                    <div class="row mb-2">
+                        <span className={`${errorDinhDangSDT ? "" : "display_hidden"} saidinhdang_mau_do`}>Sai định dạng SĐT</span>
+                    </div>
                     <div class="row mb-3">
                         <div class="col-4">
                             <label for="#" class="form-label">Tỉnh/Thành phố</label>

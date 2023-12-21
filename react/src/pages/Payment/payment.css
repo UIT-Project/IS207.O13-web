@@ -20,7 +20,9 @@
     background-color: orange;
     padding: 8px;
 }
-
+.saidinhdang_mau_do{
+    color: red;
+}
 .header_body__search__input {
     outline: none;
     text-decoration: none;

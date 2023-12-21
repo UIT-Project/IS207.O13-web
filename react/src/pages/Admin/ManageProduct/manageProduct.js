@@ -9,6 +9,7 @@ import { faClock, faFaceAngry, faFloppyDisk, faTrashAlt } from '@fortawesome/fre
 import {  faCircleChevronLeft, faEye, faL, faLeftLong, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
 import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
+import ReactPaginate from 'react-paginate';
 
 function ManageProduct()
 {
@@ -1397,7 +1398,8 @@ function ManageProduct()
             <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
- 
+  
+
     const renderShowProductEveryState = orderStatus_Array.map((item, index) =>   
         {  
             // console.log(item)
@@ -1429,7 +1431,7 @@ function ManageProduct()
                         </table>
                     </div>
                     <div>
-                        { renderPagination(item) }
+                        { renderPagination(item) } 
                     </div>
                     </div> 
                 ) 

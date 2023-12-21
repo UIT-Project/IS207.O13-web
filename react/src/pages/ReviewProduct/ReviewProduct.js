@@ -6,7 +6,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
-import {  faL, faPaperPlane, faStar, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
+import {  faCircleChevronLeft, faL, faPaperPlane, faStar, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
  
 function ReviewProduct() {
 
@@ -28,6 +28,7 @@ function ReviewProduct() {
         data_relative_Donhang: [],
         data_sanPham_relative_CTDH: [],
     }) 
+    const [isReviewAll, setIsReviewAll] = useState(false);
     const [review, setReview] = useState(''); // Nội dung đánh giá
     //sử dụng để chuyển hướng web
     const Navigate = useNavigate();
@@ -211,6 +212,8 @@ function ReviewProduct() {
             infoCartReverse.map(item => tinhtongtien = tinhtongtien + item.TONGGIA)
             setTongTienAllItem(tinhtongtien); 
             console.log(res.matk);
+            if(res.data.data_sanPham_relative_CTDH.length === 0)
+                setIsReviewAll(true)
         })
         .catch(e => {
             console.log(e);
@@ -248,6 +251,10 @@ function ReviewProduct() {
             window.location.href = `/`;
         else if(route === 'Đơn hàng')
         window.location.href = `/myorder`;
+    }
+
+    const handleTurnBack = () => {
+        Navigate('/myorder')
     }
 
     useEffect(() => {
@@ -353,8 +360,13 @@ function ReviewProduct() {
 
     return( 
     <div class="container mt-3 container-content">
+        <div className="faCircleChevronLeft_div">
+            <span onClick={handleTurnBack}  className="faCircleChevronLeft">
+                <FontAwesomeIcon class={`fa-solid faCircleChevronLeft_reviewProduct`} icon={faCircleChevronLeft} ></FontAwesomeIcon>
+            </span>
+        </div>
         <h1 class="text-header-content">Đánh giá sản phẩm</h1>
-        <div className={`${itemCarts.length === 0 ? 'display_hidden' : ''}`}>
+        <div className={`${itemCarts.length === 0 && isReviewAll ? 'display_hidden' : ''}`}>
             <div class="tbody_table_cart">
 
                 <table class="table table-hover">
@@ -433,9 +445,9 @@ function ReviewProduct() {
             </div>
         </div>
         <div class="container mt-5 content-bottom">
-            <div>
+            {/* <div>
                 <button class="btn-continue" onClick={handleContinuelyBuy}>Trở lại</button>
-            </div>
+            </div> */}
             {/* <div class="box-thanh-toan">
                 <div class="box-thanh-toan-discount">
                     <p><b>Mã giảm giá</b></p>

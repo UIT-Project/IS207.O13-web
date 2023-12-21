@@ -997,7 +997,7 @@ function ManageOrder(){
                 <td data-label="Order-code">{item.TENSP}</td>
                 <td data-label="Name">{item.TENMAU}</td>
                 <td data-label="Phone-number"> {item.MASIZE} </td>
-                <td data-label="Phone-number">{formatPrice(item.GIABAN)}  </td>
+                <td data-label="Phone-number">{formatPrice(item.TONGTIEN / item.SOLUONG)}  </td>
                 <td data-label="Phone-number">  {item.SOLUONG}   </td> 
                     {/* <td data-label="Address">
                     {infoOrderDetail.data_relative_Donhang.TINH_TP}
@@ -1161,7 +1161,7 @@ function ManageOrder(){
                             <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
                         </span>
                     </div> */}
-                    <h1>Chi tiết đơn hàng {item.data_relative_Donhang.MADH}</h1>
+                    <h1>Đơn hàng {item.data_relative_Donhang.MADH}</h1>
                     {/* <button onClick={handleTurnBack}>turn back</button> */}
                     {/* <div class="icon-update">
                         <span>

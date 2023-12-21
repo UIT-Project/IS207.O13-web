@@ -24,6 +24,7 @@ function InfoProduct(){
     const id = urlParams.get('id'); 
 
 
+
     //biến global
     const { divPopupCartRef, infoCarts, setInfoCarts, 
         setStatusPressAddToCart, statusPressAddToCart, formatPrice } = useGlobalVariableContext(); 
@@ -39,6 +40,8 @@ function InfoProduct(){
         masize: '',
         soluong: 1,
     })  
+    const [isLoading, setIsLoading] = useState(false);
+
 
     // khi load vào trang thông tin sản phẩm thì sẽ dùng infoProduct để lưu dữ liệu từ server gửi lên để hiển thị tt sản phẩm
     const [infoProduct, setInfoProduct] = useState({
@@ -114,8 +117,11 @@ function InfoProduct(){
 
     //thực hiện lấy thông tin sản phẩm khi load vào trang với id tương ứng
     const getInfo = () => {  
+        setIsLoading(true)
         request.get(`/api/infoProduct?id=${id}`)
         .then(res => { 
+            setIsLoading(false)
+
             const sortedData = [...res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs].sort((a, b) => {
                 if (a.imgURL.includes("thumnail") && !b.imgURL.includes("thumnail")) {
                   return -1; // Move a to a lower index (closer to the beginning)
@@ -136,6 +142,7 @@ function InfoProduct(){
             console.log(res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs)
         })
         .catch(e => {
+            setIsLoading(false)
             console.log(e);
         })
     }
@@ -248,6 +255,13 @@ function InfoProduct(){
             document.removeEventListener('click', handleClickOutPopUpCart);
         }; 
     } , []);
+
+    const renderLoading = () => {
+        return (
+            <div class={`donut multi ${isLoading ? '' : 'display_hidden'}`}></div> 
+        )
+    }
+
     const renderStarAtReviewProduct = (SOLUONG_SAO) => {
          
         const stars = []; 
@@ -284,8 +298,10 @@ function InfoProduct(){
         </div>
     )
     return ( 
-        <div class="container col-sm-12 ">
-            <div class="container-fluid">
+        <div class={`container col-sm-12 ${isLoading === true ? 'display_hidden' : ''}`}>
+            <div class={`loadingInfoProductTrue ${isLoading === false ? 'display_hidden' : ''}`}>
+            </div>
+            <div class={`container-fluid ${isLoading === true ? 'display_hidden' : ''}`}>
                 <div class="container_info_product"> 
                     <div class=" col-sm-7">
                         <ImageSlider 

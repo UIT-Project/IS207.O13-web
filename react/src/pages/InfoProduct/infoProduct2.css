@@ -534,3 +534,8 @@ user-select: none;
 .detail_info_product__quantity__div-small{
   margin-top: 0.7rem;
 }
+
+.loadingInfoProductTrue{
+  height: 1000px;
+  width: 100%;
+}
