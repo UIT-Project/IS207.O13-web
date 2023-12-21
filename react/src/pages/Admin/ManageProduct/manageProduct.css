@@ -1009,3 +1009,6 @@ select.form-select option {
 .row {
     margin: 10px 0px 20px 10px;
 }
+#select_1 {
+    width: 100%;
+}
