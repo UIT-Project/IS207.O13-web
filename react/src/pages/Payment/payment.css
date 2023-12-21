@@ -341,3 +341,7 @@ tr {
     width: 2rem;
     height: 1.7rem;
   }
+
+  .hiden_radio {
+    display: none;
+  }
