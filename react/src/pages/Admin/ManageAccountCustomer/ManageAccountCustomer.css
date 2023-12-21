@@ -513,3 +513,7 @@ tr {
       transform: rotate(360deg);
     }
   }
+
+  .form-select_Acc_cus{
+    width: 90%;
+  }

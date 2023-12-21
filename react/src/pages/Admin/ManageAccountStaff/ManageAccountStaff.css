@@ -20,6 +20,9 @@
     background-color: orange;
     padding: 8px;
 }
+.form-select_Acc_cus{
+    width: 90%;
+  }
 
 .header_body__search__input {
     outline: none;

@@ -1095,7 +1095,7 @@ function ManageAccountCustomer()
                     ></input> 
                 </div>
                 <div class="col-2 width_search"> 
-                    <select class="form-select" required
+                    <select class="form-select form-select_Acc_cus" required
                         onChange={handleInputInfoTypeSearch}
                         name="typeSearch"
                         value={typeSearchSendRequest} 

@@ -1214,10 +1214,10 @@ function ManageProduct()
                                 </div> 
                                     <span className={`red_color ${parseInt(infoUpdateProduct.originPrice) < parseInt(infoUpdateProduct.sellPrice) ? '' : 'display_hidden'}`}>Giá bán phải nhỏ hơn hoặc = giá niêm yết</span>
                             </div>
-                            <div class="row mb-3 div_kjkjk" id="roww">
-                                <div class="col-4">
+                            <div class="row mb-3 " id="roww">
+                                <div class="col-5 category-form">
                                     <label for="#" class="form-label">Phân loại</label>
-                                    <select class="form-select" id="select_1"required
+                                    <select class="form-select" id=""required
                                         onChange={handleInputInfoUpdateProduct}
                                         name="typeProduct"
                                         value={infoUpdateProduct.typeProduct}
@@ -1230,11 +1230,11 @@ function ManageProduct()
                                     <span className={`red_color ${isEmpty && infoUpdateProduct.typeProduct === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại</span>
 
                                 </div> 
-                                <div class="col-4">
+                                <div class="col-5 category-form">
                                 <label for="#" class="form-label">Phân loại chi tiết</label>
                                 <select class="form-select" required
                                     onChange={handleInputInfoUpdateProduct}
-                                    name="typeProduct2" id="select_1"
+                                    name="typeProduct2" id=""
                                     value={infoUpdateProduct.typeProduct2} 
                                     disabled={isUpdating ? false : true}
                                 >
@@ -1246,7 +1246,7 @@ function ManageProduct()
                             </div> 
                             </div>
 
-                            <div className="row" id="concent roww">
+                            <div className="row" id="roww">
                                 <div className="col-5 choose_size">
                                     <div >
                                         <label>Chọn các loại size</label>
@@ -1258,7 +1258,7 @@ function ManageProduct()
                             </div>
                             <span className={`red_color ${isEmpty && infoUpdateProduct.checkboxSize.length === 0 ? '' : 'display_hidden'}`}>Hãy chọn size</span>
 
-                            <div className="row" id="concent roww" >
+                            <div className="row" id="roww" >
                                 <div className="col-5 choose_size">
                                     <div>
                                         <label>Chọn các loại màu</label>
@@ -1523,7 +1523,7 @@ function ManageProduct()
                     ></input> 
                 </div>
                 <div class="col-2 width_search"> 
-                    <select class="form-select" required
+                    <select class="form-select " required
                         onChange={handleInputInfoTypeSearchSendRequest}
                         name="typeSearch"
                         // value={typeSearchParams} 
