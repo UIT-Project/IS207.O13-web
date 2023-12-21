@@ -307,12 +307,12 @@ function ReviewProduct() {
                     />
                 </td>
 
-                <td>
+                <td class="rowitem">
                     <div class="box-row1-column1">
                         <div class="row1-column1-item">
                             <img class="img-row1" src={item.imgURL} alt=""/>
                         </div>
-                        <div class="row1-column1-item">
+                        <div class="row1-column1-item" id="itemm">
                             <p>
                                 {item.TENSP} <br/>
                                 Màu: {item.TENMAU} <br/>
@@ -328,7 +328,7 @@ function ReviewProduct() {
                     </div>
                 </td>
                 <td>
-                    <div class="box-row1-column3 box-row1">
+                    <div class="box-row1-column3 box-row1" id="box_review">
                         <textarea
                             placeholder="Nhập đánh giá của bạn..."
                             value={item.contentReview}
@@ -347,7 +347,7 @@ function ReviewProduct() {
                 <td>
                     <div class="box-row1-column5 box-row1">
                         <button 
-                            class="btn-delete" 
+                            class="btn-delete" id="btn_deletee"
                             onClick={() => handleClickSaveReview(item, index)}
                             disabled={isCheckedAll ? true : false}
                         >
@@ -395,21 +395,25 @@ function ReviewProduct() {
                         </tbody> 
                 </table>
             </div>
-            <div class="container mt-5 content-bottom">
-                <div>Đánh giá tất cả: </div>
-                <div>
-                    <input 
-                        type="checkbox" 
-                        name="checkboxProductInCart" id=""  
-                        checked = {isCheckedAll} 
-                        onChange={handleClickCheckboxAll}
-                    />
+            <div class="container mt-5 content-bottom_review">
+                <div class="review_all">
+                    <div class="review_checkbox">
+                            <input 
+                                type="checkbox" 
+                                name="checkboxProductInCart" id=""  
+                                checked = {isCheckedAll} 
+                                onChange={handleClickCheckboxAll}
+                            />
+                    </div>
+                    <div class="span_danhgia">Đánh giá tất cả: </div>
+                   
                 </div>
-                <div class="box-row1-column2 box-row1">
+              
+                <div class="box-row1-column2 box-row1" id="start_1">
                     {/* <b class="row1-item">{item.GIABAN}</b> */} 
                         {renderStar(0, itemCarts.length)}
                 </div>
-                <div class="box-row1-column3 box-row1">
+                <div class="box-row1-column3 box-row1" id="boxreview">
                     <textarea
                         placeholder="Nhập đánh giá của bạn..."
                         value={infoReviewAll.contentReview}
@@ -424,15 +428,16 @@ function ReviewProduct() {
                         disabled={!isCheckedAll ? true : false}
                     /> 
                 </div>
-                <div class="box-row1-column5 box-row1">
+                <div class="box-row1-column5 box-row1" id="delete_1">
                     <button 
-                        class="btn-delete" 
+                        class="btn-delete" id="btn_deletee"
                         onClick={() => handleClickSaveReview(0, itemCarts.length)}
                         disabled={!isCheckedAll ? true : false}
                     >
                         <FontAwesomeIcon icon={faPaperPlane}></FontAwesomeIcon>
                     </button> 
                 </div>
+            
             </div>
         </div>
         <div className={`${itemCarts.length === 0 ? '' : 'display_hidden'}`}>

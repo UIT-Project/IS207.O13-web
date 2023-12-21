@@ -259,18 +259,29 @@ tr {
 .button_confirm:hover {
     background-color: rgba(0, 0, 0, 80%);
 }
+
+.form-select{
+    width: 60%;
+}
+
+.category-form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
 .form-control{
     width: 80%;
 }
-.input_gia{
+.input_gia_product{
     display: flex;
-    justify-content: space-around;
+    justify-content: center;
 }
-.input_gia_div{
-    width: 50%;
+.input_gia_div_product{
+    width: 100%;
     display: flex;
     justify-content: center;
     flex-direction: column;
+    align-items: center;
 }
 .checkbox_sizes{
     margin: 0px 3px 0px 15px;
@@ -320,8 +331,7 @@ tr {
     margin-top: 0.5rem;
 }
 
-.input_ten_div{
-    width: 200%;
+.input_ten_div_product{
     display: flex;
     justify-content: center;
     flex-direction: column;
@@ -331,7 +341,7 @@ tr {
 }
 
 .width_gia{
-    width: 80% !important;
+    width: 65% !important;
 }
 
 
@@ -676,4 +686,8 @@ tr {
 }
 .border_size_color{
     border: 3px solid red;
+}
+#roww {
+    justify-content: center;
+    margin: 20px 0px 30px 0px;
 }

@@ -1,7 +1,6 @@
 import "./addProduct.css"
 import 'bootstrap';
 import request from "../../../utils/request";
- 
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -412,9 +411,9 @@ function AddProduct(){
                 <div class="body_box container col-lg-7">
                     
                     <div class="address_update" id="address_update">
-                        <div class="row mb-2">
-                            <div class="input_ten_div">
-                                {/* <label for="#" class="form-label">Tên sản phẩm</label> */}
+                        <div class="row mb-2" id="roww">
+                            <div class="input_ten_div_product">
+                                <label for="#" class="form-label">Tên sản phẩm</label>
                                 <input 
                                     type="text" class="form-control" placeholder="Nhập tên sản phẩm" 
                                     onChange={handleInputInfoAddNewProduct} 
@@ -424,10 +423,11 @@ function AddProduct(){
                                 <span className={`red_color ${isEmpty && infoAddNewProduct.nameProduct === '' ? '' : 'display_hidden'}`}>Nhập tên sản phẩm trước khi lưu</span>
                             </div>
                         </div>
-                        <div class="row mb-2">
-                            <div class="col-12 input_gia">
-                                <div class="input_gia_div">
-                                    {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
+                        <div class="row mb-2" id="roww">
+                            <div class="col-12 input_gia_product">
+                                <div class="input_gia_div_product">
+                                    
+                                    <label for="##" class="form-label">Giá niêm yết</label> 
                                     {/* <input 
                                         type="text" class="form-control width_gia" placeholder="Giá niêm yết" 
                                         onChange={handleInputInfoAddNewProduct}
@@ -447,8 +447,8 @@ function AddProduct(){
                                     />
                                     <span className={`red_color ${isEmpty && infoAddNewProduct.originPrice === '' ? '' : 'display_hidden'}`}>Nhập giá niêm yết trước khi lưu</span>
                                 </div>
-                                <div class="input_gia_div">
-                                    {/* <label for="#" class="form-label">Giá bán</label> */}
+                                <div class="input_gia_div_product">
+                                    <label for="##" class="form-label">Giá bán</label>
                                     {/* <input 
                                         type="text" class="form-control width_gia" placeholder="Giá bán" 
                                         onChange={handleInputInfoAddNewProduct}
@@ -474,8 +474,8 @@ function AddProduct(){
                             <span className={`red_color ${parseInt(infoAddNewProduct.originPrice) < parseInt(infoAddNewProduct.sellPrice) ? '' : 'display_hidden'}`}>Giá bán phải nhỏ hơn hoặc = giá niêm yết</span>
 
                         </div>
-                        <div class="row mb-3">
-                            <div class="col-4">
+                        <div class="row mb-3" id="roww">
+                            <div class="col-6 category-form">
                                 <label for="#" class="form-label">Phân loại</label>
                                 <select class="form-select" required
                                     onChange={handleInputInfoAddNewProduct}
@@ -489,7 +489,7 @@ function AddProduct(){
                                 </select>
                                 <span className={`red_color ${isEmpty && infoAddNewProduct.typeProduct === '' ? '' : 'display_hidden'}`}>Hãy chọn phân loại</span>
                             </div> 
-                            <div class="col-4">
+                            <div class="col-6 category-form">
                                 <label for="#" class="form-label">Danh mục</label>
                                 <select class="form-select" required
                                     onChange={handleInputInfoAddNewProduct}
@@ -504,7 +504,7 @@ function AddProduct(){
                             </div> 
                         </div>
 
-                        <div className="row">
+                        <div className="row" id ="roww">
                             <div className="col-5 choose_size">
                                 <div>
                                     <label>Chọn các loại size</label>
@@ -518,7 +518,7 @@ function AddProduct(){
                         </div>
                         <span className={`red_color ${isEmpty && infoAddNewProduct.checkboxSize.length === 0 ? '' : 'display_hidden'}`}>Hãy chọn size</span>
 
-                        <div className="row">
+                        <div className="row" id="roww">
                             <div className="col-5 choose_size">
                                 <div>
                                     <label>Chọn các loại màu</label>
@@ -547,13 +547,16 @@ function AddProduct(){
                             </div>
                         </div>
 
-                        <textarea 
-                            id="w3review" name="desctiption" rows="4" cols="80"
-                            className="w3review" placeholder="Nhập mô tả sản phẩm"
-                            value={infoAddNewProduct.desctiption} 
-                            onChange={handleInputInfoAddNewProduct}
-                        > 
+                        <div>
+                            <span>Mô tả sản phẩm</span>
+                            <textarea 
+                                id="w3review" name="desctiption" rows="4" cols="80"
+                                className="w3review" placeholder="Nhập mô tả sản phẩm"
+                                value={infoAddNewProduct.desctiption} 
+                                onChange={handleInputInfoAddNewProduct}
+                            > 
                         </textarea>
+                        </div>
 
                         <span className={`red_color ${isEmpty && infoAddNewProduct.desctiption === '' ? '' : 'display_hidden'}`}>Nhập mô tả trước khi lưu</span>
 

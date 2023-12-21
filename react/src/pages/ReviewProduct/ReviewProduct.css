@@ -423,6 +423,7 @@ a, button{
 .tbody_table_cart{
     height: 60vh;
     overflow: auto;
+    margin-bottom: 50px;
 }
 
 .faCircleChevronLeft_reviewProduct{
@@ -433,4 +434,51 @@ a, button{
 .faCircleChevronLeft_div{
     display: flex;
     justify-content: start;
+}
+#itemm {
+    display: flex;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.rowitem {
+    width: 40%;
+}
+.review_all {
+    display: flex;
+    justify-content: center;
+    width: 20%;
+    margin-bottom: auto;
+    margin-top: auto;
+}
+.review_checkbox {
+    margin-right: 70px;
+}
+#boxreview {
+    width: 25%;
+    margin-left: 90px;
+}
+
+.content-bottom_review {
+    background-color: white;
+    border: 1px solid;
+    border-radius: 15px;
+    display: flex; 
+    justify-content: space-between;
+    padding-right: 48px;
+}
+#start_1 {
+    margin-left: 350px;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+#delete_1 {
+    margin-top: auto;
+    margin-bottom: auto;
+}
+.span_danhgia {
+    font-size: larger;
+    font-weight: 500;
+}
+#btn_deletee {
+    color: #517ae2;
 }
