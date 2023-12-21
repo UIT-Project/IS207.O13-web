@@ -17,7 +17,9 @@ function AddVoucher(){
     // 3.xử lý lưu thông tin sản phẩm và hình ảnh xuống db
 
     useAuthCheck()
-
+    useEffect(() => {
+        document.title = "Admin | Thêm voucher"
+     }, []);
     // statusPressAddVoucher = true thì hiện nút thêm sản phẩm
     const [statusPressAddVoucher, setStatusPressAddVoucher] = useState(true);
     let i = 0;

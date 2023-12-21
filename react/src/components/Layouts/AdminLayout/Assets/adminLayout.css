@@ -164,8 +164,3 @@ body {
 .kjkjkuu{
     margin-top: 10rem;
 }
-
-.sidebar_nav_item.selected {
-    background-color: #000 !important; /* Màu nền nổi bật, có thể thay đổi tùy thuộc vào ý của bạn */
-    color: #fff; /* Màu chữ cho trạng thái được chọn */
-}

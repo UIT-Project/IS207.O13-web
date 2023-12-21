@@ -16,7 +16,9 @@ import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 function SearchVoucher()
 {
     useAuthCheck()
-
+    useEffect(() => {
+        document.title = "Admin | Tìm voucher"
+     }, []);
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchVoucherDetail, setWatchVoucherDetail] = useState(false);

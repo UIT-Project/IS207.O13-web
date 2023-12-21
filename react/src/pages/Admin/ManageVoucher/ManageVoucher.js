@@ -19,9 +19,11 @@ import CurrencyInput from 'react-currency-input-field';
 
 function ManageVoucher()
 {
-    const {formatPrice} = useGlobalVariableContext(); 
     useAuthCheck()
-
+    useEffect(() => {
+        document.title = "Admin | Quản lý voucher"
+     }, []);
+    const {formatPrice} = useGlobalVariableContext(); 
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchVoucherDetail, setWatchVoucherDetail] = useState(false);
