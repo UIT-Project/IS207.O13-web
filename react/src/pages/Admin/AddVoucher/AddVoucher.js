@@ -308,9 +308,9 @@ function AddVoucher(){
 
         for (let i = 5; i <= 100; i += 5) {
             options.push(
-            <option key={i} value={i / 100}>
-                {i}%
-            </option>
+                <option key={i} value={i / 100}>
+                    {i}%
+                </option>
             );
         }
 

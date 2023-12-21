@@ -23,7 +23,7 @@ function AddProduct(){
         document.title = "Admin | Thêm sản phẩm"
      }, []);
 
-    const {formatPrice} = useGlobalVariableContext(); 
+    const {formatPrice, listSizeToCheck} = useGlobalVariableContext(); 
 
     // statusPressAddProduct = true thì hiện nút thêm sản phẩm
     const [listDetailCategory2, setListDetailCategory2] = useState([])
@@ -35,7 +35,7 @@ function AddProduct(){
     const [listQuantity, setListQuantity] = useState([]);
     //mã hex để hiện thị màu sắc lấy thực thuộc tính hex trong bảng mausacs
     const [listHEX, setListHEX] = useState([]);
-    const [checkBoxSizeDefault, setCheckBoxSizeDefault] = useState(["S", "M", "L", "XL", "XXL", "3XL"]);
+    // const [checkBoxSizeDefault, setCheckBoxSizeDefault] = useState(["S", "M", "L", "XL", "XXL", "3XL"]);
 
     const [contentPopup, setContentPopup] = useState({
         title: '',
@@ -368,7 +368,7 @@ function AddProduct(){
         <option value={item.MAPL2}>{item.TENPL2}</option> 
     )
 
-    const renderCheckBoxSize = checkBoxSizeDefault.map((item, index) =>
+    const renderCheckBoxSize = listSizeToCheck.map((item, index) =>
         <div key={index} className="choose_size__div__item">
             <input 
                 type="checkbox" id={`${item}`} 

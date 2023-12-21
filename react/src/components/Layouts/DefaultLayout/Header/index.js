@@ -370,8 +370,8 @@ function Header({settoggleFunctionLoginLogout}){
                             <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>   
                             <div class="header_body__option_and_info__user__select_login_or_logout">
                                 {/* có onclick */}
-                                <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickInfoAccount : clickSignIn}>{(hasLogin) ? "Thông tin tài khoản" : "Đăng nhập" }</button>
-                                <button class={`header_body__option_and_info__user__select_login_or_logout__in ${(hasLogin) ? "" : 'display_hidden' }`} onClick={(hasLogin) ? clickMyOrder : ''}>{(hasLogin) ? "Đơn hàng của tôi" : "" }</button>
+                                <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickInfoAccount : clickSignIn}>{(hasLogin) ? "Tài khoản" : "Đăng nhập" }</button>
+                                <button class={`header_body__option_and_info__user__select_login_or_logout__in ${(hasLogin) ? "" : 'display_hidden' }`} onClick={(hasLogin) ? clickMyOrder : ''}>{(hasLogin) ? "Đơn hàng" : "" }</button>
                                 <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickLogout : clickSignUp}>{(hasLogin) ? "Đăng Xuất" : "Đăng ký" }</button>
 
                             </div>

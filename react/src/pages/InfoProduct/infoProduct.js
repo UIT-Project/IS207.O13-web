@@ -10,6 +10,10 @@ import {Media} from "./image";
 import ImageSlider from "./ImageSlider";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCartShopping, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar as farStarRegular } from '@fortawesome/free-regular-svg-icons'; // Regular star icon
+
+import { faAnchorCircleXmark } from "@fortawesome/free-solid-svg-icons";
+import { faStarHalf } from "@fortawesome/free-regular-svg-icons";
 function InfoProduct(){
     // Trong file này cần xử lý
     // 1. lấy dữ liệu và hiển thị
@@ -29,7 +33,7 @@ function InfoProduct(){
 
     //biến global
     const { divPopupCartRef, infoCarts, setInfoCarts, 
-        setStatusPressAddToCart, statusPressAddToCart, formatPrice } = useGlobalVariableContext(); 
+        setStatusPressAddToCart, statusPressAddToCart, formatPrice, listSizeToCheck } = useGlobalVariableContext(); 
     const [hetHang, setHetHang] = useState(false);
     const textareaRef = useRef(null);
 
@@ -133,6 +137,27 @@ function InfoProduct(){
                   return 0; // Keep the original order
                 }
             });
+            let indexSort = 0;
+            let arrToSort = res.data.data_size;
+            // listSizeToCheck.map((itemSize, indexSize) => { 
+            //     SizeOfProduct.map((itemSize_fromDB, indexSize_fromDB) => {
+            //         if(itemSize === itemSize_fromDB.MASIZE){
+            //             const a = itemSize_fromDB.MASIZE
+            //             SizeOfProduct[indexSort].MASIZE = itemSize
+            //             SizeOfProduct[indexSize_fromDB].MASIZE = a  
+            //             indexSort++;
+            //             return;
+            //         }
+            //     })
+            // }) 
+
+            arrToSort.sort((a, b) => {
+                const indexA = listSizeToCheck.indexOf(a.MASIZE);
+                const indexB = listSizeToCheck.indexOf(b.MASIZE);
+                
+                return indexA - indexB;
+            });
+            console.log('SizeOfProduct', arrToSort, listSizeToCheck, res.data.data_size)
             setInfoProduct({
                 data_sanpham: res.data.data_sanpham[0],
                 data_mausac: res.data.data_mausac,
@@ -148,11 +173,33 @@ function InfoProduct(){
             console.log(e);
         })
     }
+    const [showStarQuantity, setShowStarQuantity] = useState({
+        solidStar: 0,
+        regularStar: 5,
+    })
 
     const getInfoReviewProduct = () => {
         request.get(`/api/getInfoReviewProduct?masp=${id}`)
         .then(res => {
             console.log(res.data.infoReviewProduct, 'đây là info review')
+            let totalStar = 0
+            res.data.infoReviewProduct.map(item => { 
+                totalStar += item.SOLUONG_SAO
+            })
+            const reviewQuantity = res.data.infoReviewProduct.length
+            console.log(showStarQuantity, 'totalStar true')
+            if(reviewQuantity > 0){
+                setShowStarQuantity({
+                    solidStar: Math.ceil(totalStar / reviewQuantity),
+                    regularStar: 5 - Math.ceil(totalStar / reviewQuantity)
+                }) 
+            }
+            else{
+                setShowStarQuantity({
+                    solidStar: 0,
+                    regularStar: 5,
+                })
+            }
             setInfoReviewProduct(res.data.infoReviewProduct);
         })
     }
@@ -299,6 +346,21 @@ function InfoProduct(){
             </div>
         </div>
     )
+    const renderStar = () => {
+        let arrSolidStar = []
+        let arrRegularStar = []
+        let concatArray = [];
+        for(let i = 1; i <= showStarQuantity.solidStar; i++)
+            arrSolidStar.push(
+                <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
+            )
+            console.log(showStarQuantity.regularStar, 'regularstar')
+        for(let i = 1; i <= showStarQuantity.regularStar; i++)
+            arrRegularStar.push(
+                <FontAwesomeIcon icon={farStarRegular} className="regularStar"/>            
+            )
+        return concatArray = [...arrSolidStar, ...arrRegularStar]
+    }
     return ( 
         <div class={`container col-sm-12 ${isLoading === true ? '' : ''}`}>
             <div class={`loadingInfoProductTrue ${isLoading === false ? 'display_hidden' : ''}`}>
@@ -308,13 +370,13 @@ function InfoProduct(){
                     <div class=" col-sm-7">
                         <ImageSlider 
                             slides={infoProduct.imgURL.length > 0 ? infoProduct.imgURL : slides} 
-                            renderReview={renderReview} 
+                            
                         />
                         <section id="review">
                             <div class="review-heading">
                                 <h1>Đánh giá</h1>
                             </div>
-                            <div class="review-container">{renderReview}</div>
+                            <div class="review-container">{infoReviewProduct.length > 0 ? renderReview : "Chưa có đánh giá"}</div>
                             
                         </section>
                     </div>
@@ -334,12 +396,14 @@ function InfoProduct(){
                             </div>
                             <div class="detail_info_product__price__review_quanlity">
                                 <div class="product-content-right-product-rating">
-                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                    <FontAwesomeIcon icon={faStar} class="product-content-right-product-rating_sao"></FontAwesomeIcon>
-                                    <span>(0 danh gia)</span>
+                                    
+                                    {/* <span>(0 danh gia)</span> */}
+                                    {renderStar()}
+                                    <span className="chuaCoDanhGia">
+                                        { 
+                                            showStarQuantity.solidStar === 0 ? '(Chưa có đánh giá)' : '' 
+                                        }
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -356,7 +420,7 @@ function InfoProduct(){
                             <div class="detail_info_product__color__choose">  
                                 {infoProduct.data_mamau.map((item, index) => { 
                                     return(
-                                        <div class="detail_info_product__color__item" key={index}>
+                                        <div class="detail_info_product__color__item" key={index}> 
                                             <input 
                                                 type="radio" 
                                                 class="check_color" 
@@ -372,7 +436,7 @@ function InfoProduct(){
                                                 style={{
                                                     backgroundColor: item.HEX,  
                                                 }} 
-                                            />
+                                            /> 
                                         </div> 
                                     )
                                 })} 

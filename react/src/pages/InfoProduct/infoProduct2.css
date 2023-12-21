@@ -57,9 +57,14 @@
   justify-content: center;
 } 
 .detail_info_product__color__item{
-  margin-right: 8px;
+  margin-right: 8px; 
+  display: flex;
   position: relative;
-} 
+  border: 0.1rem solid rgb(219, 219, 219);
+  padding: 0.2rem;
+  border-radius: 0.3rem;
+  background-color: rgb(241, 241, 241);
+}  
 .detail_info_product__size__item{
   margin-right: 8px;
   /* phải dùng position: relative; thì .check_size dùng position: absolute; mới hoạt động đúng  */
@@ -498,7 +503,7 @@ user-select: none;
 .motasanpham2{
   text-decoration: none;
   border: none; 
-  background-color: #f9f9f9;
+  background-color: #ffffff;
   outline: none;
   resize: none; /* Ngăn không cho textarea thay đổi kích thước bằng cách kéo cạnh */
   overflow: hidden; /* Ẩn thanh cuộn nếu nội dung vượt quá */
@@ -506,6 +511,9 @@ user-select: none;
   height: auto; /* Cho phép textarea tự điều chỉnh chiều cao dựa trên nội dung */ 
   font-size: 1rem; /* Kích thước font */
   font-weight: bold; /* Độ đậm của font */
+  padding: 1rem;
+  border-radius: 0.4rem;
+  width: 100%;
 }
 .user {
   text-align: left;
@@ -538,4 +546,12 @@ user-select: none;
 .loadingInfoProductTrue{
   height: 1000px;
   width: 100%;
+}
+
+.regularStar{
+  color: #f3b335; 
+}
+
+.chuaCoDanhGia{
+  margin-left: 0.3rem;
 }
