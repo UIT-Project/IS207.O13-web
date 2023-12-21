@@ -1246,7 +1246,7 @@ function ManageProduct()
                             </div> 
                             </div>
 
-                            <div className="row" id="concent" id="roww">
+                            <div className="row" id="concent roww">
                                 <div className="col-5 choose_size">
                                     <div >
                                         <label>Chọn các loại size</label>
@@ -1258,7 +1258,7 @@ function ManageProduct()
                             </div>
                             <span className={`red_color ${isEmpty && infoUpdateProduct.checkboxSize.length === 0 ? '' : 'display_hidden'}`}>Hãy chọn size</span>
 
-                            <div className="row" id="concent" id="roww">
+                            <div className="row" id="concent roww" >
                                 <div className="col-5 choose_size">
                                     <div>
                                         <label>Chọn các loại màu</label>
