@@ -9,8 +9,12 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faCircleChevronLeft, faEye, faFloppyDisk, faL, faLeftLong, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
-import Pagination from "./pagination";
+
 import SelectLimit from "./selectLimit";
+
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
 
@@ -103,7 +107,7 @@ function ManageOrder(){
         }
     });
     
-    const [numberOrderEachPage,setLimit] = useState(10);
+    const [numberOrderEachPage,setLimit] = useState(20);
     const [xoadau, setXoaDau] = useState(0);
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchOrderDetail, setWatchOrderDetail] = useState(false);
@@ -984,12 +988,15 @@ function ManageOrder(){
         )
     }
 
-    const renderPagination = (item_status) => {
-        console.log(item_status, 'item_status')
-        return item_status.value.paginationList.map((item_pagina) => 
-            <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
-        )
-    }
+    // const renderPagination = (item_status) => {
+    //     console.log(item_status, 'item_status')
+    //     return item_status.value.paginationList.map((item_pagina) => 
+    //         <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
+    //     )
+    // }
+    const handlePageChange = (item_status, event, page) => {
+        handleClickItemPagination(item_status, page);
+    }; 
 
     const renderInfoProduct = infoOrderDetail.data_sanPham_relative_CTDH.map((item, index) => 
               
@@ -997,7 +1004,7 @@ function ManageOrder(){
                 <td data-label="Order-code">{item.TENSP}</td>
                 <td data-label="Name">{item.TENMAU}</td>
                 <td data-label="Phone-number"> {item.MASIZE} </td>
-                <td data-label="Phone-number">{formatPrice(item.GIABAN)}  </td>
+                <td data-label="Phone-number">{formatPrice(item.TONGTIEN / item.SOLUONG)}  </td>
                 <td data-label="Phone-number">  {item.SOLUONG}   </td> 
                     {/* <td data-label="Address">
                     {infoOrderDetail.data_relative_Donhang.TINH_TP}
@@ -1161,7 +1168,7 @@ function ManageOrder(){
                             <FontAwesomeIcon class="fa-solid fa-print" icon={faPrint}></FontAwesomeIcon>
                         </span>
                     </div> */}
-                    <h1>Chi tiết đơn hàng {item.data_relative_Donhang.MADH}</h1>
+                    <h1>Đơn hàng {item.data_relative_Donhang.MADH}</h1>
                     {/* <button onClick={handleTurnBack}>turn back</button> */}
                     {/* <div class="icon-update">
                         <span>
@@ -1373,9 +1380,18 @@ function ManageOrder(){
                             </table>
                         </div>
                         <div className={`${watchOrderDetail ? 'display_hidden' : ''} pagination-container`}>
-                            { renderPagination(item) }
+                            {/* { renderPagination(item) } */}
                             {/* <SelectLimit onLimitChange={setLimit}/> */}
                             {/* <Pagination totalPage={item.value.paginationList.length} page={item.value.openingPage} limit={numberOrderEachPage} siblings={1} onPageChange={handlePageChange} item_status={item}/> */}
+                        </div>
+                        <div className={`${watchOrderDetail ? 'display_hidden' : ''} pagination-container margin__bottom`}> 
+                            <Stack spacing={2}>
+                                <Pagination 
+                                    count={item.value.paginationList.length} 
+                                    onChange={(event, page) => handlePageChange(item, event, page)}  
+                                    color="primary"
+                                /> 
+                            </Stack> 
                         </div>
                         {/* <span onClick={handlePrint_A4}>
                             <FontAwesomeIcon class="fa-solid fa-print faPrint_nearUpdate" icon={faPrint}></FontAwesomeIcon>

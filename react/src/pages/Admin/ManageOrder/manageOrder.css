@@ -562,3 +562,7 @@ tr {
     align-items: center;
     width: 30%;
 }
+
+.margin__bottom{
+    margin-bottom: 2rem;
+}

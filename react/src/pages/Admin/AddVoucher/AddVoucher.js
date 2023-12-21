@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faL, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
+import CurrencyInput from 'react-currency-input-field';
 
 function AddVoucher(){
     //NHỮNG THỨ CẦN XỬ LÝ TRONG TRANG addVoucher - thêm sản phẩm của admin
@@ -67,10 +68,16 @@ function AddVoucher(){
 
     //lưu thông tin ảnh sẽ hiển thị preview
     const [previewImages, setPreviewImages] = useState([]);
-
+    const formatNumber = (number) => {
+        const formatter = new Intl.NumberFormat('vi-VN', {
+          style: 'currency',
+          currency: 'VND',
+        });
+        return formatter.format(number);
+      };
     //xử lý nhập thông tin sản phẩm
     const handleInputInfoAddNewVoucher = (e) => {
-        e.persist();
+        // e.persist();
         let {value, name} = e.target;
 
         const regex_showNameVoucher = /^[a-zA-Z0-9]*$/;
@@ -80,6 +87,9 @@ function AddVoucher(){
             setInfoAddNewVoucher({...infoAddNewVoucher, [name]: value}); 
         } 
         else if((name === 'minOrderValue' || name === 'quantityUse'  || name === 'maxDecreaseMoney') && regex_ChiNhapSo.test(value)){
+            // const numericValue = parseFloat(value);
+            // const formattedValue = formatNumber(value); // Chuyển đổi giá trị số thành chuỗi hàng trăm nghìn triệu
+            // console.log(formattedValue)
             setInfoAddNewVoucher({...infoAddNewVoucher, [name]: value}); 
         } 
         
@@ -93,6 +103,19 @@ function AddVoucher(){
         }
 
     }
+
+    const handleInputInfoAddNewVoucher_vnd = (value, name) => {
+        const regex_showNameVoucher = /^[a-zA-Z0-9]*$/;
+        const regex_ChiNhapSo = /^\d*$/;
+        if (value === undefined ) {
+            console.log(value, 'value')
+            value = 0; // Gán giá trị là '0' khi không còn giá trị nào trong trường input
+            setInfoAddNewVoucher({ ...infoAddNewVoucher, [name]: value }); 
+        } 
+        else if ((name === 'minOrderValue' || name === 'maxDecreaseMoney') && regex_ChiNhapSo.test(value)) {
+            setInfoAddNewVoucher({ ...infoAddNewVoucher, [name]: value }); 
+        }
+    };
 
     //xử lý nhập tt sp với các checkbox
     const handleInputInfoAddNewVoucher_checkbox = (e) => {
@@ -135,7 +158,7 @@ function AddVoucher(){
 
     //xử lý lưu tt sp, hình ảnh sp xuống db khi click vào thêm sản phẩm
     const handleClickAddVoucher = () => {
-        console.log(infoAddNewVoucher.decreasePersent)
+        console.log(infoAddNewVoucher, 'infoAddNewVoucher')
         if(
             infoAddNewVoucher.showNameVoucher === '' ||
             // infoAddNewVoucher.minOrderValue === '' ||
@@ -280,6 +303,20 @@ function AddVoucher(){
         )
     })
 
+    const renderDecreasePercent = () => {
+        const options = [];
+
+        for (let i = 5; i <= 100; i += 5) {
+            options.push(
+            <option key={i} value={i / 100}>
+                {i}%
+            </option>
+            );
+        }
+
+        return options;
+    }
+
     return (
         <div>
             <div className="popup-overlay">
@@ -334,8 +371,7 @@ function AddVoucher(){
                                     value={infoAddNewVoucher.decreasePersent} 
                                 >
                                     <option selected value=""></option>
-                                    <option value="0.05">5%</option>
-                                    <option value="0.1">10%</option> 
+                                    {renderDecreasePercent()} 
                                 </select>
                                 <span className={`red_color ${isEmpty && infoAddNewVoucher.decreasePersent === 0 ? '' : 'display_hidden'}`}>Chọn phần trăm giảm </span>
 
@@ -373,22 +409,44 @@ function AddVoucher(){
                             <div class="col-12 input_gia">
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị đơn hàng tối thiểu</label>
-                                    <input 
-                                        type="text" class="form-control widthInputDate" placeholder="Giá trị đơn hàng tối thiểu" 
+                                    {/* <input 
+                                        type="text" class="form-control widthInputDate" placeholder="" 
                                         onChange={handleInputInfoAddNewVoucher}
                                         name="minOrderValue"  
                                         value={infoAddNewVoucher.minOrderValue}
+                                    /> */}
+                                    <CurrencyInput
+                                        className="form-control widthInputDate"
+                                        placeholder="Giá trị đơn hàng tối thiểu"
+                                        onValueChange={(value, name) => handleInputInfoAddNewVoucher_vnd(value, name)}
+                                        name="minOrderValue"
+                                        value={infoAddNewVoucher.minOrderValue}
+                                        allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                        decimalSeparator="," // Phân cách phần thập phân
+                                        groupSeparator="." // Phân cách hàng nghìn
+                                        suffix=" VND" // Đơn vị tiền tệ
                                     />
                                     <span className={`red_color ${isEmpty && infoAddNewVoucher.minOrderValue === '' ? '' : 'display_hidden'}`}>Nhập giá trị hoá đơn tối thiểu</span>
 
                                 </div>
                                 <div class="col-4 inputDate">
                                     <label for="#" class="form-label">Giá trị giảm tối đa</label>
-                                    <input 
+                                    {/* <input 
                                         type="text" class="form-control widthInputDate" placeholder="Tiền giảm tối đa" 
                                         onChange={handleInputInfoAddNewVoucher}
                                         name="maxDecreaseMoney"   
                                         value={infoAddNewVoucher.maxDecreaseMoney}
+                                    /> */}
+                                    <CurrencyInput
+                                        className="form-control widthInputDate"
+                                        placeholder="Tiền giảm tối đa"
+                                        onValueChange={(value, name) => handleInputInfoAddNewVoucher_vnd(value, name)}
+                                        name="maxDecreaseMoney"
+                                        value={infoAddNewVoucher.maxDecreaseMoney}
+                                        allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                        decimalSeparator="," // Phân cách phần thập phân
+                                        groupSeparator="." // Phân cách hàng nghìn
+                                        suffix=" VND" // Đơn vị tiền tệ
                                     />
                                     <span className={`red_color ${isEmpty && infoAddNewVoucher.maxDecreaseMoney === '' ? '' : 'display_hidden'}`}>Nhập giá trị giảm tối đa</span>
 
@@ -409,22 +467,25 @@ function AddVoucher(){
                                 <span className={`red_color ${isEmpty && infoAddNewVoucher.quantityUse === '' ? '' : 'display_hidden'}`}>Nhập số lần sử dụng</span>
                         </div>
  
-                        <div>
+                        {/* <div>
                             <input type="file" multiple name="image" accept="image/*" onChange={handleClickUploadImage}></input>
                             <div>
                                 { renderPreViewImage }
                             </div>
+                        </div> */}
+                        <div className="row mb-3 phanLoai_chooseGiaTriGiam">
+                            <label className="form-label">Mô tả</label>
+                            <textarea 
+                                id="w3review" name="desctiption" rows="4" cols="80"
+                                className="w3review" placeholder="Nhập mô tả sản phẩm"
+                                value={infoAddNewVoucher.desctiption} 
+                                onChange={handleInputInfoAddNewVoucher}
+                            > 
+                            </textarea>
+                            <span className={`red_color ${isEmpty && infoAddNewVoucher.desctiption === '' ? '' : 'display_hidden'}`}>Nhập mô tả </span>
+
                         </div>
-
-                        <textarea 
-                            id="w3review" name="desctiption" rows="4" cols="80"
-                            className="w3review" placeholder="Nhập mô tả sản phẩm"
-                            value={infoAddNewVoucher.desctiption} 
-                            onChange={handleInputInfoAddNewVoucher}
-                        > 
-                        </textarea>
-                        <span className={`red_color ${isEmpty && infoAddNewVoucher.desctiption === '' ? '' : 'display_hidden'}`}>Nhập mô tả </span>
-
+                        
                         
                     </div> 
                     

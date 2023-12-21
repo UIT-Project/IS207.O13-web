@@ -20,7 +20,9 @@
     background-color: orange;
     padding: 8px;
 }
-
+.saidinhdang_mau_do{
+    color: red;
+}
 .header_body__search__input {
     outline: none;
     text-decoration: none;
@@ -198,11 +200,18 @@ button {
     border-radius: 0.3rem;
 }
 
-.address_add_button {
+.address_add_button_payment {
     padding: 12px 25px;
     border: 1px solid #000;
-    background-color: #fff;
+    background-color: #F3F1F1 !important;
     margin-top: 20px;
+    font-size: large;
+    font-weight: bold;
+    border-radius: 5px;
+}
+
+.address_add_button:hover {
+    border: 2px solid #000;
 }
 
 .address_update {
@@ -328,3 +337,7 @@ tr {
     line-height: 35px;
   }
   
+  .fa-location-dot{
+    width: 2rem;
+    height: 1.7rem;
+  }

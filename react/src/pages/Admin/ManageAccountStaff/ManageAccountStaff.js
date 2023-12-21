@@ -11,6 +11,9 @@ import { faCircleXmark, faClock, faFaceAngry, faTrashAlt } from '@fortawesome/fr
 import {  faCheck, faEye, faL, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 
 function ManageAccountStaff()
 {
@@ -705,7 +708,9 @@ function ManageAccountStaff()
         setKeySearchSendRequest(e.target.value)
     }
  
-
+    const handlePageChange = (item_status, event, page) => {
+        handleClickItemPagination(item_status, page);
+    };
     const handleSearch = () => { 
         
         setOrderStatus({
@@ -1028,15 +1033,36 @@ function ManageAccountStaff()
     }
     
     //manageProduct
+    // const renderNavState = orderStatus_Array.map((item, index) =>  
+    //     <li class="nav-item col-auto p-2" key={index}>
+    //         <button 
+    //             class={`nav-link ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
+    //             aria-current="page"  
+    //             onClick={()=>handleClickNavState(item, 1)}
+    //         >
+    //             {item.value.nameState}
+    //         </button>
+    //     </li> 
+    // )
+    const renderLoading = (item) => {
+        return (
+          <div class={`donut multi size__donut ${item.value.pageQuantity === null ? '' : 'display_hidden'}`}></div> 
+        )
+      }
     const renderNavState = orderStatus_Array.map((item, index) =>  
         <li class="nav-item col-auto p-2" key={index}>
             <button 
-                class={`nav-link ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
+                class={`nav-link button_nav ${orderStatusPointer === item.value.nameState ? 'active' : ''}`} 
                 aria-current="page"  
                 onClick={()=>handleClickNavState(item, 1)}
             >
                 {item.value.nameState}
+                <span className={`itemQuantityFound ${item.value.pageQuantity === null ? 'display_hidden' : ''}`}>
+                    {item.value.pageQuantity}
+                </span>
+                {renderLoading(item)}
             </button>
+            {/* <span>{item.value.pageQuantity}</span> */}
         </li> 
     )
     const renderEachProduct = (orderStatus_Array, item, indexOrder) => {
@@ -1123,7 +1149,16 @@ function ManageAccountStaff()
                             </tbody>
                         </table>
                     </div>
-                    { renderPagination(item) }
+                        {/* { renderPagination(item) } */}
+                        <div className={` pagination-container margin__bottom`}>
+                            <Stack spacing={2}>
+                                <Pagination 
+                                    count={item.value.paginationList.length} 
+                                    onChange={(event, page) => handlePageChange(item, event, page)}  
+                                    color="primary"
+                                /> 
+                            </Stack> 
+                        </div>
                     </div> 
                 ) 
             }

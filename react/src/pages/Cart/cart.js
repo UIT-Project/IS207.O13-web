@@ -20,7 +20,9 @@ function Cart() {
     // 5.Click để chuyển sang thanh toán
 
     //dùng ctrl + f để biết những hàm handle nằm ở thẻ tag nào trong phần return
-
+    useEffect(() => {
+        document.title = "DosiIn | Giỏ hàng"
+    }, []);
     const {formatPrice} = useGlobalVariableContext(); 
 
     //isCheckedAll xử lý khi tất cả sản phẩm trong giỏ hàng được chọn để thanh toán

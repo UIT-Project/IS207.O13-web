@@ -9,12 +9,19 @@ import { faClock, faFaceAngry, faFloppyDisk, faTrashAlt } from '@fortawesome/fre
 import {  faCircleChevronLeft, faEye, faL, faLeftLong, faMagnifyingGlass, faPenToSquare, faPrint, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
 import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
+import ReactPaginate from 'react-paginate';
+import CurrencyInput from 'react-currency-input-field';
+
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
 
 function ManageProduct()
 {
     const {formatPrice} = useGlobalVariableContext(); 
     useAuthCheck()
-
+    useEffect(() => {
+        document.title = "Admin | Quản lý tài khoản khách hàng"
+    }, []);
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchProductDetail, setWatchProductDetail] = useState(false);
@@ -852,6 +859,9 @@ function ManageProduct()
     const handleInputInfoTypeSearchSendRequest = (e) => {
         setTypeSearchSendRequest(e.target.value) 
     }
+    const handlePageChange = (item_status, event, page) => {
+        handleClickItemPagination(item_status, page);
+    };
 
     useEffect(() => {   
         orderStatus_Array.map(item => getInfoOrderForUsers(item, 1) ) 
@@ -1148,11 +1158,24 @@ function ManageProduct()
                                     <div className="col-4">
                                         <div class="">
                                          <label for="#" class="form-label">Giá niêm yết</label> 
-                                            <input 
+                                            {/* <input 
                                                 type="text" class="form-control  " placeholder="Giá niêm yết" 
                                                 onChange={handleInputInfoUpdateProduct}
                                                 name="originPrice"  
                                                 value={infoUpdateProduct.originPrice}
+                                                disabled={isUpdating ? false : true}
+
+                                            /> */}
+                                            <CurrencyInput
+                                                className="form-control"
+                                                placeholder="Giá niêm yết"
+                                                onValueChange={(value, name) => handleInputInfoAddNewProduct_vnd(value, name)}
+                                                name="originPrice"
+                                                value={infoUpdateProduct.originPrice}
+                                                allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                                decimalSeparator="," // Phân cách phần thập phân
+                                                groupSeparator="." // Phân cách hàng nghìn
+                                                suffix=" VND" // Đơn vị tiền tệ
                                                 disabled={isUpdating ? false : true}
 
                                             />
@@ -1163,12 +1186,25 @@ function ManageProduct()
                                     <div className="col-4">
                                         <div class="">
                                             <label for="#" class="form-label">Giá bán</label>
-                                            <input 
+                                            {/* <input 
                                                 type="text" class="form-control  " placeholder="Giá bán" 
                                                 onChange={handleInputInfoUpdateProduct}
                                                 name="sellPrice"   
                                                 value={infoUpdateProduct.sellPrice}
                                                 disabled={isUpdating ? false : true}
+                                            /> */}
+                                            <CurrencyInput
+                                                className="form-control"
+                                                placeholder="Giá bán"
+                                                onValueChange={(value, name) => handleInputInfoAddNewProduct_vnd(value, name)}
+                                                name="sellPrice"
+                                                value={infoUpdateProduct.sellPrice}
+                                                allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                                decimalSeparator="," // Phân cách phần thập phân
+                                                groupSeparator="." // Phân cách hàng nghìn
+                                                suffix=" VND" // Đơn vị tiền tệ
+                                                disabled={isUpdating ? false : true}
+
                                             />
                                             <span className={`red_color ${isEmpty && infoUpdateProduct.sellPrice === '' ? '' : 'display_hidden'}`}>Nhập giá bán trước khi lưu</span>
 
@@ -1323,6 +1359,17 @@ function ManageProduct()
           <div class={`donut multi size__donut ${item.value.pageQuantity === null ? '' : 'display_hidden'}`}></div> 
         )
       }
+
+    const handleInputInfoAddNewProduct_vnd = (value, name) => { 
+        const regex_ChiNhapSo = /^\d*$/;
+        console.log(value, 'value')
+        if (value === undefined ) {
+            value = 0; // Gán giá trị là '0' khi không còn giá trị nào trong trường input
+        }
+        if((name === 'originPrice' || name === 'sellPrice') && regex_ChiNhapSo.test(value)){
+            setInfoUpdateProduct({...infoUpdateProduct, [name]: value});
+        }  
+    }
     //manageProduct
     const renderNavState = orderStatus_Array.map((item, index) =>  
         <li class="nav-item col-auto p-2" key={index}>
@@ -1397,7 +1444,8 @@ function ManageProduct()
             <button key={item_pagina} className="btn_pagination" onClick={() => handleClickItemPagination(item_status, item_pagina)}>{item_pagina}</button>
         )
     }
- 
+  
+
     const renderShowProductEveryState = orderStatus_Array.map((item, index) =>   
         {  
             // console.log(item)
@@ -1429,8 +1477,18 @@ function ManageProduct()
                         </table>
                     </div>
                     <div class="box-panigation-list">
-                        { renderPagination(item) }
+                        {/* { renderPagination(item) } */}
+                        
                     </div>
+                    <div className={` pagination-container margin__bottom`}>
+                            <Stack spacing={2}>
+                                <Pagination 
+                                    count={item.value.paginationList.length} 
+                                    onChange={(event, page) => handlePageChange(item, event, page)}  
+                                    color="primary"
+                                /> 
+                            </Stack> 
+                        </div>
                     </div> 
                 ) 
             }

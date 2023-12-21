@@ -492,3 +492,24 @@ tr {
 .faCircleXmark{
     color: red;
 }
+
+
+.donut {
+    width: 2rem;
+    height: 2rem;
+    margin: 1rem;
+    border-radius: 50%;
+    border: 0.3rem solid white;
+    border-top-color: #979fd0;
+    animation: 1.5s spin infinite linear;
+  
+    &.multi {
+      border-bottom-color: #979fd0;
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }

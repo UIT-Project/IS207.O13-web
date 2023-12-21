@@ -15,13 +15,16 @@ function InfoProduct(){
     // 1. lấy dữ liệu và hiển thị
     // 2. xử lý thêm nhấn vào thêm sản phẩm vào giỏ hàng và xử lý khi thêm sp vào giỏ trùng với sản phẩm đã có trong giỏ thì upadte số lượng
     
-
+    useEffect(() => {
+        document.title = "DosiIn | Thông tin sản phẩm"
+    }, []);
     //dùng để lấy thông tin từ thanh địa chỉ (URL), cái này sẽ còn được ứng dụng để lấy thông tin thanh toán mà ngân hàng trả về
     //sau khi thanh toán thành công
     const urlParams = new URLSearchParams(window.location.search);
     //ví dụ http://localhost:3000/infoProduct?id=1 thì mình sẽ lấy được biến id có giá trị là 1
     //các biến cách nhau bởi dấu ?
     const id = urlParams.get('id'); 
+
 
 
     //biến global
@@ -39,6 +42,8 @@ function InfoProduct(){
         masize: '',
         soluong: 1,
     })  
+    const [isLoading, setIsLoading] = useState(false);
+
 
     // khi load vào trang thông tin sản phẩm thì sẽ dùng infoProduct để lưu dữ liệu từ server gửi lên để hiển thị tt sản phẩm
     const [infoProduct, setInfoProduct] = useState({
@@ -114,8 +119,11 @@ function InfoProduct(){
 
     //thực hiện lấy thông tin sản phẩm khi load vào trang với id tương ứng
     const getInfo = () => {  
+        setIsLoading(true)
         request.get(`/api/infoProduct?id=${id}`)
         .then(res => { 
+            setIsLoading(false)
+
             const sortedData = [...res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs].sort((a, b) => {
                 if (a.imgURL.includes("thumnail") && !b.imgURL.includes("thumnail")) {
                   return -1; // Move a to a lower index (closer to the beginning)
@@ -136,6 +144,7 @@ function InfoProduct(){
             console.log(res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs)
         })
         .catch(e => {
+            setIsLoading(false)
             console.log(e);
         })
     }
@@ -248,6 +257,13 @@ function InfoProduct(){
             document.removeEventListener('click', handleClickOutPopUpCart);
         }; 
     } , []);
+
+    const renderLoading = () => {
+        return (
+            <div class={`donut multi ${isLoading ? '' : 'display_hidden'}`}></div> 
+        )
+    }
+
     const renderStarAtReviewProduct = (SOLUONG_SAO) => {
          
         const stars = []; 
@@ -284,8 +300,10 @@ function InfoProduct(){
         </div>
     )
     return ( 
-        <div class="container col-sm-12 ">
-            <div class="container-fluid">
+        <div class={`container col-sm-12 ${isLoading === true ? '' : ''}`}>
+            <div class={`loadingInfoProductTrue ${isLoading === false ? 'display_hidden' : ''}`}>
+            </div>
+            <div class={`container-fluid ${isLoading === true ? 'display_hidden' : ''}`}>
                 <div class="container_info_product"> 
                     <div class=" col-sm-7">
                         <ImageSlider 

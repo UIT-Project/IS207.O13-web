@@ -424,3 +424,13 @@ a, button{
     height: 60vh;
     overflow: auto;
 }
+
+.faCircleChevronLeft_reviewProduct{
+    width: 2rem;
+    height: 2rem;
+}
+
+.faCircleChevronLeft_div{
+    display: flex;
+    justify-content: start;
+}

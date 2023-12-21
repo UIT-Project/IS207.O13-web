@@ -17,7 +17,9 @@ import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 function Statistic()
 { 
    useAuthCheck()
-
+   useEffect(() => {
+      document.title = "Admin | Thống kê"
+   }, []);
     const [data_doanhthu, setData_doanhthu] = useState(null);
     const [data_TrangThaiDonHang, setData_TrangThaiDonHang] = useState([
       { name: 'Đã giao', value: 50, soluong: 1 }, // Giả sử đã giao là 60%

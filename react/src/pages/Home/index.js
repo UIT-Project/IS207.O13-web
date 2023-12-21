@@ -15,7 +15,9 @@ function Home(){
     // NHỮNG THỨ CẦN XỬ LÝ
     // 1.Lấy thông tin sản phẩm từ DB và hiển thị
     // 2.Xử dụng các hàm hỗ trợ lấy dữ liệu và dùng biến renderNewProduct để render dữ liệu ra màn hình
-
+    useEffect(() => {
+        document.title = "DosiIn | Trang chủ"
+    }, []);
     const {formatPrice} = useGlobalVariableContext(); 
     // chứa thông tin sản phẩm mới
     const [productsInNewProduct, setProductsInNewProduct] = useState([]);
@@ -181,7 +183,7 @@ function Home(){
         </div>
         <div class="show_product">
             <div class="show_product__title_div">
-                <h1 class="show_product__title">Sản phẩm HOT</h1> 
+                <h1 class="show_product__title">SẢN PHẨM HOT</h1> 
             </div>
             {/* <!-- product_item_container__out khối bọc ngoài cho tất cả sản phẩm để dễ padding, margin --> */}
             <div class="product_item_container__out">

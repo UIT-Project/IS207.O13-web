@@ -5,16 +5,19 @@ import 'bootstrap/dist/css/bootstrap.css';
 import { useEffect, useState } from "react";
 import request from "../../utils/request";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faCaretDown, faCheckCircle } from "@fortawesome/free-solid-svg-icons";
+import { faCaretDown, faCheckCircle, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 
 
 function Payment(){
-
+    useEffect(() => {
+        document.title = "DosiIn | Thanh toán"
+    }, []);
     //Khi thanh toán thì cần phải lôi thông tin sản phẩm trong đơn hàng, địa chỉ cũ của người dùng đã đặt hàng và voucher
     //nên infoForPayment sẽ lưu những dữ liệu này khi load vào trang web payment
+    const [errorDinhDangSDT, setErrorDinhDangSDT] = useState(false);
 
     const {formatPrice} = useGlobalVariableContext(); 
     const [isLoading, setIsLoading] = useState(false);
@@ -333,11 +336,12 @@ function Payment(){
                                 // checked 
                             />
                         </div>
-                        <div class="col-5 fw-bold" id="itemmm">
+                        <div class="col-4 fw-bold" id="itemmm">
                             <span>{item.TEN}</span>
+                            <span>&nbsp;&nbsp;</span>
                             <span>{item.SDT}</span>
                         </div>
-                        <div class="col-6">
+                        <div class="col-7">
                             <span>{item.DIACHI}, {item.PHUONG_XA}, {item.QUAN_HUYEN}, {item.TINH_TP}</span>
                         </div>
                     </div>
@@ -360,6 +364,15 @@ function Payment(){
     const handleSaveInfoForPayment = () => {
         // Kiểm tra xem có bất kỳ thông tin nào trống hay không
         setIsLoading(true)
+        const phoneRegex = /^0\d{9}$/; // Biểu thức chính quy để kiểm tra định dạng số điện thoại
+
+        if (shipInformation.numberPhone_ship !== '') {
+            if (!phoneRegex.test(shipInformation.numberPhone_ship)) {
+                setErrorDinhDangSDT(true);
+                setIsLoading(false)
+                return; // Không gửi request nếu số điện thoại không đúng định dạng
+            }
+        }
         const isEmpty = Object.values(shipInformation).some(value => value === '');
 
         // Nếu có bất kỳ thông tin nào trống, hiển thị thông báo
@@ -493,7 +506,7 @@ function Payment(){
                 <div class={` address_box_payment `} >
                     <div class="address_title row">
                         <div>
-                            <i class="fa-solid fa-location-dot"></i>
+                            <FontAwesomeIcon class="fa-location-dot" icon={faLocationDot}></FontAwesomeIcon>
                             <span>Thông tin giao hàng đã đặt hàng những lần trước</span>
                         </div>
                         <div>
@@ -520,8 +533,9 @@ function Payment(){
                         {/* ở đây có xử lý onlcick addnewaddress khi thêm địa chỉ mới  */}
                         <button 
                             type="button" 
-                            class="address_add_button link-dark"  
-                            data-bs-toggle="collapse" href="#address_change"  
+                            className="address_add_button_payment link-dark"  
+                            data-bs-toggle="collapse" 
+                            href="#address_change"  
                             onClick={handleClickAddNewAddress}
                         >+ Thêm địa chỉ mới</button>
                     </div>
@@ -552,7 +566,9 @@ function Payment(){
                             />
                         </div>
                     </div>
-                    
+                    <div class="row mb-2">
+                        <span className={`${errorDinhDangSDT ? "" : "display_hidden"} saidinhdang_mau_do`}>Sai định dạng SĐT</span>
+                    </div>
                     <div class="row mb-3">
                         <div class="col-4">
                             <label for="#" class="form-label">Tỉnh/Thành phố</label>
@@ -639,14 +655,18 @@ function Payment(){
                         <div class="vertical_align_center col-2">
                             {/* áp dụng voucher */}
                             <button 
-                                class="btn-ApplyVoucher"
+                                class=""
                                 onClick={handleApplyVoucher} 
                                 className={
-                                    `${
-                                        (typeof(discountVoucher) !== 'string')
-                                        ? 'display_hidden'
-                                        : ''
-                                    }`
+                                    `
+                                        btn-ApplyVoucher
+                                        ${
+                                            
+                                            (typeof(discountVoucher) !== 'string')
+                                            ? 'display_hidden'
+                                            : ''
+                                        }
+                                    `
                                 }
                             >Áp dụng</button>
                             <FontAwesomeIcon 

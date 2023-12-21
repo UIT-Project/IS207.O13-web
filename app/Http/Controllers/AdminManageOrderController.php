@@ -75,6 +75,8 @@ class AdminManageOrderController extends Controller
             AND sanpham_mausac_sizes.MASP = hinhanhsanphams.MASP AND hinhanhsanphams.MAHINHANH LIKE '%thumnail%'"
         );
 
+        
+
         foreach ($data_relative_Donhang as $order) {
             $order->NGAYORDER = Carbon::parse($order->NGAYORDER)->format('d/m/Y');
         }

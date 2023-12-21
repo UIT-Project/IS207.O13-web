@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
 import {  faFloppyDisk, faL, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../context_global_variable/context_global_variable";
+import CurrencyInput from 'react-currency-input-field';
 
 import useAuthCheck from "../AuthCheckLogin/AuthCheckLogin";
 
@@ -17,6 +18,10 @@ function AddProduct(){
     // 1.hiển thị giao diện các ô input nhập thông tin sản phẩm, input chọn size, chọn màu, nhập số lượng sp, chọn ảnh
     // 2.Xử lý hiển thị ảnh preview, xoá, chọn thêm ảnh
     // 3.xử lý lưu thông tin sản phẩm và hình ảnh xuống db
+
+    useEffect(() => {
+        document.title = "Admin | Thêm sản phẩm"
+     }, []);
 
     const {formatPrice} = useGlobalVariableContext(); 
 
@@ -75,6 +80,17 @@ function AddProduct(){
         ){
             setInfoAddNewProduct({...infoAddNewProduct, [e.target.name]: e.target.value});
         }
+    }
+
+    const handleInputInfoAddNewProduct_vnd = (value, name) => { 
+        const regex_ChiNhapSo = /^\d*$/;
+        console.log(value, 'value')
+        if (value === undefined ) {
+            value = 0; // Gán giá trị là '0' khi không còn giá trị nào trong trường input
+        }
+        if((name === 'originPrice' || name === 'sellPrice') && regex_ChiNhapSo.test(value)){
+            setInfoAddNewProduct({...infoAddNewProduct, [name]: value});
+        }  
     }
 
     //xử lý nhập tt sp với các checkbox
@@ -412,21 +428,43 @@ function AddProduct(){
                             <div class="col-12 input_gia">
                                 <div class="input_gia_div">
                                     {/* <label for="#" class="form-label">Giá niêm yết</label> */} 
-                                    <input 
+                                    {/* <input 
                                         type="text" class="form-control width_gia" placeholder="Giá niêm yết" 
                                         onChange={handleInputInfoAddNewProduct}
                                         name="originPrice"  
                                         value={infoAddNewProduct.originPrice}
-                                    />  
+                                    />   */}
+                                    <CurrencyInput
+                                        className="form-control width_gia"
+                                        placeholder="Giá niêm yết"
+                                        onValueChange={(value, name) => handleInputInfoAddNewProduct_vnd(value, name)}
+                                        name="originPrice"
+                                        value={infoAddNewProduct.originPrice}
+                                        allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                        decimalSeparator="," // Phân cách phần thập phân
+                                        groupSeparator="." // Phân cách hàng nghìn
+                                        suffix=" VND" // Đơn vị tiền tệ
+                                    />
                                     <span className={`red_color ${isEmpty && infoAddNewProduct.originPrice === '' ? '' : 'display_hidden'}`}>Nhập giá niêm yết trước khi lưu</span>
                                 </div>
                                 <div class="input_gia_div">
                                     {/* <label for="#" class="form-label">Giá bán</label> */}
-                                    <input 
+                                    {/* <input 
                                         type="text" class="form-control width_gia" placeholder="Giá bán" 
                                         onChange={handleInputInfoAddNewProduct}
                                         name="sellPrice"   
                                         value={infoAddNewProduct.sellPrice}
+                                    /> */}
+                                    <CurrencyInput
+                                        className="form-control width_gia"
+                                        placeholder="Giá bán"
+                                        onValueChange={(value, name) => handleInputInfoAddNewProduct_vnd(value, name)}
+                                        name="sellPrice"
+                                        value={infoAddNewProduct.sellPrice}
+                                        allowNegativeValue={false} // Tùy chọn, để không cho phép giá trị âm
+                                        decimalSeparator="," // Phân cách phần thập phân
+                                        groupSeparator="." // Phân cách hàng nghìn
+                                        suffix=" VND" // Đơn vị tiền tệ
                                     />
                                     <span className={`red_color ${isEmpty && infoAddNewProduct.sellPrice === '' ? '' : 'display_hidden'}`}>Nhập giá bán trước khi lưu</span>
 
