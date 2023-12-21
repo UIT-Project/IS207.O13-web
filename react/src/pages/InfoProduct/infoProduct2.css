@@ -561,3 +561,7 @@ user-select: none;
   border-radius: 0.3rem;
   padding: 3rem 0.2rem;
 }
+
+.slick-list {
+  width: 79rem;
+}

@@ -18,7 +18,9 @@ import Stack from '@mui/material/Stack';
 function ManageAccountStaff()
 {
     useAuthCheck()
-
+    useEffect(() => {
+        document.title = "Admin | Quản lý nhân viên"
+     }, []);
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
     const [watchProductDetail, setWatchProductDetail] = useState(false);

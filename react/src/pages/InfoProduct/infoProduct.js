@@ -14,6 +14,11 @@ import { faStar as farStarRegular } from '@fortawesome/free-regular-svg-icons'; 
 
 import { faAnchorCircleXmark } from "@fortawesome/free-solid-svg-icons";
 import { faStarHalf } from "@fortawesome/free-regular-svg-icons";
+import React from 'react';
+import Slider from 'react-slick';
+import 'slick-carousel/slick/slick.css';
+import 'slick-carousel/slick/slick-theme.css';
+
 function InfoProduct(){
     // Trong file này cần xử lý
     // 1. lấy dữ liệu và hiển thị
@@ -373,6 +378,20 @@ function InfoProduct(){
         return concatArray = [...arrSolidStar, ...arrRegularStar]
     }
 
+    const settings = {
+        className: "center",
+        dots: true,
+        infinite: true,
+        centerPadding: "60px",
+        slidesToShow: 5,
+        swipeToSlide: true,
+        afterChange: function(index) {
+          console.log(
+            `Slider Changed to: ${index + 1}, background: #222; color: #bada55`
+          );
+        }
+      };
+
     const renderRelativeProduct = relativeProduct.map( (product) => {
         const url = `/infoProduct?id=${product.MASP}`;
         return (
@@ -617,21 +636,23 @@ function InfoProduct(){
                         </div>
                     </div>
                 </div> 
-                    <div class="show_product_SPLIENQUAN show_product">
-                        <div class="show_product__title_div">
-                            <h1 class="show_product__title">SẢN PHẨM LIÊN QUAN</h1> 
-                        </div>
-                        {/* <!-- product_item_container__out khối bọc ngoài cho tất cả sản phẩm để dễ padding, margin --> */}
-                        <div class="product_item_container__out">
-                            {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}
-                            <div class="product_item_container__in">
-                                {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
-                                {renderRelativeProduct}
-                            </div>
+                <div class="show_product_SPLIENQUAN show_product">
+                    <div class="show_product__title_div">
+                        <h1 class="show_product__title">SẢN PHẨM LIÊN QUAN</h1> 
+                    </div>
+                    {/* <!-- product_item_container__out khối bọc ngoài cho tất cả sản phẩm để dễ padding, margin --> */}
+                    <div class="product_item_container__out">
+                        {/* <!-- product_item_container__in khối bọc trong cho tất cả sản phẩm --> */}
+                        <div class="product_item_container__in align-items-center">
+                            {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
+                            {/* {renderRelativeProduct} */}
+                            <Slider {...settings}>
+                            {renderRelativeProduct}
+                            </Slider>
                         </div>
                     </div>
+                </div>
             </div>
- 
         </div>
     )
 }

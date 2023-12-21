@@ -17,6 +17,10 @@ function SearchProduct(){
     // sau khi đọc các trang trước thì trang này mọi người có thể soi code để hiểu
     const {formatPrice} = useGlobalVariableContext(); 
 
+    useEffect(() => {
+        document.title = "DosiIn | Tìm kiếm"
+     }, []);
+
     const { resultQuery, setResultQuery, textQuery, setTextQuery} = useGlobalVariableContext();
 
     const [filter, setFilter] = useState('');

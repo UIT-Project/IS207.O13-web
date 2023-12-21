@@ -94,7 +94,9 @@ function ManageOrder(){
     //     }
     // }
     useAuthCheck()
-
+    useEffect(() => {
+        document.title = "Admin | Quản lý đơn hàng"
+     }, []);
     const {formatPrice} = useGlobalVariableContext(); 
     const componentRef = useRef();
     const handlePrint_A4 = useReactToPrint({

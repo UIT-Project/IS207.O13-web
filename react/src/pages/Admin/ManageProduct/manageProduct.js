@@ -20,7 +20,7 @@ function ManageProduct()
     const {formatPrice} = useGlobalVariableContext(); 
     useAuthCheck()
     useEffect(() => {
-        document.title = "Admin | Quản lý tài khoản khách hàng"
+        document.title = "Admin | Quản lý sản phẩm"
     }, []);
     const numberOrderEachPage = 20; 
     const [paginationNumberRunFirst, setPaginationNumberRunFirst] = useState(0); 
