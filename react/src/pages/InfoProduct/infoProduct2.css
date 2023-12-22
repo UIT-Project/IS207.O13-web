@@ -600,3 +600,7 @@ user-select: none;
   fill: #333;
   cursor: pointer;
 }
+
+.product_item__summary{
+  height: 89px;
+}

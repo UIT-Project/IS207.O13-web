@@ -535,6 +535,7 @@ form.sign-in-form {
   display: flex;
   justify-content: end;
   margin-left: 14em;
+  cursor: pointer;
 }
 
 .gender_css{
@@ -622,4 +623,11 @@ form.sign-in-form {
   border-color: black; 
   border-radius: 10px;
   margin-top: 0.5em;
+}
+
+.input-field_icon {
+  width: 25px;
+  height: 25px;
+  margin-top: 15px;
+  margin-left: 10px;
 }
