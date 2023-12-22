@@ -16,9 +16,6 @@ function Collection(){
     // trang này hiển thị thông tin sản phẩm tìm kiếm được khi search ở thanh tìm kiếm trong header
     // sau đó sử dụng các bộ lọc để lọc sản phẩm
     // sau khi đọc các trang trước thì trang này mọi người có thể soi code để hiểu
-    useEffect(() => {
-        document.title = "DosiIn | Tìm kiếm"
-    }, []);
     const {formatPrice, setCategory1, category1} = useGlobalVariableContext(); 
     console.log(category1, 'newCategory')
     const numberOrderEachPage = 20;
@@ -56,6 +53,23 @@ function Collection(){
         },
     ])
 
+    useEffect(() => {
+        // Thiết lập tiêu đề trang dựa trên giá trị của state_mapl_sp
+        switch (state_mapl_sp) {
+          case 1:
+            document.title = 'DosiIn | Nam';
+            break;
+          case 2:
+            document.title = 'DosiIn | Nữ';
+            break;
+          case 3:
+            document.title = 'DosiIn | Trẻ em';
+            break;
+          default:
+            document.title = 'DosiIn | Tìm kiếm sản phẩm';
+            break;
+        }
+      }, [state_mapl_sp]);
 
     const [orderStatus, setOrderStatus] = useState({
         collection:{

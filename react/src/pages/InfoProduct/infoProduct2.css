@@ -562,6 +562,41 @@ user-select: none;
   padding: 3rem 0.2rem;
 }
 
+.slick-slider {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 0 20px;
+}
 .slick-list {
-  width: 79rem;
+  width: 72rem;
+}
+
+.slick-slide {
+  /* margin: 0 10px; */
+  padding: 0 15px;
+}
+
+.custom-prevArrow,
+.custom-nextArrow {
+  position: relative;
+  width: 30px;
+}
+.custom-prevArrow {
+  float: left;
+  left: -10px;
+  top: 150px;
+}
+.custom-nextArrow {
+  float: right;
+  right: -10px;
+  bottom: 210px;
+}
+.custom-prevArrow:hover,
+.custom-nextArrow:hover {
+  fill: #333;
+  cursor: pointer;
 }
