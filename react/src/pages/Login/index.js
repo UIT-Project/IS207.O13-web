@@ -1,6 +1,6 @@
 import 'bootstrap/dist/css/bootstrap.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faFaceAngry } from '@fortawesome/free-regular-svg-icons';
+import { faClock, faFaceAngry, faEnvelope } from '@fortawesome/free-regular-svg-icons';
 import {  faUser } from '@fortawesome/free-solid-svg-icons';
 import './style.css';
 import { useEffect, useState } from "react";
@@ -235,21 +235,21 @@ function Login(){
               <form action="#" class="sign-in-form" onSubmit={loginSubmit}>
                 <h2 class="title">Đăng Nhập</h2>
                 <div class={`input-field ${isSendMailRecoverSuccess ? 'display_hidden' : ''}`}>
-                  <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
+                  <FontAwesomeIcon icon={faEnvelope} class="input-field_icon"></FontAwesomeIcon>
                   {/* <i class="fas fa-user"></i> */}
                   <input type="text" name="email_login" onChange={handleInputLogin} value={loginInput.email_login} placeholder="Email" />
                 </div>
                 <p class={`${isSendMailRecoverSuccess ? '' : 'display_hidden'}`}>Chúng tôi đã gửi một mail cho bạn để khôi phục mật khẩu, hãy kiểm tra mail</p>
                 <span className={`${isSendMailRecoverSuccess ? 'display_hidden' : ''}`}>{loginInput.error_list_login.email}</span>
                 <div class={`input-field ${isClickForgetPass ? 'display_hidden' : ''}`}>
-                  <FontAwesomeIcon icon={faClock} className='input-field__faclock'></FontAwesomeIcon>
+                  <FontAwesomeIcon icon={faClock} class="input-field_icon" className='input-field__faclock'></FontAwesomeIcon>
                   {/* <i class="fas fa-lock"></i> */}
                   <input 
                     type="password" 
                     name="password_login" 
                     onChange={handleInputLogin} 
                     value={loginInput.password_login} 
-                    placeholder="Password" 
+                    placeholder="Mật khẩu" 
                   />
                 </div>
                 <span 
@@ -303,31 +303,31 @@ function Login(){
               <form action="#" class="sign-up-form" onSubmit={registerSubmit}>
                 <h2 class="title">Đăng Ký</h2>
                 <div class="input-field">
-                  <i class="fas fa-user"></i>
+                  <FontAwesomeIcon icon={faUser} class="input-field_icon"></FontAwesomeIcon>
                   <input 
                     type="text" 
                     name="name_register" 
                     onChange={handleInputRegister} 
                     value={registerInput.name_register} 
-                    placeholder="Name"
+                    placeholder="Tên người dùng"
                   /> 
                 </div>
                 <span>{registerInput.error_list_register.name}</span>
                 <div class="input-field">
-                  <i class="fas fa-envelope"></i>
+                  <FontAwesomeIcon icon={faEnvelope} class="input-field_icon"></FontAwesomeIcon>
                   <input type="email" name="email_register" onChange={handleInputRegister} value={registerInput.email_register} placeholder="Email" />
                 </div>
                 <span>{registerInput.error_list_register.email}</span>
 
                 <div class="input-field">
-                  <i class="fas fa-lock"></i>
-                  <input type="password" name="password_register" onChange={handleInputRegister} value={registerInput.password_register} placeholder="Password" />
+                  <FontAwesomeIcon icon={faClock} class="input-field_icon"></FontAwesomeIcon>
+                  <input type="password" name="password_register" onChange={handleInputRegister} value={registerInput.password_register} placeholder="Mật khẩu" />
                 </div>
                 <span>{registerInput.error_list_register.password}</span>
 
                 <div class="input-field">
-                  <i class="fas fa-lock"></i>
-                  <input type="password" name="confirmPassword_register" onChange={handleInputRegister} value={registerInput.confirmPassword_register} placeholder="Confirm Password" />
+                  <FontAwesomeIcon icon={faClock} class="input-field_icon"></FontAwesomeIcon>
+                  <input type="password" name="confirmPassword_register" onChange={handleInputRegister} value={registerInput.confirmPassword_register} placeholder="Nhập lại mật khẩu" />
                 </div>
                 <span>{registerInput.error_list_register.confirmPassword}</span>
                 <h5>Giới tính</h5>
