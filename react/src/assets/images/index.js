@@ -1,5 +1,5 @@
 const images = {
-    main_slide_chicago: require('./main_slide/chicago.png'),
+    main_slide_chicago: require('./main_slide/ny_show.jpg'),
     main_slide_la: require('./main_slide/la.png'),
     main_slide_ny: require('./main_slide/ny.png'),
     product_1: require('./product/product_3.png'),

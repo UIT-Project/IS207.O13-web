@@ -569,3 +569,8 @@ tr {
 #thongtin_giao_hang_1 {
     margin: 10px 0px 20px 0px;
 }
+
+
+.width_manageOrder_dropdown_search{
+    width: 100%;
+}

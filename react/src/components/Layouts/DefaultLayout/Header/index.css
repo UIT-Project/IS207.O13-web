@@ -124,7 +124,7 @@ a, button{
     background-color: orange;
 } */
 .header_block{
-    border-top: 15px solid orange;
+    border-top: 15px solid rgb(34, 34, 34) !important;
 }
 .carousel_img{
     border-radius: 10px;
@@ -598,4 +598,16 @@ ul{
 
 .display_hidden{
     display: none !important;
+}
+
+.faMagnifyingGlass_header{
+    color: white;
+}
+
+.header_body__search__button{
+    background-color: #353535 !important;
+}
+
+.fa_icon_header{
+    margin-right: 0.5rem;
 }

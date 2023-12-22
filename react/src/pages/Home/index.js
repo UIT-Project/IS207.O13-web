@@ -148,14 +148,20 @@ function Home(){
             
             {/* <!-- The slideshow/carousel --> */}
             <div class="carousel-inner carousel_img">
-                <div class="carousel-item active">
-                <img src={images.main_slide_la} alt="Los Angeles" class="d-block w-100 carousel_img"/>
+                <div class="carousel-item active">            
+                    <a href="/collection2?mapl_sp=2">
+                        <img src={images.main_slide_la} alt="Los Angeles" class="d-block w-100 carousel_img"/>
+                    </a>
                 </div>
                 <div class="carousel-item carousel_img">
-                <img src={images.main_slide_chicago} alt="Chicago" class="d-block w-100 carousel_img"/>
+                    <a href="/collection3?mapl_sp=3">
+                        <img src={images.main_slide_chicago} alt="Chicago" class="d-block w-100 carousel_img"/>
+                    </a>
                 </div>
                 <div class="carousel-item carousel_img">
-                <img src={images.main_slide_ny} alt="New York" class="d-block w-100 carousel_img"/>
+                    <a href="/collection1?mapl_sp=1">
+                        <img src={images.main_slide_ny} alt="New York" href="/collection1?mapl_sp=1" class="d-block w-100 carousel_img"/>
+                    </a>
                 </div>
             </div>
             

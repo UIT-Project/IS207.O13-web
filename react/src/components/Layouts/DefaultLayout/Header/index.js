@@ -4,7 +4,7 @@ import images from '../../../../assets/images'
 //fortawesome là thư viện dùng để lấy icon
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faHeart } from '@fortawesome/free-regular-svg-icons'
-import { faCaretDown, faCartShopping, faMagnifyingGlass, faUser } from '@fortawesome/free-solid-svg-icons'
+import { faArrowRightFromBracket, faCaretDown, faCartShopping, faFileInvoiceDollar, faMagnifyingGlass, faUser } from '@fortawesome/free-solid-svg-icons'
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 
 
@@ -315,7 +315,7 @@ function Header({settoggleFunctionLoginLogout}){
                         
                         {/* ở đây có  onClick*/}
                         <button class="header_body__search__button" onClick={handleSearchProduct}>
-                            <FontAwesomeIcon icon={faMagnifyingGlass}></FontAwesomeIcon>
+                            <FontAwesomeIcon icon={faMagnifyingGlass} className='faMagnifyingGlass_header'></FontAwesomeIcon>
                         </button> 
                     </div>
                 </div>
@@ -364,15 +364,26 @@ function Header({settoggleFunctionLoginLogout}){
                                 <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
                             </button>
                             <div class="header_body__option_and_info__user__text">   
-                                <span class="header_body__option_and_info__user__text_taikhoan">Tài khoản</span>
+                                <span class="header_body__option_and_info__user__text_taikhoan">
+                                    Tài khoản
+                                </span>
                                 <span class="header_body__option_and_info__user__text_xinchao">Xin chào!</span> 
                             </div>  
                             <FontAwesomeIcon icon={faCaretDown}></FontAwesomeIcon>   
                             <div class="header_body__option_and_info__user__select_login_or_logout">
                                 {/* có onclick */}
-                                <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickInfoAccount : clickSignIn}>{(hasLogin) ? "Tài khoản" : "Đăng nhập" }</button>
-                                <button class={`header_body__option_and_info__user__select_login_or_logout__in ${(hasLogin) ? "" : 'display_hidden' }`} onClick={(hasLogin) ? clickMyOrder : ''}>{(hasLogin) ? "Đơn hàng" : "" }</button>
-                                <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickLogout : clickSignUp}>{(hasLogin) ? "Đăng Xuất" : "Đăng ký" }</button>
+                                <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickInfoAccount : clickSignIn}>
+                                    <FontAwesomeIcon icon={faUser} className='fa_icon_header'></FontAwesomeIcon>
+                                    {(hasLogin) ? "Tài khoản" : "Đăng nhập" }
+                                </button>
+                                <button class={`header_body__option_and_info__user__select_login_or_logout__in ${(hasLogin) ? "" : 'display_hidden' }`} onClick={(hasLogin) ? clickMyOrder : ''}>
+                                    <FontAwesomeIcon icon={faFileInvoiceDollar} className='fa_icon_header'></FontAwesomeIcon>
+                                    {(hasLogin) ? "Đơn hàng" : "" }
+                                </button>
+                                <button class="header_body__option_and_info__user__select_login_or_logout__in" onClick={(hasLogin) ? clickLogout : clickSignUp}>
+                                    <FontAwesomeIcon icon={faArrowRightFromBracket} className='fa_icon_header'></FontAwesomeIcon>
+                                    {(hasLogin) ? "Đăng Xuất" : "Đăng ký" }
+                                </button>
 
                             </div>
                         </div>

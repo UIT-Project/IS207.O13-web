@@ -1,7 +1,7 @@
 import './index.css'
 
 function Footer(){
-    return <footer>
+    return <footer className='mauchu_footer_defaultLayout'>
     <div class="container_footer">
         <div class="container container_footer_in">
             <div class="row">

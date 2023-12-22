@@ -11,6 +11,9 @@ import { faCheck } from "@fortawesome/free-solid-svg-icons";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 import { useLocation } from 'react-router-dom';
 
+import Pagination from '@mui/material/Pagination';
+import Stack from '@mui/material/Stack';
+
 function Collection(){ 
 
     // trang này hiển thị thông tin sản phẩm tìm kiếm được khi search ở thanh tìm kiếm trong header
@@ -337,6 +340,10 @@ function Collection(){
         // setState_query((searchParams.get('query')))
         // setState_mapl_sp(parseInt(searchParams.get('mapl_sp')))
     }, []);  
+
+    const handlePageChange = (event, page) => {
+        handleClickItemPagination(page);
+    }; 
      
     const product = () => {
         let index = {
@@ -527,9 +534,19 @@ function Collection(){
                     </div>
                 </div>
             </div> 
-            <div>
+            {/* <div>
                 { renderPagination() }
-            </div>
+            </div>  */}
+            <div  className={`pagination-container margin__bottom`}> 
+                <Stack spacing={2}>
+                    <Pagination 
+                        page={orderStatus_Array[0].value.openingPage} // Sử dụng openingPage từ state
+                        count={orderStatus_Array[0].value.paginationList.length} 
+                        onChange={(event, page) => handlePageChange(event, page)}  
+                        color="primary"
+                    /> 
+                </Stack> 
+            </div>   
         </div>
     )
 }

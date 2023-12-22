@@ -211,7 +211,7 @@ function Cart() {
                 </td>
                 <td>
                     <div class="box-row1-column2 box-row1">
-                        <b class="row1-item">{formatPrice(item.GIABAN)}</b>
+                        <b class="row1-item">{formatPrice(item.GIABAN)} đ</b>
                     </div>
                 </td>
                 <td>
@@ -221,7 +221,7 @@ function Cart() {
                 </td>
                 <td>
                     <div class="box-row1-column4 box-row1">
-                        <b class="row1-item">{formatPrice(item.TONGGIA)}</b>
+                        <b class="row1-item">{formatPrice(item.TONGGIA)} đ</b>
                     </div>
                 </td>
                 <td>

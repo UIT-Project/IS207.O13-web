@@ -1101,7 +1101,7 @@ function ManageVoucher()
                     ></input> 
                 </div>
                 <div class="col-2 width_search"> 
-                    <select class="form-select " required
+                    <select class="form-select width_manageOrder_dropdown_search" required
                         onChange={handleInputInfoTypeSearch}
                         name="typeSearch"
                         value={typeSearch} 

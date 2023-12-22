@@ -13,7 +13,7 @@ function AdminLayout({children}){
             <div className="row">
                 <SideBar/>
                 <div class="col-sm-10">
-                    <NavigateAdmin/>
+                    {/* <NavigateAdmin/> */}
                     <div className="kjkjkuu">
                         {children}
                     </div>

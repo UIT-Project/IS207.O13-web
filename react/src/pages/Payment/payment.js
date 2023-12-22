@@ -50,7 +50,10 @@ function Payment(){
     //chọn phương thức thanh toán
     const [phuongThucThanhToan, setPhuongThucThanhToan] = useState('Thanh toán khi nhận hàng');
     var tongtienSP = 0;
-    const [phivanchuyen, setPhivanchuyen] = useState(25000);
+    const phivanchuyen_default = 25000;
+    const phivanchuyen_hcm = 20000;
+    const [phivanchuyen, setPhivanchuyen] = useState(phivanchuyen_default);
+    const [phivanchuyen__truockhiapvoucher, setPhivanchuyen__truockhiapvoucher] = useState(0);
     const [dataAPIAddress, setDataAPIAddress] = useState({
         province: [],
         districts: [],
@@ -66,6 +69,7 @@ function Payment(){
         option_quan: '',
         option_phuong: '',
     });
+    
     const shipInformation_Array = Object.entries(shipInformation).map(([key, value]) => (
         {
             key: key,
@@ -114,9 +118,20 @@ function Payment(){
                     console.log('1')
                 }
                 else if(item.PHANLOAI_VOUCHER === 'Vận chuyển'){
-                    setPhivanchuyen(item.GIATRIGIAM * phivanchuyen); 
-                    console.log('2') 
-                    setTongSoTien(tongtienSP + phivanchuyen - item.GIATRIGIAM * phivanchuyen)
+                    if(tongtienSP < item.GIATRI_DH_MIN){
+                        setDiscountVoucher("Giá trị đơn hàng không đạt tối thiểu");
+                        console.log('5')
+                    }
+                    else{
+                        
+                        setPhivanchuyen__truockhiapvoucher(phivanchuyen)
+                        setPhivanchuyen(phivanchuyen - (item.GIATRIGIAM * phivanchuyen)); 
+                        console.log('2') 
+                        setTongSoTien(tongtienSP + phivanchuyen - (item.GIATRIGIAM * phivanchuyen))
+                        setDiscountVoucher(parseFloat(item.GIATRIGIAM) );
+                        console.log(item.GIATRIGIAM * phivanchuyen, 'vanchuyen')
+                    }
+                    console.log(item.GIATRIGIAM * phivanchuyen, 'vanchuyen')
                 }
                 else if(tongtienSP >= item.GIATRI_DH_MIN){
                     if(tongtienSP * item.GIATRIGIAM > item.GIATRI_GIAM_MAX){
@@ -137,6 +152,7 @@ function Payment(){
                     console.log('5')
                 }
                 i++;
+                console.log(phivanchuyen, 'vanchuyen')
             }
         });
         if(i === 0) setDiscountVoucher("Nhập sai mã voucher");
@@ -146,6 +162,14 @@ function Payment(){
     const handleInputShipInformation = (e) => {
         e.persist();
         setShipInformation({...shipInformation, [e.target.name]: e.target.value});
+        if(e.target.value === 'Thành phố Hồ Chí Minh'){
+            setPhivanchuyen(phivanchuyen_hcm)
+            setTongSoTien(tongtienSP + phivanchuyen_hcm)
+        }
+        else{
+            setPhivanchuyen(phivanchuyen_default)
+            setTongSoTien(tongtienSP + phivanchuyen_default) 
+        }
         let ID_Province = 1;
         let ID_District = 1;
         dataAPIAddress.province.forEach(item => {
@@ -224,7 +248,7 @@ function Payment(){
             setDataAPIAddress({
                 ...dataAPIAddress,
                 province: res.data.filter(item => item)
-            })
+            }) 
             // setShipInformation({...shipInformation, option_thanhpho: res.data[0].name})
         })
     }
@@ -274,8 +298,10 @@ function Payment(){
     }) 
     useEffect(() => {
         const found = dataAPIAddress.province.find((item, index) => item.name === shipInformation.option_thanhpho)
-        if(found)
-            handleGetDistrict(found.code)
+        if(found){
+            handleGetDistrict(found.code) 
+        }
+        
     }, [shipInformation.option_thanhpho])
     useEffect(() => {
         const found = dataAPIAddress.districts.find((item, index) => item.name === shipInformation.option_quan) 
@@ -398,8 +424,8 @@ function Payment(){
                 matk: localStorage.getItem('auth_matk'),
                 ngayorder: getCurrentDate(),
                 tongtien_SP: tongtienSP,
-                vouchergiam: typeof(discountVoucher) !== 'string' ? tongtienSP * discountVoucher : 0,
-                tongtiendonhang: tongtienSP - tongtienSP * discountVoucher + phivanchuyen,
+                vouchergiam: (phivanchuyen === phivanchuyen_default || phivanchuyen === phivanchuyen_hcm) ? (typeof(discountVoucher) !== 'string'  ? tongtienSP * discountVoucher : 0 ) : phivanchuyen__truockhiapvoucher - phivanchuyen,
+                tongtiendonhang: (phivanchuyen === phivanchuyen_default || phivanchuyen === phivanchuyen_hcm) ? (tongtienSP - tongtienSP * discountVoucher + phivanchuyen) : tongtienSP + phivanchuyen,
                 phivanchuyen: phivanchuyen,
                 hinhthucthanhtoan: phuongThucThanhToan,
                 trangthaithanhtoan: 'Chưa thanh toán',
@@ -675,7 +701,7 @@ function Payment(){
                                         btn-ApplyVoucher
                                         ${
                                             
-                                            (typeof(discountVoucher) !== 'string')
+                                            (typeof(discountVoucher) !== 'string' || (phivanchuyen !== phivanchuyen_default && phivanchuyen !== phivanchuyen_hcm))
                                             ? 'display_hidden'
                                             : ''
                                         }
@@ -687,7 +713,7 @@ function Payment(){
                                 className={
                                     `   iconCheckApplyVoucherSuccess
                                         ${
-                                            (typeof(discountVoucher) !== 'string')
+                                            (typeof(discountVoucher) !== 'string' || (phivanchuyen !== phivanchuyen_default && phivanchuyen !== phivanchuyen_hcm))
                                             ? ''
                                             : 'display_hidden'
                                         }
@@ -706,8 +732,8 @@ function Payment(){
                                 { 
                                     typeof(discountVoucher) === 'string' && discountVoucher !== '0'
                                     ? discountVoucher 
-                                    : `-${formatPrice(parseInt(discountVoucher * tongtienSP))}đ`
-                                }
+                                    : `-${ (phivanchuyen === phivanchuyen_default || phivanchuyen === phivanchuyen_hcm) ? formatPrice(parseInt(discountVoucher * tongtienSP)) : formatPrice(parseInt(phivanchuyen__truockhiapvoucher - phivanchuyen))} đ`
+                                } 
                             </span>
                         </div>
                     </div>
@@ -717,7 +743,7 @@ function Payment(){
                         </div>
                         <div class="col-4"></div>
                         <div class="col-2 text-start">
-                            <span class="discount_price">{formatPrice(tongtienSP)}</span>
+                            <span class="discount_price">{formatPrice(tongtienSP)} đ</span>
                         </div>
                     </div>
                     <div class="row justify-content-end">
@@ -731,7 +757,7 @@ function Payment(){
                             </select> */}
                         </div>
                         <div class="vertical_align_center col-2 text-start">
-                            <span>{formatPrice(phivanchuyen)}đ</span>
+                            <span>{formatPrice(phivanchuyen)} đ</span>
                         </div>
                     </div>
                     <div class="row justify-content-end">
@@ -758,7 +784,7 @@ function Payment(){
                             <span class="discount_price fs-4 fw-bold">
                         {/* {tongtienSP + phivanchuyen - parseInt(discountVoucher)} */}
                         {tongSoTien === '' ? '' : formatPrice(parseInt(tongSoTien))}
-                        đ
+                         đ
                     </span>
                         </div>
                     </div>
