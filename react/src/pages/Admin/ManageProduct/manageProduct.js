@@ -1523,7 +1523,7 @@ function ManageProduct()
                     ></input> 
                 </div>
                 <div class="col-2 width_search"> 
-                    <select class="form-select " required
+                    <select class="form-select width_formselect_manageProduct" required
                         onChange={handleInputInfoTypeSearchSendRequest}
                         name="typeSearch"
                         // value={typeSearchParams} 

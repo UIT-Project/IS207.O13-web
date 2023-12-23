@@ -678,7 +678,7 @@ function InfoProduct(){
                             {/* <!-- product_item_div__out hiển thị thông tin từng sản phẩm --> */} 
                             {/* {renderRelativeProduct} */}
                             <Slider {...settings}>
-                            {renderRelativeProduct}
+                                {renderRelativeProduct}
                             </Slider>
                         </div>
                     </div>
