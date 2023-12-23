@@ -1,0 +1,164 @@
+.address {
+    height: 70px;
+}
+
+.last-button{
+    margin-top: 2em;
+    margin-left: 17.15em;
+    width: 150px;
+    background-color: orange;
+    color: #fff;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid orange; 
+}
+.image-button{
+    margin-top: 15px;
+    margin-left: 30px;
+    border-radius: 5px;
+    background-color: black;
+    color: #fff;
+    border: 1px solid black; 
+}
+.circular-image {
+    margin-top: 40px;
+    width: 150px; /* Định kích thước ảnh */
+    height: 150px;
+    border-radius: 50%; /* Đặt giá trị này thành 50% để tạo hình tròn */
+    overflow: hidden; /* Ẩn phần nằm ngoài phạm vi hình tròn */
+}
+
+.circular-image img {
+    width: 100%; /* Đảm bảo ảnh lấp đầy phần hình tròn */
+    height: 100%;
+}
+
+.form_container{
+    margin-top: 50px;
+    margin-bottom: 0px;
+}
+.name_row{
+    margin-top: 20px;
+}
+.order_info_body {
+    font-size: larger;
+}
+.order_status_cover {
+    border: 2px solid rgba(0, 0, 0, 25%);
+    border-radius: 5px;
+    margin-top: 15px;
+    margin-bottom: 15px;
+}
+.bland {
+    color: rgba(0, 0, 0, 50%);
+}
+.color_red {
+    color: red;
+}
+.sub_info_1 {
+    border-top: 2px solid rgba(0, 0, 0, 25%);
+    border-bottom: 2px solid rgba(0, 0, 0, 25%);
+}
+.sub_info_2 {
+    border-bottom: 2px solid rgba(0, 0, 0, 25%);
+}
+/* button {
+    font-size: large;
+    font-weight: bold;
+    color: white;
+    background-color: #000;
+    border-style: none;
+    border-radius: 5px;
+    padding: 15px 30px;
+}
+button:hover {
+    background-color: rgba(0, 0, 0, 80%);
+}
+button:disabled {
+    background-color: rgba(0, 0, 0, 50%);
+} */
+
+.round_corner_input{
+    border: 0px;
+    border-radius: 0.4em;
+}
+.thongtintaikhoan{
+    margin-top: 4em;
+}
+
+.changePassword-button{
+    margin-top: 0.8em;
+    margin-left: 8em;
+    width: 150px;
+    background-color: orange;
+    color: #fff;
+    height: 40px;
+    border-radius: 7px;
+    border: 1px solid orange; 
+}
+.notifySaveInfoAccount{
+    margin-left: -13em;
+    margin-top: 0.2em;
+
+}
+
+.notifySaveInfoChangePassword{
+    margin-top: 0.7em; 
+    margin-left: 4em;
+
+}
+.donut_InfoAccount {
+    width: 2rem;
+    height: 2rem;
+    margin-top: 1rem;
+    margin-left: 20rem;
+    border-radius: 50%;
+    border: 0.3rem solid white;
+    border-top-color: #979fd0;
+    animation: 1.5s spin infinite linear;
+  
+    &.multi_InfoAccount {
+      border-bottom-color: #979fd0;
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+.display_hidden{
+    display: none;
+}
+
+.donut_InfoAccount2 {
+    width: 2rem;
+    height: 2rem;
+    margin-top: 2rem;
+    margin-left: 23rem;
+    border-radius: 50%;
+    border: 0.3rem solid white;
+    border-top-color: #979fd0;
+    animation: 1.5s spin infinite linear;
+  
+    &.multi_InfoAccount {
+      border-bottom-color: #979fd0;
+    }
+  }
+  
+  @keyframes spin {
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+
+  .luuthanhcong_mauxanh{
+    color: green;
+    font-weight: 450;
+  }
+
+  .saidinhdang_mau_do{
+    color: red;
+  }

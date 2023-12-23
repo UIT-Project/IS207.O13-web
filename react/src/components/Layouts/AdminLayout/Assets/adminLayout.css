@@ -1,0 +1,166 @@
+body {
+    margin: 0;
+    padding: 0;
+    background-color: rgba(243, 241, 241, 1);
+}
+
+/* sidebar */
+.sidebar {
+    height: 100%; 
+    position: fixed;  
+    background-color: rgba(8, 63, 94, 1); 
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 16.66666667%;
+}
+.sidebarTest{
+    background-color: rgba(8, 63, 94, 1);
+    display: flex; 
+    justify-content: center;
+    height: 100vh;
+    /* position: fixed;  */
+}
+
+.sidebar_logo {
+    margin-bottom: 50px;
+    width: 100%;
+    align-items: center;
+}
+
+.sidebar_logo>img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+.sidebar_nav {
+    list-style-type: none;
+    padding: 0;
+    white-space: nowrap;
+}
+
+.sidebar_nav_item {
+    padding: 10px;
+    margin-bottom: 10px;
+    cursor: pointer;
+}
+
+.sidebar_nav_item:hover {
+    background-color: rgba(22, 107, 156, 0.5)
+}
+
+.sidebar_nav_item_content {
+    text-decoration: none;
+    font-size: large;
+    color: #fff;
+}
+
+/* .sidebar_subnav {
+    padding-left: 10px;
+} */
+
+.medium_font {
+    font-size: medium;
+}
+
+.panel {
+    /* display: none; */
+    overflow: hidden;
+}
+
+/* content */
+.content {
+    /* margin-left: 180px; */
+}
+
+.content_header {
+    background-color: #fff;
+    padding: 20px 50px;
+    margin-top: 25px;
+}
+
+.content_report_container {
+    margin: 0;
+    margin-top: 50px;
+}
+
+.content_report_card {
+    color: #fff;
+    padding: 25px 30px 30px;
+    margin: 25px;
+}
+
+.bgcolor_blue {
+    background-color: rgba(101, 168, 183, 1);
+}
+
+.bgcolor_yellow {
+    background-color: rgba(229, 209, 36, 1);
+}
+
+.bgcolor_green {
+    background-color: rgba(79, 186, 52, 1);
+}
+
+.bgcolor_red {
+    background-color: rgba(236, 95, 95, 1);
+}
+
+.content_report_card_info {
+    font-size: 35px;
+    font-weight: 500;
+}
+
+.content_report_card_icon {
+    font-size: 40px;
+    color: rgba(0, 0, 0, 0.3);
+}
+
+.content_report_card_subinfo {
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.content_chart_heading {
+    text-align: center;
+    margin-top: 50px;
+}
+
+.content_chart_condition {
+    margin: 0;
+    display: flex;
+    align-items: end;
+}
+
+.content_chart_condition_input {
+    padding: 0;
+}
+
+.content_chart_condition_btn {
+    padding: 0;
+}
+
+.content_chart_container {
+    width: 100%;
+    height: 500px;
+    display: flex;
+    justify-content: center;
+    margin: 30px 0px;
+}
+.category_text_inSideBar{
+    margin: 0px 10px;
+    font-weight: bold;
+}
+.block_category{
+    display: block;
+}
+
+.block_category_none{
+    display: none;
+}
+
+.kjkjkuu{
+    margin-top: 10rem;
+}
