@@ -47,6 +47,30 @@ function InfoProduct(){
     const [hetHang, setHetHang] = useState(false);
     const textareaRef = useRef(null);
 
+    const openPopup = () => {
+        const popupOverlay = document.querySelector(".popup-overlay");
+        const popupContainer = document.querySelector(".popup-container");
+    
+        popupOverlay.style.display = "flex";
+        setTimeout(() => {
+          popupContainer.style.opacity = "1";
+          popupContainer.style.transform = "scale(1)";
+        }, 100);
+    };
+    const [contentPopup, setContentPopup] = useState({
+        title: '',
+        content: '',
+    })
+ 
+    const closePopup = () => {
+        const popupContainer = document.querySelector(".popup-container");
+        popupContainer.style.opacity = "0";
+        popupContainer.style.transform = "scale(0.8)";
+        setTimeout(() => {
+            const popupOverlay = document.querySelector(".popup-overlay");
+            popupOverlay.style.display = "none";
+        }, 300);
+    }; 
     //
     const buttonAddToCartRef = useRef(null);  
     const [infoReviewProduct, setInfoReviewProduct] = useState([]);
@@ -119,7 +143,7 @@ function InfoProduct(){
             ...selectPropertyProduct,
             [name]: value
         });
-        console.log(value)
+        console.log(value, 'mamau')
     }
     useEffect(() => {
         console.log(selectPropertyProduct.mamau, 'aksdj')
@@ -184,7 +208,7 @@ function InfoProduct(){
                 data_xacDinhSoLuong: res.data.data_xacDinhSoLuong,
                 imgURL: res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs,
             });  
-            console.log(res.data.dataProductDetail_sanpham_mausac_sizes__hinhanhs)
+            console.log(res.data.data_mamau, 'data_mausac')
         })
         .catch(e => {
             setIsLoading(false)
@@ -226,63 +250,72 @@ function InfoProduct(){
     const handleAddToCart =  (e) => {
         e.preventDefault(); 
         if(localStorage.getItem('auth_matk')){
-            
-            let i = 0;
-            let soLuongMua = selectPropertyProduct.soluong;
-            infoProduct.data_xacDinhSoLuong.forEach(item => {
-                if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG === 0){
-                    setHetHang(true);
-                    i++;
-                }
-                if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG < soLuongMua)
-                    soLuongMua = item.SOLUONG
-            });
-            if(i === 0) {
-                dataAddProductToCart = { 
-                    matk: localStorage.getItem("auth_matk"),
-                    masp: id,
-                    mamau:  selectPropertyProduct.mamau,
-                    masize: selectPropertyProduct.masize,
-                    soluongsp: soLuongMua,
-                    tonggia: soLuongMua * infoProduct.data_sanpham.GIABAN,
-                }
-                
-                let found = false;
-        
-                infoCarts.map(item => {
-                    console.log(item.MASP, 'ok');
-                    console.log(item.MATK, dataAddProductToCart.matk)
-                    if(item.MASP === parseInt(dataAddProductToCart.masp) && item.MATK === parseInt(dataAddProductToCart.matk)
-                        && item.MAMAU === parseInt(dataAddProductToCart.mamau) && item.MASIZE === dataAddProductToCart.masize){
-                            try{
-                                request.post(`api/updateQuantityProductInCart`, dataAddProductToCart)
-                                .then(res => {  
-                                    setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
-                                })
-                            }
-                            catch(err){ 
-                                console.log(err);
-                            }
-                        found = true;
-                    }
+            if(selectPropertyProduct.mamau === 0 || selectPropertyProduct.masize === ''){
+                setContentPopup({
+                    title: 'Thêm hàng vào giỏ',
+                    content: 'Hãy chọn size và màu sắc trước khi thêm sản phẩm vào giỏ'
                 })
-                console.log(found)
-                if(!found){ 
-                    try{
-                        request.post("/api/addToCart", dataAddProductToCart)
-                        .then(res => {  
-                            setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
-                        })
-                    }
-                    catch(err){ 
-                        console.log(err);
-                    }
-                }
-                
-                setTimeout(() => {
-                    setStatusPressAddToCart(false);
-                }, 3000); // Thay đổi giá trị thời gian theo nhu cầu của bạn 
+                openPopup()
             }
+            else{ 
+                let i = 0;
+                let soLuongMua = selectPropertyProduct.soluong;
+                infoProduct.data_xacDinhSoLuong.forEach(item => {
+                    if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG === 0){
+                        setHetHang(true);
+                        i++;
+                    }
+                    if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG < soLuongMua)
+                        soLuongMua = item.SOLUONG
+                });
+                if(i === 0) {
+                    dataAddProductToCart = { 
+                        matk: localStorage.getItem("auth_matk"),
+                        masp: id,
+                        mamau:  selectPropertyProduct.mamau,
+                        masize: selectPropertyProduct.masize,
+                        soluongsp: soLuongMua,
+                        tonggia: soLuongMua * infoProduct.data_sanpham.GIABAN,
+                    }
+                    
+                    let found = false;
+            
+                    infoCarts.map(item => {
+                        console.log(item.MASP, 'ok');
+                        console.log(item.MATK, dataAddProductToCart.matk)
+                        if(item.MASP === parseInt(dataAddProductToCart.masp) && item.MATK === parseInt(dataAddProductToCart.matk)
+                            && item.MAMAU === parseInt(dataAddProductToCart.mamau) && item.MASIZE === dataAddProductToCart.masize){
+                                try{
+                                    request.post(`api/updateQuantityProductInCart`, dataAddProductToCart)
+                                    .then(res => {  
+                                        setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
+                                    })
+                                }
+                                catch(err){ 
+                                    console.log(err);
+                                }
+                            found = true;
+                        }
+                    })
+                    console.log(found)
+                    if(!found){ 
+                        try{
+                            request.post("/api/addToCart", dataAddProductToCart)
+                            .then(res => {  
+                                setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
+                            })
+                        }
+                        catch(err){ 
+                            console.log(err);
+                        }
+                    }
+                    
+                    setTimeout(() => {
+                        setStatusPressAddToCart(false);
+                    }, 3000); // Thay đổi giá trị thời gian theo nhu cầu của bạn 
+                }
+            }
+                
         }
         else{
             Navigate('/login')
@@ -297,7 +330,7 @@ function InfoProduct(){
         
             textarea.style.height = 'auto'; // Đặt chiều cao về auto trước khi tính toán chiều cao mới
             textarea.style.height = `${textarea.scrollHeight}px`; // Sử dụng scrollHeight để điều chỉnh chiều cao
-          }
+        }
       }, [infoProduct]);
     
     //phần code trong này sẽ liên quan đến việc ẩn và hiện popup cart
@@ -471,6 +504,15 @@ function InfoProduct(){
 
     return ( 
         <div class={`container col-sm-12 ${isLoading === true ? '' : ''}`}>
+            <div className="popup-overlay">
+                <div className="popup-container">
+                    <div className="popup-card">
+                    <h2>{contentPopup.title}</h2>
+                    <p>{contentPopup.content}</p>
+                    <button id="close-popup" onClick={closePopup}>Đóng</button>
+                    </div>
+                </div>
+            </div>
             <div class={`loadingInfoProductTrue ${isLoading === false ? 'display_hidden' : ''}`}>
             </div>
             <div class={`container-fluid ${isLoading === true ? 'display_hidden' : ''}`}>

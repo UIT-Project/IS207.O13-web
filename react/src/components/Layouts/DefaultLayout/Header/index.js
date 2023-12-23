@@ -239,7 +239,7 @@ function Header({settoggleFunctionLoginLogout}){
                                </div>
                                <div class="header__body__cart__orders__item__price_total">
                                    <div class="header__body__cart__orders__item_price_x_quantiry">
-                                       <span class="header__body__cart__orders__item__price_x_quantiry__price">{formatPrice(item.TONGGIA)}</span>
+                                       <span class="header__body__cart__orders__item__price_x_quantiry__price">{formatPrice(item.TONGGIA * item.SOLUONG)}</span>
                                        <span class="header__body__cart__orders__item__price_x_quantiry__price">đ</span>
                                        <div class="header__body__cart__orders__item__price_x_quantiry__x1"> 
                                            <span class="header__body__cart__orders__item__price_x_quantiry__price__multiply">x</span>
@@ -282,6 +282,16 @@ function Header({settoggleFunctionLoginLogout}){
 
     const handleClickTreEm = () => {
         Navigate("/treem")
+    }
+    const renderTongTienTatCaSP = () => { 
+        let tongTienTatCaSanPham = 0;
+        infoCarts.map(item =>{
+            tongTienTatCaSanPham += item.TONGGIA * item.SOLUONG
+        })
+        
+        return(
+            <span className='tongtien_cartpopup'> {formatPrice(tongTienTatCaSanPham)} đ</span>
+        ) 
     }
     // ở dưới đây là phần hiển thị thông tin giống html 
     // những sẽ có một số thẻ chứa thuộc tính là onChange, onClick để bắt sự kiện
@@ -346,6 +356,10 @@ function Header({settoggleFunctionLoginLogout}){
                                         <ul class="header__body__cart__orders__body" ref={bodyPopupCart}> 
                                             {renderInfoCart()}
                                         </ul>  
+                                        <div className='header__body__cart__orders__footer_tongtien'>
+                                            Tổng tiền:  
+                                            {renderTongTienTatCaSP()} 
+                                        </div>
                                     <footer class="header__body__cart__orders__footer">
                                         <button class="header__body__cart__orders__watch_cart_button" onClick={handleThanhToan}>
                                             Thanh toán

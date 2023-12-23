@@ -543,6 +543,13 @@ a {
     background-color: white;
     
 }
+.header__body__cart__orders__footer_tongtien{
+    display: flex;
+    justify-content: center;
+    padding: 10px 30px;
+    width: 100%;
+    background-color: white;
+}
 .header__body__cart__orders__watch_cart_button{
     border: 0px;
     outline: none;
@@ -610,4 +617,8 @@ ul{
 
 .fa_icon_header{
     margin-right: 0.5rem;
+}
+
+.tongtien_cartpopup{
+    margin-left: 0.5rem;
 }
