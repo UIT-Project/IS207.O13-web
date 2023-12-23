@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import images from "../../assets/images";
 import './infoProduct2.css';
 import "bootstrap"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import request from "../../utils/request";
 import useGlobalVariableContext from "../../context_global_variable/context_global_variable";
 import {Media} from "./image";
@@ -18,6 +18,8 @@ import React from 'react';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+
+import { Navigate } from "react-router-dom";
 
 function InfoProduct(){
     // Trong file này cần xử lý
@@ -37,7 +39,7 @@ function InfoProduct(){
     //các biến cách nhau bởi dấu ?
     const id = urlParams.get('id'); 
 
-
+    const Navigate = useNavigate();
 
     //biến global
     const { divPopupCartRef, infoCarts, setInfoCarts, 
@@ -223,61 +225,67 @@ function InfoProduct(){
     // xử lý khi hết hàng vẫn cố chấp thêm 
     const handleAddToCart =  (e) => {
         e.preventDefault(); 
-        let i = 0;
-        let soLuongMua = selectPropertyProduct.soluong;
-        infoProduct.data_xacDinhSoLuong.forEach(item => {
-            if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG === 0){
-                setHetHang(true);
-                i++;
-            }
-            if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG < soLuongMua)
-                soLuongMua = item.SOLUONG
-        });
-        if(i === 0) {
-            dataAddProductToCart = { 
-                matk: localStorage.getItem("auth_matk"),
-                masp: id,
-                mamau:  selectPropertyProduct.mamau,
-                masize: selectPropertyProduct.masize,
-                soluongsp: soLuongMua,
-                tonggia: soLuongMua * infoProduct.data_sanpham.GIABAN,
-            }
+        if(localStorage.getItem('auth_matk')){
             
-            let found = false;
-    
-            infoCarts.map(item => {
-                console.log(item.MASP, 'ok');
-                console.log(item.MATK, dataAddProductToCart.matk)
-                if(item.MASP === parseInt(dataAddProductToCart.masp) && item.MATK === parseInt(dataAddProductToCart.matk)
-                    && item.MAMAU === parseInt(dataAddProductToCart.mamau) && item.MASIZE === dataAddProductToCart.masize){
-                        try{
-                            request.post(`api/updateQuantityProductInCart`, dataAddProductToCart)
-                            .then(res => {  
-                                setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
-                            })
-                        }
-                        catch(err){ 
-                            console.log(err);
-                        }
-                    found = true;
+            let i = 0;
+            let soLuongMua = selectPropertyProduct.soluong;
+            infoProduct.data_xacDinhSoLuong.forEach(item => {
+                if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG === 0){
+                    setHetHang(true);
+                    i++;
                 }
-            })
-            console.log(found)
-            if(!found){ 
-                try{
-                    request.post("/api/addToCart", dataAddProductToCart)
-                    .then(res => {  
-                        setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
-                    })
+                if(item.MAMAU === selectPropertyProduct.mamau && item.MASIZE === selectPropertyProduct.masize && item.SOLUONG < soLuongMua)
+                    soLuongMua = item.SOLUONG
+            });
+            if(i === 0) {
+                dataAddProductToCart = { 
+                    matk: localStorage.getItem("auth_matk"),
+                    masp: id,
+                    mamau:  selectPropertyProduct.mamau,
+                    masize: selectPropertyProduct.masize,
+                    soluongsp: soLuongMua,
+                    tonggia: soLuongMua * infoProduct.data_sanpham.GIABAN,
                 }
-                catch(err){ 
-                    console.log(err);
+                
+                let found = false;
+        
+                infoCarts.map(item => {
+                    console.log(item.MASP, 'ok');
+                    console.log(item.MATK, dataAddProductToCart.matk)
+                    if(item.MASP === parseInt(dataAddProductToCart.masp) && item.MATK === parseInt(dataAddProductToCart.matk)
+                        && item.MAMAU === parseInt(dataAddProductToCart.mamau) && item.MASIZE === dataAddProductToCart.masize){
+                            try{
+                                request.post(`api/updateQuantityProductInCart`, dataAddProductToCart)
+                                .then(res => {  
+                                    setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
+                                })
+                            }
+                            catch(err){ 
+                                console.log(err);
+                            }
+                        found = true;
+                    }
+                })
+                console.log(found)
+                if(!found){ 
+                    try{
+                        request.post("/api/addToCart", dataAddProductToCart)
+                        .then(res => {  
+                            setStatusPressAddToCart(statusPressAddToCart => !statusPressAddToCart);
+                        })
+                    }
+                    catch(err){ 
+                        console.log(err);
+                    }
                 }
+                
+                setTimeout(() => {
+                    setStatusPressAddToCart(false);
+                }, 3000); // Thay đổi giá trị thời gian theo nhu cầu của bạn 
             }
-             
-            setTimeout(() => {
-                setStatusPressAddToCart(false);
-            }, 3000); // Thay đổi giá trị thời gian theo nhu cầu của bạn 
+        }
+        else{
+            Navigate('/login')
         }
     }
     useEffect(() => {
