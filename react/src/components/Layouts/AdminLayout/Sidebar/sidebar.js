@@ -61,11 +61,11 @@ function SideBar(){
                 <ul class="sidebar_nav">
                     {/* <!-- nav item: home --> */}
                     <li class="sidebar_nav_item">
-                        <a class="sidebar_nav_item_content" href="/infoAccount"> 
+                        <a class="sidebar_nav_item_content" onClick={()=> {Navigation('/infoAccount')}}> 
                             <FontAwesomeIcon icon={faUser}></FontAwesomeIcon>
                             <span className="category_text_inSideBar">Thông tin tài khoản</span>
                         </a>
-                    </li>
+                    </li>   
 
                     {/* <!-- nav item: account --> */}
                     <li 
@@ -114,7 +114,7 @@ function SideBar(){
                             </li>
                             
                             <li class="sidebar_nav_item">
-                                <span class="sidebar_nav_item_content medium_font" onClick={()=> { window.location.href = `/admin/manageProduct`}}>Danh sách sản phẩm</span>
+                                <span class="sidebar_nav_item_content medium_font" onClick={()=> {Navigation(`/admin/manageProduct`)}}>Danh sách sản phẩm</span>
                             </li>
                         </ul>
                     </div>

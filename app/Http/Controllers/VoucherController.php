@@ -36,7 +36,7 @@ class VoucherController extends Controller
             "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
             'Chưa áp dụng' AS TEN_TRANGTHAI
             FROM vouchers 
-            WHERE vouchers.THOIGIANBD > $currentDate "
+            WHERE vouchers.THOIGIANBD > '$currentDate' "
         ); 
         $quantity_DangSuDung = DB::select(
             "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
@@ -55,6 +55,42 @@ class VoucherController extends Controller
         );
 
         $quantity = array_merge($quantity_chuaApDung, $quantity_DangSuDung, $quantity_daSuDung);
+
+        return response()->json([
+            'quantity'=> $quantity, 
+        ]); 
+    }
+    public function getQuantityVoucherToDevidePageSearch(Request $request){
+        $currentDate = now()->format('Y-m-d');
+        $keySearch = $request->query('keySearch');
+        $typeSearch = $request->query('typeSearch');
+        
+        $quantity_chuaApDung = DB::select(
+            "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
+            'Chưa áp dụng' AS TEN_TRANGTHAI
+            FROM vouchers 
+            WHERE vouchers.THOIGIANBD > '$currentDate'
+            AND  $typeSearch LIKE '%$keySearch%'"
+        ); 
+        $quantity_DangSuDung = DB::select(
+            "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
+            'Đang áp dụng' AS TEN_TRANGTHAI 
+            FROM vouchers 
+            WHERE '$currentDate' 
+            BETWEEN vouchers.THOIGIANBD 
+            AND vouchers.THOIGIANKT 
+            AND SOLUONG_CONLAI > 0
+            AND  $typeSearch LIKE '%$keySearch%'"
+        );
+        $quantity_daSuDung = DB::select(
+            "SELECT COUNT(MAVOUCHER) AS SL_MAVOUCHER,
+            'Đã qua sử dụng' AS TEN_TRANGTHAI 
+            FROM vouchers 
+            WHERE (vouchers.THOIGIANKT < '$currentDate' 
+            OR SOLUONG_CONLAI = 0)
+            AND  $typeSearch LIKE '%$keySearch%'"
+        );
+        $quantity = array_merge($quantity_chuaApDung, $quantity_DangSuDung, $quantity_daSuDung); 
 
         return response()->json([
             'quantity'=> $quantity, 

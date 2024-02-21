@@ -13,10 +13,25 @@ export function GlobalVariable({children}){
     const [isClickedPayment, setIsClickedPayment] = useState(0);
     const [category1, setCategory1] = useState(1)
     const listSizeToCheck = ["S", "M", "L", "XL", "XXL", "3XL"]
+    const [contentPopup, setContentPopup] = useState({
+        title: '',
+        content: '',
+    })
 
+    const openPopup = () => {
+        const popupOverlay = document.querySelector(".popup-overlay");
+        const popupContainer = document.querySelector(".popup-container");
+    
+        popupOverlay.style.display = "flex";
+        setTimeout(() => {
+          popupContainer.style.opacity = "1";
+          popupContainer.style.transform = "scale(1)";
+        }, 100);
+    }; 
     const formatPrice = (price) => {
         return price.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     };
+    
     return <GlobalVariableContext.Provider 
                 value={{
                     loginOrLogout, setLoginOrLogout, 
@@ -29,7 +44,8 @@ export function GlobalVariable({children}){
                     isClickedPayment, setIsClickedPayment,
                     category1, setCategory1,
                     listSizeToCheck,
-                    
+                    contentPopup, setContentPopup,
+                    openPopup,
                 }}
             >
         {children}

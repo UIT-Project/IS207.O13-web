@@ -86,6 +86,45 @@ class AdminManageOrderController extends Controller
             'ok'=> "ok"
         ]);
     }
+
+    public function infoOrderDetail_Many(Request $request){
+        $listMASPTranferState = $request->query('listMASPTranferState');
+        $data_relative_Donhang = [];
+        $data_sanPham_relative_CTDH = [];
+        foreach($listMASPTranferState as $madh){
+
+            $data_relative_Donhang_phantu =  DB::select(
+                "SELECT donhangs.MADH, thongtingiaohangs.TEN, SDT, DIACHI, 
+                TINH_TP, QUAN_HUYEN, PHUONG_XA, TONGTIEN, TONGTIEN_SP,
+                VOUCHERGIAM, TONGTIENDONHANG, HINHTHUC_THANHTOAN, TRANGTHAI_THANHTOAN, 
+                GHICHU, NGAYORDER, TRANGTHAI_DONHANG, PHIVANCHUYEN
+                from donhangs, chitiet_donhangs, thongtingiaohangs 
+                where donhangs.MADH = $madh  AND donhangs.MADH = chitiet_donhangs.MADH 
+                AND thongtingiaohangs.MATTGH = donhangs.MATTGH"
+            );
+            $data_sanPham_relative_CTDH_phantu = DB::select(
+                "SELECT sanphams.MASP, TENSP, GIABAN, TENMAU, HEX, MASIZE, TONGTIEN, chitiet_donhangs.SOLUONG, imgURL, sanpham_mausac_sizes.MAXDSP  
+                from mausacs, chitiet_donhangs, sanphams, sanpham_mausac_sizes, hinhanhsanphams
+                where chitiet_donhangs.MADH = $madh AND chitiet_donhangs.MAXDSP = sanpham_mausac_sizes.MAXDSP 
+                AND sanpham_mausac_sizes.MASP = sanphams.MASP AND sanpham_mausac_sizes.MAMAU = mausacs.MAMAU
+                AND sanpham_mausac_sizes.MASP = hinhanhsanphams.MASP AND hinhanhsanphams.MAHINHANH LIKE '%thumnail%'"
+            );
+    
+             
+            foreach ($data_relative_Donhang_phantu as $order) {
+                $order->NGAYORDER = Carbon::parse($order->NGAYORDER)->format('d/m/Y');
+            }
+
+            array_push($data_relative_Donhang, $data_relative_Donhang_phantu);
+            array_push($data_sanPham_relative_CTDH, $data_sanPham_relative_CTDH_phantu);
+        }
+        return response()->json([
+            'data_relative_Donhang' => $data_relative_Donhang,
+            'data_sanPham_relative_CTDH' => $data_sanPham_relative_CTDH,
+            'ok'=> "ok"
+        ]);
+    }
+
     public function saveNote(Request $request){
         $data = $request->all();
         $madh = $data['madh'];
@@ -113,11 +152,10 @@ class AdminManageOrderController extends Controller
         }
         else{
             $quantity = DB::select(
-                "SELECT COUNT(MADH)AS SL_MADH , TRANGTHAI_DONHANG 
-                FROM donhangs
-                , thongtingiaohangs
+                "SELECT COUNT(MADH) AS SL_MADH , TRANGTHAI_DONHANG 
+                FROM donhangs , thongtingiaohangs
                 WHERE $typeSearch LIKE '%$keySearch%' 
-                AND thongtingiaohangs.MATK = donhangs.MATK
+                AND thongtingiaohangs.MATTGH = donhangs.MATTGH
                 GROUP BY TRANGTHAI_DONHANG "
             ); 
             $state = 'non-madh';

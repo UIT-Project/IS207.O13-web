@@ -34,7 +34,7 @@ class ManageProductController extends Controller
     public function getInfoManageProduct(Request $request){
         $tenDanhMuc = $request->input('tenDanhMuc');
         $start = $request->input('start');
-        $numberOrderEachPage = $request->input('numberOrderEachPage');
+        $numberProductEachPage = $request->input('numberProductEachPage');
 
         $data_thongtin_sanpham = DB::select(
             "SELECT sanphams.MASP, TENSP, GIABAN, GIAGOC, TENPL2,
@@ -50,7 +50,7 @@ class ManageProductController extends Controller
             AND phanloai_sanphams.MAPL = phanloai_sanpham2s.MAPL1 
             GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC, TENPL2
             ORDER BY sanphams.MASP DESC
-            LIMIT $start, $numberOrderEachPage" 
+            LIMIT $start, $numberProductEachPage" 
         ); 
         return response()->json([
             'data_thongtin_sanpham' => $data_thongtin_sanpham,
@@ -137,7 +137,7 @@ class ManageProductController extends Controller
     public function getInfoSearchProductAdmin(Request $request){
         $tenDanhMuc = $request->query('tenDanhMuc');
         $start = $request->query('start');
-        $numberOrderEachPage = $request->query('numberOrderEachPage'); 
+        $numberProductEachPage = $request->query('numberProductEachPage'); 
         
         $keySearch = $request->query('keySearch');
         $typeSearch = $request->query('typeSearch');
@@ -156,7 +156,7 @@ class ManageProductController extends Controller
                 AND phanloai_sanphams.MAPL = sanphams.MAPL_SP
                 GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC
                 ORDER BY sanphams.MASP DESC
-                LIMIT $start, $numberOrderEachPage" 
+                LIMIT $start, $numberProductEachPage" 
             );
 
         }
@@ -174,7 +174,7 @@ class ManageProductController extends Controller
                 AND phanloai_sanphams.MAPL = sanphams.MAPL_SP
                 GROUP BY sanphams.MASP, TENSP, GIABAN, GIAGOC
                 ORDER BY sanphams.MASP DESC
-                LIMIT $start, $numberOrderEachPage" 
+                LIMIT $start, $numberProductEachPage" 
             );
         }
         // $data_soluong_daban = DB::select(

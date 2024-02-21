@@ -116,6 +116,7 @@ Route::get('getDetailCategory2', [AddProductController::class, 'getDetailCategor
 Route::get('getQuantityOrderToDevidePage', [AdminManageOrderController::class, 'getQuantityOrderToDevidePage']);
 Route::get('getInfoManageOrder', [AdminManageOrderController::class, 'getInfoManageOrder']);
 Route::get('infoOrderDetail', [AdminManageOrderController::class, 'infoOrderDetail']);
+Route::get('infoOrderDetail_Many', [AdminManageOrderController::class, 'infoOrderDetail_Many']);
 Route::post('saveNote', [AdminManageOrderController::class, 'saveNote']);
 Route::post('updateOrderStatus', [AdminManageOrderController::class, 'updateOrderStatus']);
 
@@ -158,6 +159,7 @@ Route::get('searchAccountCustomer', [ManageAccountCustomerController::class, 'se
 //Admin - Voucher
 Route::post('addVoucher', [VoucherController::class, 'addVoucher']);
 Route::get('getQuantityVoucherToDevidePage', [VoucherController::class, 'getQuantityVoucherToDevidePage']);
+Route::get('getQuantityVoucherToDevidePageSearch', [VoucherController::class, 'getQuantityVoucherToDevidePageSearch']);
 Route::get('getInfoManageVoucher', [VoucherController::class, 'getInfoManageVoucher']);
 Route::get('infoVoucherDetail', [VoucherController::class, 'infoVoucherDetail']);
 Route::post('updateVoucher', [VoucherController::class, 'updateVoucher']);

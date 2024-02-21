@@ -21,8 +21,8 @@ class UpdateProductController extends Controller
 {
     public function updateProduct(Request $request){
         $objectInfoUpdateProduct = json_decode($request->input('infoUpdateProduct')); 
-        $listQuantity = json_decode($request->input('listQuantity')); 
-
+        
+        $listQuantity = $objectInfoUpdateProduct->listQuantity; 
         $TENSP = $objectInfoUpdateProduct->nameProduct;
         $GIAGOC = $objectInfoUpdateProduct->originPrice;
         $GIABAN = $objectInfoUpdateProduct->sellPrice;

@@ -18,6 +18,7 @@ const routes = {
     myOrder: "/myOrder",
     manageOrder: "/admin/manageOrder",
     manageProduct: "/admin/manageProduct", 
+    detailProduct: "/admin/manageProduct/detailProduct",    
     infoAccount: "/infoAccount",
     printOrder: "/admin/printOrder",  
     adminLogin: "/admin/AdminLogin",

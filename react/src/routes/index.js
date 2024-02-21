@@ -1,32 +1,30 @@
 import config from "../config"
-import Home from "../pages/Home"
-import Login from "../pages/Login";
-import Test from "../pages/Test/test";
-import SearchProduct from "../pages/SearchProduct";
-import InfoProduct from "../pages/InfoProduct/infoProduct";
-import CartTest from "../pages/Cart/cart";
-import Cart from "../pages/Cart/cart";
-import Payment from "../pages/Payment/payment";
-import AddProduct from "../pages/Admin/AddProduct/addProduct";
-import PaymentResult from "../pages/PaymentResult/paymentResult";
-import MyOrder from "../pages/MyOrder/myorder"
-import ManageOrder from "../pages/Admin/ManageOrder/manageOrder"; 
-import ManageProduct from "../pages/Admin/ManageProduct/manageProduct"; 
-import InfoAccount from "../pages/InfoAccount/infoAccount";
-import PrintOrder from "../pages/Admin/PrintOrder/printOrder";  
+import Home from "../pages/User/Home"
+import Login from "../pages/User/Login"; 
+import SearchProduct from "../pages/User/SearchProduct";
+import InfoProduct from "../pages/User/InfoProduct/infoProduct";
+import CartTest from "../pages/User/Cart/cart";
+import Cart from "../pages/User/Cart/cart";
+import Payment from "../pages/User/Payment/payment";
+import AddProduct from "../pages/Admin/Product/AddProduct/addProduct";
+import PaymentResult from "../pages/User/PaymentResult/paymentResult";
+import MyOrder from "../pages/User/MyOrder/myorder"
+import ManageOrder from "../pages/Admin/Order/ManageOrder/manageOrder"; 
+import ManageProduct from "../pages/Admin/Product/ManageProduct/manageProduct";
+import InfoAccount from "../pages/User/InfoAccount/infoAccount";
+import PrintOrder from "../pages/Admin/Order/PrintOrder/printOrder";  
 import AdminLogin from "../pages/Admin/AdminLogin/AdminLogin";
-import ManageAccountStaff from "../pages/Admin/ManageAccountStaff/ManageAccountStaff";
-import ManageAccountCustomer from "../pages/Admin/ManageAccountCustomer/ManageAccountCustomer";
-import AddVoucher from "../pages/Admin/AddVoucher/AddVoucher";
-import ManageVoucher from "../pages/Admin/ManageVoucher/ManageVoucher";
-import SearchVoucher from "../pages/Admin/SearchVoucher/SearchVoucher";
-import ReviewProduct from "../pages/ReviewProduct/ReviewProduct";
+import ManageAccountStaff from "../pages/Admin/Account/ManageAccountStaff/ManageAccountStaff";
+import ManageAccountCustomer from "../pages/Admin/Account/ManageAccountCustomer/ManageAccountCustomer";
+import AddVoucher from "../pages/Admin/Voucher/AddVoucher/AddVoucher";
+import ManageVoucher from "../pages/Admin/Voucher/ManageVoucher/ManageVoucher"; 
+import ReviewProduct from "../pages/User/ReviewProduct/ReviewProduct";
 import Statistic from "../pages/Admin/Statistic/Statistic";
 
 import DefaultLayout from "../components/Layouts/DefaultLayout";
 import AdminLayout from "../components/Layouts/AdminLayout/adminLayout";
-import Collection from "../pages/Collection/collection";
-import SetData from "../pages/Admin/SetData/SetData";
+import Collection from "../pages/User/Collection/collection";
+import SetData from "../pages/Admin/ComponentUseInManyPage/SetData/SetData";
 
 const publicRoutes = [
 
@@ -36,8 +34,7 @@ const publicRoutes = [
     //layout: nếu thêm một trang cho người dùng thì dùng DefaultLayout, và admin thì dùng DefaultLayout
 
     {path: config.routes.home, component: Home, layout: DefaultLayout}, 
-    {path: config.routes.login, component: Login, layout: null},  
-    {path: config.routes.test, component: Test, layout: null},
+    {path: config.routes.login, component: Login, layout: null},   
     {path: config.routes.infoProduct, component: InfoProduct, layout: DefaultLayout},
     {path: config.routes.searchProduct, component: SearchProduct, layout: DefaultLayout},
     {path: config.routes.cart_test, component: CartTest, layout: DefaultLayout},
@@ -54,8 +51,7 @@ const publicRoutes = [
     {path: config.routes.manageAccountStaff, component: ManageAccountStaff, layout: AdminLayout},
     {path: config.routes.manageAccountCustomer, component: ManageAccountCustomer, layout: AdminLayout},
     {path: config.routes.addVoucher, component: AddVoucher, layout: AdminLayout},
-    {path: config.routes.manageVoucher, component: ManageVoucher, layout: AdminLayout},
-    {path: config.routes.searchVoucher, component: SearchVoucher, layout: AdminLayout},
+    {path: config.routes.manageVoucher, component: ManageVoucher, layout: AdminLayout}, 
     {path: config.routes.reviewProduct, component: ReviewProduct, layout: DefaultLayout},
     {path: config.routes.statistic, component: Statistic, layout: AdminLayout},
     {path: config.routes.collection, component: Collection, layout: DefaultLayout},

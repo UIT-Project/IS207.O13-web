@@ -22,8 +22,8 @@ class AddProductController extends Controller
 {
     public function addProduct(Request $request){
         $objectInfoAddNewProduct = json_decode($request->input('infoAddNewProduct')); 
-        $listQuantity = json_decode($request->input('listQuantity')); 
-
+        // $listQuantity = ; 
+        $listQuantity = $objectInfoAddNewProduct->listQuantity;
         $TENSP = $objectInfoAddNewProduct->nameProduct;
         $GIAGOC = $objectInfoAddNewProduct->originPrice;
         $GIABAN = $objectInfoAddNewProduct->sellPrice;
@@ -86,6 +86,7 @@ class AddProductController extends Controller
         }
         return response()->json([
             'listHEX' =>  $hex,
+            'listQuantity' => $listQuantity,
         ]); 
     }
 

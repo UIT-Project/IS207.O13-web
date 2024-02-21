@@ -1,0 +1,20 @@
+.div_search{
+    margin: 2rem 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.keySearch{
+    border-radius: 0.5rem;
+    padding: 0.4rem;
+}
+.width_search{
+    width: 30%;
+}
+select.form-select option {
+    line-height: 6;
+}
+.width_formselect_manageProduct{
+    width: 100%;
+}
