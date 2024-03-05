@@ -253,6 +253,7 @@ function ManageProduct()
         if(typeSearchParams === null && keySearchParams === null){
             request.get(`/api/getInfoManageProduct`, {params: queryForGetInfoProductForUsers}) 
             .then(res=>{   
+                console.log(res.data, 'jkasnd2', productStatus)
                 if(res.data.data_thongtin_sanpham.length == 0 && openingPage !== 1){
                     window.location.reload();
                 }
@@ -449,7 +450,7 @@ function ManageProduct()
                                 <td data-label="Phone-number">{formatPrice(product.GIABAN)}</td>
                                 <td data-label="Address">{formatPrice(product.GIAGOC)}</td>
                                 <td data-label="Day">{product.SOLUONGCONLAI}</td>
-                                <td>{product.SOLUONGDABAN}</td>  
+                                {/* <td>{product.SOLUONGDABAN}</td>   */}
                                 <td>{product.TENPL2}</td>  
                                 <td data-label="update">
                                     <div class="icon-update">
@@ -491,7 +492,7 @@ function ManageProduct()
                                 <th scope="col">Giá bán</th>
                                 <th scope="col">Giá gốc</th>
                                 <th scope="col" >Số lượng còn lại</th> 
-                                <th scope="col" >Số lượng đã bán</th> 
+                                {/* <th scope="col" >Số lượng đã bán</th>  */}
                                 <th scope="col" >Danh mục</th> 
                                 <th scope="col"></th>
 

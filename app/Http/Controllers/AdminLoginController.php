@@ -7,13 +7,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\taikhoan; 
 use Illuminate\Auth\Events\Logout;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-use Illuminate\Support\Facades\Mail;
-use App\Mail\VerifyEmail;
-use Illuminate\Auth\Events\Verified; 
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Validator; 
 use stdClass; 
 
 class AdminLoginController extends Controller

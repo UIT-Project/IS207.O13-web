@@ -1,10 +1,9 @@
-import AddProduct from '../AddProduct/addProduct';
+ 
 import 'bootstrap';
 import request from "../../../../utils/request";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClock, faFaceAngry, faPenToSquare } from '@fortawesome/free-regular-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'; 
 import {  faCircleChevronLeft, faFloppyDisk, faL, faUser, faXmark } from '@fortawesome/free-solid-svg-icons';
 import useGlobalVariableContext from "../../../../context_global_variable/context_global_variable";
 import CurrencyInput from 'react-currency-input-field';

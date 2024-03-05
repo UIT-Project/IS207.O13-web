@@ -34,7 +34,8 @@ function Payment(){
         infoAdress: [],
     });
     const [hienThiThanhToan, setHienThiThanhToan] = useState(false);
-    const URL_APIAdsress = 'https://provinces.open-api.vn/api/';
+    // const URL_APIAdsress = 'https://provinces.open-api.vn/api/';
+    const URL_APIAdsress = 'https://vapi.vnappmob.com/api/province';
     //lưu thông tin voucher mà người dùng nhập vào để kiểm tra voucher có sử dụng được hay không
     const [inputvouchers, setInputVoucher] = useState('');
 
@@ -111,7 +112,7 @@ function Payment(){
         // else setDiscountVoucher("Voucher không khả dụng");
         let i = 0;
         infoForPayment.infoVoucher.forEach(item => {
-            console.log(item.MAVOUCHER, inputvouchers)
+            console.log(item.MAVOUCHER, inputvouchers, 'ksksk')
             if(item.MAVOUCHER === inputvouchers){
                 if(item.SOLUONG_CONLAI === 0){
                     setDiscountVoucher("Voucher hết lượt sử dụng");
@@ -173,11 +174,11 @@ function Payment(){
         let ID_Province = 1;
         let ID_District = 1;
         dataAPIAddress.province.forEach(item => {
-            if(item.name === e.target.value) {
+            if(item.province_name === e.target.value) {
                 ID_Province = item.code;
                 handleGetDistrict(ID_Province);
                 dataAPIAddress.districts.forEach(item => {
-                    if(item.name === shipInformation.option_quan) {
+                    if(item.district_name === shipInformation.option_quan) {
                         ID_District = item.code;
                         handleGetCommune(ID_District);
                     }
@@ -185,9 +186,10 @@ function Payment(){
             }
         })
         dataAPIAddress.districts.forEach(item => {
-            if(item.name === e.target.value) {
+            if(item.district_name === e.target.value) {
                 ID_District = item.code;
-                handleGetCommune(ID_District);
+                handleGetCommune(ID_District); 
+                // console.log('asd')
             }
         })
     }
@@ -244,31 +246,32 @@ function Payment(){
     const handleGetProvince = () => {
         axios.get(URL_APIAdsress)
         .then(res => {
-            console.log(res.data);
+            console.log(res.data.results.map(item => item.province_name), 'nhkjn8');
             setDataAPIAddress({
                 ...dataAPIAddress,
-                province: res.data.filter(item => item)
+                province: res.data.results.filter(item => item)
             }) 
             // setShipInformation({...shipInformation, option_thanhpho: res.data[0].name})
         })
     }
     const handleGetDistrict = async (ID_Province) => {
-        axios.get(`${URL_APIAdsress}p/${ID_Province}?depth=2`)
+        console.log(ID_Province, 'ạcbnj23')
+        axios.get(`${URL_APIAdsress}/district/${(ID_Province)}`)
         .then(res => {
-            console.log(res.data.districts);
+            console.log(res.data.results, 'sdksk');
             setDataAPIAddress({
                 ...dataAPIAddress,
-                districts: res.data.districts
+                districts: res.data.results
             }) 
         })
     }
     const handleGetCommune = (ID_District) => {
-        axios.get(`${URL_APIAdsress}d/${ID_District}?depth=2`)
+        axios.get(`${URL_APIAdsress}/ward/${ID_District}`)
         .then(res => {
-            // console.log(res.data);
+            console.log(res.data.results, 'kák');
             setDataAPIAddress({
                 ...dataAPIAddress,
-                commune: res.data.wards
+                commune: res.data.results
             })
             // setShipInformation({...shipInformation, option_quan: res.data.wards[0].name})
 
@@ -297,36 +300,37 @@ function Payment(){
         tongtienSP += item.TONGGIA; 
     }) 
     useEffect(() => {
-        const found = dataAPIAddress.province.find((item, index) => item.name === shipInformation.option_thanhpho)
+        const found = dataAPIAddress.province.find((item, index) => item.province_name === shipInformation.option_thanhpho)
         if(found){
-            handleGetDistrict(found.code) 
+            handleGetDistrict(found.province_id) 
         }
+        console.log('đây là district')
         
     }, [shipInformation.option_thanhpho])
     useEffect(() => {
-        const found = dataAPIAddress.districts.find((item, index) => item.name === shipInformation.option_quan) 
+        const found = dataAPIAddress.districts.find((item, index) => item.district_name === shipInformation.option_quan) 
         if(found){
-            handleGetCommune(found.code) 
+            handleGetCommune(found.district_id) 
         }
-    }, [dataAPIAddress.districts])
+    }, [shipInformation.option_quan])
     
     const renderProvince = dataAPIAddress.province.map((item, index) =>  
         <option 
-            value={item.name} 
+            value={item.province_name} 
             key={index}  
-        >{item.name}</option>  
+        >{item.province_name}</option>  
     )
     const renderDistrict = dataAPIAddress.districts.map((item, index) => 
         <option 
-            value={item.name} 
+            value={item.district_name} 
             key={index}  
-        >{item.name}</option> 
+        >{item.district_name}</option> 
     )
     const renderCommune = dataAPIAddress.commune.map((item, index) => 
         <option 
-            value={item.name} 
+            value={item.ward_name} 
             key={index}  
-        >{item.name}</option> 
+        >{item.ward_name}</option> 
     )
     //in ra thông tin sản phẩm đã được chọn để thanh toán từ giỏ hàng
     const renderInfoProductOrders = infoForPayment.infoProduct.map((item, index) => {  

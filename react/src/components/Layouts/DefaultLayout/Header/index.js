@@ -239,7 +239,7 @@ function Header({settoggleFunctionLoginLogout}){
                                </div>
                                <div class="header__body__cart__orders__item__price_total">
                                    <div class="header__body__cart__orders__item_price_x_quantiry">
-                                       <span class="header__body__cart__orders__item__price_x_quantiry__price">{formatPrice(item.TONGGIA * item.SOLUONG)}</span>
+                                       <span class="header__body__cart__orders__item__price_x_quantiry__price">{formatPrice(item.TONGGIA )}</span>
                                        <span class="header__body__cart__orders__item__price_x_quantiry__price">đ</span>
                                        <div class="header__body__cart__orders__item__price_x_quantiry__x1"> 
                                            <span class="header__body__cart__orders__item__price_x_quantiry__price__multiply">x</span>
@@ -271,22 +271,11 @@ function Header({settoggleFunctionLoginLogout}){
     const handleClickLogo = () => {
         Navigate("/")
     }
-
-    const handleClickNam = () => {
-        Navigate("/nam")
-    }
-    
-    const handleClickNu = () => {
-        Navigate("/nu")
-    }
-
-    const handleClickTreEm = () => {
-        Navigate("/treem")
-    }
+ 
     const renderTongTienTatCaSP = () => { 
         let tongTienTatCaSanPham = 0;
         infoCarts.map(item =>{
-            tongTienTatCaSanPham += item.TONGGIA * item.SOLUONG
+            tongTienTatCaSanPham += (item.TONGGIA)
         })
         
         return(

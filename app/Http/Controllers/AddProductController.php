@@ -3,21 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\taikhoan;
-use App\Models\User;
-use App\Models\sanpham;
-use App\Models\chitiet_giohang;
-use App\Models\donhang;
-use App\Models\hinhanhsanpham;
-use Illuminate\Auth\Events\Logout;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
-use Illuminate\Support\Facades\Auth;
-use Carbon\Carbon;
-
-use stdClass; 
-
+use Illuminate\Support\Facades\DB; 
+use App\Models\hinhanhsanpham; 
+ 
 class AddProductController extends Controller
 {
     public function addProduct(Request $request){
